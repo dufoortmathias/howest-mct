@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Oefening2 - Script op verschillende pagina's</title>
+    <script src="script/app3.js"></script>
+    <style>
+      li {
+        background-color: lightpink;
+        margin: 0.3em;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Javascript - this vs evt. target bij dynamic eventlisteners</h1>
+    <h2>Probleem</h2>
+    Bij het maken van een dynamische eventlister kan ik gebruik maken van het keywoord this, maar soms ook van evt. target, wat is het verschil?
+    <h2>Voorbeeld</h2>
+    <ul class="c-container">
+      <li class="c-container__item js-item1">Item1</li>
+      <li class="c-container__item js-item2">Item2</li>
+      <li class="c-container__item js-item3">Item3</li>
+      <li class="c-container__item js-item4">Item4</li>
+      <li class="c-container__item js-item5">Item5</li>
+    </ul>
+    <div class="js-result"></div>
+  </body>
+</html>

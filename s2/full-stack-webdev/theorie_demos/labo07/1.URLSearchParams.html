@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Oefening1 - JS Querystring</title>
+        <style>
+            body {
+                font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+            }
+            pre {
+                background: repeating-linear-gradient(-45deg, #eee, #eee 5px, #ddd 5px, #ddd 10px);
+                padding: 1em;
+                font-weight: 900;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Javascript - Hoe werken met een querystring?</h1>
+        <h2>Wat is een querystring</h2>
+        <p>
+            De querystring is het deel van een URL waarin parameters doorgegeven worden aan een script-interpreter. Dit
+            kan zowel een client side-interpreter zijn (bijvoorbeeld JavaScript) als een serverside-interpreter
+            (bijvoorbeeld PHP of ASP).
+        </p>
+        <p>
+            In veel gevallen wordt het begin van de querystring gemarkeerd met een vraagteken en worden de verschillende
+            parameters waar de querystring uit bestaat gescheiden met een ampersand, maar andere syntaxes zijn ook
+            mogelijk.
+        </p>
+        <p>
+            Wanneer de vraagteken/ampersand syntaxis wordt gebruikt ziet een querystring er als volgt uit:
+            <br />
+            <code>?parameter1=waarde1&amp;parameter2=waarde2&amp;parameter3=waarde3 </code>
+        </p>
+        <p>
+            Het aantal parameters is in principe onbegrensd, maar in de praktijk niet. De maximale lengte voor een
+            querystring verschilt per browser maar ligt meestal in de orde van 5000 bytes.
+        </p>
+        <small>Bron: https://nl.wikipedia.org/wiki/Querystring</small>
+
+        <h2>Hoe gebruik je een querystring in JS?</h2>
+        Hiervoor kan je gebruikmaken van URLSearchParams, een dele van de URL API in de browser. <br />Meer goede info
+        kan je vinden op
+        <a href="https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams">MDN (Mozilla Developer Network)</a>
+        <h2>Voorbeeld</h2>
+        <script>
+            document.write(`<a href="${window.location.pathname}?waarde=hallokes">link met ?waarde=hallokes</a><br />
+    <a href="${window.location.pathname}?waarde=hallokes&waarde2=saluukes">link met ?waarde=hallokes&waarde2=saluukes</a>`);
+        </script>
+        <br />
+
+        <pre>
+    &lt;script&gt;
+      console.log(window.location);
+      const querystring = new URLSearchParams(window.location.search);
+      for (let p of querystring) {
+        console.log(p);
+      }
+      console.log(querystring.get("waarde"));
+      if (querystring.has("waarde2")) {
+        console.log("waarde 2 gevonden");
+      } else {
+        console.log("waarde 2 niet gevonden in de querystring");
+      }
+    &lt;/script&gt;
+    </pre
+        >
+        <script>
+            console.log(window.location.search);
+            const querystring = new URLSearchParams(window.location.search);
+            for (let p of querystring) {
+                console.log(p);
+            }
+            console.log(querystring.get("waarde"));
+            if (querystring.has("waarde2")) {
+                console.log("waarde 2 gevonden");
+            } else {
+                console.log("waarde 2 niet gevonden in de querystring");
+            }
+        </script>
+    </body>
+</html>

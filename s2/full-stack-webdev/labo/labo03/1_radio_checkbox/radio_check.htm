@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Formulieren - Oefening1</title>
+        <link href="style/style.css" rel="stylesheet" type="text/css" />
+        <script src="script/script.js"></script>
+    </head>
+
+    <body>
+        <form action="https://www.diero.be/MCT/showjson.php" method="post">
+            <fieldset>
+                <legend>Uw voorkeuren</legend>
+                <p>Wat vindt u het meest belangrijk aan een website:</p>
+                <div>
+                    <input type="checkbox" value="bekendheid" name="belangrijk[]" id="belangrijkBekendheid" />
+                    <label for="belangrijkBekendheid">De bekendheid met de uitgever van de website</label>
+
+                    <br/>
+
+                    <input type="checkbox" value="bekendheid" name="belangrijk[]" id="belangrijkWegwijs" />
+                    <label for="belangrijkWegwijs"> Het gemakkelijk wegwijs geraken op de website</label>
+                </div>
+
+                <div>
+                    <p>Hamvraag: hoe beoordeelt u mijn website?</p>
+                    <input type="radio" value="ZG" name="beoordeling" id="ZG" />
+                    <label for="ZG">zeer goed</label>
+
+                    <input type="radio" value="G" name="beoordeling" id="G" />
+                    <label for="G">goed</label>
+
+                    <input type="radio" value="M" name="beoordeling" id="M" />
+                    <label for="M">matig</label>
+
+                    <input type="radio" value="ONV" name="beoordeling" id="ONV" />
+                    <label for="ONV">gezakt</label>
+                </div>
+
+                <div>
+                    <p>De uitdrukking op 10</p>
+					<input class="js-range" type="range" name="score" id="score" min="0" max="10" step="0.5" />
+					<div class="js-placeholder-score"></div>
+                </div>
+            </fieldset>
+
+            <p>
+                <input type="submit" name="submit" value="Verzenden" />
+                <input type="reset" value="Wissen" />
+            </p>
+        </form>
+    </body>
+</html>
