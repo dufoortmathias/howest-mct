@@ -1,0 +1,1814 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Computernetwerken</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><p><em>Auteur:  Tuur Vanhoutte</em></p>
+<h1 id="chapter-1-communication-local-networks-and-simple-network">Chapter 1: Communication, local networks and simple network</h1>
+
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Data</td>
+<td>A value that represents something</td>
+</tr>
+<tr>
+<td>Volunteered data</td>
+<td>Explicitly created and shared by individuals, like social media profiles</td>
+</tr>
+<tr>
+<td>Inferred data</td>
+<td>Data based on analysis of volunteered/observed data</td>
+</tr>
+<tr>
+<td>Observed data</td>
+<td>Recorded data about the user, like location data on a smartphone</td>
+</tr>
+<tr>
+<td>Bit</td>
+<td>0 or 1</td>
+</tr>
+<tr>
+<td>Byte</td>
+<td>8 bits</td>
+</tr>
+</tbody>
+</table><p>Bits are transferred using:</p>
+<ul>
+<li>Copper wires (electrical pulses)</li>
+<li>Fiber-optic cabling (light pulses/optic signals)</li>
+<li>Wireless (radio waves)</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bandwidth</td>
+<td>The amount of data that can flow from one place to another in a given amount of time measured  in the number of bits that can <strong>theoretically</strong> be sent across the media in 1 second</td>
+</tr>
+<tr>
+<td>Throughput</td>
+<td>The <strong>actual</strong> measure of the transfer of bits across the media over a given period of time</td>
+</tr>
+<tr>
+<td>Latency</td>
+<td>Measurement of the amount of time that it takes for a specific piece of data to travel across the network from source to destination</td>
+</tr>
+<tr>
+<td>Network media</td>
+<td>The wires, optical fibres and electromagnetic waves that are used to transmit data signals from a source to a destination</td>
+</tr>
+</tbody>
+</table><h2 id="networkcomponents">Networkcomponents</h2>
+
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Servers</td>
+<td>Hosts that have software installed that enable them to <strong>provide</strong> information, like email or web pages, to other hosts on the network</td>
+</tr>
+<tr>
+<td>Clients</td>
+<td>Computer hosts that have software installed that enable them to <strong>request and display</strong> the information obtained from a server</td>
+</tr>
+</tbody>
+</table><p>The network infrastructure contains <strong>3 categories of hardware components</strong>:</p>
+<ol>
+<li><strong>Intermediate devices</strong>: router, switch, access points, firewall, call manager, …</li>
+<li><strong>End devices</strong>: laptop, printer, tablet, smartphone, server, …</li>
+<li><strong>Network media</strong>: LAN media, WAN media, Wireless media, the cloud</li>
+</ol>
+<h2 id="peer-to-peer-networking">Peer-to-peer networking</h2>
+<p>= network in which a host can be <strong>both</strong> a client and a server for other hosts.</p>
+<p><strong>Advantages</strong></p>
+<ul>
+<li>Easy to set up</li>
+<li>Less complex</li>
+<li>Lower cost</li>
+<li>For simple tasks</li>
+</ul>
+<p><strong>Disadvantages</strong>:</p>
+<ul>
+<li>No centralized administration</li>
+<li>Not as secure</li>
+<li>Not scalable</li>
+<li>All devices may act as both clients and servers which can slow their performance</li>
+</ul>
+<h1 id="chapter-2-networks-in-our-daily-lives">Chapter 2: Networks in our daily lives</h1>
+<h2 id="getting-online">Getting online</h2>
+<p>3 things that must be correct before a device can send and receive information on a network:</p>
+<ol>
+<li><strong>IP Address</strong>: identifies the host on the network</li>
+<li><strong>Subnet mask</strong>: identifies the network on which the host is connected</li>
+<li><strong>Default gateway</strong>: identifies the networking device that the host uses to access the internet or another remote network.</li>
+</ol>
+<p><strong>Different types of networks:</strong></p>
+<ul>
+<li>GPS</li>
+<li>Wi-Fi</li>
+<li>NFC</li>
+<li>Bluetooth</li>
+</ul>
+<p><strong>Different types of network components:</strong></p>
+<ul>
+<li><strong>Hosts</strong>: Laptop, server, network printer, PC, …</li>
+<li><strong>Peripherals</strong>: Webcam, …</li>
+<li><strong>Network devices</strong>: Routers, switches, …</li>
+<li><strong>Network media</strong>: Cabling between hosts and network devices</li>
+</ul>
+<h2 id="keeping-track-of-it-all">Keeping track of it all</h2>
+
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Physical topology</td>
+<td>Shows where each host is located and how it is connected to the network</td>
+</tr>
+<tr>
+<td>Logical topology</td>
+<td>Illustrates the device names, IP addressing, configuration information, and network designations</td>
+</tr>
+</tbody>
+</table><h3 id="types-of-network-cabling">Types of network cabling</h3>
+<ul>
+<li>Twisted-Pair (TP):
+<ul>
+<li>Type of copper cable</li>
+<li>Unshielded (UTP) or shielded (STP)</li>
+<li>Most common type of network cabling</li>
+</ul>
+</li>
+<li>Coaxial cable:
+<ul>
+<li>Copper or aluminium</li>
+<li>Better shielding than UTP and can carry more data.</li>
+<li>Used by cable television companies to provide service, and for sattelite communication systems</li>
+</ul>
+</li>
+<li>Fiber-optic:
+<ul>
+<li>Glass or plastic</li>
+<li>Very high bandwidth</li>
+<li>Immune to EMI &amp; RFI</li>
+<li>Used in backbone networks, large enterprise environments, and large data centers</li>
+<li>Single-mode fiber-optic:
+<ul>
+<li>small diametral core that allows only one mode of light to propagate: signal can travel further, but less data at a time.</li>
+</ul>
+</li>
+<li>Multi-mode fiber-optic:
+<ul>
+<li>bigger diamteral core that allows multiple modes of light to propagate: signal can travel less far, but more data at a time.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Electromagnetic interference (EMI)</td>
+<td>Happens in copper cabling, can reduce data throughput rate</td>
+</tr>
+<tr>
+<td>Crosstalk</td>
+<td>Occurs when long lengths of cables are bundled together. The electrical impulses from one cable may cross over to an adjecent cable.</td>
+</tr>
+<tr>
+<td>Network Interface Card (NIC)</td>
+<td>Hardware that enables the device to connect to the network medium, either wired or wireless</td>
+</tr>
+</tbody>
+</table><h3 id="two-wiring-schemes">Two wiring schemes</h3>
+<p>= T568A &amp; T568B. Each wiring scheme defines the pinout on the end of the cable.<img src="https://i.imgur.com/lLzZPNw.png" alt="enter image description here"></p>
+
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pinout</td>
+<td>The pattern/order of the wire connections at the end of the cable</td>
+</tr>
+<tr>
+<td>Unlike devices</td>
+<td>Devices that use different wires for transmit and receive. Needs straight-through cabling</td>
+</tr>
+<tr>
+<td>Like devices</td>
+<td>Devices that use the same wires for transmit and receive. Needs crossover cabling</td>
+</tr>
+<tr>
+<td>Straight-through cables</td>
+<td>Cables with the same color pattern on both ends of the cable</td>
+</tr>
+<tr>
+<td>Crossover cables</td>
+<td>Cables with different color pattern on the ends of the cable</td>
+</tr>
+</tbody>
+</table><h1 id="chapter-3-communicating-on-a-local-network">Chapter 3: Communicating on a local network</h1>
+<h2 id="principles-of-communication">Principles of communication</h2>
+<p>The three elements:</p>
+<ol>
+<li>Source</li>
+<li>Destination</li>
+<li>Transmission medium</li>
+</ol>
+
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Communication  protocols</td>
+<td>rules/agreements to govern the conversation</td>
+</tr>
+<tr>
+<td>Standard</td>
+<td>Set of rules that determines how something must be done</td>
+</tr>
+<tr>
+<td>Network standards organizations</td>
+<td>Organizations that develop, publish and maintain Internet standards: IEEE, ICANN, IETF</td>
+</tr>
+<tr>
+<td>Protocol stack</td>
+<td>Used to help seperate the function of each protocol. Each layer operates independantly of others</td>
+</tr>
+<tr>
+<td>Layered model</td>
+<td>Visualization of how the protocols work together to enable network communications</td>
+</tr>
+<tr>
+<td>Encapsulation</td>
+<td>The process of adding additional information to the pieces of data that make up the message in order to ensure that it is delivered to the correct application on the correct destination host</td>
+</tr>
+</tbody>
+</table><p><strong>Network protocols define many aspects of communication:</strong></p>
+<ul>
+<li>Message format</li>
+<li>Message size</li>
+<li>Timing</li>
+<li>Encoding</li>
+<li>Message patterns</li>
+<li>Encapsulation</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Example</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Protocol Model</td>
+<td>TCP/IP</td>
+<td>Closely matches the structure of a particular protocol suite, which includes the set of related protocols that typically provide all the functionality required for people to communicate with the data network</td>
+</tr>
+<tr>
+<td>Reference Model</td>
+<td>OSI Model</td>
+<td>Describes the functions that must be completed at a particular layer, but does not specify exactly how a function should be accomplished</td>
+</tr>
+</tbody>
+</table><p><img src="https://i.imgur.com/AMVJdYH.png" alt="enter image description here"></p>
+<h3 id="tcpip-model">TCP/IP Model</h3>
+
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Application</td>
+<td>Represents data to the user, plus encoding and dialog control</td>
+</tr>
+<tr>
+<td>Transport</td>
+<td>Supports communication between diverse devices across diverse networks</td>
+</tr>
+<tr>
+<td>Internet</td>
+<td>Determines the best path through the network</td>
+</tr>
+<tr>
+<td>Network Access</td>
+<td>Controls the hardware devices and media that make up the network</td>
+</tr>
+</tbody>
+</table><h3 id="open-system-interconnection-osi-model">Open System Interconnection (OSI) Model</h3>
+
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Application</td>
+<td>Means for end-to-end connectivity between individuals</td>
+</tr>
+<tr>
+<td>Presentation</td>
+<td>Provides common representation of the data transferred between application layer services</td>
+</tr>
+<tr>
+<td>Session</td>
+<td>Provides services to the presentation layer to organize its dialogue and to manage data exchange</td>
+</tr>
+<tr>
+<td>Transport</td>
+<td>Defines services to segment, transfer, and reassemble the data for individual communications between end devices</td>
+</tr>
+<tr>
+<td>Network</td>
+<td>Provides services to exchange the individual pieces of data over the network between identified end devices</td>
+</tr>
+<tr>
+<td>Data link</td>
+<td>Describes methods for exchanging data frames between devices over a common medium</td>
+</tr>
+<tr>
+<td>Physical</td>
+<td>Describes the mechanical, electrical, functional and procedural means to activate, maintain, and de-activate physical connectionsfor a bit transmission to and from a network device</td>
+</tr>
+</tbody>
+</table><h2 id="layers-of-the-osi-model">Layers of the OSI Model</h2>
+<p>The OSI Model breaks network communications down into multiple processes:<br>
+<img src="https://i.imgur.com/IaUHxa6.png" alt="enter image description here"></p>
+<h2 id="ethernet">Ethernet</h2>
+<ul>
+<li>Ethernet has become the standard: used by almost all wired local area networks</li>
+<li>Maintained by the <strong>Institute of Electrical and Electronic Engineers (IEEE)</strong>, constantly evolving.</li>
+<li>Each host connected to an Ethernet Network has a unique physical address (=Media Access Controll or MAC-address), assigned to a NIC when it was manufactured. <strong>MAC-address = 48bit</strong></li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Encapsulation</td>
+<td>The process of placing one message inside another message</td>
+</tr>
+<tr>
+<td>De-encapsulation</td>
+<td>The reverse process of encapsulation</td>
+</tr>
+</tbody>
+</table><h4 id="ieee-802.3-ethernet-frame">IEEE 802.3 Ethernet Frame</h4>
+
+<table>
+<thead>
+<tr>
+<th># bytes</th>
+<th>Field name</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7</td>
+<td>Preamble</td>
+<td>Defined pattern of alternating bits used to synchronize timing</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Start frame delimiter</td>
+<td>Marks the end of the timing information and start of the frame</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Destination MAC Address</td>
+<td>MAC-Address of the destination, can be unicast (one host), multicast (a group of hosts) or broadcast (all hosts on the local network)</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Host MAC Address</td>
+<td>MAC-Address of the source (sender), always unicast</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Length/type</td>
+<td>Type: which protocol will receive the data. <br>Length= number of bytes of data that follows this field</td>
+</tr>
+<tr>
+<td>46-1500</td>
+<td>Encapsulated data</td>
+<td>The packet of information being sent. Ethernet requires each field from the Destination MAC address to the FCS to be between 64 and 1518 bytes</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Frame Check Sequence (FCS)</td>
+<td>CRC Checksum: created by the device that sends data and is recalculated by the destination device to check for damaged frames</td>
+</tr>
+</tbody>
+</table><h3 id="hierarchial-design">Hierarchial design</h3>
+<ul>
+<li>Needed because a MAC-address identifies a specific host on a local network, but it cannot be used to reach remote hosts networks.</li>
+<li>Require logical addressing schemes (IPv4 or IPv6) to reach remote hosts.</li>
+<li>Both the physical MAC and logical IP addresses are required for a computer to communicate on a hierarchial network.</li>
+<li>3 basic layers
+<ul>
+<li><strong>Access Layer:</strong>
+<ul>
+<li>Provides connections to hosts in a local network</li>
+<li>Typically connected using Layer 2 switches</li>
+<li>If message is destined for a local host: message remains local</li>
+<li>If message is destined for a different network: message is passed up to the distribution layer</li>
+</ul>
+</li>
+<li><strong>Distribution layer:</strong>
+<ul>
+<li>Provides a connection point for seperate networks and controls the flow of information between the networks</li>
+<li>Routers for routing between the networks and more powerful switches than the access layer</li>
+</ul>
+</li>
+<li><strong>Core layer:</strong>
+<ul>
+<li>High-speed backbone layer with redundant (backup) connections</li>
+<li>Responsible for transporting large amounts of data between multiple end networks.</li>
+<li>Very powerful, high-speed switches and routers.</li>
+<li>Main goal: transport data quickly</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ethernet hubs</td>
+<td>Legacy access layer device that broadcasts frames to all ports</td>
+</tr>
+<tr>
+<td>Ethernet switch</td>
+<td>Accepts and decodes the frames to read the physical (MAC) address portion of the message. Uses a MAC Address table to send messages to one host</td>
+</tr>
+<tr>
+<td>Broadcast message</td>
+<td>A message that is simultaniously sent by a host to all other hosts</td>
+</tr>
+<tr>
+<td>Broadcast MAC Address</td>
+<td>In hexadecimal notation: FFFF.FFFF.FFFF</td>
+</tr>
+<tr>
+<td>Broadcast domain</td>
+<td>A local area network / a network with one or more Ethernet switches <br> When a broadcast message is sent, all switches forward the message to every connected host within the same local network</td>
+</tr>
+</tbody>
+</table><h3 id="address-resolution-protocol-arp">Address Resolution Protocol (ARP)</h3>
+<p>Uses a 3 step process to discover and store the MAC-address of a host on the local network when only the IPv4 address is known.</p>
+<ol>
+<li>The sending hosts creates and sends a frame addressed to a broadcast MAC address. Contained in the frame: the IPv4 address of the intended destination host</li>
+<li>Each host on the network receives the broadcast frame. The host with the matching IPv4 address sends its MAC address back to the original sending host.</li>
+<li>The sending host receives and stores the MAC address and IPv4 address information in an <strong>ARP table</strong>.</li>
+</ol>
+<h3 id="dividing-the-network">Dividing the network</h3>
+<p>Many ways to divide a network, based on different criteria:</p>
+<ul>
+<li><strong>Broadcast containment:</strong>
+<ul>
+<li>Routers in the distribution layer can limit broadcasts to the local network where they need to be heard. Too many hosts connected to the same local network can generate excessive broadcast traffic and slow down the network.</li>
+</ul>
+</li>
+<li><strong>Security requirement:</strong>
+<ul>
+<li>Routers in the distribution layer can seperate and protect certain groups of computers where confidential information resides.</li>
+<li>Routers can also hide the addresses of internal computers from the outside world to help prevent attacks, and control who can get into or out of the local network.</li>
+</ul>
+</li>
+<li><strong>Physical locations:</strong>
+<ul>
+<li>Routers in the distribution network can be used to interconnect local networks at various locations of an organization that are geographically seperated.</li>
+</ul>
+</li>
+<li><strong>Logical grouping:</strong>
+<ul>
+<li>Routers in the distribution layer can be used to logically group users, such as departments within a company.</li>
+</ul>
+</li>
+</ul>
+<h3 id="routing">Routing</h3>
+<p>= The process of identifying the best path to a destination.</p>
+<ul>
+<li>Selecting a path
+<ul>
+<li>Router creates a routing table containing all locally-connected and remote networks and the interfaces that connect to them.</li>
+<li>Routers use their routing tables and forward packets to either a directly connected network containing the actual destination host, or to another router on the path to reach the destination host.</li>
+</ul>
+</li>
+<li>Building the tables
+<ul>
+<li>Routers build their routing tables by first adding their locally connected networks, and then learning about other networks using routing protocols.</li>
+</ul>
+</li>
+</ul>
+<h3 id="local-area-network">Local Area Network</h3>
+
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Local Area Network (LAN)</td>
+<td>Local network or a group of interconnected local networks that are under the same administrative control</td>
+</tr>
+<tr>
+<td>Intranet</td>
+<td>Private LAN that belongs to an organization</td>
+</tr>
+</tbody>
+</table><h4 id="placing-all-hosts-in-one-local-network-segment">Placing all hosts in One local network segment:</h4>
+<p>Advantages:</p>
+<ul>
+<li>Appropriate for simpler networks</li>
+<li>Less complexity</li>
+<li>Lower network cost</li>
+<li>Allows devices to be seen by other devices</li>
+<li>Faster data transfer – more direct communication</li>
+<li>Ease of device access</li>
+</ul>
+<p>Disadvantages:</p>
+<ul>
+<li>All hosts are in one broadcast domain <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>⇒</mo></mrow><annotation encoding="application/x-tex">\Rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">⇒</span></span></span></span></span> more traffic on the segment <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>⇒</mo></mrow><annotation encoding="application/x-tex">\Rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">⇒</span></span></span></span></span> may slow network performance</li>
+</ul>
+<hr>
+<h4 id="placing-all-hosts-in-remote-network-segments">Placing all hosts in Remote Network segments:</h4>
+<p>Advantages:</p>
+<ul>
+<li>More appropriate for larger, more complex networks</li>
+<li>Splits up broadcast domains and decreases traffic</li>
+<li>Can improve performance on each segment</li>
+<li>Makes the machine invisible to those on other local network segments</li>
+<li>Can provide increased security</li>
+<li>Can improve network organization</li>
+</ul>
+<p>Disadvantages:</p>
+<ul>
+<li>Requires the use of routing (distribution layer)</li>
+<li>Router can slow traffic between segments</li>
+<li>More complexity and expense (requires router)</li>
+</ul>
+<h1 id="chapter-4-network-addressing">Chapter 4: Network Addressing</h1>
+<h2 id="ipv4-address">IPv4 address</h2>
+<ul>
+<li>= logical network address that identifies a particular host</li>
+<li>unique</li>
+<li>associated with a Network Interface Card (NIC)</li>
+<li>32bits, 4 8-bit bytes called <strong>octets</strong>, made up of a Network part and Host part</li>
+<li>Number of hosts: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mi>x</mi></msup><mo>−</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">2^x - 2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.747722em; vertical-align: -0.08333em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.664392em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">x</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">2</span></span></span></span></span>, where <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi><mo>=</mo></mrow><annotation encoding="application/x-tex">x =</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathdefault">x</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span></span></span></span></span> amount of host bits</li>
+</ul>
+<h3 id="classes">Classes</h3>
+
+<table>
+<thead>
+<tr>
+<th>Address Class</th>
+<th>Addresses</th>
+<th># Host addresses</th>
+<th>Type of networks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>0.0.0.0/8 to 127.0.0.0/8</td>
+<td><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>≈</mo></mrow><annotation encoding="application/x-tex">\approx</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.48312em; vertical-align: 0em;"></span><span class="mrel">≈</span></span></span></span></span> 16 million host addresses</td>
+<td>Extremely large networks</td>
+</tr>
+<tr>
+<td>B</td>
+<td>128.0.0.0/16 to 191.255.0.0/16</td>
+<td><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>≈</mo></mrow><annotation encoding="application/x-tex">\approx</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.48312em; vertical-align: 0em;"></span><span class="mrel">≈</span></span></span></span></span> 65000 host addresses</td>
+<td>Moderate to large sized networks</td>
+</tr>
+<tr>
+<td>C</td>
+<td>192.0.0.0/24 to 223.255.255.0/24</td>
+<td>254 host addresses</td>
+<td>Small networks</td>
+</tr>
+</tbody>
+</table><h3 id="classless-addressing">Classless addressing</h3>
+<ul>
+<li>Classful addressing was abandoned in the late 90s for the newer classless system:</li>
+<li>Customers receive an IPv4 address and any size subnet mask appropriate to the number of hosts required</li>
+<li>Delays the depletion and exhaustion of IPv4 addresses</li>
+<li>Classless Inter-Domain Routing (CIDR)</li>
+</ul>
+<h3 id="private-ipv4-addressing">Private IPv4 addressing</h3>
+<ul>
+<li>Does not connect directly to the internet</li>
+<li>Visibile on local network only</li>
+<li>Loopback address = 127.0.0.1</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th>Address Class</th>
+<th>Number of network numbers reserved</th>
+<th>Network addresses</th>
+<th>Subnet mask</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>1</td>
+<td>10.x.x.x</td>
+<td>255.0.0.0</td>
+</tr>
+<tr>
+<td>B</td>
+<td>16</td>
+<td>172.16.0.0 - 172.31.0.0</td>
+<td>255.240.0.0</td>
+</tr>
+<tr>
+<td>C</td>
+<td>256</td>
+<td>192.168.0.0 - 192.168.255.0</td>
+<td>255.255.0.0</td>
+</tr>
+</tbody>
+</table><p>Another range of private IP addresses is <strong>169.254.0.0 to 169.254.255.255</strong>, but those addresses are for Automatic Private IP Addressing (APIPA) use only.</p>
+<h3 id="unicast-broadcast-and-multicast-addresses">Unicast, Broadcast and Multicast Addresses</h3>
+
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>IP Address</th>
+<th>Mac Address</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unicast</td>
+<td>0.0.0.0 - <strong>223</strong>.255.255.255</td>
+<td>Unique</td>
+</tr>
+<tr>
+<td>Broadcast</td>
+<td>Host portion all 1s</td>
+<td>FFFF:FFFF:FFFF</td>
+</tr>
+<tr>
+<td>Multicast</td>
+<td>224.0.0.0 - 239.255.255.255, on local network: 224.0.0.0 - 224.0.0.255</td>
+<td>Unique group MAC address</td>
+</tr>
+</tbody>
+</table><h3 id="assigning-addresses">Assigning addresses</h3>
+<ul>
+<li>Static
+<ul>
+<li>For hosts like servers or printers that need a particular address</li>
+<li>Can be time consuming or error prone</li>
+<li>Need to maintain accurate list</li>
+</ul>
+</li>
+<li>Dynamic
+<ul>
+<li>Uses Dynamic Host Configuration Protocol (DHCP): automatic assignment of addressing information</li>
+<li>Preferred method of assignment for large networks</li>
+<li>IP addresses can be reallocated when they become available</li>
+</ul>
+</li>
+</ul>
+<p>DHCP servers:</p>
+
+<table>
+<thead>
+<tr>
+<th>Medium - Large networks</th>
+<th>Home network</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Usually a local dedicated PC-based server</td>
+<td>A wireless router can serve as a client to receive IP information from the ISP, and can act as a DHCP server for the hosts in the local network</td>
+</tr>
+</tbody>
+</table><p>How does IPv4 DHCP work?</p>
+<ol>
+<li>Client sends a <strong>DHCP discover message</strong>
+<ul>
+<li>Destination IPv4 address: 255.255.255.255 (32 1s)</li>
+<li>Destination MAC address: FF-FF-FF-FF-FF-FF (48 1s)</li>
+</ul>
+</li>
+<li>DHCP server responds with a <strong>DHCP offer</strong>, suggesting an IPv4 address for the client</li>
+<li>The host sends a <strong>DHCP Request</strong> to that server asking to use the suggested IPv4 address</li>
+<li>The server responds with a <strong>DHCP acknowledgment</strong></li>
+</ol>
+<h4 id="gateways-to-other-networks">Gateways to other networks</h4>
+<p>Each host uses a default gateway (= IPv4 address of the router interface connected to the network where the host is attached). The default gateway device serves as a boundary between the local internal network and the external internet.</p>
+<h3 id="network-address-translation">Network address Translation</h3>
+<ul>
+<li>Translate private addresses into unique Internet-routable public addresses for outgoing packets</li>
+<li>Process is reversed for incoming packets</li>
+<li>The router can translate many internal IPv4 addresses to the same public address</li>
+</ul>
+<h2 id="ipv6-addressing">IPv6 addressing</h2>
+<ul>
+<li>Problem:
+<ul>
+<li>An IPv4 address is 32bits (4 bytes) long</li>
+<li>Too many devices to keep in 32bits</li>
+</ul>
+</li>
+<li>Solution:
+<ul>
+<li>An IPv6 addres is 128bits (16 bytes) long <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>⇒</mo></mrow><annotation encoding="application/x-tex">\Rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">⇒</span></span></span></span></span> more IP addresses</li>
+<li>No need for NAT because each device can have its own globally routable address</li>
+<li>Autoconfiguration capabilities
+<ul>
+<li>Stateless Address Autoconfiguration (SLAAC) allows a host to create its own Internet Routable address without the need for a DHCP server.</li>
+</ul>
+</li>
+<li>Link-local address
+<ul>
+<li>For communicating within the same network</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Address formatting</strong></p>
+<ul>
+<li>Compressing IPv6 addresses:
+<ul>
+<li>Omit leading zeros</li>
+<li>Omit 1 ‘all-zero’ segment</li>
+<li>2001:0DB8:0000:1111:0000:0000:0000:0200, compressed:</li>
+</ul>
+</li>
+<li>No subnet masks, but network prefixes instead</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th>IPv6 address</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fully expanded</td>
+<td>2001:0DB8:0000:1111:0000:0000:0000:0200</td>
+</tr>
+<tr>
+<td>No leading 0s</td>
+<td>2001:DB8:0:1111:0:0:0:200</td>
+</tr>
+<tr>
+<td>Compressed</td>
+<td>2001:DB8:0:1111::200</td>
+</tr>
+</tbody>
+</table><h1 id="chapter-5-providing-network-services">Chapter 5: Providing Network Services</h1>
+<h2 id="the-client-server-relationship">The client server relationship</h2>
+<p>= A client sends a request to a server, and the server responds by carrying out a function, such as sending a  requested document back to the client.</p>
+<h3 id="url">URL</h3>
+<p>= Uniform Resource Locator, used to locate the server and a specific resource. The URL identifies:</p>
+<ul>
+<li>The protocol being used (usually HTTPS)</li>
+<li>Domain name of the server (<a href="http://example.com">example.com</a>)</li>
+<li>Location of the resource on the server (example1)</li>
+<li>The resource (index.html)</li>
+</ul>
+<p><a href="https://example.com/example1/index.html">https://example.com/example1/index.html</a></p>
+<h3 id="protocols-used-for-internet-services">Protocols used for Internet services</h3>
+
+<table>
+<thead>
+<tr>
+<th>Protocol</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Domain Name System (<strong>DNS</strong>)</td>
+<td>Resolves Internet names to IP addresses</td>
+</tr>
+<tr>
+<td>Secure shell (<strong>SSH</strong>)</td>
+<td>Used to provide remote access to servers and networking devices</td>
+</tr>
+<tr>
+<td>Simple Mail Transfer Protocol (<strong>SMTP</strong>)</td>
+<td>Sends email messages and attachments from clients to servers and from servers to other email servers</td>
+</tr>
+<tr>
+<td>Post Office Protocol (<strong>POP</strong>)</td>
+<td>Used by email clients to retrieve email and attachments from a remote server</td>
+</tr>
+<tr>
+<td>Internet Message Access Protocol (<strong>IMAP</strong>)</td>
+<td>Used by email clients to retrieve email and attachments from a remote server</td>
+</tr>
+<tr>
+<td>Dynamic Host Configuration Protocol (<strong>DHCP</strong>)</td>
+<td>Used to automatically configure devices with IP addressing and other necessary information to enable them to communicate over the Internet</td>
+</tr>
+<tr>
+<td>Web Server</td>
+<td>Transfers the files that make up the web pages of the World Wide Web using HyperText Transfer Protocol (<strong>HTTP</strong>)</td>
+</tr>
+<tr>
+<td>File Transfer Protocol (<strong>FTP</strong>)</td>
+<td>Used for interactive file transfer between systems</td>
+</tr>
+</tbody>
+</table><h2 id="the-tcpip-protocol-suite">The TCP/IP Protocol Suite</h2>
+<p>The various protocols necessary to deliver a web page function at the four different levels of the TCP/IP model:</p>
+
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Protocol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Application Layer Protocol</td>
+<td>HTTP, FTP, DNS, SMTP, Telnet, DHCP</td>
+</tr>
+<tr>
+<td>Transport Layer Protocol</td>
+<td>TCP, UDP</td>
+</tr>
+<tr>
+<td>Internetwork Layer Protocol</td>
+<td>Internet Protocol (IP)</td>
+</tr>
+<tr>
+<td>Network access protocol</td>
+<td>Depends on the type of media and transmission methods used in the physical network</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TCP</td>
+<td>Transmission Control Protocol: for when an application requires acknowledgment that a message is delivered</td>
+</tr>
+<tr>
+<td>UDP</td>
+<td>User Datagram Protocol: a ‘best effort’ delivery system that does not require acknowledgment of receipt</td>
+</tr>
+<tr>
+<td>Port</td>
+<td>Numeric identifier within each segment that is used to keep track of specific conversations between a client and server</td>
+</tr>
+<tr>
+<td>Socket</td>
+<td>The combination of IP address and port number that identifies a specific conversation between two devices on the network</td>
+</tr>
+<tr>
+<td>Source port</td>
+<td>A randomly generated port number that identifies the process or client on the device that is making the request tot he destination device</td>
+</tr>
+<tr>
+<td>Destination port</td>
+<td>The port assigned to the application on the server. Example: port 80 is the well-known port for the HTTP web server application</td>
+</tr>
+<tr>
+<td>Well-known port</td>
+<td>A port that is registered on the Internet for common TCP/IP applications to use by default</td>
+</tr>
+<tr>
+<td>Acknowledgment</td>
+<td>Message sent from the destination host to the source to confirm that the transmitted segments were received</td>
+</tr>
+<tr>
+<td>Transport Layer Segments</td>
+<td>The pieces of data that are formatted with source and destination port numbers</td>
+</tr>
+</tbody>
+</table><h3 id="ports">Ports</h3>
+<p>Categorized in 3 groups:</p>
+<ul>
+<li>Well-known:
+<ul>
+<li>1 - 1023</li>
+</ul>
+</li>
+<li>Registered:
+<ul>
+<li>1024 - 49151</li>
+</ul>
+</li>
+<li>Private
+<ul>
+<li>49152 - 65535</li>
+</ul>
+</li>
+</ul>
+<p>Every message that a host sends contains both a …</p>
+<ul>
+<li><strong>source port</strong>:
+<ul>
+<li>Dynamically generated by the sending device to identify a conversation between 2 devices</li>
+</ul>
+</li>
+<li><strong>destination port</strong>:
+<ul>
+<li>The client places a destination port number in the segment to tell the destination server what server is being requested.</li>
+</ul>
+</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Port</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HTTP</td>
+<td>80</td>
+<td>Web traffic</td>
+</tr>
+<tr>
+<td>HTTPS</td>
+<td>443</td>
+<td>Secure web traffic</td>
+</tr>
+<tr>
+<td>FTP</td>
+<td>20, 21</td>
+<td>File transfer</td>
+</tr>
+<tr>
+<td>DNS</td>
+<td>53</td>
+<td>Name resolution</td>
+</tr>
+<tr>
+<td>SMTP</td>
+<td>25</td>
+<td>Internet mail</td>
+</tr>
+<tr>
+<td>POP3</td>
+<td>110</td>
+<td>Post Office Protocol (POP) mailbox</td>
+</tr>
+<tr>
+<td>IMAP</td>
+<td>143</td>
+<td>Internet Message Access Protocol (IMAP) mailbox</td>
+</tr>
+<tr>
+<td>Telnet</td>
+<td>23</td>
+<td>Remote login</td>
+</tr>
+<tr>
+<td>SSH</td>
+<td>22</td>
+<td>Secure remote login</td>
+</tr>
+</tbody>
+</table><h2 id="domain-name-system-dns">Domain Name System (DNS)</h2>
+<p>The DNS names are registered and organized on the Internet within specific high level groups (=domains). Some of the most high level domains on the internet are: .com, .edu, .net, …<br>
+A DNS server contains a table that associates hostnames in a domain with corresponding IP addresses. When the DNS server receives a request, it checks its table to determine the IP address associated with that server.</p>
+<h2 id="web-clients-and-servers">Web clients and servers</h2>
+<p>When a web client receives the IP address of a web server, the client browser uses that IP address and port 80 to request web services using HTTP. HTTP tells the browser how to format the web page and what graphics and fonts to use.</p>
+<h2 id="ftp-clients-and-servers">FTP clients and servers</h2>
+<p>FTP = File Transfer Protocol:</p>
+<ul>
+<li>An easy method to transfer file from one computer to another</li>
+<li>Enables clients to manage files remotely by sending file management commands (delete/rename/…)</li>
+<li>2 different ports to communicate between client and server
+<ul>
+<li>Control connection (port 21): to open the connection</li>
+<li>Data connection (port 20): to transfer files</li>
+</ul>
+</li>
+</ul>
+<h2 id="virtual-terminals">Virtual terminals</h2>
+<ul>
+<li>Telnet:
+<ul>
+<li>Uses software to create a virtual device that provides the same features of a terminal session with access to the server’s command line interface (CLI)</li>
+</ul>
+</li>
+<li>SSH:
+<ul>
+<li>Provides for secure remote login and other secure network services.</li>
+<li>Provides stronger authentication than Telnet and supports the transport of session data using encryption.</li>
+<li>Network professionals should always use SSH in place of Telnet, when possible.</li>
+</ul>
+</li>
+</ul>
+<h2 id="email-and-messaging">Email and messaging</h2>
+<ul>
+<li>Email clients and servers:
+<ul>
+<li>Each mail server receives and stores mail for users who have mailboxes configured on that mail server.</li>
+<li>Each user with a mailbox must then use an email client to access the mail server and read these messages.</li>
+</ul>
+</li>
+<li>Email protocols:
+<ul>
+<li>SMPT
+<ul>
+<li>Used by an email client to send messages to its local email server. The local server then decides if the message is destined for a local mailbox or if the message is addressed to a mailbox on another server.</li>
+</ul>
+</li>
+<li>POP3
+<ul>
+<li>Mails get deleted from the server after they have been accessed by a client</li>
+</ul>
+</li>
+<li>IMAP4
+<ul>
+<li>Mails are kept on the server even if they have been access by a client</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Instant Messaging (IM)
+<ul>
+<li>IM applications require minimal configuration to operate.</li>
+<li>Supports transfer of text messages, documents, video, music, audio, …</li>
+</ul>
+</li>
+<li>Internet Phone calls
+<ul>
+<li>Uses Voice over IP (VoIP) technology which converts analog voice signals into digital data. The voice data is encapsulated into IP packets which carry the phone call through the network.</li>
+</ul>
+</li>
+</ul>
+<h1 id="chapter-6-building-a-home-network">Chapter 6: Building a Home Network</h1>
+<h2 id="home-network-basics">Home network basics</h2>
+<ul>
+<li>Home network = a small LAN with devices that connect to an integrated router. The router is connected to the Internet.</li>
+<li>Wireless technologies use electromagnetic waves to carry information between devices.</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th>Frequency Range</th>
+<th>Devices</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>902-928 MHz</td>
+<td>Cordless phones</td>
+</tr>
+<tr>
+<td>2.400-2.4835 GHz</td>
+<td>IEEE 802.11 b/g/n/ad</td>
+</tr>
+<tr>
+<td>5.725-5.850 GHz</td>
+<td>IEEE 802.11 a/n/ac/ad</td>
+</tr>
+</tbody>
+</table><h2 id="wireless-settings">Wireless settings</h2>
+
+<table>
+<thead>
+<tr>
+<th>Settings</th>
+<th>Options</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Network Mode</td>
+<td>Mixed, b, g, n,…</td>
+<td>Determines the type of techology that must be supported</td>
+</tr>
+<tr>
+<td>Network Name</td>
+<td>case-sensitive, alpha-numeric string up to 32 characters</td>
+<td>Used to identify the network</td>
+</tr>
+<tr>
+<td>Standard Channel</td>
+<td>A number or <em>Auto</em></td>
+<td>The channel over which communication will occur</td>
+</tr>
+<tr>
+<td>SSID Broadcast</td>
+<td>Enabled (default) / Disabled</td>
+<td>Determines if the SSID will be broadcast to all devices within range</td>
+</tr>
+</tbody>
+</table><h2 id="controlling-wireless-traffic">Controlling wireless traffic</h2>
+<ul>
+<li>Wireless devices that transmit over the same frequency range create interference in a Wi-Fi network. Channels are created by dividing up the available RF spectrum.</li>
+<li>Wireless technology uses an access method called <strong>Carrier Sense Multiple Access with Collision Avoidance</strong> (CSMA/CA). It creates a reservation on the channel for a specific conversation between devices.</li>
+</ul>
+<h2 id="accessing-the-wireless-router">Accessing the wireless router</h2>
+<ul>
+<li>Many wireless routers designed for home use have an automatic setup utility.</li>
+<li>The decision regarding who can access your home network should be determined by how you plan to use the network. Many routers support <em>MAC address filtering</em>.</li>
+</ul>
+<h2 id="internet-service-providers-isps">Internet Service Providers (ISPs)</h2>
+<ul>
+<li>An ISP provides a link between the home network and the global internet. ISPs are critical to communications across the internet. Each ISP connects to other ISPs to form a network of links that interconnect users all over the world.</li>
+<li>A router is required to securely connect a computers to an ISP. The router includes:
+<ul>
+<li>a switch to connect wired hosts</li>
+<li>a wireless AP to connect wireless hosts</li>
+</ul>
+</li>
+<li>The router also provides client addresses and security for inside hosts.</li>
+</ul>
+<h2 id="isp-connectivity-options">ISP Connectivity Options</h2>
+<ul>
+<li>The two most common  methods to connect to an ISP are <strong>Cable</strong> and <strong>Digital Subscriber Line (DSL)</strong>.</li>
+<li>Other ISP connectivity options are:
+<ul>
+<li>Sattelite</li>
+<li>Cellular</li>
+<li>Dial-Up Telephone</li>
+</ul>
+</li>
+</ul>
+<h2 id="isp-connection-terms">ISP connection terms</h2>
+
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Request To Send (RTS)</td>
+<td>A signal sent by a wireless client requesting time to transmit on the network</td>
+</tr>
+<tr>
+<td>Clear To Send (CTS)</td>
+<td>A signal sent by the access point or wireless router indicating that a device may transmit on the wireless channel</td>
+</tr>
+<tr>
+<td>Acknowledgement (ACK)</td>
+<td>A message from the wireless client indicating that it has completed it’s data transmission on the network.</td>
+</tr>
+<tr>
+<td>Guest Access</td>
+<td>A special SSID coverage area that allows open access, but restricts that access to using the internet only</td>
+</tr>
+<tr>
+<td>Cable Internet</td>
+<td>Typically offered by television service providers, the Internet data signal is carried on the same coaxial cable that delivers broadcast television and phone</td>
+</tr>
+<tr>
+<td>Digital Subscriber Line (DSL)</td>
+<td>A high bandwidth, always on, connection that uses existing land-line telephone wires</td>
+</tr>
+<tr>
+<td>Cellular Data Plan</td>
+<td>Internet service that uses the carrier cell phone network to transmit data</td>
+</tr>
+<tr>
+<td>Ethernet LAN Port</td>
+<td>Ports that connect to the internal switch portion of the home integrated router</td>
+</tr>
+<tr>
+<td>Internet Port</td>
+<td>This port is used to connect the device to another network, usually of the home network</td>
+</tr>
+<tr>
+<td>Wi-Fi Alliance</td>
+<td>An organization that tests wireless LAN devices from different manufacturers in order to ensure the equipment meets the IEEE 802.11 standards</td>
+</tr>
+<tr>
+<td>Mixed mode</td>
+<td>A wireless network mode that provides connectivity to devices that use any of the existing Wi-Fi standards (b/g/n/ac…)</td>
+</tr>
+<tr>
+<td>Service Set Identifier (SSID)</td>
+<td>A case-sensitive, alpha-numeric string that is used to identify a specific wireless network</td>
+</tr>
+<tr>
+<td>Wireless Channel</td>
+<td>A division of the wireless frequency range that his capable of carrying a single data conversation, similar to the way that the signals from each individual television station are transmitted across a single medium</td>
+</tr>
+<tr>
+<td>Carrier Sense Multiple Access with Collision Avoidance (CSMA/CA)</td>
+<td>The method of creating a reservation on a wireless network in order to ensure each client gets time to transmit on the network</td>
+</tr>
+</tbody>
+</table><h2 id="security-considerations-in-a-home-network">Security considerations in a Home Network</h2>
+<h3 id="ways-to-secure-your-network">Ways to secure your network</h3>
+<ul>
+<li>It’s possible for an attacker to tune into signals from your wireless network, much like tuning into a radio station.</li>
+<li>SSID broadcast can be turned off, making it more difficult for intruders to connect to your network.</li>
+<li>Changing the default settings
+<ul>
+<li>SSID</li>
+<li>Usernames</li>
+<li>Passwords</li>
+</ul>
+</li>
+<li>MAC address filtering uses the MAC address to identify which devices are allowed to connect to the wireless network.</li>
+<li>Configure encryption</li>
+<li>Configure authentication</li>
+</ul>
+<h3 id="authenticating-users">Authenticating users</h3>
+<p>= the process of permitting entry to a network based on a set of credentials. It is used to verify that the device attempting to connect to the network is trusted.</p>
+<ul>
+<li>After authentication is enabled, the client must successfully pass authentication before it can associate with the AP and join the network</li>
+<li>When authentication is successful, the AP will then check the MAC address against the MAC address table. When verified, the AP adds the host MAC address into its host table.</li>
+</ul>
+<h3 id="encrypting-data-so-it-cannot-be-read">Encrypting data so it cannot be read</h3>
+<ul>
+<li>An advanced and secure form of encryption is <strong>Wi-Fi Protected Access (WPA)</strong>.</li>
+<li>WPA2 uses encryption keys from 64 bits up to 256 bits. However, unlike <strong>Wired Equivalency Protocol (WEP)</strong>, WPA2 generates new, dynamic keys each time a client establishes a connection with the AP.</li>
+</ul>
+<h1 id="chapter-7-network-security">Chapter 7: Network Security</h1>
+<h2 id="hackers--intruders">Hackers &amp; Intruders</h2>
+<h3 id="types-of-threats">Types of threats</h3>
+<ol>
+<li>Information theft</li>
+<li>Identify theft</li>
+<li>Data loss / manipulation</li>
+<li>Disruption of service</li>
+</ol>
+<h3 id="where-do-they-come-from">Where do they come from?</h3>
+<ul>
+<li>External threats arise from individuals working outside of an organization</li>
+<li>Internal threats occur when someone has authorized access to thet network through a user account or has physical access to the network equipment</li>
+</ul>
+<h2 id="types-of-hacking">Types of hacking</h2>
+<h3 id="social-engineering">Social engineering</h3>
+<p>= a collection of techniques used to deceive internal users into performing specific actions or revealing confidential information</p>
+<ul>
+<li><strong>Pretexting</strong>
+<ul>
+<li>an invented scenario (the pretext) is used on a victim in order to get the victim to release information or perform an action, typically over the phone.</li>
+</ul>
+</li>
+<li><strong>Phishing</strong>
+<ul>
+<li>the phisher pretends to be a legitimate outside organization in order to get information from someone, typically via email or text messaging</li>
+</ul>
+</li>
+<li><strong>Vishing / phone phishing</strong>
+<ul>
+<li>uses Voice over IP (VoIP) to send a voice mail instructing a victim to call a number which appears to be a legitimate telephone-banking service.</li>
+</ul>
+</li>
+</ul>
+<h3 id="software">Software</h3>
+<ul>
+<li><strong>Virus</strong>
+<ul>
+<li>a program that spreads by modifying other programs or files</li>
+</ul>
+</li>
+<li><strong>Worm</strong>
+<ul>
+<li>similar to a virus, but does not need to attach itself to an existing program. Uses the network to send copies of itself to any connected hosts.</li>
+</ul>
+</li>
+<li><strong>Trojan Horse</strong>
+<ul>
+<li>a program thats written to appear like a legitimate program, when in fact it is an attack tool.</li>
+</ul>
+</li>
+</ul>
+<h3 id="denial-of-service-dos">Denial of Service (DoS)</h3>
+<ul>
+<li>To flood a system or network with traffic to prevent legitimate network traffic from flowing</li>
+<li>Disrupt connections between a client and server to prevent access to a service</li>
+<li>DDoS = Distributed DoS = a more sophisticated and potentially damaging form of the DoS attack. It is designed to saturate and overwhelm network links with useless data.</li>
+</ul>
+<h3 id="brute-force">Brute Force</h3>
+<p>= a fast computer is used to try to guess passwords or to decipher an encryption code</p>
+<h3 id="spyware">Spyware</h3>
+<p>= any program that gathers personal information from your computer without your permission or knowledge. This information is sent to advertisers or others on the Internet and can include passwords and account numbers.</p>
+<h3 id="adware">Adware</h3>
+<p>= form of spyware used to collect information about a user based on websites the user visits. That information is then used for targeted advertising.</p>
+<h3 id="botnets-and-zombies">Botnets and zombies</h3>
+<p>= the infected ‘zombie’ computer contacts servers managed by the botnet creator. These servers act as a command and control (C&amp;C) center for an entire network of compromised devices, or ‘botnet’.</p>
+<h2 id="security-tools">Security tools</h2>
+<ul>
+<li>Security Practices
+<ul>
+<li>Maintaining up-to-date software releases</li>
+<li>Firewalls</li>
+<li>Intrusion detection systems</li>
+</ul>
+</li>
+<li>Security Tools
+<ul>
+<li>Many tools are available to network users to protect the devices from attacks and to help remove malicious software from infected machines.</li>
+</ul>
+</li>
+<li>Patch
+<ul>
+<li>Small piece of code that fixes a specific problem.</li>
+</ul>
+</li>
+<li>Update
+<ul>
+<li>May include additional functionality to the software package as wel as patches for specific issues</li>
+</ul>
+</li>
+<li>Antivirus software
+<ul>
+<li>Relies on ‘virus signatures’ in order to find and prevent new viruses from infecting the computer</li>
+<li>Email checking: scans incoming &amp; outgoing emails for spam and suspicious attachments</li>
+<li>Resident dynamic scanning: checks files when they are accessed</li>
+<li>Scheduled scans: to check files periodically</li>
+<li>Automatic updates: to get the latest virus signatures</li>
+</ul>
+</li>
+<li>Antispam software
+<ul>
+<li>Protects hosts by identifying spam and performing an action, such as placing it into a junk folder or deleting it.</li>
+</ul>
+</li>
+<li>Antispyware, Adware, Popup blockers</li>
+</ul>
+<h2 id="firewalls">Firewalls</h2>
+<ul>
+<li>Prevents undesirable traffic from entering protected areas of the network</li>
+<li>Usually installed between two or more networks</li>
+<li>Can be implemented in software, can also be hardware devices (= freestanding unit)</li>
+<li>Firewalls often perform Network Address Translation (NAT)</li>
+</ul>
+<h3 id="dmz-demilitarized-zone">DMZ (demilitarized zone)</h3>
+<p>= an area of the network that is accessible to both internal and external users.</p>
+<ul>
+<li>With the wireless router, a simple DMZ can be set up that allows an internal server to be accessible by outside hosts.</li>
+<li>The wireless router isolates traffic destined to the IP address specified. This traffic is then forwarded only to the switch port where the server is connected.</li>
+</ul>
+<h3 id="port-forwarding">Port forwarding</h3>
+<ul>
+<li>A rule-based method of directing traffic between devices on seperate networks. This method of exposing your devices to the internet is much safer than using a DMZ.</li>
+</ul>
+<h3 id="port-triggering">Port Triggering</h3>
+<ul>
+<li>Allows the router to temporarily forward data through inbound TCP or UDP ports to a specific device. You can use port triggering to forward data to a computer only when a designated port range is used to make an outbound request.</li>
+</ul>
+<h1 id="chapter-8-configuring-cisco-devices">Chapter 8: Configuring Cisco devices</h1>
+
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Switch</td>
+<td>Device used to connect devices on the same network</td>
+</tr>
+<tr>
+<td>Router</td>
+<td>Device to connect multiple networks to each other</td>
+</tr>
+</tbody>
+</table><h2 id="switches">Switches</h2>
+<h3 id="choosing-a-switch">Choosing a switch</h3>
+<ul>
+<li>Types of ports</li>
+<li>Number of ports</li>
+<li>Speed required</li>
+<li>Expandability</li>
+<li>Manageability</li>
+</ul>
+<h3 id="connecting-the-switch">Connecting the switch</h3>
+<ul>
+<li>When the switch is on , the Power-On Self-Test (POST) begins</li>
+<li>During POST, the LEDs blink while a series of tests determine that the switch is functioning properly.</li>
+<li>POST is completed once the SYST LED rapidly blinks green.</li>
+<li>If POST fails, the SYST LED turns amber</li>
+<li>When booted, a Cisco device loads two files into RAM:
+<ul>
+<li>Internetwork Operating System (IOS) image file</li>
+<li>Startup configuration file</li>
+</ul>
+</li>
+</ul>
+<h2 id="routers">Routers</h2>
+<h3 id="components">Components</h3>
+<ul>
+<li>Operating System (OS)</li>
+<li>Central Processing Unit (CPU)</li>
+<li>Random-Access Memory (RAM)</li>
+<li>Read-Only Memory (ROM)</li>
+<li>NonVolatile Random-Access Memory (NVRAM)</li>
+<li>Console ports</li>
+<li>2 LAN interfaces</li>
+<li>Enhanced High Speed WAN Interface Card (EHWIC) slots</li>
+</ul>
+<h3 id="setting-up-the-router">Setting up the router</h3>
+<ol>
+<li>Mount and ground the device chassis</li>
+<li>Seat the external compact flash card</li>
+<li>Connect the power cable</li>
+<li>Configure the terminal emulation software on the PC and connect the PC to the console port</li>
+<li>Turn on the router</li>
+<li>Observe the startup messages on the PC as the router boots up</li>
+</ol>
+<ul>
+<li>The two most common methods to access the command line interface are:
+<ul>
+<li>console</li>
+<li>SSH</li>
+</ul>
+</li>
+</ul>
+<h2 id="navigate-the-ios">Navigate the IOS</h2>
+<ul>
+<li>Cisco IOS command line interface (CLI) is a text-based program that enables entering and executing Cisco IOS commands to configure, monitor and maintain Cisco devices</li>
+<li>As a security feature, the IOS software is seperated into two modes:</li>
+</ul>
+<ol>
+<li>user EXEC mode
+<ul>
+<li>Allows access to only a limited number of basic monitoring commands</li>
+<li>‘view only’</li>
+<li>Prompt is displayed as <code>Switch&gt;</code> or <code>Router&gt;</code></li>
+</ul>
+</li>
+<li>priviliged EXEC mode
+<ul>
+<li>Allows all commands: can monitor and execute configuration and management commands</li>
+<li>Prompt is displayed as <code>Switch#</code> or <code>Router#</code></li>
+</ul>
+</li>
+</ol>
+<h3 id="the-command-structure-syntax-in-ios">The command structure: syntax in IOS</h3>
+<p><img src="https://image.slidesharecdn.com/nbinstructorpptchapter2-140924020854-phpapp01/95/ccna-rsnb-chapter-2-17-638.jpg?cb=1411524984" alt="enter image description here"></p>
+<h4 id="syntax">Syntax:</h4>
+<ol>
+<li>Prompt
+<ul>
+<li>Shows in which mode the user is working, and with which device.</li>
+</ul>
+</li>
+<li>Command</li>
+<li>Argument</li>
+</ol>
+<h3 id="using-show-commands">Using show commands</h3>
+<ul>
+<li>show running-config</li>
+<li>show interfaces</li>
+<li>show arp</li>
+<li>show ip route</li>
+<li>show protocols</li>
+<li>show version
+<ul>
+<li>shows useful summary information about the device you are connected to</li>
+</ul>
+</li>
+</ul>
+<h2 id="configuring-a-cisco-network">Configuring a Cisco network</h2>
+<h3 id="basic-switch-configuration">Basic switch configuration</h3>
+<ol>
+<li>Configure the device name</li>
+<li>Secure the user EXEC mode</li>
+<li>Secure remote Telnet/SSH access</li>
+<li>Secure priviliged EXEC mode</li>
+<li>Secure all passwords in the config file</li>
+<li>Provide legal notification</li>
+<li><strong>Configure the management SVI (Switch Virtual Interface)</strong></li>
+<li>Save the configuration</li>
+</ol>
+<h3 id="basic-router-configuration">Basic router configuration</h3>
+<ol>
+<li>Configure the device name</li>
+<li>Secure the user EXEC mode</li>
+<li>Secure remote Telnet/SSH access</li>
+<li>Secure priviliged EXEC mode</li>
+<li>Secure all passwords in the config file</li>
+<li>Provide legal notification</li>
+<li>Save the configuration</li>
+</ol>
+<ul>
+<li>Configure the interface:
+<ul>
+<li><strong>interface</strong> <em>type-and-number</em></li>
+<li><strong>description</strong> <em>description-text</em></li>
+<li><strong>ip address</strong> <em>ipv4-address subnet-mask</em></li>
+<li><strong>no shutdown</strong> (to activate the interface)</li>
+</ul>
+</li>
+</ul>
+<h4 id="verifying-the-interface">Verifying the interface</h4>
+<ul>
+<li><strong>show ip interface brief</strong>:
+<ul>
+<li>displays all interfaces, their IPv4 address, and their current status</li>
+</ul>
+</li>
+<li><strong>show ip route</strong>:
+<ul>
+<li>displays the contents of the IPv4 routing table stored in RAM</li>
+</ul>
+</li>
+<li><strong>show interfaces</strong>:
+<ul>
+<li>displays statistics for all interfaces on the device</li>
+</ul>
+</li>
+<li><strong>show ip interface</strong>:
+<ul>
+<li>displays the IPv4 statistics for all interfaces on a router</li>
+</ul>
+</li>
+</ul>
+<h2 id="securing-the-devices">Securing the devices</h2>
+<ul>
+<li>As a good practice, use different authentication passwords for each level of access</li>
+<li>Setting a password:
+<ul>
+<li><strong>Switch(config)#</strong> line console 0</li>
+<li><strong>Switch(config)#</strong> password [password]</li>
+<li><strong>Switch(config)#</strong> login</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>Verify SSH support</li>
+<li>Configure the IP domain</li>
+<li>Generate RSA key pairs</li>
+<li>Configure user authentication</li>
+<li>Configure the vty lines</li>
+<li>Enable SSH version 2</li>
+</ol>
+<ul>
+<li><strong>show ip ssh</strong>:
+<ul>
+<li>To display the version and configuration data for SSH on the device that you configured as an SSH server</li>
+</ul>
+</li>
+</ul>
+<h2 id="connecting-the-switch-to-the-router">Connecting the switch to the router</h2>
+<ul>
+<li>The default gateway address is generally the router interface address attached to the local network of the host
+<ul>
+<li>The IP address of the host device and the router interface address must be in the same network</li>
+</ul>
+</li>
+<li>To configure a default gateway on a switch, use the <strong>ip default-gateway</strong> global configuration command.
+<ul>
+<li>The IP address configured is that of the router interface of the connected switch</li>
+</ul>
+</li>
+</ul>
+<h1 id="chapter-9-troubleshooting">Chapter 9: Troubleshooting</h1>
+<h2 id="network-troubleshooting">Network troubleshooting</h2>
+<ul>
+<li>Process of identifying, locating and correcting the problems</li>
+<li>Mantain good documentation when troubleshooting</li>
+</ul>
+<h3 id="gathering-information">Gathering information</h3>
+<ul>
+<li>Question everyone who reported the problem</li>
+<li>Collect information about any equipment that may be affected</li>
+</ul>
+<h3 id="choose-a-troubleshooting-approach">Choose a troubleshooting approach</h3>
+<ul>
+<li>Top-down
+<ul>
+<li>Starts at the Application Layer and works its way down to the Phycial Layer</li>
+<li>For simpler problems</li>
+</ul>
+</li>
+<li>Divide-and-conquer
+<ul>
+<li>Based on the circumstances (reported issues) and your experience, you might decide to start at any layer and work up or down the OSI layers</li>
+<li>More suitable if you are experienced and the problem has precise symptoms</li>
+</ul>
+</li>
+<li>Bottom-up
+<ul>
+<li>Starts at the Physical Layer and works its way up to the Application Layer</li>
+<li>More suited for complex cases</li>
+</ul>
+</li>
+</ul>
+<h3 id="other-approaches">Other approaches</h3>
+<ul>
+<li>Trial and error
+<ul>
+<li>Relies on invidivual knowledge to determine the most probable cause of a problem.</li>
+<li>Making educated guesses to find the cause of the problem</li>
+</ul>
+</li>
+<li>Substitution
+<ul>
+<li>Subsituting hardware components or configuration file, to see if that fixes the problem</li>
+<li>‘spot the difference’-method</li>
+<li>Can save time and quickly restore network functionality</li>
+</ul>
+</li>
+</ul>
+<h2 id="detecting-physical-layer-problems">Detecting Physical layer problems</h2>
+<h3 id="using-your-senses">Using your senses</h3>
+<ul>
+<li>Sight</li>
+<li>Smell</li>
+<li>Touch</li>
+<li>Hear</li>
+</ul>
+<h3 id="using-software-tools-and-utilities">Using software tools and utilities</h3>
+<ul>
+<li>ipconfig
+<ul>
+<li>Display IP configuration information to check if IP address and subnet mask are correct</li>
+</ul>
+</li>
+<li>ping
+<ul>
+<li>Test connections to other clients</li>
+</ul>
+</li>
+<li>netstat, to list…
+<ul>
+<li>…the protocols in use</li>
+<li>…the local address and port number</li>
+<li>…the foreign address and port number</li>
+<li>…the state of the connection</li>
+</ul>
+</li>
+<li>tracert
+<ul>
+<li>provides connectivity information about the path a packet takes to reach the destination and about every other router (hop) along the way</li>
+</ul>
+</li>
+<li>nslookup
+<ul>
+<li>nslookup utility allows and end-user to look up information about a particular DNS name in the DNS server</li>
+<li>directly queries the name server for information on a destination domain</li>
+</ul>
+</li>
+</ul>
+<h3 id="windows-ip-information">Windows IP information</h3>
+<ul>
+<li>ipconfig (/all)</li>
+<li>ipconfig /release
+<ul>
+<li>releases the current DHCP bindings</li>
+</ul>
+</li>
+<li>ipconfig /renew
+<ul>
+<li>request fresh DHCP configuration</li>
+</ul>
+</li>
+</ul>
+<h3 id="what-do-ping-results-tell-us">What do ping results tell us?</h3>
+<ul>
+<li>If pings to both name and IP address are successful, but the user is still unable to access the application, then the problem most likely resides in the application on the destination host</li>
+<li>If neither ping is successful, then network connectivity along the path to the destination is likely the problem</li>
+<li>If the ping to the default gateway is successful, the problem is not local</li>
+<li>If the ping to the default gateway is sucessful, the problem resides on the local network</li>
+<li>A ping may fail due to firewall on the sending or receiving device, or a router along the path blocking the pings</li>
+</ul>
+<h2 id="identifying-and-fixing-connectivity-issues">Identifying and fixing connectivity issues</h2>
+<h3 id="divide-and-conquer">Divide-and-conquer</h3>
+<ul>
+<li>Ping from a wireless client to the default gateway</li>
+<li>Ping from a wired client to the default gateway</li>
+<li>Ping from the wireless client to a wired client</li>
+</ul>
+<h3 id="bottom-up">Bottom up</h3>
+<ul>
+<li>Examine the LEDs</li>
+<li>LEDs may change color or flash to convey information</li>
+</ul>
+<h3 id="cabling-problems">Cabling problems</h3>
+<ul>
+<li>Correct type of cable, ending with T568A/B</li>
+<li>Do not exceed maximum cable lengths</li>
+<li>Verify that the correct ports are being used</li>
+<li>Protect cables and connectors from physical damage</li>
+</ul>
+<h3 id="cause-of-wireless-issues">Cause of wireless issues</h3>
+<ul>
+<li>Not all wireless standards are compatible</li>
+<li>Each wireless conversation must occur on a seperate, non-overlapping channel</li>
+<li>Check distance to router</li>
+<li>Check interference</li>
+<li>APs share the available bandwidth between devices</li>
+</ul>
+<h3 id="authentication-and-association-errors">Authentication and Association errors</h3>
+<ul>
+<li>The SSID must match on both the AP and client</li>
+<li>Both the client and AP must be configured with the same authentication key</li>
+<li>The same encryption key must be configured on both the AP and the client</li>
+</ul>
+<h3 id="dhcp-server-configuration-errors">DHCP Server configuration errors</h3>
+<ul>
+<li>The client table information should match the local host information</li>
+<li>Check to make sure that the router has an IP address</li>
+<li>The LAN interface of the wireless router should be set as the default gateway</li>
+<li>Examine the router status page</li>
+<li>Check all physical connections and LED indicators</li>
+<li>Try to re-establish connectivity</li>
+</ul>
+<h3 id="firewall">Firewall</h3>
+<ul>
+<li>Check that the application TCP or UDP port is open and no filter lists are blocking traffic to that port</li>
+<li>Check all settings on the router to ensure no security restrictions could be causing the issue</li>
+</ul>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,251 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prototyping labo</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body style="background-color: white" class="stackedit">
+  <div class="stackedit__html"><h1 id="h1">H1</h1>
+<ul>
+<li>Digitale pinnen: kunnen gebruikt worden als digitale in- en uitgangen of als analoge uitgang als de pin voorzien is van het PWM-symbool ~.</li>
+<li>Knop met INPUT_PULLUP en weerstand</li>
+</ul>
+<h1 id="h2">H2</h1>
+<ul>
+<li>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>A</mi><mi>F</mi><mo>=</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">AF = x%</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathdefault">A</span><span style="margin-right: 0.13889em;" class="mord mathdefault">F</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathdefault">x</span></span></span></span></span> van de afgelezen waarde + <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.625em; vertical-align: -0.19444em;"></span><span style="margin-right: 0.03588em;" class="mord mathdefault">y</span></span></span></span></span> digit</p>
+</li>
+<li>
+<p>Spanningen:</p>
+<ul>
+<li>Rode led: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn><mi>V</mi></mrow><annotation encoding="application/x-tex">2V</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">2</span><span style="margin-right: 0.22222em;" class="mord mathdefault">V</span></span></span></span></span></li>
+<li>Blauwe led: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>3</mn><mi>V</mi></mrow><annotation encoding="application/x-tex">3V</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">3</span><span style="margin-right: 0.22222em;" class="mord mathdefault">V</span></span></span></span></span></li>
+<li>Diode: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>0.7</mn><mi>V</mi></mrow><annotation encoding="application/x-tex">0.7V</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">0</span><span class="mord">.</span><span class="mord">7</span><span style="margin-right: 0.22222em;" class="mord mathdefault">V</span></span></span></span></span></li>
+</ul>
+</li>
+<li>
+<p>Knop inlezen met:</p>
+<pre><code>  if(!digitalRead(knop)){
+  ...
+  }
+</code></pre>
+</li>
+<li>
+<p>Flank, met als voorbeeld een LED togglen:</p>
+<pre><code>  void loop(){
+  	  knopNieuweStatus = digitalRead(knop);
+  	  if (knopNieuweStatus != knopOudeStatus) { //Flank gedetecteerd
+  	      if (knopNieuweStatus) {
+  	          Serial.println("Stijgende flank");
+  	          if (digitalRead(led) == HIGH) { //led inlezen en toggle
+  	              digitalWrite(led, LOW);
+  	          } else {
+  	              digitalWrite(led, HIGH);
+  	          }
+  	      } else {
+  	          Serial.println("Dalende flank");
+  	      }
+  	  }
+
+  	  knopOudeStatus = knopNieuweStatus;
+    }
+</code></pre>
+</li>
+</ul>
+<h3 id="meten-van-spanning">Meten van spanning</h3>
+<ul>
+<li>Over het component (parallel)</li>
+</ul>
+<h1 id="h3">H3</h1>
+<h3 id="meten-van-stroom">Meten van stroom</h3>
+<ul>
+<li>In serie</li>
+<li>Stroom is overal hetzelfde behalve bij een splitsing (Stroomwet van Kirchhof)</li>
+</ul>
+<h3 id="serial-monitor">Serial monitor</h3>
+<ul>
+<li>Serial.begin(9600);</li>
+</ul>
+<h1 id="h4">H4</h1>
+<ul>
+<li>Weerstandsmetingen met de ohmmeter gebeuren <strong>spanningsloos</strong></li>
+<li>Floats casten: String(getal, 3): zal de float naar een string casten met 3 cijfers na de komma</li>
+</ul>
+<h3 id="potentiometer">Potentiometer</h3>
+<ul>
+<li>via analoge pin met analogRead(A0);</li>
+<li>Spanning: (analogeWaarde / 1023.0 ) * 5.0</li>
+<li>Als je een trimmer wil aansluiten aan een <strong>digitale</strong> in- of uitgang moet er altijd een weerstand in serie staan met de trimmer</li>
+<li>Heeft 3 pins:<br>
+<img src="https://i.ytimg.com/vi/wUAiBnPg3TU/maxresdefault.jpg" alt="enter image description here"></li>
+</ul>
+<h1 id="h5">H5:</h1>
+<h3 id="diode">Diode</h3>
+<p><img src="https://wikitronics.nl/wp-content/uploads/2019/04/Diode.jpg" alt="enter image description here"></p>
+<ul>
+<li>Laat stroom door in 1 richting (van + naar -)</li>
+<li>Kan gebruikt worden als OR-gate</li>
+<li>Wordt gebruikt bij voorrangsschakelingen</li>
+<li>0.7V</li>
+</ul>
+<h3 id="rgb-led">RGB LED</h3>
+<ul>
+<li>3 leds in 1 behuizing met 4 poten
+<ul>
+<li>Gemeenschappelijke kathode (-) = GND</li>
+<li>Andere 3: rood, groen, blauw = aansluiten aan 3 PWM-ingangen <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>⇒</mo></mrow><annotation encoding="application/x-tex">\Rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">⇒</span></span></span></span></span> waardes tss 0 en 255</li>
+</ul>
+</li>
+</ul>
+<h1 id="h6">H6</h1>
+<h3 id="hysterese">Hysterese</h3>
+<ul>
+<li>Bv regeling van de centrale verwarming: als de verwarming ingesteld staat op 20°C, zal de verwarming aanslaan bij 19.5°C, en weer uitschakelen bij 20.5°C.<br>
+<img src="https://i.imgur.com/9b50ydy.png" alt="enter image description here"></li>
+</ul>
+<h3 id="ntc-thermistor">NTC (Thermistor)</h3>
+<p>= Negative Temperature Coefficient</p>
+<ul>
+<li>Weerstand verschilt op basis van welk model NTC<br>
+<img src="https://i.imgur.com/vWm8ydW.png" alt="enter image description here"></li>
+</ul>
+<h3 id="lm35-tmp35">LM35 (TMP35)</h3>
+<p><img src="https://cdn.instructables.com/FE0/DHQ4/HV2AIB01/FE0DHQ4HV2AIB01.MEDIUM.jpg" alt="enter image description here"></p>
+<ul>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>V</mi><mtext>out</mtext></msub></mrow><annotation encoding="application/x-tex">V_{\text{out}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span style="margin-right: 0.22222em;" class="mord mathdefault">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.280556em;"><span class="" style="top: -2.55em; margin-left: -0.22222em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">out</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span> naar A0, met daartussen een weerstand (1kΩ) die naar de grond gaat</li>
+</ul>
+<h3 id="interne-weerstand-van-een-bron">Interne weerstand van een bron</h3>
+<p>Een spanningsbron heeft zelf een interne weerstand <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>R</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">R_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span style="margin-right: 0.00773em;" class="mord mathdefault">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.311664em;"><span class="" style="top: -2.55em; margin-left: -0.00773em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span>, want het kost moeite om de elektronen zich door de bron te verplaatsen<br>
+<span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>R</mi><mi>i</mi></msub><mo>=</mo><mfrac><mrow><msub><mi>U</mi><mrow><mi>b</mi><mi>r</mi><mi>o</mi><mi>n</mi></mrow></msub><mo>−</mo><msub><mi>U</mi><mrow><mi>o</mi><mi>u</mi><mi>t</mi></mrow></msub></mrow><msub><mi>I</mi><mrow><mi>k</mi><mi>r</mi><mi>i</mi><mi>n</mi><mi>g</mi></mrow></msub></mfrac></mrow><annotation encoding="application/x-tex">R_i = \frac{U_{bron} - U_{out}}{I_{kring}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span style="margin-right: 0.00773em;" class="mord mathdefault">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.311664em;"><span class="" style="top: -2.55em; margin-left: -0.00773em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1.44227em; vertical-align: -0.54808em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.894191em;"><span class="" style="top: -2.655em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span style="margin-right: 0.07847em;" class="mord mathdefault mtight">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3448em;"><span class="" style="top: -2.34877em; margin-left: -0.07847em; margin-right: 0.0714286em;"><span class="pstrut" style="height: 2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span style="margin-right: 0.03148em;" class="mord mathdefault mtight">k</span><span style="margin-right: 0.02778em;" class="mord mathdefault mtight">r</span><span class="mord mathdefault mtight">i</span><span class="mord mathdefault mtight">n</span><span style="margin-right: 0.03588em;" class="mord mathdefault mtight">g</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.290114em;"><span class=""></span></span></span></span></span></span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.41586em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span style="margin-right: 0.10903em;" class="mord mathdefault mtight">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.3448em;"><span class="" style="top: -2.34877em; margin-left: -0.10903em; margin-right: 0.0714286em;"><span class="pstrut" style="height: 2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">b</span><span style="margin-right: 0.02778em;" class="mord mathdefault mtight">r</span><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.151229em;"><span class=""></span></span></span></span></span></span><span class="mbin mtight">−</span><span class="mord mtight"><span style="margin-right: 0.10903em;" class="mord mathdefault mtight">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.296343em;"><span class="" style="top: -2.357em; margin-left: -0.10903em; margin-right: 0.0714286em;"><span class="pstrut" style="height: 2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight">u</span><span class="mord mathdefault mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.143em;"><span class=""></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.54808em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>, met <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>U</mi><mrow><mi>o</mi><mi>u</mi><mi>t</mi></mrow></msub></mrow><annotation encoding="application/x-tex">U_{out}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span style="margin-right: 0.10903em;" class="mord mathdefault">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.280556em;"><span class="" style="top: -2.55em; margin-left: -0.10903em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight">u</span><span class="mord mathdefault mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span> de spanning over de externe weerstand</p>
+<h1 id="h7">H7</h1>
+<h3 id="condensator">Condensator</h3>
+<ul>
+<li>Spanning meten:
+<ul>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>τ</mi><mo>=</mo><mi>R</mi><mo>⋅</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">\tau = R\cdot C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span style="margin-right: 0.1132em;" class="mord mathdefault">τ</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span style="margin-right: 0.00773em;" class="mord mathdefault">R</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span style="margin-right: 0.07153em;" class="mord mathdefault">C</span></span></span></span></span></li>
+<li>Bij opladen:
+<ul>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>U</mi><mi>C</mi></msub><mo>=</mo><msub><mi>U</mi><mrow><mi>b</mi><mi>r</mi><mi>o</mi><mi>n</mi></mrow></msub><mo>⋅</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><msup><mi>e</mi><mfrac><mrow><mo>−</mo><mi>t</mi></mrow><mi>τ</mi></mfrac></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">U_C = U_{bron} \cdot (1 - e^{\frac{-t}{\tau}})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span style="margin-right: 0.10903em;" class="mord mathdefault">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.328331em;"><span class="" style="top: -2.55em; margin-left: -0.10903em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span style="margin-right: 0.07153em;" class="mord mathdefault mtight">C</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span style="margin-right: 0.10903em;" class="mord mathdefault">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.336108em;"><span class="" style="top: -2.55em; margin-left: -0.10903em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">b</span><span style="margin-right: 0.02778em;" class="mord mathdefault mtight">r</span><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1.18934em; vertical-align: -0.25em;"></span><span class="mord"><span class="mord mathdefault">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.93934em;"><span class="" style="top: -3.363em; margin-right: 0.05em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mopen nulldelimiter sizing reset-size3 size6"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.823343em;"><span class="" style="top: -2.656em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span style="margin-right: 0.1132em;" class="mord mathdefault mtight">τ</span></span></span></span><span class="" style="top: -3.2255em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line mtight" style="border-bottom-width: 0.049em;"></span></span><span class="" style="top: -3.384em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mathdefault mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.344em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter sizing reset-size3 size6"></span></span></span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></li>
+</ul>
+</li>
+<li>Bij ontladen:
+<ul>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>U</mi><mi>C</mi></msub><mo>=</mo><msub><mi>U</mi><mrow><mi>b</mi><mi>r</mi><mi>o</mi><mi>n</mi></mrow></msub><mo>⋅</mo><mo stretchy="false">(</mo><msup><mi>e</mi><mfrac><mrow><mo>−</mo><mi>t</mi></mrow><mi>τ</mi></mfrac></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">U_C = U_{bron} \cdot (e^{\frac{-t}{\tau}})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span style="margin-right: 0.10903em;" class="mord mathdefault">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.328331em;"><span class="" style="top: -2.55em; margin-left: -0.10903em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span style="margin-right: 0.07153em;" class="mord mathdefault mtight">C</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span style="margin-right: 0.10903em;" class="mord mathdefault">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.336108em;"><span class="" style="top: -2.55em; margin-left: -0.10903em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">b</span><span style="margin-right: 0.02778em;" class="mord mathdefault mtight">r</span><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1.18934em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.93934em;"><span class="" style="top: -3.363em; margin-right: 0.05em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mopen nulldelimiter sizing reset-size3 size6"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.823343em;"><span class="" style="top: -2.656em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span style="margin-right: 0.1132em;" class="mord mathdefault mtight">τ</span></span></span></span><span class="" style="top: -3.2255em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line mtight" style="border-bottom-width: 0.049em;"></span></span><span class="" style="top: -3.384em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mathdefault mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.344em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter sizing reset-size3 size6"></span></span></span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Capaciteit: in Farad (<span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>F</mi></mrow><annotation encoding="application/x-tex">F</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span style="margin-right: 0.13889em;" class="mord mathdefault">F</span></span></span></span></span>)
+<ul>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>C</mi><mo stretchy="false">[</mo><mi>F</mi><mo stretchy="false">]</mo><mo>=</mo><mfrac><mrow><mi>q</mi><mo stretchy="false">[</mo><mi>C</mi><mo stretchy="false">]</mo></mrow><mrow><mi>U</mi><mo stretchy="false">[</mo><mi>V</mi><mo stretchy="false">]</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">C[F] = \frac{q[C]}{U[V]}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span style="margin-right: 0.07153em;" class="mord mathdefault">C</span><span class="mopen">[</span><span style="margin-right: 0.13889em;" class="mord mathdefault">F</span><span class="mclose">]</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1.53em; vertical-align: -0.52em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.01em;"><span class="" style="top: -2.655em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span style="margin-right: 0.10903em;" class="mord mathdefault mtight">U</span><span class="mopen mtight">[</span><span style="margin-right: 0.22222em;" class="mord mathdefault mtight">V</span><span class="mclose mtight">]</span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.485em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span style="margin-right: 0.03588em;" class="mord mathdefault mtight">q</span><span class="mopen mtight">[</span><span style="margin-right: 0.07153em;" class="mord mathdefault mtight">C</span><span class="mclose mtight">]</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.52em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span> (tussen vierkante haakjes = eenheden)</li>
+<li>= Coulomb per Volt</li>
+<li>meestal in micro- of nano-Farad</li>
+</ul>
+</li>
+</ul>
+<h1 id="h8">H8</h1>
+<h3 id="geluid">Geluid</h3>
+<ol>
+<li>Frequentie (=toonhoogte)</li>
+<li>Amplitude/niveau (luider)</li>
+</ol>
+<h3 id="piëzo-effect">Piëzo effect</h3>
+<p>Onder invloed van spanning vervormen kristallen van bepaalde materialen, die vervorming kan geluidstrillingen veroorzaken.</p>
+<h3 id="actieve-buzzer">Actieve buzzer</h3>
+<ul>
+<li>Beschikt over een ingebouwde oscillator.</li>
+<li>Van zodra je een actieve zoemer onder spanning plaatst genereert hij een toon (altijd dezelfde toon)</li>
+<li>Met digitale uitgang</li>
+<li>Heeft een polariteit</li>
+</ul>
+<h3 id="passieve-buzzer">Passieve buzzer</h3>
+<ul>
+<li>Beschikt niet over een oscillator</li>
+<li>We moeten een blokgolf creëren</li>
+<li>Heeft een polariteit</li>
+<li>Kan met PWM: een PWM-uitgang is een blokgolf met telkens een delay ertussen:</li>
+</ul>
+<p><img src="https://circuitdigest.com/sites/default/files/projectimage_tut/Pulse-Width-Modulation.jpg" alt="enter image description here"></p>
+<h3 id="serieel-data-ontvangen">Serieel data ontvangen</h3>
+<ul>
+<li>
+<p>Byte per byte inlezen:</p>
+<pre><code>  if(Serial.available() &gt; 0){
+  	incomingByte = Serial.read();
+  	Serial.println(incomingByte)
+  }
+</code></pre>
+</li>
+<li>
+<p>De hele buffer in 1 String inlezen:</p>
+<pre><code>  if(Serial.available() &gt; 0){
+  	incomingString = Serial.readString();
+  	Serial.println(incomingString)
+  }
+</code></pre>
+</li>
+</ul>
+<h1 id="h9">H9</h1>
+<h2 id="transistor">Transistor</h2>
+<ul>
+<li>Bipolar Junction Transistor (BJT), waarvan 2 versies bestaan:
+<ul>
+<li>NPN (bv: PN2222, BC337)</li>
+<li>PNP</li>
+</ul>
+</li>
+<li>3 pootjes: collector, base en emitter
+<ul>
+<li>Base: Bij spanning &gt; 0.7V: transistor gaat in geleiding van collector naar emitter (zoals een diode)</li>
+<li>Te gebruiken als schakelaar</li>
+</ul>
+</li>
+<li>Verschillende versterkingsfactoren <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>β</mi></mrow><annotation encoding="application/x-tex">\beta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.88888em; vertical-align: -0.19444em;"></span><span style="margin-right: 0.05278em;" class="mord mathdefault">β</span></span></span></span></span>: x10 … x1000
+<ul>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>I</mi><mi>C</mi></msub><mo>=</mo><msub><mi>I</mi><mi>B</mi></msub><mo>⋅</mo><mi>β</mi></mrow><annotation encoding="application/x-tex">I_C = I_B \cdot \beta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span style="margin-right: 0.07847em;" class="mord mathdefault">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.328331em;"><span class="" style="top: -2.55em; margin-left: -0.07847em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span style="margin-right: 0.07153em;" class="mord mathdefault mtight">C</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span style="margin-right: 0.07847em;" class="mord mathdefault">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.328331em;"><span class="" style="top: -2.55em; margin-left: -0.07847em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span style="margin-right: 0.05017em;" class="mord mathdefault mtight">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.88888em; vertical-align: -0.19444em;"></span><span style="margin-right: 0.05278em;" class="mord mathdefault">β</span></span></span></span></span></li>
+</ul>
+</li>
+</ul>
+<p><img src="https://www.componentsinfo.com/wp-content/uploads/2018/06/bc337-transistor-pinout-equivalent.gif" alt="enter image description here"></p>
+<h3 id="schakeling-met-een-motor">Schakeling met een motor</h3>
+<p>Parralel met de motor een diode: want bij het onderbreken van de stroom ontstaat er een inductiespanning in de spoel van de motor. Via de diode brengen we de stroom ontstaan door de inductiespanning bij afschakelen terug naar de motor en worden de transistor en Arduino niet beschadigd.<br>
+<img src="https://i.imgur.com/ST2JsWc.png" alt="enter image description here"></p>
+<h1 id="h10">H10</h1>
+<h2 id="servomotor">Servomotor</h2>
+<h3 id="opbouw">Opbouw</h3>
+<ul>
+<li>een motor</li>
+<li>een reductiekast (set van tandwielen)</li>
+<li>een controller</li>
+<li>3 draadjes:
+<ul>
+<li>PWM (oranje)</li>
+<li>Vcc (rood)</li>
+<li>GND (bruin)</li>
+</ul>
+</li>
+</ul>
+<h3 id="werking">Werking</h3>
+<p>Om een bepaalde hoek mee te geven moeten we de signaaldrraad verbinden met een digitale uitgang van de Arduino. De servomotor verwacht een PWM-signaal. De standaard PWM uitgangen van onze Arduino kunnen we hiervoor echter niet gebruiken omdat die werken op een frequentie van 490Hz of 980Hz. De servomotor verwacht een PWM van 50Hz (periode T=20ms)<br>
+<img src="https://i.imgur.com/HsbSdBO.png" alt="enter image description here"><br>
+Onze servomotor kan een hoek van 180° maken. Daarvoor moeten we een hoge puls meegeven die varieert tussen de 600<span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>μ</mi></mrow><annotation encoding="application/x-tex">\mu</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.625em; vertical-align: -0.19444em;"></span><span class="mord mathdefault">μ</span></span></span></span></span>s en de 2400<span class="katex--inline"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>μ</mi></mrow><annotation encoding="application/x-tex">\mu</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.625em; vertical-align: -0.19444em;"></span><span class="mord mathdefault">μ</span></span></span></span></span>s (DC = 3 - 12%). Deze puls zullen we moeten herhalen tot de motor zijn gewenste positie heeft bereikt.</p>
+<h2 id="stappenmotor">Stappenmotor</h2>
+<h3 id="opbouw-1">Opbouw</h3>
+<ul>
+<li>een aantal spoelen in de stator (vast gedeelte van de motor)</li>
+<li>een aantal permanente polen in de rotor (draaiend gedeelte)</li>
+</ul>
+<h3 id="werking-1">Werking</h3>
+<p>Als we een stroom sturen naar de spoel, wordt er een magnetisch veld opgewekt. Door telkens een volgende spoel in de stator aan te sturen kunnen we de motor telkens een stap laten opschuiven. De stappenmotor kan, in tegenstelling tot de servo, blijven ronddraaien.</p>
+<ul>
+<li>Heeft een stepper driver nodig, want de gevraagde stroom is veel te hoog.</li>
+<li>Veel code nodig om het te besturen (zie 10-A-motoren.pdf)</li>
+</ul>
+</div>
+</body>
+
+</html>
