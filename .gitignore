@@ -31,6 +31,7 @@
 ## General files and folders
 .vscode/
 .DS_Store
+.venv/
 
 ## Specific files and folders
 s1/basisprogrammeren/
