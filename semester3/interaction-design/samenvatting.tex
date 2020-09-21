@@ -1,0 +1,476 @@
+\documentclass{article}
+
+\usepackage[dutch]{babel}
+\usepackage[margin=3cm]{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{wrapfig}
+\usepackage[parfill]{parskip}
+
+% fonts
+\usepackage[T1]{fontenc}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+\graphicspath{{img/}}
+ 
+\newcommand{\bold}[1]{\textbf{#1}}
+
+%Define the listing package
+\usepackage{listings} %code highlighter
+\usepackage{upquote}
+\usepackage{color} %use color
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+ 
+%Customize a bit the look
+\lstset{ %
+backgroundcolor=\color{white}, % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+basicstyle=\footnotesize, % the size of the fonts that are used for the code
+breakatwhitespace=false, % sets if automatic breaks should only happen at whitespace
+breaklines=true, % sets automatic line breaking
+captionpos=b, % sets the caption-position to bottom
+commentstyle=\color{mygreen}, % comment style
+deletekeywords={...}, % if you want to delete keywords from the given language
+escapeinside={\%*}{*)}, % if you want to add LaTeX within your code
+extendedchars=true, % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+frame=single, % adds a frame around the code
+keepspaces=true, % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+keywordstyle=\color{blue}, % keyword style
+% language=Octave, % the language of the code
+morekeywords={*,...}, % if you want to add more keywords to the set
+numbers=left, % where to put the line-numbers; possible values are (none, left, right)
+numbersep=5pt, % how far the line-numbers are from the code
+numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+rulecolor=\color{black}, % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+showspaces=false, % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+showstringspaces=false, % underline spaces within strings only
+showtabs=false, % show tabs within strings adding particular underscores
+stepnumber=1, % the step between two line-numbers. If it's 1, each line will be numbered
+stringstyle=\color{mymauve}, % string literal style
+tabsize=2, % sets default tabsize to 2 spaces
+title=\lstname % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+%END of listing package%
+
+\lstdefinelanguage{CSS}{
+      keywords={accelerator,azimuth,background,background-attachment,
+            background-color,background-image,background-position,
+            background-position-x,background-position-y,background-repeat,
+            behavior,border,border-bottom,border-bottom-color,
+            border-bottom-style,border-bottom-width,border-collapse,
+            border-color,border-left,border-left-color,border-left-style,
+            border-left-width,border-right,border-right-color,
+            border-right-style,border-right-width,border-spacing,
+            border-style,border-top,border-top-color,border-top-style,
+            border-top-width,border-width,bottom,caption-side,clear,
+            clip,color,content,counter-increment,counter-reset,cue,
+            cue-after,cue-before,cursor,direction,display,elevation,
+            empty-cells,filter,float,font,font-family,font-size,
+            font-size-adjust,font-stretch,font-style,font-variant,
+            font-weight,height,ime-mode,include-source,
+            layer-background-color,layer-background-image,layout-flow,
+            layout-grid,layout-grid-char,layout-grid-char-spacing,
+            layout-grid-line,layout-grid-mode,layout-grid-type,left,
+            letter-spacing,line-break,line-height,list-style,
+            list-style-image,list-style-position,list-style-type,margin,
+            margin-bottom,margin-left,margin-right,margin-top,
+            marker-offset,marks,max-height,max-width,min-height,
+            min-width,-moz-binding,-moz-border-radius,
+            -moz-border-radius-topleft,-moz-border-radius-topright,
+            -moz-border-radius-bottomright,-moz-border-radius-bottomleft,
+            -moz-border-top-colors,-moz-border-right-colors,
+            -moz-border-bottom-colors,-moz-border-left-colors,-moz-opacity,
+            -moz-outline,-moz-outline-color,-moz-outline-style,
+            -moz-outline-width,-moz-user-focus,-moz-user-input,
+            -moz-user-modify,-moz-user-select,orphans,outline,
+            outline-color,outline-style,outline-width,overflow,
+            overflow-X,overflow-Y,padding,padding-bottom,padding-left,
+            padding-right,padding-top,page,page-break-after,
+            page-break-before,page-break-inside,pause,pause-after,
+            pause-before,pitch,pitch-range,play-during,position,quotes,
+            -replace,richness,right,ruby-align,ruby-overhang,
+            ruby-position,-set-link-source,size,speak,speak-header,
+            speak-numeral,speak-punctuation,speech-rate,stress,
+            scrollbar-arrow-color,scrollbar-base-color,
+            scrollbar-dark-shadow-color,scrollbar-face-color,
+            scrollbar-highlight-color,scrollbar-shadow-color,
+            scrollbar-3d-light-color,scrollbar-track-color,table-layout,
+            text-align,text-align-last,text-decoration,text-indent,
+            text-justify,text-overflow,text-shadow,text-transform,
+            text-autospace,text-kashida-space,text-underline-position,top,
+            unicode-bidi,-use-link-source,vertical-align,visibility,
+            voice-family,volume,white-space,widows,width,word-break,
+            word-spacing,word-wrap,writing-mode,z-index,zoom},  
+      sensitive=true,
+      morecomment=[l]{//},
+      morecomment=[s]{/*}{*/},
+      morestring=[b]',
+      morestring=[b]",
+      alsoletter={:},
+      alsodigit={-}
+    }
+
+\begin{document}
+
+\begin{titlepage}
+    \author{Tuur Vanhoutte}
+    \title{Interaction design}
+\end{titlepage}
+
+\pagenumbering{gobble}
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+
+\pagenumbering{arabic}
+
+\section{CSS Variables}
+
+\subsection{Wat?}
+
+\begin{itemize}
+    \item CSS custom properties for cascading variables.
+    \item CSS Variables = Custom Properties.
+    \item Relatief nieuwe manier om veelgebruikte values om te zetten naar Variables.
+    \item To keep consistency, set global variables for everything except layout values.
+\end{itemize}
+
+\subsection{Opbouw \& Syntax}
+
+\subsubsection{Custom property: defining the variable}
+Custom property: value
+
+\begin{lstlisting}[language=CSS]
+--my-cool-color: HotPink;
+\end{lstlisting}[language=CSS]
+
+\subsubsection{Cascading variable: applying the variable}
+
+Applying your custom property using the var() function
+
+\begin{lstlisting}[language=CSS]
+var(--my-cool-color)
+\end{lstlisting}[language=CSS]
+
+\subsection{Syntax}
+
+\begin{lstlisting}[language=CSS]
+:root {
+    --my-cool-color: HotPink;
+}
+
+p {
+    color: var(--my-cool-color);
+}
+
+.foo {
+    background-color: var(--my-cool-color);
+}
+\end{lstlisting}[language=CSS]
+
+\subsubsection{CSS Variables Are Case Sensitive}
+
+\begin{lstlisting}[language=CSS]
+:root {
+    --foo: HotPink;
+    --FOO: #BADA55;
+}
+p {
+    color: var(--foo);
+}
+.foo {
+    background-color: var(--FOO);
+}
+\end{lstlisting}[language=CSS]
+
+
+\subsubsection{This is wrong}
+
+\begin{lstlisting}[language=CSS]
+.test {
+    --side: margin-top;
+    var(--side): 20px
+}
+\end{lstlisting}[language=CSS]
+
+\subsubsection{Use the calc() function to do math}
+
+\begin{lstlisting}[language=CSS]
+:root {
+    --whitespace: 20px;
+    --whitespace-lg: var(--whitespace) * 2; /* won't work */
+    --whitespace-lg: calc(var(--whitespace) * 2); /* correct */
+}
+\end{lstlisting}[language=CSS]
+
+\subsubsection{Kan ook shorthand values bevatten}
+
+\begin{lstlisting}[language=CSS]
+:root {
+    --transition: all .1s ease-out;
+}
+a {
+    transition: var(--transition);
+}   
+\end{lstlisting}[language=CSS]
+
+\subsubsection{Kan ook bestaan uit andere variables.}
+
+\begin{lstlisting}[language=CSS]
+:root {
+    --transition-property: all;
+    --transition-duration: .1s;
+    --transition-timing-function: ease-out;
+    --transition: var(--transtion-property) 
+        var(--transition-duration) 
+        var(--transition-timing-function);
+}
+
+a {
+    transition: var(--transition);
+}
+\end{lstlisting}[language=CSS]
+
+\subsubsection{Default values}
+
+\begin{lstlisting}[language=CSS]
+.c-button {
+    border: 1px solid var(--button-color, HotPink);
+    background-color: transparent;
+}
+.c-button:hover {
+    background-color: var(--button-color, HotPink);
+}
+.c-button--beta {
+    --button-color: #BADA55;
+}
+\end{lstlisting}[language=CSS]
+
+\subsubsection{Default values with other variables}
+
+\begin{lstlisting}[language=CSS]
+:root {
+    --color-pink: HotPink;
+    --color-badass: #BADA55;
+}
+.c-button {
+    border: 1px solid var(--button-color, var(--color-pink));
+}
+.c-button:hover {
+    background-color: var(--button-color, var(--color-pink));
+}
+.c-button--beta {
+    --button-color: var(--color-badass);
+\end{lstlisting}[language=CSS]
+
+\subsection{Cascade}
+CSS Variables Are Subject to the Cascade and Inheritance rules
+
+\url{https://codepen.io/simoncoudeville-nmct/pen/BaBMGPZ}
+
+\begin{lstlisting}[language=CSS]
+:root {
+    --my-cool-color: HotPink;
+}
+/* Alle elementen binnen de root waar je --
+my-cool-color variable toepast zullen de
+value HotPink overerven. */
+
+p {
+color: var(--my-cool-color);
+}
+
+.foo {
+/* Elke paragraaf in het element met
+de class ".foo" krijgt de kleur #BADA55.*/
+
+--my-cool-color: #BADA55;
+}
+\end{lstlisting}[language=CSS]
+
+\url{https://codepen.io/simoncoudeville-nmct/pen/aboMBop}
+
+\subsubsection{CSS variables can be made conditional with @media and other conditional rules}
+
+\begin{lstlisting}[language=CSS]
+:root {
+    --whitespace: 1em;
+}
+@media screen and (min-width: 768px) {
+    :root {
+        --whitespace: 2em;
+    }
+}
+.c-card {
+    padding: var(--whitespace);
+}
+
+\end{lstlisting}[language=CSS]
+
+
+\url{https://codepen.io/simoncoudeville-nmct/pen/JjXaQwB}
+
+\subsubsection{Ideal for dark themes}
+
+\begin{lstlisting}[language=CSS]
+:root {
+    --color: white;
+    --background-color: black
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+    --color: black;
+    --background-color: white
+    }
+}
+.html {
+    background-color: var(--background-color);
+    color: var(--color);
+}
+\end{lstlisting}[language=CSS]
+
+\url{https://codepen.io/simoncoudeville-nmct/pen/eYOxbPp}
+
+\subsection{Hoisting}
+= Accessing a Variable First and Declaring Later
+
+\begin{lstlisting}[language=CSS]
+body{
+    background: var(--bg-fill);
+}
+:root{
+    --bg-fill: green;
+}
+
+\end{lstlisting}[language=CSS]
+
+\subsection{Scoped variables}
+
+Twee soorten:
+\begin{itemize}
+    \item Global Scoped Variables
+    \item Local Scoped Variables
+\end{itemize}
+
+\subsubsection{Global scoped variables}
+
+\begin{lstlisting}[language=CSS]
+:root {
+    --global-color: black;
+}
+\end{lstlisting}[language=CSS]
+\begin{itemize}
+    \item :root is a CSS pseudo-class selector used to select the element that represents the root of the document.
+    \item :root is hetzelfde als html maar is specifieker
+    \item :root = html
+    \item :root > html
+\end{itemize}
+
+\url{https://codepen.io/simoncoudeville-nmct/pen/OJLBKXq}
+
+Global variables kan je overal hergebruiken en overschrijven. Ideaal dus voor values die veel hergebruikt worden:
+
+\begin{itemize}
+    \item colors
+    \item whitespace
+    \item border-radius
+    \item transitions
+    \item \dots
+\end{itemize}
+
+\subsubsection{Local scoped variables}
+\begin{itemize}
+    \item Local scoped variables worden gedeclareerd binnen een specifieke selector.
+    \item Local scoped variables hebben access tot global scoped variables.
+    \item Ideaal voor components.
+\end{itemize}
+
+\begin{lstlisting}[language=CSS]
+.alert {
+    --alert-color: #222;
+    color: var(--alert-color);
+    border-color: var(--alert-color);
+}
+:root {
+    --global-fontSize: 16px;
+}
+.c-button {
+    --button-fontSize: var(--global-fontSize);
+    font-size: var(--button-fontSize);
+}
+\end{lstlisting}[language=CSS]
+
+
+\subsection{Naming system}
+
+\subsubsection{The two-level theming system}
+
+Systeem om global variables te gebruiken in local variables.
+
+\subsubsection{Global level}
+
+De hoofdreden om global variables te hebben is consistentie.
+
+They are prefixed with the word global and follow this formula:
+
+-{}-global-{}-concept-{}-modifier-{}-state-{}-propertyCamelCase
+
+\begin{itemize}
+    \item a concept is something like a spacer, main-title or text
+    \item a state is something like hover, or expanded
+    \item a modifier is something like sm, or lg
+    \item and a propertyCamelCase is something like backgroundColor or fontSize
+\end{itemize}
+
+\subsubsection{Local level}
+
+They follow this formula: 
+
+-{}-block\_\_element-{}-modifier-{}-state-{}-propertyCamelCase
+
+\begin{itemize}
+    \item The block\_\_element-{}-modifier selector name is something like alert\_\_actions or alert--primary
+    \item a state is something like hover or active
+    \item The value of component scoped variables is always defined by a global variable.
+\end{itemize}
+
+
+\begin{lstlisting}[language=CSS]
+.c-alert {
+    /* Component scoped variables are always defined by global variables */
+    --c-alert--Padding: var(--global--spacer--md);
+    --c-alert--primary--BackgroundColor: var(--global--primary-color);
+    --c-alert__title--FontSize: var(--global--secondary-title--fontSize);
+    /* --block--propertyCamelCase */
+    padding: var(--c-alert--padding);
+}
+
+/* --block--state--propertyCamelCase */
+.c-alert--primary {
+    background-color: var(--c-alert--primary--backgroundColor);
+}
+
+/* --block__element--propertyCamelCase */
+.c-alert__title {
+    font-size: var(--c-alert__title--fontSize);
+}
+\end{lstlisting}[language=CSS]
+
+\subsection{Herhalingsvragen}
+
+\begin{itemize}
+    \item Hoe worden CSS variables nog genoemd?
+    \item Hoe worden CSS variables opgebouwd?
+    \item Wat is CSS Hoisting?
+    \item Wat is het verschil tussen global en local variables?
+\end{itemize}
+
+\url{https://codepen.io/simoncoudeville-nmct/pen/vYBbbXz?editors=1100}
+
+\end{document}
