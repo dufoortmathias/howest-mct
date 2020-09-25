@@ -123,11 +123,14 @@
 
 \url{https://en.wikipedia.org/wiki/Information_security#Availability}
 
+\subsubsection{Voorbeelden}
+
+TODO
+
 \subsection{Bedreiging vs kwetsbaarheid}
-Bedreiging (threat)
+\bold{Bedreiging (threat)} = potenti"ele negatieve actie dat een ongewenste impact heeft op een computersysteem of applicatie.
 
-Kwetsbaarheid (vulnerability)
-
+\bold{Kwetsbaarheid (vulnerability)} = zwak punt in een computersysteem of applicatie die kan worden ge"exploiteerd. 
 
 \subsubsection{Bedreigde doelen}
 \begin{itemize}
@@ -142,6 +145,211 @@ Kwetsbaarheid (vulnerability)
     \caption{}
 \end{figure}
 
+\section{Bedreigingen}
+
+\begin{itemize}
+    \item Vallen 1 of meerdere doelen aan
+    \item Kunnen toevallig of kwaadwillig beraamd zijn
+    \item Gaan uit van `agenten' (personen/organistaties) of gebeurtenissen
+\end{itemize}
+
+\subsection{Voorbeelden}
+
+\begin{itemize}
+    \item Phishing
+    \item Smishing
+    \item Vishing
+    \item Money rules
+    \item Malware
+    \item Hardware uit onbetrouwbare bron
+    \item Social engineering
+    \item \dots
+\end{itemize}
+
+\subsection{Types}
+
+\begin{itemize}
+    \item Systeemfouten
+    \item Gebeurtenissen
+    \begin{itemize}
+        \item Brand
+        \item Stroomuitval
+    \end{itemize}
+    \item Intern
+    \begin{itemize}
+        \item Diefstal
+        \item Wraak
+    \end{itemize}
+    \item Extern
+    \begin{itemize}
+        \item `Hackers'
+        \item Spionage
+    \end{itemize}
+\end{itemize}
+
+\subsection{Phishing}
+
+\begin{itemize}
+    \item Oplichting over email
+    \item Vaak onwaarschijnlijk verhaal
+    \item Vaak herkenbaar malifide links
+    \item Soms bijzonder moeilijk herkenbaar
+    \item Is de meest voorkomende vorm van fraude
+    \item Is de meest uitgebuite kwetsbaarheid van een organisatie
+    \item Zo veel mogelijk mensen bereiken, hopen dat een paar mensen toehappen.
+\end{itemize}
+
+\subsubsection{Geavanceerde vormen van phishing}
+
+\begin{itemize}
+    \item Spear phishing
+    \begin{itemize}
+        \item doelgerichter
+        \item specifiek
+        \item afzender spoofen naar iemand die het slachtoffer persoonlijk kent, slachtoffer aanspreken met echte naam
+    \end{itemize}
+    \item Double barrel attack
+    \begin{itemize}
+        \item Double barrel = tweeloopsgeweer
+        \item Twee emails sturen: 1 heel duidelijk spam, de andere een reactie van de organisatie (bvb bank) die vraagt om op te letten voor phishing mails. 
+        \item De tweede mail bevat vaak een link om je wachtwoord te veranderen $\Rightarrow$ link naar valse site
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Andere vormen van phishing}
+
+\begin{itemize}
+    \item Bank card phishing
+    \item CEO-Fraude
+    \begin{itemize}
+        \item Impersoneren van een CEO om in zijn/haar naam een actie te verrichten
+        \item Bvb: leverancier contacteren om betaling op ander rekening nummer te storten
+    \end{itemize}
+    \item Factuurfraude
+    \begin{itemize}
+        \item Vroeger: een echte factuur uit een brievenbus nemen, rekeningnummer veranderen en opnieuw in de bus doen
+        \item Tegenwoordig: valse facturen opsturen via email
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Phishing herkennen}
+\begin{itemize}
+    \item Afzender controleren
+    \item Taalgebruik
+    \item Datum controleren: in het weekend moeilijker om om hulp te vragen aan de echte organisatie 
+    \item Slachtoffer afschrikken met gerechtelijke stappen ondernemen
+    \item Specifieren van extra informatie (bv: u heeft op maandag 01/02/2020 om 16:04 \textit{x} gedaan, daarom moet u nu \textit{y} betalen)
+    \item Slachtoffer moet stappen ondernemen om de situatie niet nog erger te maken
+    \item Gebruik van legitieme bedrijven om de transactie te voltooien (bv iTuneskaarten, Google Play kaarten, www.becharge.be)
+\end{itemize}
+
+
+\subsection{Smishing}
+Oplichting via: \dots
+\begin{itemize}
+    \item SMS
+    \item Whatsapp
+    \item Facebook
+    \item \dots
+\end{itemize}
+
+\subsection{Vishing}
+= Voice Sollicitation 
+
+\begin{itemize}
+    \item Mensen bellen je op en maken je wijs dat ze u willen helpen om een probleem op te lossen
+    \item Vaak pc overnemen met teamviewer en dergelijke
+    \item Geld vragen om pc te `herstellen'
+    \item Zie ook: refund scams, IRS scams, \dots
+\end{itemize}
+
+\subsection{Money mule}
+= iemand die zijn/haar bankrekening laat misbruiken voor criminele activiteiten. 
+
+\begin{itemize}
+    \item De crimineel contacteert het slachtoffer met een jobaanbieding
+    \item De job bestaat uit het overschrijven van bedragen via zijn/haar bankrekening
+    \item Voor elke overschrijving 
+\end{itemize}
+
+\subsection{Malware}
+= Software met als doel kwaad te berokkenen
+
+\begin{itemize}
+    \item Trojan
+    \item Adware
+    \item Virus / worm
+    \item Ransomware
+    \item Browser Malware
+    \item Ook op smartphone
+\end{itemize}
+
+\subsection{Ransomware}
+Maakt de data op je PC onbruikbaar tot je losgeld betaalt aan de criminelen.
+
+\begin{itemize}
+    \item `Kidnappen' van bestanden: bestanden openen niet langer mogelijk
+    \item Poging tot innen van losgeld
+    \item Vaak via phishing
+    \item Enkel een backup van de gegevens kan voldoende beschermen
+\end{itemize}
+
+\subsubsection{Voorbeelden}
+
+\begin{itemize}
+    \item Wildfire\_locker
+    \item Wannacry
+    \item Cryptolocker
+    \item Bad Rabbit
+\end{itemize}
+
+\subsection{Hardware uit onbetrouwbare bron}
+\begin{itemize}
+    \item USB Rubber ducky
+    \begin{itemize}
+        \item USB-stick die ergens gedropt wordt (= drop attack), het slachtoffer vindt de USB stick en stopt hem in zijn/haar computer (bvb uit nieuwsgierigheid).
+        \item De USB stick werkt als een toetsenbord en typt een attack script op de pc van het slachtoffer
+        \item Doel: volledige controle over PC, met bvb remote access (RAT = Remote Access Tool).
+    \end{itemize}
+\end{itemize}
+
+\subsection{Vreemde netwerken}
+\begin{itemize}
+    \item Openbare netwerken kunnen worden afgeluisterd
+    \item Verkeer op niet-vertrouwde netwerken kan worden omgeleid
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{vreemde-netwerken.png}
+    \caption{Vreemde netwerken}
+\end{figure}
+
+\subsection{Social engineering}
+Een techniek waarbij een crimineel een aanval op computersystemen tracht te ondernemen door de zwakste schakel in de computerbeveiliging, namelijk de mens, te kraken.
+
+
+\subsection{Bedreigingen `Agenten'}
+
+\begin{itemize}
+    \item Entiteiten waarvan de bedreiging uitgaat
+    \item Zijn intern of extern aan het bedrijf
+    \item Kwetsbaarheid voor een agent wordt bepaald door zijn: 
+    \begin{itemize}
+        \item Toegangsniveau
+        \item Kennis
+        \item Motivatie
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{De ontslagen werknemer}
+\begin{itemize}
+    \item Heeft toegang (nog steeds?) tot de organisatie
+    \item Heeft kennis over de werking van de organisatie
+    \item Heeft een sterke negatieve motivatie
+\end{itemize}
+
+\subsubsection{De `hacker'}
 
 
 \end{document}
