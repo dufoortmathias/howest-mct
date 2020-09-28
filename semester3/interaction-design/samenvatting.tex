@@ -473,4 +473,521 @@ They follow this formula:
 
 \url{https://codepen.io/simoncoudeville-nmct/pen/vYBbbXz?editors=1100}
 
+\section{Forms}
+
+\subsection{Form}
+\begin{itemize}
+    \item HTML forms are a very powerful tool for interacting with users
+    \item Groot deel van een digitale interface
+    \item In veel vormen en maten
+\end{itemize}
+
+\subsubsection{Voorbeelden}
+\begin{itemize}
+    \item Nieuwe repo maken op github
+    \item Profiel aanmaken
+    \item Route kiezen DeLijn
+    \item \dots
+\end{itemize}
+
+\subsubsection{Basic form syntax}
+
+\begin{lstlisting}[language=HTML]
+<form action="">
+    <input type="">
+    ...
+    Submit
+</form>
+\end{lstlisting}
+
+\bold{Maak geen forms zonder (submit) button!} Zonder (submit) button kan je niet op enter duwen
+
+\subsection{Input types}
+
+\begin{itemize}
+    \item Alle input types: \url{https://www.w3schools.com/tags/att_input_type.asp}
+    \item Dit zijn de belangrijkste types die je moet kennen:
+    \begin{itemize}
+        \item Text-achtigen
+        \item Time-achtigen
+        \item Option-achtigen
+        \item Textarea
+        \item Select
+        \item Range
+        \item Hors catégorie
+    \end{itemize} 
+\end{itemize}
+
+\subsubsection{HTML5 input types}
+
+\begin{itemize}
+    \item Browser validatie
+    \item Smartphone keyboard verandert
+    \item Testen op je smartphone: 
+    
+    \url{https://mobiforge.com/design-development/html5-mobile-
+    web-forms-and-input-types}
+    \item Live demo: \url{https://codepen.io/simoncoudeville-nmct/pen/gQYqBY}
+\end{itemize}
+
+\subsubsection{Text-achtigen}
+
+\begin{itemize}
+    \item Zien er visueel ongeveer hetzelfde uit
+    \item Op smartphones: keyboard veranderd op basis van welk type de input is
+    \item \bold{text} - basis input type voor HTML5 input types
+    \item \bold{password} - vervangt de letters door bolletjes
+    \item \bold{email} - valideert de browser enkel als je een correct e-mail adres invult
+    \item \bold{number}
+    \begin{itemize}
+        \item Aanvaardt enkel nummers
+        \item Heeft pijltjes om te vermeerderen of te verminderen
+    \end{itemize}
+    \item \bold{tel} - telefoonnummers
+\end{itemize}
+
+\subsubsection{Time-achtigen}
+
+\begin{itemize}
+    \item Zien er visueel ongeveer hetzelfde uit als de text-achtigen
+    \item date - toont een native date picker
+    \item week - toont een variant van de native date picker
+    \item month - toont een variant van de native date picker
+    \begin{itemize}
+        \item Vooral date zal je kunnen gebruiken.
+    \end{itemize}
+    \item number - aanvaardt enkel nummers
+    \item tel - handig voor mobile
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{input-date-time.png}
+    \caption{<input type="date"> en <input type="time"> op smartphones}
+\end{figure}
+
+\subsubsection{Option-achtigen}
+
+\bold{checkbox}
+
+\begin{itemize}
+    \item Meerdere keuzes mogelijk uit een aantal keuzes
+    \item Of kan alleen bestaan
+\end{itemize}
+
+\bold{radio(button)}
+
+\begin{itemize}
+    \item Slechts 1 keuze mogelijk uit een aantal keuzes
+    \item Kan niet alleen bestaan, altijd in en group
+    \item Gekoppeld aan elkaar door het name attribuut
+    \item Niet voor enkele binaire keuzes
+    \item Kan je ook customizen met CSS
+\end{itemize}
+
+Geschiedenis van de radio-button: \url{https://www.jitbit.com/radio-button/}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{radiobuttons.png}
+    \includegraphics[width=0.3\textwidth]{checkboxes.png}
+    \caption{}
+\end{figure}
+
+\bold{Laat een checkbox er nooit uitzien als een radio button en omgekeerd!}
+
+\subsection{Checkbox or toggle?}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.2\textwidth]{toggle-switch.png}
+    \caption{Links: toggle switch, rechts: checkbox}
+\end{figure}
+
+\subsubsection{Checkbox}
+\begin{itemize}
+    \item Checked of niet
+    \item Heeft nog confirmatie nodig
+    \item Meerdere opties die bij elkaar horen
+    \item Checken van sub options (intermediate state)
+    \item Enkele ja/nee optie
+\end{itemize}
+
+\subsubsection{Toggle switch = veredelde checkbox}
+\begin{itemize}
+    \item Aan of af zetten
+    \item Instant response zonder confirmatie
+    \item Afzonderlijke features of settings
+    \item Enkele aan/af beslissing
+\end{itemize}
+
+\subsubsection{Voorbeelden}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{toggle-ex-1.png}
+    \caption{De opties die een directe reactie vereisen kunnen het best geselecteerd worden met een toggle switch.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{toggle-ex-2.png}
+    \caption{Checkboxes hebben de voorkeur wanneer een expliciete actie vereist is om instellingen toe te passen.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{toggle-ex-3.png}
+    \caption{Selecteren van meerdere opties in een lijst biedt betere ervaring met checkboxes.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{toggle-ex-4.png}
+    \caption{Indeterminate state wordt het best voorgesteld met een checkbox. (zie `All' aan de linkerkant)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{toggle-ex-5.png}
+    \caption{Afzonderlijke features of settings zijn dan weer logischer met toggle switches.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{toggle-ex-6.png}
+    \caption{Een enkele ja/nee optie is logischer met een checkbox.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{toggle-ex-7.png}
+    \caption{Een enkele aan/af beslissing is logischer met een toggle switch.}
+\end{figure}
+
+\subsubsection{Toggle Switch of Toggle Button?}
+
+\bold{Toggle buttons = soort van veredelde radio button of meerdere buttons}
+
+\begin{itemize}
+    \item Contextual state
+    \item Heeft invloed op het huidige scherm
+    \item Opposing options
+\end{itemize}
+
+
+\bold{Toggle switch = veredelde checkbox}
+\begin{itemize}
+    \item System state
+    \item Heeft invloed op de volledige app
+    \item Binary options
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{toggle-buttons.png}
+    \caption{}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{toggle-buttons2.png}
+    \caption{Switches are for binary options, not opposing options.}
+\end{figure}
+
+\subsection{Textarea}
+\begin{itemize}
+    \item <textarea>
+    \item Geen input type, apart element
+    \item Multi-line text input control
+    \item De gebruiker kan optioneel de grootte aanpassen van het tekstvak
+\end{itemize}
+
+\subsection{Select}
+\begin{itemize}
+    \item <select>
+    \item Geen input type, apart element
+    \item dropdown list
+    \item De <option> tags binnen het <select> element definieren de beschikbare options in de lijst
+    \item \bold{Native select} behouden als je designt: geen eigen element proberen te maken $\Rightarrow$ gebruiksvriendelijker op smartphone.
+\end{itemize}
+
+\subsection{Range}
+\begin{itemize}
+    \item Slider control
+    \item Voor nummers
+    \item Default range van 0 tot 100
+    \begin{itemize}
+        \item restrictions zijn mogelijk met max, min en step attributes
+    \end{itemize}
+\end{itemize}
+
+\subsection{Hors catégorie}
+\begin{itemize}
+    \item \bold{file} - file upload
+    \item \bold{hidden} - voor developers
+    \item \bold{color} - toont een color picker
+\end{itemize}
+
+
+\subsection{Attributes}
+= Eigenschappen van de input
+
+\begin{itemize}
+    \item bv: type, value, id, name, \dots
+    \item Alle attributes: \url{https://www.w3schools.com/html/html_form_attributes.asp}
+\end{itemize}
+
+\subsubsection{Minimum attributes}
+\begin{itemize}
+    \item \bold{type} - defineert het type input (duh!)
+    \item \bold{name}
+    \begin{itemize}
+        \item Voor developers
+        \item Zorgt er voor dat je weet wat je waar ingevuld hebt
+        \item Ook om radio buttons aan elkaar te koppelen
+        \item \bold{Dus altijd een name voorzien!}
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Veelgebruikte attributes}
+
+\begin{itemize}
+    \item \bold{value}
+    \begin{itemize}
+        \item Kan je gebruiken om een default value in te geven
+        \item Indien leeg wordt dit wat je hebt ingevuld
+    \end{itemize}
+    \item \bold{placeholder}
+    \begin{itemize}
+        \item hint
+        \item voorbeeld van de wat de value moet zijn
+        \item Verdwijnt automatisch als je begint te typen
+        \item Placeholder nooit gebruiken als alternatief voor een label!
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{veelgebruikte-attributes.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Lege attributes}
+
+\begin{itemize}
+    \item Hebben geen value
+    \item Zijn waar of onwaar
+    \item CSS pseudo classes
+    \item Veel gebruikt:
+    \begin{itemize}
+        \item \bold{Checked} - radio options \& checkboxes
+        \item \bold{Required} - voor browservalidatie
+        \item \bold{Disabled} - kan je niet aanpassen en wordt ook niet gesubmit
+        \item \bold{Readonly} - kan je niet aanpassen maar wordt wel gesubmit
+        \item \bold{Autofocus} - focust automatisch op het input type
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{lege-attributes.png}
+    \caption{required}
+\end{figure}
+
+
+\subsection{Labels}
+\begin{itemize}
+    \item Gekoppeld aan een input
+    \item Usability improvement: toggles the input
+    \item Elke input moet een label hebben!
+    \item Niet vervangen door placeholder!
+    \begin{itemize}
+        \item In een lang ingevuld formulier weet je op den duur niet meer wat je waar moet invullen
+        \item Alternatief: floating label pattern:
+        \item \url{https://dribbble.com/shots/3429471-Floating-label-input-field}
+        \item \url{https://codepen.io/soulrider911/pen/ugnyl}
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Label koppelen aan input - Manier 1}
+
+\begin{itemize}
+    \item Met for en id
+    \item Label text is apart aanspreekbaar met CSS.
+\end{itemize}
+
+\begin{lstlisting}[language=HTML]
+<label for="input_id">label text</label>
+<input type="text" name="whatever" id="input_id">
+\end{lstlisting}
+
+
+
+\subsubsection{Label koppelen aan input - Manier 2}
+\begin{itemize}
+    \item Geen for en id nodig (maar wel altijd aangeraden)
+    \item Label text is niet aanspreekbaar met CSS.
+\end{itemize}
+
+\begin{lstlisting}[language=HTML]
+    <label>
+        label text
+        <input type="text" name="whatever" id="input_id">
+    </label>
+    \end{lstlisting}
+
+
+\subsection{Buttons}
+\bold{Elk formulier moet een button hebben! (Binnen de form tag)}
+
+\subsubsection{Als input type}
+
+\begin{lstlisting}[language=HTML]
+<input type="submit" value="verzenden">
+<input type="button" value="verzenden">
+\end{lstlisting}
+
+\subsubsection{Als button element}
+
+\begin{lstlisting}[language=HTML]
+<button>verzenden</button>
+\end{lstlisting}
+
+\bold{Gebruik het button element!}
+
+\begin{lstlisting}[language=HTML]
+<button class="c-button">
+    <span class="c-button__label">Verzenden</span>
+    <svg class="c-button__symbol>...</svg>
+</button>
+\end{lstlisting}
+
+\subsection{States}
+\begin{enumerate}
+    \item :hover
+    \item :active
+    \item :focus
+\end{enumerate}
+
+Deze volgorde in de CSS is zeer belangrijk!
+
+\url{https://codepen.io/simoncoudeville-nmct/pen/oNxJbea}
+
+\subsubsection{:hover}
+
+CSS declarations worden geactiveerd\dots
+
+\begin{itemize}
+    \item Op pc: wanneer een gebruiker de muis over een element beweegt.
+    \item Op mobiele toestellen: als een gebruiker een element "induwt" en "loslaat" en er geen specifieke focus of active styles zijn gedeclareerd of als :hover na :focus of :active komt.
+\end{itemize}
+
+\subsubsection{:active}
+
+\begin{itemize}
+    \item CSS declarations worden geactiveerd wanneer een gebruiker met de muis klikt.
+    \item CSS declarations worden geactiveerd op mobiele toestellen als een gebruiker een element "induwt".
+    \item Extra feedback feedback
+\end{itemize}
+
+\subsubsection{:focus}
+\begin{itemize}
+    \item Focus toont duidelijk welk element op de pagina keyboard events kan ontvangen
+    \item Het element dat gefocust is heeft een duidelijke focus ring of outline of een andere visuele clue die de designer voorzien heeft.
+    \item Welk element gefocust is kan je bedienen met het keyboard via tab of shift tab
+    \item De volgorde is de tab order
+    \item Interactieve HTML elementen zoals input, buttons, links zijn impliciet focusbaar. Ze worden automatisch aan de tab order toegevoegd.
+    \item Paragrafen, divs, images enz\dots zijn niet focusbaar
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{focus.png}
+    \includegraphics[width=0.2\textwidth]{focus2.png}
+    \caption{}
+\end{figure}
+
+\begin{itemize}
+    \item Voorbeeld van een form waar je niet op kan klikken, te bedienen met de tab-toets
+    \item \url{http://udacity.github.io/ud891/lesson2-focus/01-basic-form/}
+    \item Probeer eens een ticket te boeken voor\dots
+    \begin{itemize}
+        \item een round trip
+        \item van Sydney naar Melbourne
+        \item van 12 oktober tot 23 oktober 2018
+        \item aan het venster
+        \item en je wil geen promotionele aanbiedingen
+    \end{itemize}
+    \item Met tab, de pijltjes, spatie voor checkbox, \dots
+\end{itemize}
+
+\subsection{Validation}
+
+\begin{itemize}
+    \item Voorkom dat gebruikers fouten maken
+    \item Als ze dan toch fouten maken en kunnen submitten:
+    \begin{itemize}
+        \item Verzorg duidelijke foutboodschappen
+        \item Zet foutboodschappen inline bij hun input
+    \end{itemize} 
+\end{itemize}
+
+\subsubsection{Client side validation}
+\begin{itemize}
+    \item Voor dat data wordt doorgestuurd naar de server
+    \item Instant response
+    \item HTML5 validation
+    \item \begin{itemize}
+        \item Required, valid \& invalid pseudo classes om instant te tonen of het juist is of niet.
+        \item \url{https://codepen.io/chriscoyier/pen/JXgKjb}
+    \end{itemize}
+    \item + Javascript validation omdat je html kan aanpassen in developers tools
+\end{itemize}
+
+\subsubsection{Server side validation}
+\begin{itemize}
+    \item Voordat het opgeslaan wordt in de database
+    \item Laatste
+\end{itemize}
+
+\subsubsection{Voorbeelden}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{validation1.png}
+    \includegraphics[width=0.45\textwidth]{validation2.png}
+    \caption{}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{validation3.png}
+    \caption{}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{validation4.png}
+    \includegraphics[width=0.45\textwidth]{validation5.png}
+    \caption{Waar validation gebruiken?}
+\end{figure}
+
+
+\subsection{Extra (geen vragen op examen)}
+\subsubsection{States}
+\url{https://zellwk.com/blog/style-hover-focus-active-states/}
+
+
+\subsubsection{HTML5 form validation}
+\url{https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Form_validation}
+
+\subsubsection{Best practices}
+
+\begin{itemize}
+    \item \url{https://www.smashingmagazine.com/2018/08/best-practices-for-mobile-form-design}
+    \item \url{https://uxplanet.org/10-rules-for-efficient-form-design-e13dc1fb0e03}
+    \item \url{https://uxmovement.com/mobile/stop-misusing-toggle-switches}
+    \item \url{https://www.bram.us/2019/01/18/building-better-forms-by-not-taking-away-affordances}
+\end{itemize}
+
 \end{document}
+
