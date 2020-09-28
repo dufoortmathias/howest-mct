@@ -329,11 +329,11 @@ Maakt de data op je PC onbruikbaar tot je losgeld betaalt aan de criminelen.
 Een techniek waarbij een crimineel een aanval op computersystemen tracht te ondernemen door de zwakste schakel in de computerbeveiliging, namelijk de mens, te kraken.
 
 
-\subsection{Bedreigingen `Agenten'}
+\subsection{Bedreigingen: `Agenten'}
 
 \begin{itemize}
     \item Entiteiten waarvan de bedreiging uitgaat
-    \item Zijn intern of extern aan het bedrijf
+    \item Zijn intern (=werknemers) of extern aan het bedrijf
     \item Kwetsbaarheid voor een agent wordt bepaald door zijn: 
     \begin{itemize}
         \item Toegangsniveau
@@ -350,6 +350,161 @@ Een techniek waarbij een crimineel een aanval op computersystemen tracht te onde
 \end{itemize}
 
 \subsubsection{De `hacker'}
+De stereotiepe `hacker':
+\begin{itemize}
+    \item De blueprint opgevoerd door de media
+    \item Is gebaseerd op reele figuren
+    \item Vormt een rolmodel voor een bepaalde subcultuur
+    \item Het woord `hacker' is vaak nietszeggend
+    \item `Script kiddies', `Wannabees', `Crackers'
+    \item Bedreiging groot door grote aantallen
+    \item Hoofddeksels (hacker ethics):
+    \begin{itemize}
+        \item Black hat (=informatiecrimineel, voor persoonlijk gewin)
+        \item White hat (`for the greater good', `etische hacker')
+        \item Gray hat (iets tussen de twee)
+    \end{itemize}
+\end{itemize}
+
+\bold{De `ethical' hacker}
+= iemand die beveiligingen breekt om te tonen dat ze onveilig zijn
+
+\begin{itemize}
+    \item Goed of slecht voor security?
+    \item Vb: security by obscurity (= niemand weet hoe het werkt dus het is veilig $\Rightarrow$ reeds vele malen slecht idee gebleken)
+    \item Penetration testing (= verificatie van beveiliging, maar: mag niet ongevraagd, anders illegaal)
+    \item Soms grijze zone
+    \item Meldingsplicht? Welke wetgeving? 
+    \item Responsible disclosure: firma inlichten ipv volledig internet
+\end{itemize}
+
+\subsection{Bedreigingen: gebeurtenissen}
+
+\begin{itemize}
+    \item Brand
+    \item Stroomuitval
+    \item Overstroming
+    \item Diefstal
+    \item Aanslag
+\end{itemize}
+
+
+\subsection{Threat intelligence}
+
+\begin{itemize}
+    \item `Know your enemy'
+    \item Noodzakelijk om risico in te schatten
+    \item Bijgevolg elementair om te beslissen over opportuniteit van \bold{tegenmaatregelen}
+\end{itemize}
+
+Real-time maps
+
+\begin{itemize}
+    \item \url{https://www.fireeye.com/cyber-map/threat-map.html}
+    \item \url{http://cybermap.kaspersky.com/}
+    \item \url{http://map.ipviking.com/}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{threat-intelligence.png}
+    \caption{Threat intelligence}
+\end{figure}
+
+\section{Beveiligen}
+
+\subsection{Herhaling: kwetsbaarheden}
+
+\begin{itemize}
+    \item Software vulnerabilities
+    \begin{itemize}
+        \item Geen updates
+        \item Foutief patch management
+    \end{itemize}
+    \item Interne toegang
+    \begin{itemize}
+        \item Misbruik machtigingen
+        \item Wraak / ontslaan van werknemer
+    \end{itemize}
+    \item Extern bereikbare diensten
+    \item Phishing / spear phishing
+    \begin{itemize}
+        \item The human factor
+        \item Meest gebruikte entrypoint
+        \item Email (SMTP) is niet geauthentiseerd
+    \end{itemize}
+\end{itemize}
+
+\subsection{Shodan search engine demo}
+
+\begin{itemize}
+    \item \url{http://www.shodanhq.com}
+    \item Zoekt naar geconnecteerde devices
+    \item Webcams, videofoons, windturbines, waterkrachtcentrales, PLC's, \dots
+\end{itemize}
+
+
+\subsection{ICT security}
+\begin{itemize}
+    \item Is zeer complex
+    \item Omvat erg veel, zeer diverse kennisdomeinen
+    \item Wordt erg vaak over-gesimplificeerd
+\end{itemize}
+
+\subsubsection{Usability vs Security}
+\bold{Extremen:}
+
+\begin{itemize}
+    \item Totale security is enkel mogelijk bij onbestaande usability
+    \item Optimale usability is enkel mogelijk bij onbestaande security
+\end{itemize}
+
+"In any implementation of security controls all three factors:
+
+\begin{enumerate}
+    \item Security 
+    \item Functionality
+    \item Ease of Use
+\end{enumerate}
+
+are to be carefully considered; searching for the balanced trade-off for all stakeholders."
+
+Een bruikbare infrastructuur kan nooit 100\% veilig zijn $\Rightarrow$ voorzichtig afwegen van alle parameters en belangen
+
+\subsection{Tegenmaatregelen (mitigation)}
+
+\begin{itemize}
+    \item Corporate policy  - Training  - Awareness
+    \item Coding practices
+    \item Testing (Pentesting)
+    \item Vulnerability management
+    \item Backup
+    \item Disaster recovery plan
+    \item Fysieke Security
+    \item Firewalls / IDS / IPS
+\end{itemize}
+
+\subsubsection{Defense in depth}
+\begin{itemize}
+    \item Layered security
+    \item Strategie bij incident
+    \item Plannen en documenteren
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{layered-security.png}
+    \caption{Layered security}
+\end{figure}
+
+\subsection{ICC / Belgian Cyber Security Guide}
+
+\begin{itemize}
+    \item Checklist
+    \item Do's \& Dont's
+    \item Gratis te downloaden: \url{http://iccbelgium.be/becybersecure/}
+\end{itemize}
+
 
 
 \end{document}
