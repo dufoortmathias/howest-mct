@@ -26,94 +26,101 @@
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
 \definecolor{mymauve}{rgb}{0.58,0,0.82}
- 
-%Customize a bit the look
-\lstset{ %
-backgroundcolor=\color{white}, % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
-basicstyle=\footnotesize, % the size of the fonts that are used for the code
-breakatwhitespace=false, % sets if automatic breaks should only happen at whitespace
-breaklines=true, % sets automatic line breaking
-captionpos=b, % sets the caption-position to bottom
-commentstyle=\color{mygreen}, % comment style
-deletekeywords={...}, % if you want to delete keywords from the given language
-escapeinside={\%*}{*)}, % if you want to add LaTeX within your code
-extendedchars=true, % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
-frame=single, % adds a frame around the code
-keepspaces=true, % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
-keywordstyle=\color{blue}, % keyword style
-% language=Octave, % the language of the code
-morekeywords={*,...}, % if you want to add more keywords to the set
-numbers=left, % where to put the line-numbers; possible values are (none, left, right)
-numbersep=5pt, % how far the line-numbers are from the code
-numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
-rulecolor=\color{black}, % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
-showspaces=false, % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
-showstringspaces=false, % underline spaces within strings only
-showtabs=false, % show tabs within strings adding particular underscores
-stepnumber=1, % the step between two line-numbers. If it's 1, each line will be numbered
-stringstyle=\color{mymauve}, % string literal style
-tabsize=2, % sets default tabsize to 2 spaces
-title=\lstname % show the filename of files included with \lstinputlisting; also try caption instead of title
+\definecolor{lightgray}{rgb}{0.95, 0.95, 0.95}
+\definecolor{darkgray}{rgb}{0.4, 0.4, 0.4}
+\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
+
+
+\lstset{%
+    % General design
+    backgroundcolor=\color{lightgray},
+    basicstyle={\small\ttfamily},   
+    frame=l,
+    % Code design
+    identifierstyle=\color{black},
+    keywordstyle=\color{blue}\bfseries,
+    ndkeywordstyle=\color{greenCode}\bfseries,
+    stringstyle=\color{red}\ttfamily,
+    commentstyle=\color{darkgray}\ttfamily,
+    % Code
+    tabsize=4,
+    showtabs=false,
+    showspaces=false,
+    showstringspaces=false,
+    extendedchars=true,
+    breaklines=true,
+    % line-numbers
+    xleftmargin={0.75cm},
+    numbers=left,
+    stepnumber=1,
+    firstnumber=1,
+    numberfirstline=true,
 }
-%END of listing package%
 
 \lstdefinelanguage{CSS}{
-      keywords={accelerator,azimuth,background,background-attachment,
-            background-color,background-image,background-position,
-            background-position-x,background-position-y,background-repeat,
-            behavior,border,border-bottom,border-bottom-color,
-            border-bottom-style,border-bottom-width,border-collapse,
-            border-color,border-left,border-left-color,border-left-style,
-            border-left-width,border-right,border-right-color,
-            border-right-style,border-right-width,border-spacing,
-            border-style,border-top,border-top-color,border-top-style,
-            border-top-width,border-width,bottom,caption-side,clear,
-            clip,color,content,counter-increment,counter-reset,cue,
-            cue-after,cue-before,cursor,direction,display,elevation,
-            empty-cells,filter,float,font,font-family,font-size,
-            font-size-adjust,font-stretch,font-style,font-variant,
-            font-weight,height,ime-mode,include-source,
-            layer-background-color,layer-background-image,layout-flow,
-            layout-grid,layout-grid-char,layout-grid-char-spacing,
-            layout-grid-line,layout-grid-mode,layout-grid-type,left,
-            letter-spacing,line-break,line-height,list-style,
-            list-style-image,list-style-position,list-style-type,margin,
-            margin-bottom,margin-left,margin-right,margin-top,
-            marker-offset,marks,max-height,max-width,min-height,
-            min-width,-moz-binding,-moz-border-radius,
-            -moz-border-radius-topleft,-moz-border-radius-topright,
-            -moz-border-radius-bottomright,-moz-border-radius-bottomleft,
-            -moz-border-top-colors,-moz-border-right-colors,
-            -moz-border-bottom-colors,-moz-border-left-colors,-moz-opacity,
-            -moz-outline,-moz-outline-color,-moz-outline-style,
-            -moz-outline-width,-moz-user-focus,-moz-user-input,
-            -moz-user-modify,-moz-user-select,orphans,outline,
-            outline-color,outline-style,outline-width,overflow,
-            overflow-X,overflow-Y,padding,padding-bottom,padding-left,
-            padding-right,padding-top,page,page-break-after,
-            page-break-before,page-break-inside,pause,pause-after,
-            pause-before,pitch,pitch-range,play-during,position,quotes,
-            -replace,richness,right,ruby-align,ruby-overhang,
-            ruby-position,-set-link-source,size,speak,speak-header,
-            speak-numeral,speak-punctuation,speech-rate,stress,
-            scrollbar-arrow-color,scrollbar-base-color,
-            scrollbar-dark-shadow-color,scrollbar-face-color,
-            scrollbar-highlight-color,scrollbar-shadow-color,
-            scrollbar-3d-light-color,scrollbar-track-color,table-layout,
-            text-align,text-align-last,text-decoration,text-indent,
-            text-justify,text-overflow,text-shadow,text-transform,
-            text-autospace,text-kashida-space,text-underline-position,top,
-            unicode-bidi,-use-link-source,vertical-align,visibility,
-            voice-family,volume,white-space,widows,width,word-break,
-            word-spacing,word-wrap,writing-mode,z-index,zoom},  
-      sensitive=true,
-      morecomment=[l]{//},
-      morecomment=[s]{/*}{*/},
-      morestring=[b]',
-      morestring=[b]",
-      alsoletter={:},
-      alsodigit={-}
-    }
+    classoffset=0,
+    keywords={accelerator,azimuth,background,background-attachment,
+    background-color,background-image,background-position,
+    background-position-x,background-position-y,background-repeat,
+    behavior,border,border-bottom,border-bottom-color,
+    border-bottom-style,border-bottom-width,border-collapse,
+    border-color,border-left,border-left-color,border-left-style,
+    border-left-width,border-right,border-right-color,
+    border-right-style,border-right-width,border-spacing,
+    border-style,border-top,border-top-color,border-top-style,
+    border-top-width,border-width,bottom,caption-side,clear,
+    clip,color,content,counter-increment,counter-reset,cue,
+    cue-after,cue-before,cursor,direction,display,elevation,
+    empty-cells,filter,float,font,font-family,font-size,
+    font-size-adjust,font-stretch,font-style,font-variant,
+    font-weight,height,ime-mode,include-source,
+    layer-background-color,layer-background-image,layout-flow,
+    layout-grid,layout-grid-char,layout-grid-char-spacing,
+    layout-grid-line,layout-grid-mode,layout-grid-type,left,
+    letter-spacing,line-break,line-height,list-style,
+    list-style-image,list-style-position,list-style-type,margin,
+    margin-bottom,margin-left,margin-right,margin-top,
+    marker-offset,marks,max-height,max-width,min-height,
+    min-width,-moz-binding,-moz-border-radius,
+    -moz-border-radius-topleft,-moz-border-radius-topright,
+    -moz-border-radius-bottomright,-moz-border-radius-bottomleft,
+    -moz-border-top-colors,-moz-border-right-colors,
+    -moz-border-bottom-colors,-moz-border-left-colors,-moz-opacity,
+    -moz-outline,-moz-outline-color,-moz-outline-style,
+    -moz-outline-width,-moz-user-focus,-moz-user-input,
+    -moz-user-modify,-moz-user-select,orphans,outline,
+    outline-color,outline-style,outline-width,overflow,
+    overflow-X,overflow-Y,padding,padding-bottom,padding-left,
+    padding-right,padding-top,page,page-break-after,
+    page-break-before,page-break-inside,pause,pause-after,
+    pause-before,pitch,pitch-range,play-during,position,quotes,
+    -replace,richness,right,ruby-align,ruby-overhang,
+    ruby-position,-set-link-source,size,speak,speak-header,
+    speak-numeral,speak-punctuation,speech-rate,stress,
+    scrollbar-arrow-color,scrollbar-base-color,
+    scrollbar-dark-shadow-color,scrollbar-face-color,
+    scrollbar-highlight-color,scrollbar-shadow-color,
+    scrollbar-3d-light-color,scrollbar-track-color,table-layout,
+    text-align,text-align-last,text-decoration,text-indent,
+    text-justify,text-overflow,text-shadow,text-transform,
+    text-autospace,text-kashida-space,text-underline-position,top,
+    unicode-bidi,-use-link-source,vertical-align,visibility,
+    voice-family,volume,white-space,widows,width,word-break,
+    word-spacing,word-wrap,writing-mode,z-index,zoom},
+    keywordstyle=\color{blue},
+    classoffset=1,
+    morekeywords={var, --*},
+    keywordstyle=\color{mymauve},
+    classoffset=0,
+    sensitive=true,
+    morecomment=[l]{//},
+    morecomment=[s]{/*}{*/},
+    morestring=[b]',
+    morestring=[b]",
+    moredelim=[is][\bfseries]{/@}{@/}, % Typesets characters between /@ and @/ delimeters in boldface.
+}
+
+
 
 \begin{document}
 
@@ -148,7 +155,7 @@ Custom property: value
 
 \begin{lstlisting}[language=CSS]
 --my-cool-color: HotPink;
-\end{lstlisting}[language=CSS]
+\end{lstlisting}
 
 \subsubsection{Cascading variable: applying the variable}
 
@@ -156,7 +163,7 @@ Applying your custom property using the var() function
 
 \begin{lstlisting}[language=CSS]
 var(--my-cool-color)
-\end{lstlisting}[language=CSS]
+\end{lstlisting}
 
 \subsection{Syntax}
 
@@ -172,7 +179,7 @@ p {
 .foo {
     background-color: var(--my-cool-color);
 }
-\end{lstlisting}[language=CSS]
+\end{lstlisting}
 
 \subsubsection{CSS Variables Are Case Sensitive}
 
@@ -187,7 +194,7 @@ p {
 .foo {
     background-color: var(--FOO);
 }
-\end{lstlisting}[language=CSS]
+\end{lstlisting}
 
 
 \subsubsection{This is wrong}
@@ -197,7 +204,7 @@ p {
     --side: margin-top;
     var(--side): 20px
 }
-\end{lstlisting}[language=CSS]
+\end{lstlisting}
 
 \subsubsection{Use the calc() function to do math}
 
@@ -207,7 +214,7 @@ p {
     --whitespace-lg: var(--whitespace) * 2; /* won't work */
     --whitespace-lg: calc(var(--whitespace) * 2); /* correct */
 }
-\end{lstlisting}[language=CSS]
+\end{lstlisting}
 
 \subsubsection{Kan ook shorthand values bevatten}
 
@@ -218,7 +225,7 @@ p {
 a {
     transition: var(--transition);
 }   
-\end{lstlisting}[language=CSS]
+\end{lstlisting}
 
 \subsubsection{Kan ook bestaan uit andere variables.}
 
@@ -235,7 +242,7 @@ a {
 a {
     transition: var(--transition);
 }
-\end{lstlisting}[language=CSS]
+\end{lstlisting}
 
 \subsubsection{Default values}
 
@@ -250,7 +257,7 @@ a {
 .c-button--beta {
     --button-color: #BADA55;
 }
-\end{lstlisting}[language=CSS]
+\end{lstlisting}
 
 \subsubsection{Default values with other variables}
 
@@ -267,7 +274,7 @@ a {
 }
 .c-button--beta {
     --button-color: var(--color-badass);
-\end{lstlisting}[language=CSS]
+\end{lstlisting}
 
 \subsection{Cascade}
 CSS Variables Are Subject to the Cascade and Inheritance rules
@@ -283,7 +290,7 @@ my-cool-color variable toepast zullen de
 value HotPink overerven. */
 
 p {
-color: var(--my-cool-color);
+    color: var(--my-cool-color);
 }
 
 .foo {
@@ -292,7 +299,7 @@ de class ".foo" krijgt de kleur #BADA55.*/
 
 --my-cool-color: #BADA55;
 }
-\end{lstlisting}[language=CSS]
+\end{lstlisting}
 
 \url{https://codepen.io/simoncoudeville-nmct/pen/aboMBop}
 
@@ -311,7 +318,7 @@ de class ".foo" krijgt de kleur #BADA55.*/
     padding: var(--whitespace);
 }
 
-\end{lstlisting}[language=CSS]
+\end{lstlisting}
 
 
 \url{https://codepen.io/simoncoudeville-nmct/pen/JjXaQwB}
@@ -333,7 +340,7 @@ de class ".foo" krijgt de kleur #BADA55.*/
     background-color: var(--background-color);
     color: var(--color);
 }
-\end{lstlisting}[language=CSS]
+\end{lstlisting}
 
 \url{https://codepen.io/simoncoudeville-nmct/pen/eYOxbPp}
 
@@ -348,7 +355,7 @@ body{
     --bg-fill: green;
 }
 
-\end{lstlisting}[language=CSS]
+\end{lstlisting}
 
 \subsection{Scoped variables}
 
@@ -364,7 +371,7 @@ Twee soorten:
 :root {
     --global-color: black;
 }
-\end{lstlisting}[language=CSS]
+\end{lstlisting}
 \begin{itemize}
     \item :root is a CSS pseudo-class selector used to select the element that represents the root of the document.
     \item :root is hetzelfde als html maar is specifieker
@@ -404,7 +411,7 @@ Global variables kan je overal hergebruiken en overschrijven. Ideaal dus voor va
     --button-fontSize: var(--global-fontSize);
     font-size: var(--button-fontSize);
 }
-\end{lstlisting}[language=CSS]
+\end{lstlisting}
 
 
 \subsection{Naming system}
@@ -460,7 +467,7 @@ They follow this formula:
 .c-alert__title {
     font-size: var(--c-alert__title--fontSize);
 }
-\end{lstlisting}[language=CSS]
+\end{lstlisting}
 
 \subsection{Herhalingsvragen}
 
@@ -988,6 +995,263 @@ CSS declarations worden geactiveerd\dots
     \item \url{https://uxmovement.com/mobile/stop-misusing-toggle-switches}
     \item \url{https://www.bram.us/2019/01/18/building-better-forms-by-not-taking-away-affordances}
 \end{itemize}
+
+\section{Affordances}
+
+\begin{itemize}
+    \item Een `affordance' is een aanwijzing dat een object kan worden gebruikt.
+    \item Wat zorgt ervoor dat een interactief component clickable, swipable, pull of pushable is
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{affordance-vs-signifier.png}
+    \caption{Affordance en signifier}
+\end{figure}
+
+\url{https://uxdesign.cc/what-is-an-affordance-6b60f2de79f2}
+
+
+Vormen: 
+
+\begin{itemize}
+    \item Explicit affordance
+    \item Pattern affordance
+    \begin{itemize}
+        \item Pattern metaphore
+    \end{itemize}
+    \item Hidden affordance
+    \item False affordance
+    \item Negative affordance
+\end{itemize}
+
+
+\subsection{Explicit affordance}
+\begin{itemize}
+    \item Een duidelijke affordance
+    \item Door taal, bv: \underline{klik hier} om \dots $\Rightarrow$ signifiers
+    \item Door hoe het er fysiek uitziet
+    \item Makkelijk discoverable
+\end{itemize}
+
+\subsubsection{Voorbeelden}
+
+\begin{itemize}
+    \item `Click to play the video'
+    \item Een grote knop met felle achtergrondkleur en subtiele 3d-vorm
+\end{itemize}
+
+\subsection{Pattern affordance}
+\begin{itemize}
+    \item Impliciet 
+    \item Meest voorkomende type
+    \item Maakt het mogelijk om in een complexe interface snel de interactieve onderdelen aan de gebruiker duidelijk te maken
+    \item bv:
+    \begin{itemize}
+        \item Navigation bar
+        \item Links
+        \item Logo
+        \item Link in bovenaan rechts
+        \item Toggle switch
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Pattern metaphors}
+
+\begin{itemize}
+    \item Metaforische affordance
+    \item Real-world object als metafoor
+    \item Icons
+    \item Pattern metaforen
+    \item Oppassen met heel herkenbare metaforen anders te designen.
+\end{itemize}
+
+\subsection{Hidden affordance}
+
+\begin{itemize}
+    \item Verborgen acties  
+    \item Standaard wordt de affordance van een element pas onthuld als de gebruiker actie heeft ondernomen
+    \item Om al complexe interfaces minder te clutteren
+    \item Om minder belangrijke acties minder aandacht te geven
+    \item bv:
+    \begin{itemize}
+        \item Reveal on hover
+        \item Swipen van homescreen
+    \end{itemize}
+\end{itemize}
+
+\subsection{False affordance}
+\begin{itemize}
+    \item Een woord dat onderlijnd is maar geen link is
+    \item Een groene button die iets verwijderd
+    \item Dark patterns?
+    \item Een grijs woord waar op het eerste zicht geen actie achter zit maar toch een link of button is
+    \item Om minder belangrijke acties minder aandacht te geven
+\end{itemize}
+
+\subsection{Negative affordance}
+
+\begin{itemize}
+    \item Soms is het nodig om aan te geven dat een UI-element op dit moment geen mogelijkheden biedt
+    \item Grijze elementen
+    \item Buttons die disabled zijn
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{negative-affordance.png}
+    \caption{De grijze elementen zijn duidelijk niet klikbaar}
+\end{figure}
+
+
+\subsection{Overzicht}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{affordance.png}
+    \caption{Overzicht affordance}
+\end{figure}
+
+
+
+\section{Micro Interactions}
+
+\subsection{Wat?}
+
+\begin{itemize}
+    \item Micro-interactions geven gebruikers onmiddellijke visuele feedback na het uitvoeren van een actie
+    \item Ze wekken het vertrouwen op dat een uitgevoerde actie heeft plaatsgevonden en dat er als gevolg daarvan iets is gebeurd.
+    \item Voegen een klein beetje `plezier' toe aan de UI
+    \item Een klein interactief onderdeel van functionaliteit dat precies 1 iets doet
+    \item \bold{Een hover effect is geen micro-interaction!}
+\end{itemize}
+
+\subsection{Actie - reactie - feedback}
+
+Altijd 3 stappen: actie, reactie en feedback
+
+\subsubsection{Voorbeeld: Toggle switch}
+
+\begin{itemize}
+    \item Actie: gebruiker duwt op de toggle switch om een setting af te zetten
+    \item Reactie: setting wordt afgezet   
+    \item Feedback: de toggle switch beweegt naar de andere kant, de achtergrondkleur verandert
+\end{itemize}
+
+
+\subsection{Versterkt door animatie}
+
+\begin{itemize}
+    \item Reactie en feedback is duidelijker
+    \item Transition van de ene state naar de andere
+    \item Maakt het verschil
+\end{itemize}
+
+\subsection{Waar gebruiken?}
+
+\begin{itemize}
+    \item Show system status
+    \item Highlight changes
+    \item Context behouden
+    \item Calls to action
+    \item Visualiseren van input
+    \item Make tutorials come alive
+    \item Foutmeldingen
+    \item Succesmelding, voltooide acties
+    \item Het tonen van veranderingen
+\end{itemize}
+
+
+\subsection{Voorbeelden}
+
+\subsubsection{Iphone Mute}
+
+\begin{itemize}
+    \item Actie: user wil geluid op mute zetten op telefoon
+    \item Reactie: geluid staat op stil, meldingen, bellen, etc
+    \item Feedback: toestel vibreert
+\end{itemize}
+
+\subsubsection{Pull to refresh}
+
+\begin{itemize}
+    \item Actie: gebruiker trekt de pagina naar beneden
+    \item Reactie: de pagina refresht
+    \item Feedback: een refresh-icoontje verschijnt bovenaan de pagina
+\end{itemize}
+
+\subsubsection{Nightmode}
+
+\begin{itemize}
+    \item Actie: het wordt donker
+    \item Reactie: Modus wordt aangepast
+    \item Feedback: kleuren veranderen, helderheid wordt aangepast
+\end{itemize}
+
+\subsubsection{Facebook like}
+
+\begin{itemize}
+    \item Onderverdeling feedback
+    \begin{itemize}
+        \item Uitgebreid: comment
+        \item Beknopt: Like
+    \end{itemize}
+    \item Microinteraction die legendarisch is geworden
+\end{itemize}
+
+\subsection{Combinaties van micro-interacties}
+
+\begin{itemize}
+    \item Meerdere micro-interactions maken een geheel en tonen wat er volgt op elkaar, en wat de actie ten gevolg heeft.
+\end{itemize}
+
+\subsection{Verandering aanduiden}
+
+Duidelijke feedback bij:
+
+\begin{itemize}
+    \item Voltooiing van todo
+    \item Verbergen van todo
+\end{itemize}
+
+\subsection{Don't}
+
+\begin{itemize}
+    \item Niet overdrijven
+    \item Draagt de interactie bij aan het geheel
+    \item Is de animatie niet storend
+    \item Geen micro-interaction maken als er geen/weinig interactie is van de gebruiker
+\end{itemize}
+
+\subsection{Meer dan visuele feedback}
+
+\begin{itemize}
+    \item Geluid is een belangrijk deel van interactie
+    \item Rekening houden met mute-state
+    \item Met mate \& subtiel
+\end{itemize}
+
+\subsection{Resources}
+
+\begin{itemize}
+    \item \url{http://microinteractions.com/downloads/Microinteractions_Full_Color_Edition_excerpt.pdf}
+    \item \url{https://vimeo.com/91559869}
+    \item \url{http://microinteractions.com/what-is-a-microinteraction/}
+    \item \url{https://dribbble.com/shots/2306244-Hoverboard-shop}
+    \item \url{https://dribbble.com/shots/3167358-Microinteractions-for-to-do-list-app}
+    \item \url{http://www.uiparade.com/portfolio/simple-toggle/}
+    \item \url{https://uxplanet.org/best-practices-for-microinteractions-9456211aeed0}
+    \item \url{https://techcrunch.com/2015/08/07/google-maps-new-night-mode-feature-makes-it-easier-to-navigate-in-the-dark/}
+    \item \url{https://www.webdesignerdepot.com/2015/07/7-secrets-for-enhancing-ux-with-micro-interactions/}
+    \item \url{http://zurb.com/blog/you-re-thinking-too-big-create-impact-wit}
+    \item \url{https://dribbble.com/shots/2764222-Event-App-Concept}
+    \item \url{https://dribbble.com/shots/1797373-Pull-Down-To-Refresh}
+    \item \url{https://material.io/guidelines/motion/material-motion.html}
+    \item \url{https://uxplanet.org/best-practices-for-microinteractions-9456211aeed0}
+    \item \url{https://www.facebook.com/360Connext/photos/a.514490188584653.119917.217283351638673/649673881732949/?type=3&theater}
+    \item \url{https://dribbble.com/shots/2174325-Alcatel-Watch-IA-Diagram/attachments/400188}
+\end{itemize}
+
 
 \end{document}
 
