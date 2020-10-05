@@ -1203,6 +1203,558 @@ Werking:
     \item Wat is een cron expression
 \end{itemize}
 
+\section{Azure Storage}
+
+\begin{itemize}
+    \item Opslag van data in Cloud omgeving
+    \item Zeer flexibel in gebruik en prijs
+    \item Unlimited storage (toch geen limiet waar wij zullen tegenlopen)
+    \item Basis voor heel wat Azure services: VM's, Functions, \dots
+\end{itemize}
+
+Soorten storage
+
+\begin{itemize}
+    \item File (zien we niet in labo)
+    \item Disk (zien we niet in labo)
+    \item Blob
+    \item Queue
+    \item Table
+\end{itemize}
+
+\subsection{Azure Storage account}
+
+\begin{itemize}
+    \item Alles komt hierin samen
+    \item Dit moeten we aanmaken in Azure
+    \item Daarbinnen maken we dan de soorten storage aan
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{azure-storage-account.png}
+    \caption{Azure Storage account}
+\end{figure}
+
+\subsection{Azure Files}
+
+\begin{itemize}
+    \item  Hard Disk maar in de Cloud
+    \item  Je kan deze mappen naar eigen pc, vb Z:\...
+    \item  Handig als je veilig files wil kopiëren tussen Cloud server en on premise server
+    \item  Zal de gekende protocollen volgen zoals SMB 3.0
+    \item  Veel gebruikt in Hybrid Cloud
+    \item  Werkt niet op school (Blocked)
+    \item  Kan je thuis eens proberen
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{azure-storage-files.png}
+    \caption{}
+\end{figure}
+
+
+\subsection{Azure Disk Storage}
+
+\begin{itemize}
+    \item Basis voor Azure VM
+    \item Op deze locaties komt de server te staan
+    \item Ook mogelijkheid om datadisks te maken
+    \item Hoge beschikbaarheid
+    \item Lage latency
+    \item Hoge throughput(2000MB/s)
+    \item Mogelijkheid voor SSD disk
+    \item Disk Encryption
+    beschikbaar
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{azure-storage-disk.png}
+    \caption{}
+\end{figure}
+
+\subsection{Azure Blob Storage}
+
+\begin{itemize}
+    \item `blob' == binary large object
+    \item Opslag van bestanden: afbeeldingen, PDF, CSS, JS files van web apps kan je hier plaatsen
+    \item Single page apps (Vue, Angular, Blazor)
+    \item Container
+    \begin{itemize}
+        \item Bevat de bestanden
+        \item Naam opgeven
+        \item Public Access Level (wie kan welke bestanden lezen)
+        \begin{enumerate}
+            \item Private (default): extern bekijken is niet mogelijk
+            \item Blob: extern lezen per blob is mogelijk
+            \item Container: extern lezen van volledige container is mogelijk
+        \end{enumerate}
+    \end{itemize}
+    \item Bestanden uploaden via storage explorer (\url{https://azure.microsoft.com/en-us/features/storage-explorer/})
+    \item Connecteren met accountnaam/access key
+    \item We kunnen bestanden opvragen via HTTP Request
+\end{itemize}
+
+\subsubsection{Pricing}
+
+\begin{itemize}
+    \item Prijs is per GB/per maand
+    \item Hot of cool access
+    \item We betalen ook de lees en schrijfoperaties
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{azure-storage-blob-pricing.png}
+    \caption{Prijstabel Azure Blob Storage}
+\end{figure}
+
+\subsubsection{Hot Access}
+
+\begin{itemize}
+    \item Data die nu in gebruik is en waar we veel lezen en schrijven
+    \item Data die klaar staat om eventueel later naar cool storage te verplaatsen
+\end{itemize}
+
+\subsubsection{Cool Access}
+
+\begin{itemize}
+    \item Backups voor lange termijn
+    \item Data die we niet frequent nodig hebben
+\end{itemize}
+
+\subsubsection{Static website}
+
+\begin{itemize}
+    \item Eenvoudige HTML website
+    \item Ideaal voor VueJS, Angular, Reactor, Blazor, \dots
+    \item Eventueel backend in Azure Functions en via JavaScript aangeroepen
+    \item Zeer goedkoop
+    \item \url{https://docs.microsoft.com/en-us/azure/static-web-apps/overview}
+\end{itemize}
+
+\subsection{Azure Storage Queues}
+
+\begin{itemize}
+    \item Een \bold{wachtrij} in de Cloud
+    \item Een applicatie zal berichten op de wachtrij plaatsen (\bold{Sender})
+    \item Een tweede applicatie kan deze berichten op een zelf gekozen moment ophalen en verwerken (\bold{Receiver})
+    \item We spreken over een \bold{\underline{decoupled}} applicatie: zender en ontvanger werken onafhankelijk van elkaar
+    \item Zeer schaalbaar voor meerdere queues op te starten
+    \item \bold{Resilience}: buffer van berichten op queue zorgt ervoor dat er niks verloren gaat als back-end wegvalt
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{azure-storage-queues.png}
+    \caption{}
+\end{figure}
+
+
+\subsubsection{Voorbeeld}
+
+\begin{itemize}
+    \item Sender = webshop
+    \item Ontvanger = stuk software (bv Azure Functions) die order zal controleren en naar een nieuwe wachtrij zal sturen
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{azure-storage-queues-voorbeeld.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Load leveling}
+
+\begin{itemize}
+    \item Constante load op applicatie die verwerkt moet worden
+    \item Werkt zolang we niet meer berichten aanmaken dan wat de applicatie kan verwerken
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{load-leveling.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Load balancing}
+
+\begin{itemize}
+    \item Teveel berichten per uur
+    \begin{itemize}
+        \item Applicatie die verwerkt schalen
+        \item Nieuwe instantie $\Rightarrow$ verdubbeling verwerking
+    \end{itemize}
+    \item Wanneer terug minder berichten per uur: 1 applicatie stoppen
+    \item High Availability $\Rightarrow$ bij crash 1 app, ligt systeem \bold{niet} plat
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{load-balancing.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Temporal decoupling}
+
+\begin{itemize}
+    \item We slaan alles op in Queue voor later
+    \item Applicatie voor werking start om 23u op
+    \begin{enumerate}
+        \item Verwerkt alles
+        \item Shutdown app
+    \end{enumerate}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{temporal-decoupling.png}
+    \caption{}
+\end{figure}
+
+\subsection{Azure Table Storage}
+
+\begin{itemize}
+    \item NO-SQL key/value store
+    \item Opslag van Petabytes aan data
+    \item Geo-redundant storage
+    \item Flexibel dataschema, aantal kolommen per rij moet niet hetzelfde zijn
+    \item Vergelijk het met een spreadsheet die je invult
+    \item Geen relaties, geen joins, geen stored procedures
+    \item Eenvoudig in gebruik
+    \item Voorbeeld: \url{https://www.troyhunt.com/working-with-154-million-records-on/}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{azure-storage-table.png}
+    \caption{}
+\end{figure}
+
+\begin{itemize}
+    \item Partitions
+    \begin{itemize}
+        \item Verdelen van table over partities
+        \item Iedere partitie op eigen server
+        \item Zal beter schalen en load verdelen op server
+    \end{itemize}
+    \item Load balancing over 3 servers
+    \begin{itemize}
+        \item Azure zal data repliceren op 3 servers
+        \item Verdelen van load over deze servers
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{partitioning-tables.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Entities (rijen)}
+
+\begin{itemize}
+    \item Max 1MB
+    \item 255 properties (kolommen), waarvan 3 verplicht:
+    \begin{itemize}
+        \item Parition key
+        \item Row key
+        \item Timestamp (automatisch)
+    \end{itemize}
+    \item Niet iedere rij moet evenveel kolommen hebben
+\end{itemize}
+
+\subsubsection{Table Storage Data Access}
+
+\begin{itemize}
+    \item Via REST API $\Rightarrow$ cross platform HTTP requests (.NET, PHP, Android, Objective C)
+    \item Storage Client API (via Nuget Package Azure Storage)
+    \item Voor andere platformen zijn er ook libraries (iOS, Android, Python, \dots)
+\end{itemize}
+
+\subsubsection{Queries}
+
+\begin{itemize}
+    \item Max 1000 items terugkeren
+    \item Indien > 1000 $\Rightarrow$ Continuation token
+    \item Query > 30 sec $\Rightarrow$ cancelled
+    \item Geen index mogelijk
+    \item Query op partition key \& row key $\Rightarrow$ snel
+\end{itemize}
+
+\subsubsection{Kolom types: }
+
+\begin{itemize}
+    \item Byte[] (=bytearray)
+    \item Bool
+    \item DateTime
+    \item Double
+    \item GUID
+    \item Int32 of int
+    \item Int64 of long
+    \item String
+\end{itemize}
+
+\subsubsection{Waar gebruiken?}
+
+\begin{itemize}
+    \item Profiel info (zal niet veel wijzigen)
+    \item Device info (bv: alle IMEI nummers van GSM toestellen binnen een netwerk)
+    \item Telemetry data (bv: sensor netwerken die om de 5sec waarde van sensor doorsturen)
+    \item Data voor AI modellen
+    \item Alles waar je zeer veel niet-wijzigende data wenst op te slaan
+\end{itemize}
+
+\subsection{Azure Storage Tools}
+
+Met behulp van de Storage Explorer: 
+
+\url{https://azure.microsoft.com/en-us/features/storage-explorer/}
+
+\subsection{Programmeren van Azure Storage}
+
+\subsubsection{Wanneer?}
+
+\begin{itemize}
+    \item Opladen van bestanden op Blob storage
+    \item Versturen van berichten naar wachtrijen (Queues)
+    \item Wegschrijven van records naar Table Storage
+\end{itemize}
+
+Dit kan je allemaal programmeren via C\#, Python of JavaScript
+
+\begin{itemize}
+    \item In .NET Nuget Package toevoegen (zoals pip install bij Python)
+    \item Rechtermuisknop op dependencies $\Rightarrow$ Manage Nuget packages
+    \item Zoeken achter juiste package, vb: Azure Storage
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{azure-storage-visual-studio.png}
+    \caption{Azure Storage toevoegen in Visual Studio 2019}
+\end{figure}
+
+\subsection{Enkele scenario's}
+
+\subsubsection{Post binary file naar Azure Functions en opslag in op Azure Blob}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{azure-storage-scenario-1.png}
+    \caption{POST binary file naar Azure Functions, opslag in Azure blob}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{scenario-1-1.png}
+    \caption{De Binary data komt in de body van het HTTP Request via Postman}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{scenario-1-2.png}
+    \caption{Daarna slaan we de file op in de Blob Storage}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{scenario-1-3.png}
+    \caption{Via de parameter in URL geven we de naam van het bestand mee aan service}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{scenario-1-4.png}
+    \caption{Connectie maken met storage via connectiestring die we ophalen uit localsettings.json file (Connectiestring Storage staat op Azure)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{scenario-1-6.png}
+    \caption{Via CloudBlobClient kunnen we praten met de storage}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{scenario-1-7.png}
+    \caption{We halen referentie op naar de container waar we de files willen opslaan}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{scenario-1-8.png}
+    \caption{We maken `lege' file aan}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{scenario-1-9.png}
+    \caption{We uploaden de stream van de body in de `lege' file}
+\end{figure}
+
+\subsubsection{Scenario 2}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{azure-storage-scenario-2.png}
+    \caption{Send e-mail wanneer een blob verschijnt op Azure Blob}
+\end{figure}
+
+\bold{Blob trigger}
+
+\begin{itemize}
+    \item Functie uitvoeren als er een Blob file aangemaakt is in een container
+    \item Vb:
+    \begin{itemize}
+        \item Uploaden van foto's naar blob voor betere verwerking
+        \item Uploaden CSV files voor verwerking
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{scenario-2-1.png}
+    \caption{In de settings file plaatsen we bij AzureWebJobStorage de connectionstring naar onze storage account}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{scenario-2-2.png}
+    \caption{Connectionstring = de key uit de settings file, Path = de naam van de container}
+\end{figure}
+
+\begin{itemize}
+    \item Wat kunnen we doen met Blob?
+    \begin{itemize}
+        \item Sturen naar wachtrij
+        \item Sturen naar Deep Learning netwerk voor training
+        \item \dots
+    \end{itemize}
+    \item Dit voorbeeld: e-mail met link
+    \item Hiervoor maken we gebruik van SendGrid en MailKit
+\end{itemize}
+
+\bold{SendGrid}
+
+\begin{enumerate}
+    \item In Azure Portal: nieuwe resource: `SendGrid Email Delivery'
+    \item Kies voor het `Free' pricing tier
+    \item SendGrid package: via Nuget Package manager in Visual Studio 2019
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{scenario-2-3.png}
+    \caption{API key nodig en plaatsen in config file Azure Functions}
+\end{figure}
+
+
+\bold{MailKit}
+
+\begin{itemize}
+    \item Alternatief voor SendGrid library (geen mailservice)
+    \item Versturen van mails via Mailkit package
+    \item SMTP mogelijkheden
+\end{itemize}
+
+\subsubsection{Scenario 3}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{azure-storage-scenario-3.png}
+    \caption{We vullen een wachtrij voor verwerking door Azure Functions}
+\end{figure}
+
+\bold{Queue Trigger}
+
+\begin{itemize}
+    \item Functie zal actief worden bij ontvangst van een bericht op de Queue
+    \item Ideaal voor het bufferen bij pieken
+    \item Eenvoudig in gebruik
+    \item In Visual studio: 
+    \begin{itemize}
+        \item Nieuwe Azure Function `Queue Trigger' met:
+        \item Connectionstring = de connection key die bij de Queue storage hoort
+        \item Queue name = naam van de wachtrij waarvan je berichten wenst te ontvangen
+    \end{itemize}
+\end{itemize}
+
+\bold{Table Storage}
+
+\begin{itemize}
+    \item We ontvangen bericht en schrijven we naar Azure Table Storage
+    \item We maken gebruik van de Nuget package `Microsoft.Azure.Cosmos.Table'
+    \item We gaan temperatuur wegschrijven naar Azure Table Storage
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{scenario-3-1.png}
+    \caption{Temperatuur wegschrijven naar Table Storage}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{scenario-3-2.png}
+    \caption{Objecten voor Table Storage moeten erven van Table Entity}
+\end{figure}
+
+\bold{Hoe de Queue vullen? Meerdere mogelijkheden: }
+
+
+\begin{itemize}
+    \item Via website formulier
+    \item Mobile app
+    \item Python script via Raspberry Pi
+    \item \dots
+    \item \url{https://docs.microsoft.com/en-us/azure/storage/queues/storage-quickstart-queues-python}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{scenario-3-3.png}
+    \caption{Python script die queue opvult}
+\end{figure}
+
+\subsection{Good practices}
+
+\begin{itemize}
+    \item Iedere Azure Function heeft zijn eigen taak
+    \item Veelgemaakte fout: 1 trigger die alles doet (bv: HTTP trigger die file upload doet en daarna ook mail verstuurt)
+    \item Beter: HTTP trigger $\Rightarrow$ File naar Blob $\Rightarrow$ Blob Trigger $\Rightarrow$ Bericht op Queue $\Rightarrow$ Queue Trigger $\Rightarrow$ Mail sturen
+    \begin{itemize}
+        \item 3 triggers
+        \item Schaalbaar
+        \item Hogere performantie
+    \end{itemize}
+\end{itemize}
+
+\subsection{Configuratiefiles lokaal of in de cloud?}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{configuratie-lokaal.png}
+    \includegraphics[width=0.45\textwidth]{configuratie-cloud.png}
+    \caption{Lokaal (links) VS in de cloud (rechts)}
+\end{figure}
+
+
+\subsection{Samenvatting}
+
+\begin{itemize}
+    \item Welke zijn de verschillende soorten Azure Storage en wat is hun doel ?
+    \item Wat is Azure Blob storage en wanneer gebruik je deze ?
+    \item Wat is Azure Storage Queues en wanneer gebruik ik deze ?
+    \item Wat is Azure Table Storage en wanneer gebruik ik deze ?
+    \item Wat zijn partitions in Azure Table Storage ?
+    \item Hoe werken Azure Functions Blob Triggers ?
+    \item Waarvoor kan ik Azure Functions Blob Trigger gebruiken ?
+    \item Wat is SendGrid ?
+    \item Good practices
+\end{itemize}
 
 \section{Examen}
 \begin{itemize}
