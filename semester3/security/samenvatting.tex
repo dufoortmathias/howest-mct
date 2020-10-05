@@ -459,7 +459,7 @@ Real-time maps
     \item Optimale usability is enkel mogelijk bij onbestaande security
 \end{itemize}
 
-"In any implementation of security controls all three factors:
+In elke security implementatie zijn deze 3 factoren nodig:
 
 \begin{enumerate}
     \item Security 
@@ -467,9 +467,11 @@ Real-time maps
     \item Ease of Use
 \end{enumerate}
 
-are to be carefully considered; searching for the balanced trade-off for all stakeholders."
+We moeten zoeken naar een gebalanceerde compromis voor alle stakeholders.
 
-Een bruikbare infrastructuur kan nooit 100\% veilig zijn $\Rightarrow$ voorzichtig afwegen van alle parameters en belangen
+Een bruikbare infrastructuur kan nooit 100\% veilig zijn $\Rightarrow$ voorzichtig afwegen van alle parameters en belangen.
+
+\bold{Voorbeeld: } een fingerprint reader: handig, maar niet zo veilig. Iemand met slechte bedoelingen kan de vingerafdruk kopi"eren.
 
 \subsection{Tegenmaatregelen (mitigation)}
 
@@ -484,11 +486,14 @@ Een bruikbare infrastructuur kan nooit 100\% veilig zijn $\Rightarrow$ voorzicht
     \item Firewalls / IDS / IPS
 \end{itemize}
 
-\subsubsection{Defense in depth}
+\subsubsection{Defense in depth strategie}
+\bold{EXAMENVRAAG}
+
 \begin{itemize}
     \item Layered security
     \item Strategie bij incident
     \item Plannen en documenteren
+    \item Nooit alle eieren in 1 mandje leggen
 \end{itemize}
 
 \begin{figure}[H]
@@ -505,6 +510,130 @@ Een bruikbare infrastructuur kan nooit 100\% veilig zijn $\Rightarrow$ voorzicht
     \item Gratis te downloaden: \url{http://iccbelgium.be/becybersecure/}
 \end{itemize}
 
+
+\section{Beveiligen van toegang}
+
+\subsection{Authorisatie vs authenticatie}
+
+\begin{itemize}
+    \item Authorisatie = een gebruiker kan bepaalde dingen wel of niet doen, afhankelijk van zijn/haar beveiligingsniveau
+    \item Authenticatie = is de gebruiker wel wie hij/zij beweert te zijn? Controleren met 1 of meer beveiligingsbasissen.
+\end{itemize}
+
+\subsection{Beveiligingsbasissen}
+\bold{EXAMENVRAAG}
+
+3 opties: 
+\begin{itemize}
+    \item Weten
+    \item Hebben
+    \item Zijn
+\end{itemize}
+
+\subsection{Wachtwoorden}
+
+\begin{itemize}
+    \item Meest gebruikte bron van authenticatie
+    \item Moet voldoende sterk zijn
+    \begin{itemize}
+        \item Lengte (minstens 12 tekens)
+        \item Verschillende soorten tekens
+        \item Geen bestaande woorden of logische sequenties
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Entropie}
+
+= `wanorde'
+
+= hoeveel mogelijkheden er zijn $\Rightarrow$ hoe sterk een wachtwoord is
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{wachtwoord-entropie.png}
+    \includegraphics[width=0.3\textwidth]{wachtwoord-entropie2.png}
+    \caption{Entropie van een wachtwoord}
+\end{figure}
+
+\begin{itemize}
+    \item Entropie = uitgedrukt in bits
+    \item Beste wachtwoorden zijn vooral voldoende lang
+    \item Opgelet voor wachtwoorden in woordenlijsten
+    \item Vaak gebruikte wachtwoorden zijn gekend
+    \item Enorme lijsten met wachtwoorden zijn beschikbaar
+    \item Vaak succesvolle aanval op anders toch complexe wachtwoorden
+    \item \url{https://howsecureismypassword.net/}
+    \item \url{https://haveibeenpwned.com/}
+\end{itemize}
+
+\subsubsection{Tips}
+
+\begin{itemize}
+    \item Gebruik geen logisch patroon
+    \item Mijd hergebruik voor verschilende diensten (ook niet azertyTwitter en azertyFacebook, etc)
+    \item Wijzig je wachtwoorden regelmatig
+    \item Leen nooit een wachtwoord uit aan iemand anders
+    \item Gebruik waar mogelijk een $\text{2}^{\text{de}}$ factor voor authenticatie (2FA) of multi-factor authenticatie (MFA)
+    \item Maak eventueel gebruik van een \underline{wachtwoordkluis}
+    \item Let erop door de organisatie goedgekeurde wachtwoordkluis-software te gebruiken
+    \item Noteer wachtwoorden NOOIT waar deze door derden kunnen worden achterhaald
+\end{itemize}
+
+\subsection{Beveiliging op `Hebben'-basis}
+
+\begin{itemize}
+    \item Smartcards
+    \item Dongles
+    \item Transponder
+    \item Digipass
+    \item Google Authenticator
+\end{itemize}
+
+\subsection{Beveiliging op `Zijn'-basis'}
+
+\begin{itemize}
+    \item Iris-scanner
+    \item Vingerafdruk
+    \item Stem
+\end{itemize}
+
+\subsection{Combinatie van meerdere authenticatiemethodes}
+
+\begin{itemize}
+    \item 2FA en MFA
+    \item Bij voorkeur kiezen tussen methodes op \textit{verschillende} werkingsbasis
+\end{itemize}
+
+\subsection{Fysische toegang}
+
+\begin{itemize}
+    \item Onvergrendelde schermen
+    \item Toegangscontrole serverroom
+    \item Hardware aanpassingen of diefstal
+    \begin{itemize}
+        \item Asset management software
+    \end{itemize}
+    \item Toegang tot het netwerk
+    \item Introductie van vreemde software
+    \item Opstarten vanaf andere media
+\end{itemize}
+
+\subsection{Privilege escalation}
+
+= zichzelf op een ander gebruikersniveau zetten
+
+\begin{itemize}
+    \item Horizontal escalation
+    \begin{itemize}
+        \item Session hijacking van een andere gebruiker
+        \item = toegang verkrijgen van het account van een andere gebruiker
+    \end{itemize}
+    \item Vertical escalation
+    \begin{itemize}
+        \item = `privilege elevation'
+        \item Meer machtigingen verwerven
+    \end{itemize}
+\end{itemize}
 
 
 \end{document}
