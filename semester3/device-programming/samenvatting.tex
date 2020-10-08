@@ -152,7 +152,7 @@
 Met Shared Assets Project maken we de UI voor elk platform apart. Wij gaan vooral werken met .NET Standard.
 
 
-\subsection{Vragen}
+\subsection{Samenvatting}
 
 \begin{itemize}
     \item What devices, platforms, etc. can we target using .NET, and what programming languages can we use?
@@ -384,6 +384,203 @@ public int Id {
     \item Constructors should call each other for enhanced efficiency
     \item Constructors in inheriting classes call the constructors of the base class
 \end{itemize}
+
+
+\section{Streamreader}
+
+\begin{itemize}
+    \item Namespaces
+    \item System.Reflection
+    \item Embedded Files
+    \item System.IO
+\end{itemize}
+
+\subsection{Namespaces}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{namespaces.png}
+    \caption{Namespaces}
+\end{figure}
+
+\subsection{System.Reflection}
+
+\textit{"The classes in the System.Reflection namespace, together with
+System.Type, enable you to obtain information about loaded
+assemblies and the types defined within, such as classes, interfaces,
+and value types. You can also use \bold{reflection} to create type instances
+at run time and to invoke them."}
+
+
+\subsection{System.IO}
+
+= Input/Output \url{https://developer.xamarin.com/api/namespace/System.IO/}
+
+\begin{itemize}
+    \item StreamReader \url{https://developer.xamarin.com/api/type/System.IO.StreamReader/}
+    \item StreamWriter \url{https://developer.xamarin.com/api/type/System.IO.StreamWriter/}
+\end{itemize}
+
+\subsection{Embedded files}
+
+\begin{itemize}
+    \item Textfiles, images, etc.
+    \item Generates a \bold{ResourceID} for the file
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{embedded-files0.png}
+    \caption{Embedded files inladen in een Visual Studio project: rechtermuisknop op 1 of meerdere files $\Rightarrow$ properties $\Rightarrow$ build action = Embedded resources}
+\end{figure}
+
+\subsubsection{Read an embedded file in Xamarin}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{embedded-files.png}
+    \caption{}
+\end{figure}
+
+\begin{itemize}
+    \item 
+\end{itemize}
+
+\subsubsection{Processing the file's content}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{embedded-files2.png}
+    \caption{}
+\end{figure}
+
+\subsection{Samenvatting}
+
+\begin{itemize}
+    \item You understand the importance of \bold{namespaces}, and the techniques of using them in your own projects.
+    \item You can explain the very basics of the \bold{System.IO} and \bold{System.Reflection} namespaces, and what they have to do with reading an embedded file in Xamarin.
+    \item You understand the how and why of the \bold{ResourceID} that’s being generated for an embedded file.
+\end{itemize}
+
+\section{Navigation}
+
+\subsection{Modal vs Modeless}
+
+\begin{itemize}
+    \item Modal page: requires user input to continue
+    \item Modeless page: user can go back any time he wants; no input required
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{modal-page.png}
+    \includegraphics[width=0.4\textwidth]{modeless-page.png}
+    \caption{Modal page vs Modeless page}
+\end{figure}
+
+\subsection{Navigate forward}
+
+\begin{lstlisting}[language=csharp]
+Navigation.PushAsync(new FooPage());
+Navigation.PushModalAsync(new FooPage());
+
+// FooPage is hier de XAML page waar we willen naar navigeren
+\end{lstlisting}
+
+\begin{itemize}
+    \item PushAsync vs PushModalAsync
+    \item Navigation object: controls the navigation stack
+\end{itemize}
+
+\subsection{Navigate back}
+
+\subsubsection{Go back - Modeless page}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{navigation-back-modeless.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Go back - Modal page}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{navigation-back-modal.png}
+    \caption{}
+\end{figure}
+
+\subsection{Navigation stack}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{navigation-stack-1.png}
+    \caption{Pushen op de stack}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{navigation-stack-2.png}
+    \caption{Pop'en van de stack}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{navigation-stack-3.png}
+    \caption{InsertPageBefore}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{navigation-stack-4.png}
+    \caption{RemovePage}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{navigation-stack-4.png}
+    \caption{PopToRoot}
+\end{figure}
+
+\subsection{Page types}
+
+\begin{itemize}
+    \item ContentPage
+    \item MasterDetailPage (zie Demo\_MasterDetail)
+    \item NavigationPage (zie Demo\_Navigation)
+    \item TabbedPage (zie Demo\_TabbedPage)
+    \item TemplatedPage
+    \item CarouselPage 
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{pagetypes.png}
+    \caption{}
+\end{figure}
+
+\subsection{Exchanging data}
+
+How to exchange data between several pages:
+
+\begin{enumerate}
+    \item Constructor (Demo\_MasterDetail)
+    \item Properties (Demo\_TabbedPage)
+\end{enumerate}
+
+\subsection{Samenvatting}
+
+\begin{itemize}
+    \item The different \bold{page types} and how to use them.
+    \item The difference between \bold{Modal} and \bold{Modeless} pages, and how to manage navigation for both.
+    \item You know how to \bold{exchange data} between pages in the navigation process.
+    \item You understand the \bold{navigation stack} and how you can manipulate it.
+    \item You can explain the concept of a \bold{master-detail} relation with an example
+\end{itemize}
+
+
 
 
 \end{document}
