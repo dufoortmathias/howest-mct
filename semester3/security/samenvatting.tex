@@ -487,7 +487,7 @@ Een bruikbare infrastructuur kan nooit 100\% veilig zijn $\Rightarrow$ voorzicht
 \end{itemize}
 
 \subsubsection{Defense in depth strategie}
-\bold{EXAMENVRAAG}
+\textcolor{red}{\bold{WORDT GEVRAAGD OP EXAMEN}}
 
 \begin{itemize}
     \item Layered security
@@ -521,7 +521,7 @@ Een bruikbare infrastructuur kan nooit 100\% veilig zijn $\Rightarrow$ voorzicht
 \end{itemize}
 
 \subsection{Beveiligingsbasissen}
-\bold{EXAMENVRAAG}
+\textcolor{red}{\bold{WORDT GEVRAAGD OP EXAMEN}}
 
 3 opties: 
 \begin{itemize}
@@ -636,5 +636,144 @@ Een bruikbare infrastructuur kan nooit 100\% veilig zijn $\Rightarrow$ voorzicht
     \end{itemize}
 \end{itemize}
 
+
+\section{Backup}
+
+\begin{itemize}
+    \item Essentieel voor het beschermen van data
+    \item Concrete back-up policy
+    \item Disaster recovery paln
+\end{itemize}
+
+\subsection{Veelgebruikte backup-media}
+\begin{itemize}
+    \item Tape
+    \item Harddisk
+    \item USB-stick
+    \item Cloud-backup
+\end{itemize}
+
+\bold{RAID is geen backup:} beschermt niet tegen meeste risico's. Helpt alleen bij falen van de harddisk. 
+
+\subsection{LTO Tapes}
+
+LTO = Linear Tape Open = open standaard
+
+\begin{itemize}
+    \item Worden nog altijd gebruikt, up-to-date
+    \item Hoge capaciteit (10-12TB per tape)
+    \item Hoge transfer rate (500MB/s)
+    \item Redeljk goedkoop, iets duurder dan harde schijven per GB
+\end{itemize}
+
+\subsubsection{LTO Drive}
+
+
+\begin{itemize}
+    \item Toestel om LTO Tapes te lezen/schrijven
+    \item Heel duur (duizenden euros)
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.2\textwidth]{lto-drive-single.png}
+    \caption{LTO drive voor 1 tape}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{lto-drive-multi.png}
+    \caption{LTO tape robot: 12000-15000 euro}
+\end{figure}
+
+
+\subsection{Eigenschappen van een correcte backup}
+
+\begin{itemize}
+    \item Offline
+    \item Beveiling tegen aanpassing (Integrity)
+    \item Beschikbaar (Availability)
+    \item Veilig opgeslegen (Confidentiality)
+    \item Betrouwbaar 
+\end{itemize}
+
+\subsection{3-2-1 regel}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{321-regel.png}
+    \caption{3-2-1-regel: 3 copies, 2 formats, 1 offsite}
+\end{figure}
+
+
+\subsection{Cloud back-up}
+
+\begin{itemize}
+    \item Wat met aansprakelijkheid?
+    \begin{itemize}
+        \item Je hebt geen controle over het systeem
+    \end{itemize}
+    \item Wat met beschikbaarheid?
+    \begin{itemize}
+        \item Niet zo makkelijk om de hele backup te downloaden uit de cloud (bandbreedtelimieten, snelheid, \dots)
+    \end{itemize}
+    \item Wat met vertrouwelijkheid?
+    \begin{itemize}
+        \item Wie heeft allemaal toegang tot de data?
+    \end{itemize}
+    \item Wetgeving?
+    \item Wel zeer eenvoudig en gemakkelijk
+\end{itemize}
+
+\subsection{Back-up policy}
+
+\begin{itemize}
+    \item Hoge back-up frequentie
+    \item Goede back-up strategie
+    \item Type back-up
+    \item Opslag van back-up:
+    \begin{itemize}
+        \item Dicht bij de server voor snelle toegang
+        \item Op een andere locatie voor veiligheid
+    \end{itemize}
+    \item Controle van integriteit back-up
+    \item Testen van disaster-recovery plan
+\end{itemize}
+
+\subsubsection{Grootvader - vader - zoon-systeem}
+
+\textcolor{red}{\bold{WORDT GEVRAAGD OP EXAMEN}}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{gfs.png}
+    \caption{Grootvader-vader-zoon systeem}
+\end{figure}
+
+\bold{Bv:} Elke maandag een backup op de `Father'-schijf, elke andere weekdag een backup op de `Zoon'-schijf, elke maand een backup op de `Grootvader'-schijf.
+
+\begin{itemize}
+    \item Back-uprotatie:
+    \begin{itemize}
+        \item Meerdere backups, waarbij de oudste backup wordt overschreden bij het maken van een nieuwe backup.
+        \item Zo heb je altijd een chronologische opeenvolging van backups
+    \end{itemize}
+    \item Archivering
+    \item Backup moet zowel:
+    \begin{itemize}
+        \item Actueel zijn
+        \item Voldoende teruggaan in de tijd
+    \end{itemize}
+\end{itemize}
+
+\url{https://en.wikipedia.org/wiki/Backup_rotation_scheme#Grandfather-father-son}
+
+\subsection{Belangrijk}
+
+\begin{itemize}
+    \item CIA-model over de hele lijn
+    \item Moet worden getest
+    \item Moet effectief worden uitgevoerd
+\end{itemize}
 
 \end{document}
