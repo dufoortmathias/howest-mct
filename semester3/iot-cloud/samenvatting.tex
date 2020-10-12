@@ -1756,6 +1756,340 @@ Dit kan je allemaal programmeren via C\#, Python of JavaScript
     \item Good practices
 \end{itemize}
 
+\section{MQTT}
+
+= Message Queueing Telemetry Transport
+
+= een machine-tot-machine (M2M) data transfer protocol die ons toelaat om berichten te sturen van een device naar een ander device.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{mqtt.png}
+    \caption{MQTT-broker}
+\end{figure}
+
+\subsection{Broker}
+
+\begin{itemize}
+    \item = software die instaat voor de communicatie volgens het MQTT protocol
+    \item De broker staat centraal
+    \item Doet niks anders dan berichten doorsturen en ontvangen
+\end{itemize}
+
+\subsubsection{Unmanaged services}
+
+\begin{itemize}
+    \item MQTT via eigen server
+    \item Zowel VM als docker mogelijk
+\end{itemize}
+
+\subsubsection{Managed services}
+\begin{itemize}
+    \item Amazon IoT
+    \item Google Cloud IoT
+    \item Azure IoT Hub
+\end{itemize}
+
+\subsection{Doel}
+\begin{itemize}
+    \item Data verzamelen op device voor transport \bold{naar} cloud
+    \item Data \bold{vanuit} de cloud naar de device sturen
+    \item Communicatie tussen machines (M2M): vb tussen RPi, tussen Pi en ESP32, \dots
+\end{itemize}
+
+\subsection{Voordeel}
+\begin{itemize}
+    \item Lightweight (weinig overhead)
+    \item Bi-directioneel (=two-way)
+    \item Standaard (versie 3.1.1)
+    \item Eenvoudig in gebruik
+\end{itemize}
+
+\subsection{Eigenschappen}
+
+\begin{itemize}
+    \item We spreken van een Publishing/Subscriber (Pub/Sub) protocol
+    \item Centraal staat de broker die de bemiddeling doet tussen de clients
+    \item 1/meerdere clients schrijven zich in (subscribe) voor een onderwerp of \bold{`Topic'}
+    \item 1/meerdere clients kunnen een bericht plaatsen (publish) op een \bold{`Topic'}
+    \item Topic = soort wachtrij
+    \item Pub/Sub weten niks van elkaars bestaan af: geen IP, geen ports, geen locatie, \dots
+    \item Pub/Sub moeten niet op hetzelfde moment actief zijn, kan \bold{disconnected} werken
+\end{itemize}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{mqtt-brokers.png}
+    \caption{Mogelijke MQTT brokers die je kan gebruiken}
+\end{figure}
+
+\subsection{Sectoren}
+
+\begin{itemize}
+    \item Telemetry
+    \item Automotive
+    \item Smart phone
+    \item Energy Monitoring (vb Flukso)
+    \item Chat Applications
+    \item Notification services
+    \item LoRa Gateway (multitech)
+    \item Facebook Messenger
+    \item Olie \& Gas
+\end{itemize}
+
+\subsection{Topics}
+
+Broker (server) heeft een \bold{Topic}/Subject
+\begin{itemize}
+    \item vb: /howest/b008/sensors/temperatuur
+    \item Zelfde vorm als url
+\end{itemize}
+
+Devices hebben \bold{Subscription} op een of meerdere \bold{Topics}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{mqtt-topics.png}
+    \caption{Topic levels}
+\end{figure}
+
+\subsubsection{Wildcards}
+
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{mqtt-wildcards.png}
+    \caption{Single-level wildcard: +}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{mqtt-wildcards2.png}
+    \caption{Multi-level wildcard: \#}
+\end{figure}
+
+\subsection{Quality Of Service (QoS)}
+= een overeenkomst tussen zender en ontvanger om te garanderen dat een bericht geleverd wordt.
+
+3 niveau's: 
+\begin{enumerate}
+    \item Fire and forget
+    \item Delivered at least once
+    \item Delivered exactly once
+\end{enumerate}
+
+\subsubsection{Level 0: Fire and forget}
+
+The sender tries with best effort to send the message and relies
+on the reliability of TCP. No retransmission takes place.
+
+\subsubsection{Level 1: Delivered at least once}
+
+The receiver will get the message at least once. If the receiver
+does not acknowledge the message or the acknowledge gets lost on the way, it will be
+resent until the sender gets an acknowledgement. Duplicate messages can occur.
+
+\subsubsection{Level 2: Delivered exactly once}
+
+The protocol makes sure that the message will arrive exactly once
+at the receiver. This increases communication overhead but is the best option when
+neither loss nor duplication of messages are acceptable.
+
+\subsection{Communicatie}
+
+\subsubsection{Payload}
+= Wat zit in het bericht?
+
+\begin{itemize}
+    \item Vrij te kiezen
+    \item JSON
+    \item XML
+    \item CSV
+    \item \dots
+\end{itemize}
+
+\subsubsection{Eigenschappen}
+
+\begin{itemize}
+    \item Geen standaard
+    \item Nadeel is interoperability = samenwerking met andere systemen omdat er geen afspraken zijn rond inhoud
+    \item Goede documentatie nodig
+\end{itemize}
+
+\subsubsection{Security}
+
+Login/wachtwoord
+
+\begin{itemize}
+    \item Eenvoudig maar niet veilig
+    \item Proberen te vermijden
+\end{itemize}
+
+TLS (zie 3MCT)
+\begin{itemize}
+    \item Voorkeur, meest veilige
+    \item Beveiligen van communicatiekanaal
+    \item Nadeel is dat je krachtiger IoT device nodig hebt voor encryptie, dus niet overal mogelijk
+    \item \url{https://paolopatierno.wordpress.com/2015/08/18/gnatmq-and-ssltls-support-make-it-up-and-running/}
+\end{itemize}
+
+\subsection{MQTT Tools}
+
+MQTT.FX of MQTT Lens of MQTT Box (Windows Store) installeren om de broker te testen.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{mqtt-tools.png}
+    \caption{MQTT Tools}
+\end{figure}
+
+\subsection{MQTT.NET \& Python}
+
+Met MQTT library voor .NET (Nuget package downloaden in Visual Studio)
+
+\subsubsection{In C\#}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{mqtt-net1.png}
+    \caption{Connectie maken}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{mqtt-net2.png}
+    \caption{Versturen bericht}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{mqtt-net3.png}
+    \caption{Ontvangen bericht via een Event}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{mqtt-net4.png}
+    \caption{Meerdere topic publishen}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{mqtt-net5.png}
+    \caption{Receive (met multi-level wildcard \#)}
+\end{figure}
+
+\subsubsection{In Python}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{mqtt-python.png}
+    \caption{}
+\end{figure}
+
+\subsection{MQTT en Azure Functions}
+
+De MQTT Broker kan Azure Function Triggers activeren met de Nuget Extension:
+
+`CaseOnline.Azure.WebJobs.Extension.Mqtt'
+
+\url{https://github.com/keesschollaart81/CaseOnline.Azure.WebJobs.Extensions.Mqtt}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{mqtt-azurefunction.png}
+    \caption{MQTT Azure Function}
+\end{figure}
+
+\subsubsection{Opstellingen}
+
+\bold{Directe communicatie} (one-way)
+
+\begin{itemize}
+    \item Vanuit App direct communiceren met MQTT broker via internet
+    \item Voor de meeste platformen (iOS, Android, Windows is dit mogelijk)
+    \item Niet altijd beste oplossing (poorten niet altijd open)
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{mqtt-com1.png}
+    \caption{}
+\end{figure}
+
+
+\bold{Bericht via Azure Function naar MQTT} (one-way)
+
+\begin{itemize}
+    \item Vanuit App HTTP POST naar Azure Functions
+    \item In de Azure function maken we bericht aan om te versturen naar MQTT Broker Topic
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{mqtt-com2.png}
+    \caption{}
+\end{figure}
+
+\bold{Communicatie tussen devices via de cloud}
+
+Als we op een drukknop aangesloten aan de RPI drukken: 
+\begin{itemize}
+    \item Publish bericht in /howest/gkg/b008/\#
+    \item Broker draait in Cloud
+    \item Iedereen met subscription op /howest/gkg/b008/\# zal dit ontvangen
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{mqtt-com3.png}
+    \caption{}
+\end{figure}
+
+\bold{Communicatie tussen devices lokaal (zonder cloud)}
+
+\begin{itemize}
+    \item We kunnen de MQTT broker installeren op de Raspberry Pi
+    \item Devices connecteren met elkaar via de lokale browser op de Pi
+    \item Geen link met de cloud nodig
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{mqtt-com4.png}
+    \caption{}
+\end{figure}
+
+\bold{Communicatie tussen devices lokaal via gateway met cloud link}
+
+\begin{itemize}
+    \item We kunnen een MQTT Broker installeren op de Raspberry Pi
+    \item Devices communiceren met elkaar via de lokale broker op de Pi
+    \item Via een mobile app sturen we bericht naar Azure Function LED AAN
+    \item Function plaatst bericht in Topic /howest/gkg/b008/\#
+    \item Vraagt VPN (complex)
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{mqtt-com5.png}
+    \caption{}
+\end{figure}
+
+\subsection{Samenvatting}
+
+\begin{itemize}
+    \item Wat is MQTT ?
+    \item Wat zijn topics \& subscriptions ?
+    \item Welke vormen van topics zijn er, Wilcards etc
+    \item Wat is QoS en welke zijn er ?
+    \item Welke opstellingen zijn er mogelijk ?
+\end{itemize}
+
+
 \section{Examen}
 \begin{itemize}
     \item Theorie: 30\%
