@@ -1,6 +1,6 @@
 \documentclass{article}
 
-\usepackage[dutch]{babel}
+\usepackage[english]{babel}
 \usepackage[margin=3cm]{geometry}
 \usepackage{graphicx}
 \usepackage{float}
@@ -152,7 +152,7 @@
 Met Shared Assets Project maken we de UI voor elk platform apart. Wij gaan vooral werken met .NET Standard.
 
 
-\subsection{Samenvatting}
+\subsection{Summary}
 
 \begin{itemize}
     \item What devices, platforms, etc. can we target using .NET, and what programming languages can we use?
@@ -454,7 +454,7 @@ at run time and to invoke them."}
     \caption{}
 \end{figure}
 
-\subsection{Samenvatting}
+\subsection{Summary}
 
 \begin{itemize}
     \item You understand the importance of \bold{namespaces}, and the techniques of using them in your own projects.
@@ -570,7 +570,7 @@ How to exchange data between several pages:
     \item Properties (Demo\_TabbedPage)
 \end{enumerate}
 
-\subsection{Samenvatting}
+\subsection{Summary}
 
 \begin{itemize}
     \item The different \bold{page types} and how to use them.
@@ -580,7 +580,223 @@ How to exchange data between several pages:
     \item You can explain the concept of a \bold{master-detail} relation with an example
 \end{itemize}
 
+\section{Object Orientation}
+
+\subsection{Inheritance}
+
+= klasses nemen methods en properties over van een andere klasse. 
+
+Er ontstaat een hi"erarchie.
+
+\begin{lstlisting}[language=csharp]
+// the base class: 
+
+public class Advisor
+{
+    // properties
+    public string Name { get; set; }
+
+    // methods
+    public void Advise() { }
+}
+
+// the deriving class
+// notice the : between the base class and deriving class
+
+public class MinisterOfDefense : Adviser {
+    // code here
+}
+
+\end{lstlisting}
+
+\begin{itemize}
+    \item All C\# classes, of any type, are treated as if they ultimately derive from System.Object
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{inheritance.png}
+    \caption{}
+\end{figure}
+
+\begin{itemize}
+    \item \bold{Generalize} properties (equal for all) by putting them in the \bold{base class}
+    \item \bold{Specify} properties (specific for one) by putting them in the \bold{deriving class}
+\end{itemize}
+
+\subsubsection{Constructor}
+
+\begin{itemize}
+    \item Constructors are \bold{not} inherited!
+    \item Constructor without parameter in base class?
+    \begin{itemize}
+        \item $\Rightarrow$ Automatically called by deriving class
+    \end{itemize}
+    \item No constructor without parameters in base class?
+    \begin{itemize}
+        \item $\Rightarrow$ Explicitly call it in deriving classes
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{inheritance-constructor.png}
+    \caption{Inheritance: constructor example}
+\end{figure}
+
+\subsubsection{Access modifiers}
+
+public is the default access modifier.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{inheritance-access-modifiers.png}
+    \caption{Inheritance: access modifiers}
+\end{figure}
+
+\subsubsection{Properties/methods: VIRTUAL and OVERRIDE}
+
+When you want to override a method from the base class, 
+use the virtual keyword in the base method,
+and the override method in the derived method.
+
+Virtual properties/methods:
+\begin{itemize}
+    \item Default implementation in base class
+    \item `virtual' keyword, to \bold{replace} the way an object behaves
+    \item \bold{CAN} be overriden in subclasses, only if necessary.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{inheritance-override.png}
+    \caption{}
+\end{figure}
 
 
+\subsubsection{Properties/methods: ABSTRACT and OVERRIDE}
+
+Abstract properties/methods:
+
+\begin{itemize}
+    \item No default implementation possible in base class
+    \item `abstract' keyword, to \bold{extend} the way an object behaves
+    \item \bold{MUST} be present in each deriving class
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{inheritance-abstract.png}
+    \includegraphics[width=0.4\textwidth]{inheritance-abstract2.png}
+    \caption{}
+\end{figure}
+
+
+\subsection{Polymorphisme}
+
+= Objects of a derived class can be treated like objects of the base class at runtime
+
+\bold{Example:} say we have a class Animal, and two classes Cat and Dog that inherit the Animal class.
+Then, this is possible: 
+
+\begin{lstlisting}[language=csharp]
+List<Animal> animals = new List<Animal>();
+Animal dog = new Dog();
+Animal cat = new Cat();
+
+animals.Add(dog);
+animals.Add(cat);
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{polymorphism.png}
+    \caption{Polymorphism example}
+\end{figure}
+
+\subsubsection{Disadvantage}
+
+\textcolor{red}{!!!} \bold{Multiple inheritance} is \bold{NOT} allowed through classes in C\# \textcolor{red}{!!!}
+
+\subsection{Interfaces}
+
+\begin{itemize}
+    \item Interfaces can be seen as contracts for classes
+    \item Implementing = applying the contract
+    \item An interface \bold{forces} all implementing classes to implement all properties and/or methods
+    \item An interface has no default implementation on its own (=you can't create an instance from an interface)
+\end{itemize}
+
+\subsubsection{Summary}
+
+\begin{itemize}
+    \item Contract + NO implementations = interface
+    \item Contract + SOME implementations = abstract (base) class
+    \item Implementation for all properties \& methods = normal (base) class
+\end{itemize}
+
+\subsubsection{Example}
+
+\begin{itemize}
+    \item The IAdvisor interface has an Advice() method (notice that method has no default implementation)
+    \item Every class that implements this interface also must have its own Advice() method
+    \item A class can implement multiple interfaces (see the MicrosoftCEO class)
+    \item In the PrimeMinister class:
+    \begin{itemize}
+        \item A list is created with the same type as the interface
+        \item Every element in that list is of a class that implements the interface
+        \item Can therefore also be used in a foreach() loop
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{interfaces.png}
+    \caption{Interfaces example}
+\end{figure}
+
+\subsection{Composition}
+
+= Creating an instance of an object from a class in another class.
+
+\subsubsection{Example}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{composition1.png}
+    \caption{How can we make an instance of `\_disk'?}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{composition2.png}
+    \caption{Solution: 3 options}
+\end{figure}
+
+\bold{Option 1:} creating it at the start of the class (=composition)
+
+\bold{Option 2:} using the constructor (=composition)
+
+\bold{Option 3:} Outside of the class, by creating a new object an assigning that object to the `\_disk' property in the class.
+
+The 3rd option is called \bold{Aggregation}. Unlike the other options, the `myDisk' object keeps existing even if the PC class stops existing.
+
+\subsubsection{Interfaces in Xamarin(.Forms)}
+
+Interfaces in Xamarin(.Forms) is extremely useful: 
+
+Say you need to get data from a specific sensor on your Android/iOS/UWP device. 
+We can create an interface in our project, and implement that interface in each device's code.
+Once we need to get that data, we can automatically call the correct method for the correct device,
+by just calling the interface's method.
+
+\subsection{Summary}
+
+\begin{itemize}
+    \item You are convinced by the advantages of \bold{inheritance} and \bold{polymorphism}, and can explain using an example
+    \item  You understand the usage and consequences of the \bold{virtual} and \bold{abstract} keywords for properties and methods.
+    \item  You know when to use \bold{abstract classes} and/or \bold{interfaces}, and can explain the difference between those two.
+    \item  You understand the specific importance of interfaces in \bold{Xamarin}(.Forms)
+\end{itemize}
 
 \end{document}
