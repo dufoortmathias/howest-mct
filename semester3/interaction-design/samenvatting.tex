@@ -1253,5 +1253,111 @@ Duidelijke feedback bij:
 \end{itemize}
 
 
+\section{API-calls, JavaScript basics \& debugging}
+
+\subsection{JavaScript}
+
+\begin{itemize}
+    \item Enige client side manier om op het web te werken
+    \item Is ge"evolueerd tot mogelijke full-stack oplossing
+    \item Single thread, never blocking $\Rightarrow$ \underline{asynchrone} manier van werken
+\end{itemize}
+
+\subsubsection{Manier van werken}
+
+\begin{enumerate}
+    \item DOM element in een variabele stoppen
+    \item Eventlistener (interactie), trigger
+    \item In de eventlistener functie: inhoud schrijven, actie ondernemen
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{js-manier-van-werken.png}
+    \caption{Manier van werken}
+\end{figure}
+
+\subsubsection{Beschikbare structuren}
+
+\begin{itemize}
+    \item Objecten (data gestructureerd met naam bijhouden)
+    \item Arrays (behouden een element met een bepaalde positie/nummer)
+\end{itemize}
+
+\begin{lstlisting}
+let anObject = {
+    fork: 'Fork'
+}
+
+let anArray = ['Fork', 'Spoon'];
+\end{lstlisting}
+
+
+\subsection{API calls in JS}
+
+\subsubsection{Data ophalen in JS}
+\begin{itemize}
+    \item Via de fetch API
+    \item Fetch API returns een promise (belofte)
+\end{itemize}
+
+\begin{lstlisting}
+const serverendpoint = "https://api.example.com/v1/endpoint"
+
+// GET
+fetch(serverEndPoint)
+    .then(function (response) {
+        console.log(response);
+        return response.json();
+    })
+    .then(function (json) {
+        // Callback
+        console.log(JSON.stringify(json));
+    });
+\end{lstlisting}
+
+\subsubsection{Async/await functie}
+
+\begin{itemize}
+    \item In een async functie kunnen we een promise afwachten
+    \item Vanaf dat moment kan je weer met een callback werken indien gewenst
+    \item In plaats van `.then' gebruik je `await', met `async' in de functiedeclaration
+\end{itemize}
+
+\begin{lstlisting}
+const getAPINewWay = async function() {
+    const get = await fetch(serverEndPoint, { headers: headers });
+    const joke = await get.json();
+    console.log({ joke });
+};
+\end{lstlisting}
+
+Kan nog beter: we kunnen de promise pas afwachten als de tweede \bold{`then'} voltooid is
+
+\begin{lstlisting}
+const data = await fetchData(serverEndPoint);
+\end{lstlisting}
+
+\subsubsection{Error handling}
+
+Op deze laatste manier van schrijven is de .catch niet beschikbaar om te gebruiken.
+Meest eenvoudige manier om op te lossen: alles in een try-catch block zetten.
+Later maken we sowieso een class voor data-access, authentication, etc\dots
+
+
+\subsection{Debugging}
+
+\subsubsection{Logging}
+\begin{lstlisting}
+console.log({myVariable, anotherOne});
+console.table([arrItems]); // voor arrays kan je console.table() gebruiken
+\end{lstlisting}
+
+\subsubsection{Browser breakpoints}
+
+In de browser kan je breakpoints zetten om de code op een bepaalde lijn te stoppen, en lijn per lijn te overlopen.
+Het is ook mogelijk om in de browser (snel) elementen op te vragen en te wijzigen.
+
+
 \end{document}
 
