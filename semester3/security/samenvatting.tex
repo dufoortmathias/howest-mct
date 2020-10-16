@@ -776,4 +776,77 @@ LTO = Linear Tape Open = open standaard
     \item Moet effectief worden uitgevoerd
 \end{itemize}
 
+\section{Penetration testing}
+
+= testen van security
+
+\begin{itemize}
+    \item Wat gebeurt er \textit{echt}?
+    \item Wat kan de hacker doen?
+    \item $\Rightarrow$ bewustwording van security
+    \item Wettelijke beperkingen: toestemming nodig van eigenaar!
+\end{itemize}
+
+\subsection{Black-box testing vs white-box testing}
+
+\subsubsection{Black-box testing}
+
+\begin{itemize}
+    \item Binnenbreken zonder dat je iets weet over het target
+    \item Iets van waarde proberen uit het systeem te halen
+    \item Je weet niet wat/waar je moet aanvallen
+    \item Minder efficient
+\end{itemize}
+
+\subsubsection{White-box testing}
+
+\begin{itemize}
+    \item Gaan kijken naar de serverruimte, rondleiding krijgen van eigenaar
+    \item Documentatie doorlezen
+    \item Volledige toegang tot infrastructuur, om te kijken wat er beter kan
+    \item Consulting, raad vragen
+    \item Demonstratieve luik is helemaal weg: moeilijker om te tonen aan de eigenaar wat een hacker zou kunnen doen.
+    \item Veel efficienter
+\end{itemize}
+
+\subsection{Fase 1}
+
+Reconnaissance = Information gathering = OSINT
+
+\begin{itemize}
+    \item Verzamelen van informatie over het target
+    \begin{itemize}
+        \item Algemene info
+        \item Bedrijfsinfo
+        \item E-mailadressen
+        \item Organigram (=hi"erarchie van het bedrijf)
+        \item Leveranciers
+        \item \dots
+    \end{itemize}
+    \item Inzetbaar voor social engineering
+    \item Spear-phishing
+\end{itemize}
+
+\subsubsection{Tools \& attack surfaces}
+
+\begin{itemize}
+    \item Google!
+    \item DNS
+    \item Sociale netwerken
+    \item Bedrijfssite
+    \item \dots
+\end{itemize}
+
+\subsection{Netwerk scanning}
+
+\begin{itemize}
+    \item nmap : overlopen van services op het systeem
+    \item port-scanners
+    \item SNMP
+    \item Wireshark / sniffing
+    \item \dots
+\end{itemize}
+
+
+
 \end{document}
