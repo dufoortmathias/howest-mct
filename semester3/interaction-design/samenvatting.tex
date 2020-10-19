@@ -1359,5 +1359,399 @@ In de browser kan je breakpoints zetten om de code op een bepaalde lijn te stopp
 Het is ook mogelijk om in de browser (snel) elementen op te vragen en te wijzigen.
 
 
+\section{Animation}
+
+\subsection{Transitions}
+
+\begin{itemize}
+    \item Geanimeerde verandering tussen 2 states
+    \item User interaction
+    \item Belangrijk onderdeel van User Interface design
+    \item Micro interactions: hover, clicks, taps, gestures, \dots
+    \item \url{https://codepen.io/rachelcope/pen/raGwPq}
+    \item \url{https://tympanus.net/Development/Animocons/}
+\end{itemize}
+
+\subsection{Animations}
+
+\begin{itemize}
+    \item Een getimede animatie, heeft een start en een einde
+    \item Start zonder dat de user iets doet
+    \item De user kan er ook niets aan doen
+    \item Eventueel pauzeren of stoppen
+    \item \url{https://codepen.io/chrisgannon/pen/EjVyXN}
+    \item \url{https://codepen.io/sol0mka/pen/ogOYJj}
+\end{itemize}
+
+
+
+\subsection{Speed}
+
+Wordt bepaald door: 
+
+\begin{itemize}
+    \item Duration
+    \item Easing
+\end{itemize}
+
+\subsection{Duration}
+
+\begin{itemize}
+    \item Hoe lang duurt de perfecte transition?
+    \item Niet te lang en niet te kort
+    \item Tussen 200ms en 500ms voor interface elementen
+    \item Onder de 100ms zie je nauwelijks
+    \item Boven de 1s is te traag en hinderlijk
+    \item Afhankelijk van:
+    \begin{itemize}
+        \item Grootte object
+        \item Afstand die ze afleggen
+        \item Complexiteit
+        \item Schermgrootte
+    \end{itemize}
+\end{itemize}
+
+\bold{Tips}
+
+\begin{itemize}
+    \item Selection controls have a duration of 100ms:
+    \item \url{https://material.io/design/motion/speed.html#duration}
+    \item Animated elements that traverse a large portion of the screen have the longest durations
+    \item \url{https://uxdesign.cc/the-ultimate-guide-to-proper-use-of-animation-in-ux-10bd98614fa9}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{animation-duration.png}
+    \caption{}
+\end{figure}
+
+\subsection{Easing}
+
+\begin{itemize}
+    \item Progressie van de beweging over tijd (duration).
+    \item Specificeert de versnelling of vertraging.
+    \item Duration blijft hetzelfde.
+    \item In plaats van een constant tempo (linear).
+    \item Maakt de animatie natuurlijker.
+    \item Geeft de animatie karakter.
+    \item Alsof elementen beïnvloed worden door natuurlijke krachten zoals wrijving en zwaartekracht.
+    \item 1 van de essentiële principes van animatie:
+    \item \url{https://vimeo.com/93206523}
+\end{itemize}
+
+\bold{Tips}
+
+\begin{itemize}
+    \item Transitions without easing look stiff and mechanical
+    \item \url{https://material.io/design/motion/speed.html\#easing}
+    \item \url{https://uxdesign.cc/the-ultimate-guide-to-proper-use-of-animation-in-ux-10bd98614fa9}
+\end{itemize}
+
+
+\subsubsection{Cubic-bezier curves}
+
+\begin{itemize}
+    \item Visualiseren de progressie van de beweging over tijd (duration).
+    \item Timing functions
+    \item 4 punten:
+    \begin{itemize}
+        \item p0 en p3 = begin en einde
+        \item p1 en p2 = control points
+    \end{itemize}
+    \item cubic-bezier(x-p1, y-p1, x-p2, y-p2)
+\end{itemize}
+
+\bold{Voorbeelden}
+
+\url{https://callmenick.com/dev/level-up-animations-cubic-bezier/}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{animation-cubic-bezier.png}
+    \includegraphics[width=0.47\textwidth]{animation-cubic-bezier2.png}
+    \caption{Cubic-bezier function}
+\end{figure}
+
+
+\subsubsection{Ease-out}
+
+\begin{itemize}
+    \item Decelerate easing
+    \item Begint snel, vertraagt naar het einde
+    \item Ideaal voor inkomende elementen
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.2\textwidth]{animation-ease-out.png}
+    \caption{Ease-out}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{animation-ease-out-extra.png}
+    \caption{Ease-out extra functions}
+\end{figure}
+
+\begin{itemize}
+    \item Accelerate easing
+    \item Begint traag
+    \item Versnelt naar het einde
+    \item Ideaal voor uitgaande elementen
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.2\textwidth]{animation-ease-in.png}
+    \caption{Ease-in}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{animation-ease-in-extra.png}
+    \caption{Ease-in extra functions}
+\end{figure}
+
+\subsubsection{Ease}
+
+\begin{itemize}
+    \item Meestvoorkomende soort easing
+    \item Easing zowel op begin als einde
+    \item Legt de nadruk op het einde van de animatie
+    \item Geeft meer tijd aan de vertraging dan aan de versnelling.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{animation-ease.png}
+    \caption{}
+\end{figure}
+
+
+\subsubsection{Ease-in-out}
+
+\begin{itemize}
+    \item Begin en einde versnellen en vertragen even snel
+    \item Tennis effect
+    \item Heeft een specifiek karakter
+    \item Ook niet voor elke situatie
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{animation-ease-in-out.png}
+    \caption{Ease-in-out}
+\end{figure}
+
+
+\subsubsection{Ease-in-back en Ease-out-back}
+
+\begin{itemize}
+    \item \bold{Bounce effect}
+    \item Maakt het nog levendiger (anticipation)
+    \item Niet voor elke situatie
+    \item Enkel voor beweging (niet voor color changes)
+    \item Negatieve y-waarde
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{ease-in-out-back.png}
+    \caption{Ease-in/out-back}
+\end{figure}
+
+
+
+
+\subsection{CSS transition}
+\begin{itemize}
+    \item Automatische animatie tussen 2 verschillende property values.
+    \item Keert automatisch terug als de animatie nog niet helemaal gedaan is
+    \item Altijd op de initiële state declareren.
+    \item \url{https://codepen.io/simoncoudeville-nmct/pen/bQNMQK}
+\end{itemize}
+
+\bold{Voorbeelden}
+
+\begin{lstlisting}[language=CSS]
+// Welke property er moet geanimeerd worden (default: all, optioneel)
+transition-property: scale;
+
+// duur van de animatie, in miliseconden of seconden
+transition-duration: 300ms;
+
+// easing (optioneel)
+transition-timing-function: ease-in;
+
+// vertraging vooraleer de animatie start
+transition-delay: 1s;
+
+// transition property: shorthand voor:
+transition: [transition-property] [transition-duration] [transition-timing-function] [transition-delay];
+\end{lstlisting}
+
+\bold{Basic voorbeeld:}
+
+\url{https://www.w3schools.com/cssref/tryit.asp?filename=trycss3_transition-property}
+
+\subsubsection{Transition-timing-function}
+
+\begin{itemize}
+    \item Easing
+    \item Standard easing names: (zijn ook cubic-bezier functions)
+    \begin{itemize}
+        \item ease (default)
+        \item linear
+        \item ease-in
+        \item ease-out
+        \item ease-in-out
+    \end{itemize}
+    \item Custom cubic-bezier (x-p1, y-p1, x-p2, y-p2)
+    \item \url{https://matthewlein.com/tools/ceaser}
+\end{itemize}
+
+\bold{Transition-timing-function step values}
+
+\begin{itemize}
+    \item \bold{step-start:} the transition jumps instantly to the final state
+    \item \bold{step-end:} the transtion stays at the initial state until the end, when it instantly jumps to the final state
+    \item \bold{step(4, end):} by using steps() with an integer, you can define a specific number of steps before reaching the end.
+    The state of the element will not vary gradually, but rather \bold{jump} from state to state in seperate instants
+    \item \url{https://cssreference.io/property/transition-timing-function/}
+    \item Wordt niet vaak gebruikt
+\end{itemize}
+
+\subsubsection{Multiple transitions}
+\begin{lstlisting}[language=CSS]
+transition: width 1s ease-in, height 2s ease-out, background-color 3s ease-in-out, transform 4s linear;
+
+// of:
+
+transition-property: width, height, background-color, transform;
+transition-duration: 1s, 2s, 3s, 4s;
+transition-timing-function: ease-in, ease-out, ease-in-out, linear;
+\end{lstlisting}
+
+\url{https://codepen.io/simoncoudeville-nmct/pen/rQOmGB}
+
+\subsection{CSS animation}
+\begin{itemize}
+    \item Syntax om een getimede animatie in CSS te schrijven.
+    \item Niet gebruiken voor transitions:
+    \begin{itemize}
+        \item Animations keren niet vanzelf terug: \url{https://codepen.io/simoncoudeville-nmct/pen/YRyQeJ}
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Gelijkaardige properties:}
+
+\begin{itemize}
+    \item animation-duration
+    \item animation-timing-function: werkt met dezelfde names en cubic-beziers.
+    \begin{itemize}
+        \item gebeurt per keyframe!
+    \end{itemize}
+\end{itemize}
+
+\url{https://jaketrent.com/post/css-animation-timing-function-per-keyframe-segment/}
+
+\subsubsection{Hoe maak je een CSS animation?}
+
+\begin{itemize}
+    \item Geef de animatie een naam
+    \item Definieer de animation in @keyframes
+    \item Roep de animation-naam op in een element en bepaal hoe het wordt geanimeerd.
+    \item Basic voorbeeld: \url{https://codepen.io/simoncoudeville-nmct/pen/Zmbqvd}
+\end{itemize}
+
+\subsubsection{Zelfstudie}
+
+\begin{itemize}
+    \item \url{https://robots.thoughtbot.com/css-animation-for-beginners}
+    \item \url{https://cssreference.io/property/animation-delay/}
+    \item \url{https://codepen.io/collection/nbEZgX/}
+\end{itemize}
+
+\subsection{High performance animations}
+
+\begin{itemize}
+    \item \url{https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animated_properties}
+    \item Welke properties kan je best gebruiken om te animeren?
+    \item \url{https://www.html5rocks.com/en/tutorials/speed/high-performance-animations/}
+    \item Als het kan:
+    \begin{itemize}
+        \item opacity
+        \item transform: translate
+        \item transform: rotate
+        \item transform: scale
+    \end{itemize}
+    \item Gebruik de will-change property om de browser te waarschuwen wat geanimeerd zal worden    
+\end{itemize}
+
+\url{https://developers.google.com/web/fundamentals/design-and-ux/animations/animations-and-performance}
+
+\url{https://medium.com/outsystems-experts/how-to-achieve-60-fps-animations-with-css3-db7b98610108}
+
+\subsection{JavaScript libraries}
+
+\begin{itemize}
+    \item Niet alles is mogelijk met CSS
+    \item Complexe easing functions
+    \item Timeline control
+    \item Transform properties apart animeren
+    \item Complex sequencing
+    \item Performantie
+    \item Browser compatibility
+    \item \dots
+\end{itemize}
+
+\subsubsection{Gsap}
+
+\begin{itemize}
+    \item \url{https://greensock.com/gsap/}
+    \item \url{https://greensock.com/showcase}
+\end{itemize}
+
+\subsubsection{Anime.js}
+
+\begin{itemize}
+    \item \url{https://animejs.com/}
+\end{itemize}
+
+\subsubsection{Mo.js}
+
+\begin{itemize}
+    \item \url{https://github.com/mojs/mojs}
+    \item \url{https://tympanus.net/Development/Animocons/}
+\end{itemize}
+
+\subsubsection{Popmotion}
+
+\begin{itemize}
+    \item \url{https://popmotion.io/}
+\end{itemize}
+
+\url{https://www.npmtrends.com/animejs-vs-gsap-vs-mo-js-vs-popmotion}
+
+\subsubsection{Lottie + bodymovin}
+
+\begin{itemize}
+    \item Render After Effects animations natively on Web, Android and iOS, and React Native
+    \item \url{https://github.com/airbnb/lottie-web}
+    \item \url{http://airbnb.io/lottie/#/}
+    \item \url{https://codepen.io/airnan/}
+    \item Volgend semester in Web/App
+\end{itemize}
+
+\subsection{Oefening}
+
+\begin{itemize}
+    \item \url{https://codepen.io/simoncoudeville-nmct/pen/RqwzLw}
+    \item Probeer de ball te laten springen zoals in het voorbeeld.
+    \item Met high performance animation properties en de will-change property
+\end{itemize}
+
 \end{document}
 
