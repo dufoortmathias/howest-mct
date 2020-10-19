@@ -799,4 +799,92 @@ by just calling the interface's method.
     \item  You understand the specific importance of interfaces in \bold{Xamarin}(.Forms)
 \end{itemize}
 
+\section{Asynchronous programming: async and await keywords}
+
+\subsection{Why?}
+
+To make the app continue to respond to use interaction while\dots:
+\begin{itemize}
+    \item Reading from or writing to a database or file
+    \item Accessing a web service
+    \item Performing data processing
+\end{itemize}
+
+\subsection{Example: newspaper app}
+
+\begin{itemize}
+    \item Load the trending newspaper items
+    \item Load user preferences
+    \item Load newspaper items based on preferences $\Rightarrow$ needs to wait until user preferences are set
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{async-news.png}
+    \caption{}
+\end{figure}
+
+
+\subsubsection{Problem}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{async-news-problem.png}
+    \caption{LoadNewsItemsAsync(prefs) needs to wait}
+\end{figure}
+
+\subsubsection{Solution}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{async-news-solution.png}
+    \caption{Solution: use the `await' keyword}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{async-news-solution2.png}
+    \caption{}
+\end{figure}
+
+\subsection{Creating an asynchronous function}
+
+\subsubsection{With void-functions: use Task}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{async-void.png}
+    \caption{Turning a void function asynchronous}
+\end{figure}
+
+\subsubsection{With a function that returns a type T}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{async-type.png}
+    \caption{Turning a type function asynchronous}
+\end{figure}
+
+\subsection{Calling an asynchronous function}
+
+\begin{itemize}
+    \item `async' in both the function you call it in, and the function you are calling
+    \item await when calling the function
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{async-calling.png}
+    \caption{}
+\end{figure}
+
+\subsection{Summary}
+\begin{itemize}
+    \item The difference between \bold{synchronous} and \bold{asynchronous} programming
+    \item The \bold{what} and the \bold{why} of asynchronous programming
+    \item The meaning and usage of the \bold{async} keyword
+    \item The meaning and usage of the \bold{await} keyword
+    \item The \bold{return type} of async functions
+\end{itemize}
+
 \end{document}
