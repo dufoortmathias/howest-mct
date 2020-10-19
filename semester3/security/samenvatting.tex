@@ -809,7 +809,7 @@ LTO = Linear Tape Open = open standaard
     \item Veel efficienter
 \end{itemize}
 
-\subsection{Fase 1}
+\subsection{Fase 1: Reconnaissance}
 
 Reconnaissance = Information gathering = OSINT
 
@@ -837,7 +837,7 @@ Reconnaissance = Information gathering = OSINT
     \item \dots
 \end{itemize}
 
-\subsection{Netwerk scanning}
+\subsection{Fase 2: Netwerk scanning}
 
 \begin{itemize}
     \item nmap : overlopen van services op het systeem
@@ -847,6 +847,71 @@ Reconnaissance = Information gathering = OSINT
     \item \dots
 \end{itemize}
 
+\subsubsection{Network reconnaissance}
 
+\begin{itemize}
+    \item Sniffing
+    \item Port scanning
+    \item OS fingerprinting
+    \item Detectie van gebruikte software
+    \item DNS zone data
+    \item Information harvesting
+\end{itemize}
+
+\subsection{Fase 3: Vulnerability assessement}
+
+\begin{itemize}
+    \item Vulnerabilty scanners, zoals: Nexpose, Retina/Iris
+    \begin{itemize}
+        \item Geeft een rapport van kwetsbaarheden op het systeem
+        \item Niet context-bewust: een scanner weet niet per se welke bestanden intressant zijn
+        \item Heel veel informatie
+    \end{itemize}
+    \item Identificatie uit CVE (common vulnerabilities and exposures) database
+\end{itemize}
+
+\subsection{Fase 4: Exploit, Access, penetratie}
+
+\begin{itemize}
+    \item De gevonden kwetsbaarheden uitbuiten (exploiten)
+    \item Toegang verkrijgen tot het systeem
+    \item Opgelet naar beschikbaarheid/vertrouwelijkheid/legaliteit
+\end{itemize}
+
+
+\subsection{Fase 5: Maintaining access}
+
+\begin{itemize}
+    \item Het behouden van de verkregen toegang
+    \item Covering tracks: sporen proberen uit te wissen
+    \item Proberen zo veel mogelijk in-memory te doen: geen permanente wijzigingen aanbrengen aan het systeem.  
+    \item Opgelet naar beschikbaarheid/vertrouwelijkheid/legaliteit
+\end{itemize}
+
+\section{Sociale media}
+
+\begin{itemize}
+    \item Oversharing: alles in detail delen met iedereen
+    \item Mensen hebben niet door wat de impact daarvan is
+    \item \url{https://www.youtube.com/watch?v=F7pYHN9iC9I}
+    \item Op sociale media posten = vertellen aan willekeurige vreemden
+    \item Deel nooit een foto van je bankkaart op sociale media
+\end{itemize}
+
+\subsection{Metadata}
+
+= data over data
+
+\bold{Voorbeeld:} als je een foto trekt wordt daar veel metadata over opgeslagen (=EXIF-data)
+
+\begin{itemize}
+    \item Plaats en GPS-locatie
+    \item Exacte tijd/datum
+    \item Cameramerk en type
+    \item \dots
+\end{itemize}
+
+Dit is mogelijks bruikbare informatie bij aanvallen. 
+Het kan ook soms een \bold{informatielek} zijn voor de organisatie waarvoor je werkt.
 
 \end{document}
