@@ -914,4 +914,85 @@ Reconnaissance = Information gathering = OSINT
 Dit is mogelijks bruikbare informatie bij aanvallen. 
 Het kan ook soms een \bold{informatielek} zijn voor de organisatie waarvoor je werkt.
 
+\section{Social engineering}
+
+\begin{itemize}
+    \item Zie Kevin Mitnick's "The art of deception"
+    \item De menselijke schakel in security
+    \item Misbruik van inherente psychologische kenmerken van mensen
+    \item Vertrouwen, hulpvaardigheid, empathie, \dots misbruiken
+\end{itemize}
+
+\subsection{Pretexting}
+
+= Het cre"eeren van een scenario om het 
+slachtoffer te engageren zodat het slachtoffer 
+makkelijker informatie weggeeft of acties onderneemt 
+die het slachtoffer normaal niet zou doen.
+
+
+\subsubsection{Hoe?}
+
+\begin{itemize}
+    \item Vertrouwen verkrijgen in uniform, met een impersonatie, \dots
+    \item Over telefoon, gebruik van interne lijn, \dots
+    \item Over email, spoofing, \dots
+\end{itemize}
+
+\subsection{Informatielekken}
+
+\begin{itemize}
+    \item Afval met gevoelige inhoud vernietigen (tegengaan van dumpsterdiving)
+    \item Voorzichtig omgaan met vertrouwelijke info
+    \item Geen kritische info op toestellen of prikborden
+    \item In een bedrijf geraken via de nooduitgang door bvb te praten met de rokers en dan samen naar binnen te wandelen, terwijl je doet alsof je daar werkt.
+\end{itemize}
+
+\subsubsection{Remediering}
+
+\begin{itemize}
+    \item Opleiding
+    \item Waakzaamheid
+    \item Strike security policy
+\end{itemize}
+
+\subsection{Afluisteren}
+
+\begin{itemize}
+    \item Op het draadloos netwerk
+    \item Op de kabel
+    \item Sniffing (=de diefstal/interceptie van data via het onderscheppen van netwerkverkeer)
+    \item Hubs vs Switches: sniffing op een hub is veel eenvoudiger, worden ook minder gebruikt
+\end{itemize}
+
+
+
+\subsubsection{Man in the middle attack}
+
+\begin{itemize}
+    \item WiFi MITM (bvb met openbare hotspots)
+    \item Evil-twin access point: 
+    \begin{itemize}
+        \item = Een access point die je zelf controleert met dezelfde SSID als een ander access point in de omgeving
+        \item Mensen connecteren op uw access point $\Rightarrow$ je ziet hun inloggegevens 
+        \item Je kan uw access point verbinden met internet, zodat die mensen inloggen op Facebook, Email $\Rightarrow$ die inloggegevens kan je dan ook onderscheppen
+    \end{itemize} 
+    \item Vrij simpel implementeerbaar
+    \item Bv: met een WiFi Pineapple
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{mitm-attack.png}
+    \caption{Man in the middle attack}
+\end{figure}
+
+\subsubsection{Remediering}
+\begin{itemize}
+    \item Intelligente switches met port-shutdown
+    \item Encryptie: versleuteld internetverkeer (geen FTP, HTTP, Telnet, \dots. Beter: SFTP, HTTPS, SSH)
+\end{itemize}
+
+
+
 \end{document}
