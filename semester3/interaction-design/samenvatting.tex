@@ -1753,5 +1753,313 @@ transition-timing-function: ease-in, ease-out, ease-in-out, linear;
     \item Met high performance animation properties en de will-change property
 \end{itemize}
 
+\section{Grid Layout}
+
+\subsection{Basics}
+
+\begin{itemize}
+    \item Flexbox = simpele 1-dimensionale layouts
+    \item CSS Grid = comlexe 2-dimensionale layouts
+    \begin{itemize}
+        \item Columns \& Rows
+        \item Global layouts, dashboards, \dots
+        \item Krachtig en uitgebreid
+    \end{itemize}
+    \item Browser support: sinds 2017
+    \item CSS tricks: \url{https://css-tricks.com/snippets/css/complete-guide-grid/#prop-grid-auto-columns-rows}
+    \item Playground: \url{https://codepen.io/simoncoudeville-nmct/pen/JeMPPZ}
+\end{itemize}
+
+\subsubsection{Grid container}
+
+= parent
+
+\begin{itemize}
+    \item Bepaalt de layout
+    \item \url{https://codepen.io/simoncoudeville-nmct/pen/WNNPqQg}
+\end{itemize}
+
+\subsubsection{Grid layout}
+
+\begin{itemize}
+    \item Volgen de layout
+    \item Default source order van de children maar laat toe om de order zowel verticaal als horizontaal te veranderen.
+\end{itemize}
+
+\begin{lstlisting}[language=HTML]
+<!-- Container is de grid container -->
+<div class="container">
+    <div class="item item-1"></div>
+    <div class="item item-2"></div>
+    <div class="item item-3"></div>
+</div>
+
+<!-- Item elementen zijn grid-items. Subitems niet -->
+<div class="container">
+    <div class="item"></div>
+    <div class="item">
+        <p class="sub-item"></p>
+    </div>
+    <div class="item"></div>
+</div>
+\end{lstlisting}
+
+\subsection{Grid line}
+
+\begin{itemize}
+    \item De scheidingslijnen die de structuur van het grid bepalen
+    \item Vertical: column grid line
+    \item Horizontal: row grid line
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{grid-line-column.png}
+    \caption{Column grid line}
+\end{figure}
+
+\subsection{Grid track}
+
+\begin{itemize}
+    \item De ruimte tussen 2 opeenvolgende grid lines
+    \item Vertical: columns
+    \item Horizontal: rows
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{grid-track.png}
+    \caption{Grid track tussen de 2de en de 3de row grid lines}
+\end{figure}
+
+\subsection{Grid cell}
+
+\begin{itemize}
+    \item De ruimte tussen 2 opeenvolgende row \& column grid lines
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{grid-cell.png}
+    \caption{Grid cell tussen row grid lines 1 \& 2, en column grid lines 2 \& 3.}
+\end{figure}
+
+\subsection{Grid area}
+
+\begin{itemize}
+    \item De ruimte tussen 2 row \& column grid lines
+    \item Kan meerdere grid cells bevatten
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{grid-area.png}
+    \caption{Grid area tussen row grid lines 1 \& 3, en column grid lines 1 \& 3.}
+\end{figure}
+
+\subsection{Properties}
+
+\subsubsection{Properties voor de parent (grid container)}
+
+\begin{itemize}
+    \item display: grid | inline-grid
+    \item \bold{Grid tracks, lines, en areas definieren: }
+    \begin{itemize}
+        \item grid-template-columns
+        \item grid-template-rows
+        \item grid-template-areas
+        \item grid-template (shorthand)
+    \end{itemize}
+    \item \bold{Gap (gutter)}
+    \begin{itemize}
+        \item grid-column-gap
+        \item grid-row-gap
+        \item grid-gap (shorthand)
+    \end{itemize}
+    \item \bold{Alignment}
+    \begin{itemize}
+        \item justify-items
+        \item align-items
+        \item place-items
+        \item justify-content
+        \item align-content
+        \item place-content
+    \end{itemize}
+    \item \bold{Auto-generated grid tracks}
+    \begin{itemize}
+        \item grid-auto-columns
+        \item grid-auto-rows
+        \item grid-auto-flow
+    \end{itemize}
+    \item grid: (shorthand)
+\end{itemize}
+
+\subsubsection{Properties voor de child (grid items)}
+
+\begin{itemize}
+    \item \bold{Locatie binnen de container}
+    \begin{itemize}
+        \item grid-column-start
+        \item grid-column-end
+        \item grid-row-start
+        \item grid-row-end
+        \item grid-column
+        \item grid-row
+        \item grid-area
+    \end{itemize}
+    \item \bold{Alignment:}
+    \begin{itemize}
+        \item justify-self
+        \item align-self
+        \item place-self
+    \end{itemize}
+\end{itemize}
+
+\subsection{Grid-gap}
+= De gutter tussen opeenvolgende items (niet links of rechts, boven of onder)
+
+\begin{itemize}
+    \item grid-column-gap: 4px;
+    \item grid-row-gap: 8px; 
+    \item grid-gap: <grid-row-gap> <grid-column-gap>
+\end{itemize}
+
+\subsection{Grid-template-columns en grid-template-rows}
+
+\begin{itemize}
+    \item Definieren de columns en rows
+    \item Meerdere values gescheiden door spaties
+    \item De values staan voor de track size
+    \item De spaties staan voor de grid lines
+\end{itemize}
+
+\subsubsection{Syntax}
+
+\begin{itemize}
+    \item \bold{track-size:} auto, px, vh, vw, \% of een fraction van de overgebleven ruimte (\bold{fr})
+    \item \bold{line-name:} automatische positieve en negatieve nummers. Maar je kan die zelf een naam geven om bij een item op te roepen
+\end{itemize}
+
+\subsubsection{Automatische line-names}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{grid-template.png}
+    \caption{\bold{grid-template-columns}: 40px 50px auto 50px 40px; \\\bold{grid-template-rows}: 25\% 100px auto;}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{grid-template-lines.png}
+    \caption{\bold{grid-template-columns}: [first] 40px [line2] 50px [line3] auto [col4-start] 50px [five] 40px [end]; \\\bold{grid-template-rows}: [row1-start] 25\% [row1-end] 100px [third-line] auto [last-line];}
+\end{figure}
+
+\subsubsection{Track size special notations}
+
+\begin{itemize}
+    \item 1fr: fraction unit = 1 keer de overgebleven ruimte
+    \item auto: neemt de breedste/hoogste content als basis voor de breedte/hoogte
+    \item repeat(12, 1fr): maakt 12 kolommen aan van 1 fraction unit
+    \item minmax(260px, 1fr): maakt 1 column of row aan van minimum 260px en maximum 1 fraction unit
+    \item auto-fit en auto-fill keywords: responsive grid system zonder media queries!
+    \item Combinaties: grid-template-columns: minmax(150px, 1fr) auto 1fr;
+    \begin{itemize}
+        \item Dit maakt 1 column aan van minimum 150px en maximum 1fr, 1 column die automatisch de breedte van de content krijgt en 1 column die altijd 1 fraction unit is.
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{grid-x-start, grid-x-end}
+Waarbij x == column of row
+
+\begin{itemize}
+    \item Bepaalt de locatie van een grid items binnen het grid door te refereren naar grid lines
+    \item Values:
+    \begin{itemize}
+        \item <line>: positief of negatief nummer of de zelfgekozen grid line name
+        \item span <number> of <name>: hoeveel grid tracks moet het element innemen
+    \end{itemize}
+    \item Bijvoorbeeld: 
+    \begin{itemize}
+        \item grid-column-start: 2;
+        \item grid-column-end: span 2;
+        \item grid-column: 2 / span 2;
+    \end{itemize}
+\end{itemize}
+
+\subsection{Grid-template-areas}
+
+\begin{itemize}
+    \item Laat toe om namen te geven aan grid areas
+    \item Visuele representatie van je grid
+    \item Values
+    \begin{itemize}
+        \item \bold{<grid-area-name>} =  een zelfgekozen naam
+        \item \bold{.} = een lege grid cell
+        \item \bold{none} = geen grid lines
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Voorbeeld}
+
+\begin{lstlisting}[language=CSS]
+.container {
+    grid-template-columns: 50px 50px 50px 50px;
+    grid-template-rows: auto;
+    grid-template-areas:
+        "header header header header"
+        "main main . sidebar"
+        "footer footer footer footer";
+}
+\end{lstlisting}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{grid-template-areas.png}
+    \caption{Element met de .container class}
+\end{figure}
+
+\subsection{Grid-area}
+
+\begin{itemize}
+    \item Laat toe om een grid item op een \bold{voorgedefinieerde} grid area te plaatsen
+    \item (Nog) een kortere manier dus om de volgorde te bepalen
+\end{itemize}
+
+\subsection{Voorbeelden}
+
+\begin{itemize}
+    \item CSS grid playground: \url{https://codepen.io/simoncoudeville-nmct/pen/JeMPPZ}
+    \item Responsive dashboard grid: \url{https://codepen.io/simoncoudeville-nmct/pen/aQmENm}
+\end{itemize}
+
+\subsection{Zelfstudie}
+
+\begin{itemize}
+    \item \url{https://css-tricks.com/snippets/css/complete-guide-grid/}
+    \item \url{https://dev.to/perborgen/want-to-learn-css-grid-here-s-my-free-full-length-course-31ln}
+    \item \url{https://css-tricks.com/look-ma-no-media-queries-responsive-layouts-using-css-grid/}
+    \item Auto-fill vs auto-fit: 
+    \begin{itemize}
+        \item \url{https://css-tricks.com/auto-sizing-columns-css-grid-auto-fill-vs-auto-fit/}
+    \end{itemize}
+    \item Minmax function:
+    \begin{itemize}
+        \item \url{https://bitsofco.de/how-the-minmax-function-works/}
+    \end{itemize}
+\end{itemize}
+
+\subsection{Samenvatting: wat moet je weten?}
+
+\begin{itemize}
+    \item Waarom zou je CSS grid gebruiken ipv flexbox?
+    \item Wat is een grid-area/-line/-cell?
+    \item Met welke property bepaal je witruimte tussen 2 grid cells
+    \item Waar staat fr voor? Wat is 1fr?
+    \item Hoe maak je een grid met 12 kolommen die altijd even breed is?
+    \item Auto-fill vs auto-fit?
+\end{itemize}
+
+
 \end{document}
 
