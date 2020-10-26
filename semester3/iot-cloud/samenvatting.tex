@@ -2089,6 +2089,324 @@ Als we op een drukknop aangesloten aan de RPI drukken:
     \item Welke opstellingen zijn er mogelijk ?
 \end{itemize}
 
+\section{IoT Hub}
+
+Azure IoT Hub is a fully managed service that enables \bold{reliable} and \bold{secure}
+\bold{bidirectional communications} between millions of IoT devices and a
+\bold{solution back end}
+
+\begin{itemize}
+    \item Managed Service: we moeten niks installeren in de cloud
+    \item Bi-Directional Communication
+    \item \bold{Miljoenen} toestellen
+    \item Support voor meerdere talen (C\#,Python,C,Node)
+    \item HTTPS/AMQP/MQTT protocol support
+    \item Versturen telemetrie data $\Rightarrow$ Device To Cloud
+    \item Ontvangen van commands $\Rightarrow$ Cloud To Device
+    \item Beheer van devices via digital twin
+    \item Queries op devices
+    \item End-to-end security
+    \item Certificaten per device
+    \item TLS support
+    \item X,509 support
+    \item IP Whitelisting/blacklisting van devices
+    \item Firmware/software update support
+    \item Eenvoudiger dan bij MQTT
+\end{itemize}
+
+\subsection{Werking}
+
+\begin{itemize}
+    \item Device zal rechtstreeks communiceren met IoT Hub
+    \begin{itemize}
+        \item Device To Cloud (D2C)
+        \item Cloud To Device (C2D)
+    \end{itemize}
+    \item 3 Protocollen mogelijk:
+    \begin{itemize}
+        \item AMQP
+        \item MQTT (beperkingen t.o.v. eigen MQTT Server)
+        \item HTTPS
+    \end{itemize}
+    \item Meest eenvoudige opstelling
+    \item Hardware moet wel krachtig genoeg zijn
+\end{itemize}
+
+\subsubsection{Wat als device niet krachtig genoeg is?}
+
+\begin{itemize}
+    \item Bv: Arduino, Mbed Cortex M0,M1, \dots (= "Leaf device")
+    \item Goedkope hardware maar niet altijd direct mogelijk om te connecteren op het internet
+\end{itemize}
+
+\bold{Oplossing:}
+\begin{itemize}
+    \item Field gateway
+    \item Kan Raspi zijn, maar ook industriele PC
+    \item Krachtig genoeg om veilig met het internet te communiceren
+    \item Field gateway zal lokaal met de minder krachtige device praten via CoAP, Bluetooth, AllJoyn, \dots
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{iot-hub.png}
+    \caption{Bovenaan: rechtstreeks communiceren met IoT client, onderaan: via Field gateway naar minder krachtige devices}
+\end{figure}
+
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{iot-leaf.png}
+    \caption{Opstelling Field gateway}
+\end{figure}
+
+\bold{D2C:} Low powerd device zal communiceren met Raspi (Gateway)
+Gateway zal data doorsturen naar Cloud
+
+\bold{C2D:} IoT hub zal commando sturen naar Raspi (Gateway). Raspi zal commando
+naar juiste device sturen
+
+\subsection{Hoe data verwerken die binnenkomt op IoT Hub?}
+
+
+\begin{itemize}
+    \item Streaming analytics
+    \item Message Queues
+    \item Azure Functions
+    \begin{itemize}
+        \item Ontvangen van berichten
+        \item Versturen van berichten (commando) naar IoT Hub
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{iot-hub-trigger.png}
+    \caption{Schematische voorstelling}
+\end{figure}
+
+
+\subsection{IoT Hub Device Twin}
+
+\bold{Probleemstelling:} 
+
+We hebben 10.000 toestellen verbonden met Azure IoT Hub. Deze toestellen sturen een
+motor aan. Het aantal RPM zit vast in het Python script vb. 5000.
+We willen aanpassing sturen naar 5000 toestellen.
+
+Hoe kunnen we dit gaan doen ?
+
+\bold{Oplossing: IoT Hub Device Twin}
+
+\begin{itemize}
+    \item Digitale "tweeling" van device in de cloud
+    \item Ideaal om \bold{configuratie} naar een toestel te sturen
+    \item Configuratie zal opgeslagen en gesynchroniseerd worden
+    \begin{itemize}
+        \item In de cloud (IoT Hub)
+        \item Op het toestel (developer moet dit doen in Python)
+    \end{itemize}
+\end{itemize}
+
+\bold{Voorbeelden}
+
+\begin{itemize}
+    \item We wensen enkel temperaturen boven een bepaalde waarde te loggen
+    \item Instellen van parameter tijdstip van doorsturen
+    \item Alles wat configureerbaar moet zijn op afstand
+\end{itemize}
+
+\textcolor{red}{Dit is een belangrijk verschil met MQTT, daar hebben we deze infrastructuur NIET. We
+moeten dit zelf maken door berichten te sturen naar toestel en omgekeerd}
+
+\subsubsection{Reporting properties}
+
+\begin{itemize}
+    \item Device kan rapporteren aan cloud
+    \item Status van batterij
+    \item Status van toestel
+    \item Laatste keer upload van toestel naar cloud
+    \item \dots
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{iot-device-twin.png}
+    \caption{}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{iot-device-twin2.png}
+    \caption{Properties opvragen en rapporteren in JSON}
+\end{figure}
+
+\subsubsection{Device methodes}
+
+\begin{itemize}
+    \item Methodes op toestel activeren en dit vanop afstand
+    \item We gaan de effectieve Python methode vanop afstand starten
+    \item Vb: Reboot toestel
+    \item Via portal kunnen we de methode activeren
+    \item Via C\# kunnen we de methode activeren
+    \item Parameters meesturen ook mogelijk
+    \item Opslaan van device info in JSON document
+    \item Query's mogelijk: vb: SELECT alle devices WHERE batterijstatus > 10\%
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{iot-hub-device-direct-method-portal.png}
+    \caption{In Azure Portal de methode activeren met een payload}
+\end{figure}
+
+
+\subsection{IoT Hub Trigger voor Azure Functions}
+
+In Visual Studio: 
+
+\begin{itemize}
+    \item Opgeven connectiestring uit local settings
+    \item Path $\Rightarrow$ default laten staan
+    \item Data = array van bytes $\Rightarrow$ omzetten naar string (JSON)
+\end{itemize}
+
+\subsection{Ondersteuning}
+
+\subsubsection{SDK's}
+
+\begin{itemize}
+    \item Java 
+    \item Python
+    \item NodeJS
+    \item Microsoft .NET
+    \item C
+\end{itemize}
+
+\subsubsection{Devices}
+
+\begin{itemize}
+    \item Raspberry Pi
+    \item Arduino
+    \item Intel Edison
+    \item MXCHIP
+    \item Sparkfun electronics
+    \item Adafruit
+    \item Particle
+\end{itemize}
+
+\subsection{IoT Edge}
+
+= service \bold{bovenop} IoT Hub
+
+\subsubsection{IoT Hub issues:}
+
+\begin{itemize}
+    \item Alles moet naar de cloud voor verwerking, niks lokaal, soms veel datatrafiek
+    \item We zijn afhankelijk van het Internet
+    \item Het is moeilijk om scripts op een device te updaten
+    \item Script vraagt soms speciale libraries op devices, soms probleem om te installeren
+    \item Versie beheer is lasting, welke device heeft welke software staan?
+    \item Soms wil je bepaalde dat NIET naar Cloud sturen (mag bedrijf niet verlaten)
+\end{itemize}
+
+\subsubsection{Doelstelling}
+
+\begin{itemize}
+    \item Cloud workloads lokaal draaien
+    \item Eerste filtering van data op device doen
+    \item Niet alles doorsturen naar Cloud
+    \item Offline scenario voorzien
+    \item Kosten in de cloud dalen
+    \item Makkelijk updaten van IoT Edge device
+\end{itemize}
+
+\subsubsection{Voorbeelden}
+
+\begin{itemize}
+    \item Foto analyse op IoT Edge $\Rightarrow$ we moeten foto niet naar Cloud sturen voor analyse
+    \item Filteren van data op de Edge Device
+    \item Lokale data opslag
+\end{itemize}
+
+\subsubsection{Opbouw}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{iot-edge2.png}
+    \caption{IoT Edge draait op Docker. Modules zijn Docker Containers}
+\end{figure}
+
+\subsubsection{Azure IoT Edge Runtime}
+
+\begin{itemize}
+    \item Draait op bv RPi of industriele PC
+    \item Installatie van workloads \& update op device
+    \item Beveiligen van Edge communicatie
+    \item Verantwoordelijk voor het uitvoeren van de modules
+    \item Status health rapporteren aan de Cloud voor remote monitoring
+    \item Zal zorgen voor communicatie met Leaf devices (low power toestellen zonder Internet)
+    \item Zorgt voor communicatie tussen IoT Edge en modules op de device
+    \item Zorgt voor communicatie tussen IoT Edge en Cloud
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{iot-edge3.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Modules}
+
+\begin{itemize}
+    \item Functionaliteit toevoegen op de Edge
+    \item Iedere module zal een actie uitvoeren
+    \item We koppelen modules aan elkaar als een soort data processing pipeline
+    \item We kunnen modules schrijven in C\#, Python, \dots
+    \item Modules zijn Docker containers
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{iot-edge4.png}
+    \caption{}
+\end{figure}
+
+\bold{Voorbeelden:}
+
+\begin{enumerate}
+    \item Module die data filtert voor deze naar de cloud te sturen
+    \item Module die data omzet van XML naar JSOn voor deze naar de cloud te sturen
+\end{enumerate}
+
+\subsection{IoT in de Cloud vs IoT on the edge}
+
+\subsubsection{IoT in the cloud}
+
+\begin{itemize}
+    \item Remote monitoring and control
+    \item Merging remote data from across multiple IoT devices
+    \item Near infinite compute and storage to train machine learning and other advanced AI tools
+\end{itemize}
+
+\subsubsection{IoT on the Edge}
+
+\begin{itemize}
+    \item Low latency tight control loops require near real-time response
+    \item Public internet inherently unpredictable
+    \item Privacy of data and protection of IP
+\end{itemize}
+
+\subsection{Samenvatting}
+
+\begin{itemize}
+    \item Wat en waarom IoT hub ?
+    \item Waar zijn digitale twins bij IoT Hub en wat zijn de voordelen ?
+    \item Wat zijn direct methods en wanneer gebruiken we dit ?
+    \item Wat is IoT Edge ?
+    \item Wanneer gebruiken we IoT Edge en wanneer IoT Hub ?
+\end{itemize}
 
 \section{Examen}
 \begin{itemize}
