@@ -887,4 +887,716 @@ To make the app continue to respond to use interaction while\dots:
     \item The \bold{return type} of async functions
 \end{itemize}
 
+\section{XAML in Xamarin.Forms}
+
+\begin{itemize}
+    \item XAML was created by Microsoft specifically to describe UI
+    \item Xamarin Forms + XAML = complete mobile app
+\end{itemize}
+
+\subsection{Benefits}
+
+\begin{itemize}
+    \item Seperation of UI from behaviour
+    \item Easy designing of a UI, designer friendly
+\end{itemize}
+
+\subsection{Pages}
+
+Xamarin.Forms Pages represent \bold{cross-platform} mobile application screens
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-page.png}
+    \caption{Types of pages in Xamarin.Forms}
+\end{figure}
+
+\subsubsection{Adding a XAML Page}
+
+There are two Item Templates available to add XAML Content
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{contentpage-view.png}
+    \caption{ContentPage vs ContentView}
+\end{figure}
+
+\subsection{Steps to build a UI with XAML}
+
+\subsubsection{Describing a screen}
+
+\begin{itemize}
+    \item XAML is used to construct object graphs, in this case a visual Page
+    \item XML based: case sensitive, open tags must be closed, etc \dots
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{xaml01.png}
+    \caption{}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml02.png}
+    \caption{Element tags}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml03.png}
+    \caption{Attributes}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml04.png}
+    \caption{Child nodes}
+\end{figure}
+
+\subsubsection{C\# code with XAML}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml05.png}
+    \caption{x:Class}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml05.png}
+    \caption{x:Class}
+\end{figure}
+
+\subsubsection{XAML Initialization}
+
+The code behind the constructor has a call to `InitializeComponent' which is responsible for loading the XAML and creating the objects
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml06.png}
+    \caption{InitializeComponent}
+\end{figure}
+
+\subsubsection{Naming elements in XAML}
+
+\begin{itemize}
+    \item Use \bold{x:Name} to assign field name $\Rightarrow$ allows you to reference element in XAML and C\#
+    \item Add a private field to the XAML-generated partial class (\bold{.g.cs})
+    \item Name must conform to C\# naming conventions
+    \item Name must be unique 
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{xaml07.png}
+    \caption{Naming elements}
+\end{figure}
+
+\subsubsection{Handling events in XAML}
+
+\begin{itemize}
+    \item You can wire up events in XAML
+    \item The event handler must be defined in the C\# file and have proper signature
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml08.png}
+    \caption{Event handling with the TextChanged Attribute}
+\end{figure}
+
+\subsubsection{Handling events in the code behind}
+
+Can work with named elements as long as you define them in code, but keep in mind the field is not set until \bold{After} `InitializeComponent' is called
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml09.png}
+    \caption{Adding event handler directly in code instead of in the XAML file}
+\end{figure}
+
+\begin{itemize}
+    \item Many developers prefer to wire up all events in code behind by naming the XAML elements and adding event handlers in code
+    \begin{itemize}
+        \item Keeps the UI layer `pure' by pushing all behavior + management into the code behind
+        \item Names are validated at compile time, but event handlers are not
+        \item Easier to see how logic is wired up
+    \end{itemize}
+    \item Pick the approach that works for your team / preferences
+\end{itemize}
+
+\subsection{Layout in Xamarin.Forms}
+
+\subsubsection{Motivation}
+\begin{itemize}
+    \item using layout containers to calculate view size and position helps your UI adapt to varied screen dimensions and resolutions
+    \item Sizes/positions are recalculated automatically when device rotates
+\end{itemize}
+
+\subsubsection{Layouts}
+
+A layout is a Xamarin.Forms container that determines the size and position for a collection of children
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-layout.png}
+    \caption{Layouts}
+\end{figure}
+
+\subsubsection{Views}
+
+Views are the building blocks of cross-platform mobile user interfaces
+
+\begin{itemize}
+    \item User-interface objects such as labels, buttons, sliders, \dots
+    \item Commonly known as controls or widgets in other graphical programming environments
+\end{itemize}
+
+\subsubsection{Working with sizes}
+
+The rendered size of a view is a collaboration between the view itself and its layout container
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-view-sizing.png}
+    \caption{XAML view vs sizing}
+\end{figure}
+
+\subsubsection{Layout algorithm}
+
+\begin{enumerate}
+    \item Layout panel akss each child how much room it would like
+    \item Then tells each child how much it gets
+\end{enumerate}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-view-layout.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Default view sizing}
+
+By default, most views try to size themselves just large enough to hold their content
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-default.png}
+    \caption{Default sizing}
+\end{figure}
+
+\subsubsection{View preferences}
+
+\begin{itemize}
+    \item A view has four properties that influence its rendered size
+    \item they are all requests and may be overruled by the layout container
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-view-preferences.png}
+    \caption{View preferences using WidthRequest and HeightRequest, VerticalOptions and HorizontalOptions}
+\end{figure}
+
+\subsubsection{Sizing requests}
+
+A view can request a desired with and height
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-sizing-requests.png}
+    \caption{Preferred size}
+\end{figure}
+
+\subsubsection{Size units}
+
+\begin{itemize}
+    \item Explicit sizes in Xamarin.Forms have no intrinsic units
+    \item The values are interpreted by each platform according to that platform's rules
+    \begin{itemize}
+        \item UWP: `Effective pixels'
+        \item iOS: `Points'
+        \item Android: `Density-independant pixels'
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Platform rendering}
+\begin{itemize}
+    \item Sizes set in Xamarin.Forms are passed to the underlying platform
+    \item The platform will scale the values based on screen size and resolution
+\end{itemize}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-platform-rendering.png}
+    \caption{Platform rendering}
+\end{figure}
+
+\subsubsection{Alignment}
+
+A view's preferred alignment determines its position and size within the rectangle allocated for it by its container
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-alingment.png}
+    \caption{Alignment using HorizontalOptions}
+\end{figure}
+
+
+\subsubsection{Fill}
+
+
+\begin{itemize}
+    \item The `Fill' layout option generally overrides size preferences
+    \item Horizontal and vertical alignment options generally default to Fill
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-fill.png}
+    \caption{Fill overrides WidthRequest}
+\end{figure}
+
+\subsection{Margin \& Padding}
+
+\subsubsection{Margin}
+
+\begin{itemize}
+    \item = extra space around the outside of a view
+    \item available in all views, including containers
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-margins.png}
+    \caption{Margins}
+\end{figure}
+
+\subsubsection{Padding}
+
+\begin{itemize}
+    \item = extra space on the inside of a layout that creates a gap between the children and the layout itself
+    \item applicable only to layouts
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-padding.png}
+    \caption{}
+\end{figure}
+
+\subsection{Arrange views with StackLayout}
+
+StackLayout arranges its children in a single column or a single row
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-stacklayout.png}
+    \caption{}
+\end{figure}
+
+
+\subsubsection{Adding children}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-stacklayout-children.png}
+    \caption{Children in XAML}
+\end{figure}
+
+\subsubsection{Child ordering}
+
+\begin{itemize}
+    \item Child layout order is determined by the order they were added to the Children collection
+    \item Applies to both code and XAML
+\end{itemize}
+
+\subsubsection{Child spacing}
+
+\begin{itemize}
+    \item StackLayout's Spacing separates the children
+    \item The default is 6
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-stacklayout-spacing.png}
+    \caption{Add space between children}
+\end{figure}
+
+\subsubsection{Orientation}
+
+
+
+\begin{itemize}
+    \item StackLayout's Orientation property lets you choose a vertical column or a horizontal row
+    \item Vertical is the default
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-stacklayout-orientation.png}
+    \caption{}
+\end{figure}
+
+\bold{LayoutOptions with and against orientation}
+
+\begin{itemize}
+    \item In the direction opposite of its orientation, StackLayout uses the \bold{Start}, \bold{Center}, \bold{End} and \bold{Fill} layout options
+    \item In the direction of its orientation, StackLayout ignores the Start, Center, End, and Fill layout options
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-stacklayout-orientation3.png}
+    \caption{With orientation}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-stacklayout-orientation2.png}
+    \caption{Against orientation}
+\end{figure}
+
+
+\subsection{Expansion}
+
+\begin{itemize}
+    \item A view's \bold{expansion setting} determines whether it would like the StackLayout to allocate available extra space to its rectangle
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-expansion.png}
+    \caption{Expansion}
+\end{figure}
+
+\subsubsection{Expansion direction}
+
+\begin{itemize}
+    \item StackLayout expands children only in the direction of its orientation
+    \item For example: a vertical StackLayout expands vertically
+\end{itemize}
+
+\subsubsection{How much extra space?}
+
+StackLayout determines the amount of extra space using its standard layout calculation as if there were no expansion
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-expansion-space.png}
+    \caption{Amount of extra space}
+\end{figure}
+
+\subsubsection{How to specify expansion?}
+
+To request expansion, use the "...AndExpand" version of the layout options in the direction of the StackLayout's orientation
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-expansion-specify.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Expansion vs view size}
+
+\begin{itemize}
+    \item Enabling expansion can change the size of the view's layout rectangle, but doesn't change the size of the view unless it uses FillAndExpand
+    \item In the direction \bold{opposite} its orientation, adding "...AndExpand" tot the layout options has no effect (there is no expansion in that direction)
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-expansion-viewsize.png}
+    \caption{}
+\end{figure}
+
+\subsection{Apply attached properties}
+
+\subsubsection{Motivation}
+
+Some properties are only needed in specific situations
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-attachedproperties.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{What is an attached property?}
+
+= a property that is defined in one class but set on objects of other types
+
+\begin{itemize}
+    \item Button does not have Row/Column properties
+    \item They are defined in Grid and attached to objects of other types as needed
+    \begin{itemize}
+        \item Grid.Row="0", Grid.Row="1", \dots
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Who consumes attached properties?}
+
+Typically, a container will look for attached properties on its children
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-attachedproperties2.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Apply an attached property in code}
+
+In code, use the static Set method to apply an attached property
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-attachedproperties3.png}
+    \caption{Attached property in code}
+\end{figure}
+
+\subsubsection{Apply an attached property in XAML}
+
+In XAML, use the owning class name and the attached property name (without the Property suffix)
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-attachedproperties3.png}
+    \caption{Attached property in XAML}
+\end{figure}
+
+\subsection{Grids}
+
+Grid places its children into cells formed from rows and columns
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.2\textwidth]{xaml-grid1.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Grid rows/columns}
+
+You specify the shape of the grid by defining each row and column individually
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-grid2.png}
+    \caption{}
+\end{figure}
+
+There are dedicated classes that define a row or a column
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-grid-rowcol.png}
+    \caption{RowDefinition and ColumnDefinition}
+\end{figure}
+
+\subsubsection{GridLength}
+
+GridLength encapsulates two things: unit and value
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-grid-length.png}
+    \caption{}
+\end{figure}
+
+\bold{Absolute GridLength}
+
+Absolute GridLength specifies a fixed row height or column width
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-grid-length-abs.png}
+    \caption{Absolute GridLength}
+\end{figure}
+
+\bold{Auto GridLength}
+
+Auto GridLength lets the row height or column width adapt, it automatically
+becomes the size of the largest child
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-grid-length-auto.png}
+    \caption{Auto GridLength}
+\end{figure}
+
+\bold{Star GridLength}
+
+Star GridLength shares the available space proportionally among all rows/columns
+that use star sizing
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-grid-length-star.png}
+    \caption{Star GridLength}
+\end{figure}
+
+\subsubsection{Grid example}
+
+It is common to mix different GridLength settings in the same grid
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-grid-example.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Default size}
+
+Rows and columns default to \bold{`1*'} size
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-grid-defaultsize.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Row/Column numbering}
+
+Starts at 0:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-grid-numbering.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Grid positioning properties}
+
+Grid defines four attached properties used to position children
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-grid-pos-props.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Cell specification}
+
+Apply the Row and Column attached properties to each child
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-grid-cells.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Span specification}
+
+Apply RowSpan and ColumnSpan to each child as needed
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-grid-span.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Cell and span defaults}
+
+Cell locations default to 0 and spans default to 1
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-grid-cell-span-defaults.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Layout options}
+
+A view's horizontal and vertical layout options control how it is sized and positioned within its grid cell (the default is Fill)
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-grid-layout.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Grid child spacing}
+
+\begin{itemize}
+    \item Grid's RowSpacing and ColumnSpacing properties separate the children
+    \item They both default to 6
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-grid-child-spacing.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Auto-generated rows/columns}
+
+Grid will automatically generate equal-sized rows/columns based on the position of the children you add
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-grid-autogenerated.png}
+    \caption{}
+\end{figure}
+
+\subsection{Scroll a layout with ScrollView}
+
+ScrollView adds scrolling to a single piece of content; the content can be an
+individual view or a layout container
+
+\subsubsection{How to use ScrollView}
+
+Wrap a ScrollView around a single element to add scrolling
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-scrollview.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{ScrollView orientation}
+
+ScrollView lets you control the scroll direction: 
+
+\begin{itemize}
+    \item Vertical (the default)
+    \item Horizontal
+    \item or Both
+\end{itemize}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-scrollview-orientation.png}
+    \caption{}
+\end{figure}
+
+
+\subsubsection{Do not nest scrolling views}
+
+Generally, do not nest ScrollViews or a ListView in a ScrollView, it often
+creates non-intuitive behavior
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xaml-scrollview-nest.png}
+    \caption{This is bad practice}
+\end{figure}
+
+
+\subsection{Summary}
+
+\begin{itemize}
+    \item Examining XAML syntax
+    \item Adding Behavior to XAML-based pages
+    \item Exploring XAML capabilities
+    \item Specify the size of a view
+    \item Arrange views with StackLayout
+    \item Apply Attached Properties
+    \item Arrange views with Grid
+    \item Scroll a layout with ScrollView
+\end{itemize}
+
 \end{document}
