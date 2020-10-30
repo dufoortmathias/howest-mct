@@ -1024,8 +1024,8 @@ die het slachtoffer normaal niet zou doen.
 \subsection{Frequentie}
 
 \begin{itemize}
-    \item Twee kampen: 2.4GHz (+5GHz) vs SubGHz
-    \item Alles dat hogere bandbreedte nodig heeft $\Rightarrow$ 2.4 en 5GHZ
+    \item Twee kampen: 2.4GHz (en 5GHz) vs SubGHz
+    \item Alles dat hogere bandbreedte nodig heeft $\Rightarrow$ 2.4 en 5GHz
     \item Alles dat niet zo veel bandbreedte nodig heeft $\Rightarrow$ SubGHz
 \end{itemize}
 
@@ -1036,6 +1036,210 @@ die het slachtoffer normaal niet zou doen.
     \caption{2.4GHz/5GHz vs SubGHz}
 \end{figure}
 
+
+\section{Virussen en malware}
+
+\subsection{Virussen}
+
+\begin{itemize}
+    \item Bestandsvirussen (.exe en .com)
+    \item Bootsectorvirussen
+    \item Macrovirussen
+    \item Wormen = virus zonder symbiant (=drager)
+    \item Virustechnologie
+\end{itemize}
+
+\subsubsection{Virustechnologie}
+
+\begin{itemize}
+    \item Polymorphisme
+    \begin{itemize}
+        \item = het virus gaat zichzelf gaan wijzigen
+    \end{itemize}
+    \item Hybride
+    \begin{itemize}
+        \item = virus met meer dan 1 infectiemethode
+    \end{itemize}
+    \item Multipart
+    \begin{itemize}
+        \item = virus dat uit meerdere delen bestaat, modulair
+    \end{itemize}
+    \item Stealth
+    \begin{itemize}
+        \item = virus dat zichzelf gaat verbergen
+    \end{itemize}
+    \item Droppers
+    \begin{itemize}
+        \item = software dat virulente code gaat inbrengen (droppen) in het systeem om daar achter te laten
+    \end{itemize}
+\end{itemize}
+
+\subsection{Malware}
+
+\begin{itemize}
+    \item Trojans
+    \begin{itemize}
+        \item Software die adverteert iets goed te doen, maar slechte bedoelingen heeft
+    \end{itemize}
+    \item Spyware
+    \begin{itemize}
+        \item Probeert zoveel mogelijk informatie te vergaren
+    \end{itemize}
+    \item Adware
+    \begin{itemize}
+        \item Toont advertenties aan de gebruiker
+    \end{itemize}
+    \item Scareware
+    \begin{itemize}
+        \item Software met als doel je bang te maken
+    \end{itemize}
+    \item RATs = Remote Access Tools:
+    \begin{itemize}
+        \item Bv: backorifice $\Rightarrow$ neemt het systeem over
+    \end{itemize}
+    \item Ransomware
+\end{itemize}
+
+
+\subsection{Hardware}
+\begin{itemize}
+    \item Hardware backdoor in toestellen
+    \item Rubber ducky
+    \item BadUSB = USB-stick die zichzelf oplaad om dan een stroomstoot te geven aan de computer. Kan de USB-bus kapot maken of zelf het hele moederbord
+\end{itemize}
+
+
+\subsubsection{BIOS}
+
+BIOS = Basic Input/Output System 
+
+= firmware die onder andere het besturingssyteem van een PC opstart
+
+\begin{itemize}
+    \item Chernobyl virus $\Rightarrow$ $\text{1}^{\text{ste}}$ virus die BIOS wist
+\end{itemize}
+
+\subsubsection{UEFI}
+
+= Unified Extensible Firmware Interface, vervangt tegenwoordig de BIOS op computers):
+
+\begin{itemize}
+    \item Is universeel en uitbreidbaar
+    \item UEFI "Bootkit" voor Windows 8 
+    \begin{itemize}
+        \item Bootkit = rootkit die voor het operating system wordt geladen, tijdens de UEFI
+        \item Kan full disk encryption systemen ontgrendelen
+    \end{itemize}
+    \item Rakshasa = hardware backdoor, praktische aanval theoretisch mogelijk
+\end{itemize}
+
+\subsection{Misleidende informatie}
+
+\begin{itemize}
+    \item Manipulatie van informatie
+    \item Messagebox: welke info wordt bepaalt door wie?
+    \item URL's: welke URL zit werkelijk achter een link?
+    \begin{itemize}
+        \item <a href="site.evil-haxsor.whatever">www.disney.com</a>
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{messagebox.png}
+    \caption{Messagebox}
+\end{figure}
+
+\subsubsection{Kwaadaardige links}
+
+\begin{itemize}
+    \item Link kan een ander doel hebben dan wordt weergegeven
+    \item Opgepast voor homograaf-URL (punycode)
+    \begin{itemize}
+        \item Bvb Cyrilische tekens in een URL:
+        \item \includegraphics[width=0.2\textwidth]{link2.png}
+    \end{itemize}
+    \item Controleer de link! 
+    \begin{itemize}
+        \item \includegraphics[width=0.3\textwidth]{link.png}
+    \end{itemize}
+    \item 'Open folder to view files' kan eigenlijk een link zijn naar een .exe als de maker van de software het zo noemt
+    \begin{itemize}
+        \item \includegraphics[width=0.3\textwidth]{open-folder.png}
+    \end{itemize}
+\end{itemize}
+
+\section{Cloud en Software As A Service (SaaS)}
+
+\begin{itemize}
+    \item Er bestaat een onderscheid tussen Personal / Private / Public Cloud
+    \begin{itemize}
+        \item Personal = servers in eigen huis
+        \item Private = Iemand anders zijn systemen, eigen privéruimte
+        \item Public = Iemand anders zijn systemen, gedeelde ruimte
+    \end{itemize}
+    \item Afhankelijk van aanbieder van de "hosted service"
+    \item CIA analyse blijft relevant in de cloud, enkele potentiele problemen: 
+    \begin{itemize}
+        \item Confidentialiteit: PRISM (=afluistersysteem van de Amerikaanse afluisterdienst NSA)
+        \item Integriteit: Malware / Synolocker (=ransomware voor Synology NAS-systemen) / \dots
+        \item Beschikbaarheid: Internet Carriers / overheden
+    \end{itemize}
+\end{itemize}
+
+\subsection{Cloud diensten}
+
+\begin{itemize}
+    \item Kan zeer handig zijn
+    \item Een extra dienst is een extra risico
+    \item Meerdere clouddiensten = de informatie staat op meerdere plaatsen
+    \item De organisatie kan zelf niet weten waar alle informatie is opgeslagen
+    \item Gebruik enkel de door de organisatie aanbevolen en goedgekeurde clouddiensten
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.2\textwidth]{cloud-diensten.png}
+    \caption{}
+\end{figure}
+
+
+\subsection{Acceptabel gebruik / Policy}
+
+\begin{itemize}
+    \item Geeft vaak de indruk de gebruiker van te willen beperken
+    \item Porbeert een balans te vinden tussen acceptabel risico en bruikbaarheid
+    \item Is noodzakelijk om de systemen beheersbaar te houden
+    \item Dient steeds strikt te worden opgevolgd
+\end{itemize}
+
+\subsection{Migratie naar cloud diensten}
+
+\begin{itemize}
+    \item E-mail / groupware oplossingen
+    \item Allicht veiliger dan een eigen exchange-server
+    \item On-line boekhoudsoftware
+    \item Onfeilbaar? Perfect? 
+    \item Threat model / risk analysis: analyse van meest kwetsbare onderdelen
+    \item Zijn er andere threats dan bij een lokale server?
+\end{itemize}
+
+\subsubsection{Voordelen / Unique Selling Point (USP)}
+
+\begin{itemize}
+    \item Toegang van overal
+    \item Samenwerken met derden
+    \item Automatische back-up
+\end{itemize}
+
+\subsubsection{Nadelen}
+
+\begin{itemize}
+    \item Vendor lock-in: het is vaak omslachtig om van de ene naar de andere clouddienst over te stappen
+    \item Vertrouwelijkheid: kan je de service wel vertrouwen?
+    \item Prijs?
+    \item Continu"iteit?
+\end{itemize}
 
 \section{Examenvragen}
 
