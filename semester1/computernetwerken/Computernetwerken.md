@@ -142,13 +142,13 @@ The three elements:
 |Protocol Model|TCP/IP|Closely matches the structure of a particular protocol suite, which includes the set of related protocols that typically provide all the functionality required for people to communicate with the data network|
 |Reference Model|OSI Model|Describes the functions that must be completed at a particular layer, but does not specify exactly how a function should be accomplished|
 
-All = Application Layer
-People= Presentation Layer
-Seem = Session Layer
-To = Transport Layer
-Need = Network Layer
-Data = Data Link Layer
-Processing = Physical Layer
+* All = Application Layer
+* People= Presentation Layer
+* Seem = Session Layer
+* To = Transport Layer
+* Need = Network Layer
+* Data = Data Link Layer
+* Processing = Physical Layer
 
 ![enter image description here](https://i.imgur.com/AMVJdYH.png)
 ### TCP/IP Model
