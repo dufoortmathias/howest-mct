@@ -2408,6 +2408,569 @@ In Visual Studio:
     \item Wanneer gebruiken we IoT Edge en wanneer IoT Hub ?
 \end{itemize}
 
+\section{Azure CosmosDB}
+
+\subsection{Relationele databases}
+
+= Opslag van data op gestructureerde manier
+
+\begin{itemize}
+    \item We slaan data op in verschillende tabellen
+    \begin{itemize}
+        \item Via normalisatie bepalen we de tabellen die we nodig hebben
+        \item We stellen schema op waarin de data moet passen
+    \end{itemize}
+    \item Een tabel bestaat uit
+    \begin{itemize}
+        \item Rijen (record), die de data voorstellen
+        \item Kolommen (welke info slaan we op)
+    \end{itemize}
+    \item We kunnen tabellen met elkaar verbinden via relaties
+    \begin{itemize}
+        \item We maken hiervoor gebruik van vreemde sleutels (kolom die zal verwijzen naar record in een andere tabel
+    \end{itemize}
+    \item We maken gebruik van de taal SQL voor
+    \begin{itemize}
+        \item Data opvragen (SELECT)
+        \item Data toevoegen (INSERT)
+        \item Data wijzigen (UPDATE)
+        \item Data verwijderen (DELETE)
+    \end{itemize}
+    \item Via DDL kunnen we tabellen aanmaken (CREATE TABLE), \dots
+    \item Wij kennen:
+    \begin{itemize}
+        \item SQL Database (Op Azure)
+        \item MySQL Lokaal op de RPi maar ook op de Azure Cloud
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Waarom ontstaan?}
+
+\begin{itemize}
+    \item Ontstaan in client/server periode
+    \item Er was nog geen sprake van Internet, Cloud, Mobile data etc \dots
+    \item Was vooral gemaakt om op 1 server te werken, meestal centraal in bedrijf
+    \item Enige manier om te schalen was krachtiger CPU/Network/Storage $\Rightarrow$ Scale up
+    \item \bold{Opgepast:} blijft zeer belangrijk binnen bedrijven, veel software moet integreren met bestaande systemen waaronder SQL
+\end{itemize}
+
+\subsection{NoSQL databases}
+
+= `Non-SQL' of `non-relational SQL'
+
+\begin{itemize}
+    \item Databases die gemodelleerd zijn zonder tabelrelaties te gebruiken
+\end{itemize}
+
+\subsubsection{Waarom?}
+
+\begin{itemize}
+    \item Hoeveelheid data neemt enorm toe jaar na jaar
+    \begin{itemize}
+        \item Social Networks
+        \item IoT Devices
+        \item AI (Artificial Intelligence) \& Deep Learning systemen
+    \end{itemize}
+    \item Concurrency: veel gebruikers op hetzelfde moment: 10000 tot miljoenen
+    \item Globaal bereikbaar en responsive
+    \item Connectivity: veel gebruikers maar ook toestellen schrijven nu data weg of moeten data kunnen lezen
+    \item Kan verschillende soorten data opslaan, structured,semi-structured en unstructured data
+    \item Horizontal scaling, we kunnen eenvoudige meerdere servers toevoegen
+\end{itemize}
+
+$\Rightarrow$ \bold{Bovenstaande zaken zijn niet altijd mogelijk met relationele databases}
+
+\subsubsection{Scaling}
+
+\begin{itemize}
+    \item Met eenvoudige hardware kunnen we scale-out doen door gewoon servers bij te plaatsen
+    \item De hardware mag goedkoop zijn
+    \item Geen downtime
+    \item Eenvoudige te installeren en configureren
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{nosql-cost.png}
+    \caption{Relationele DBMS vs NoSQL cost per concurrent user}
+\end{figure}
+
+
+\subsubsection{Availability and always-on}
+
+\bold{Bij Relationeel (RDBMS)}
+
+
+\begin{itemize}
+    \item Gedeelde storage failure
+    \item Volledige applicatie down
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{rdbms-availability.png}
+    \caption{Beschikbaarheid bij RDBMS: single point of failure}
+\end{figure}
+
+\bold{Bij NoSQL}
+
+\begin{itemize}
+    \item Data zal op verschillende partities staan
+    \item Geen gedeelde data
+    \item Data zal naar alle storage weggeschreven worden, high availability (kan ook met RDBMS maar complex en extra software)
+    \item We spreken hier over \bold{nodes}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{nosql-availability.png}
+    \caption{Beschikbaarheid bij NoSQL}
+\end{figure}
+
+\subsubsection{Global deployment}
+
+\begin{itemize}
+    \item Database in verschillende datacenters
+    \item Zo dicht mogelijk bij de klant draaien latency zo < mogelijk
+    \item Automatische replicatie van data tussen de verschillende datacenters
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{global-deployment.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Gedistribueerde systemen}
+
+\begin{itemize}
+    \item NoSQL is een gedistribueerd systeem
+    \item We hebben meerdere servers (we noemen dit ook soms nodes)
+    \item Deze servers of nodes communiceren met elkaar over een netwerk
+    \item Data zal op meerdere machines staan
+    \item We merken dit niet, is transparant voor de applicatie
+\end{itemize}
+
+\subsection{Soorten NoSQL Databases}
+
+\begin{enumerate}
+    \item Key/Value (bv Azure table storage)
+    \item Document database
+    \item Column store (zien we niet)
+    \item Graph (zien we niet)
+\end{enumerate}
+
+\subsubsection{Key/Value}
+
+\begin{itemize}
+    \item Meest eenvoudige NoSQL database
+    \item Bestaat uit een unieke Key
+    \item Voor iedere Key is er één waarde
+    \item Value kan JSON zijn of ander document
+    \item De NoSQL Database weet niet wat soort data het is, de database slaat enkel op, we moeten dus GEEN datatype opgeven
+    \item De applicatie die data zal ophalen op basis van de Key moet de waarde kunnen interpreteren
+\end{itemize}
+
+\bold{Wanneer gebruiken?}
+
+\begin{itemize}
+    \item Sessie informatie gebruiker, user profiles, shoppint basket
+    \item Data waar je minder moet in gaan zoeken via een query
+    \item Data zonder relaties
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{key-value.png}
+    \caption{Key-value database}
+\end{figure}
+
+
+\subsubsection{Document databases}
+
+\begin{itemize}
+    \item Basis is een document, geen record
+    \item Het formaat is meestal JSON, maar XML of BSON (binary json) zijn ook mogelijk
+    \item Het document zal zichzelf beschrijven, geen schema nodig zoals bij een SQL database
+    \item Niet iedere document moet volgens hetzelfde schema zijn
+    \item Er is een query taal om de data op te vragen en te doorzoeken
+\end{itemize}
+
+\bold{Wanneer gebruiken?}
+
+\begin{itemize}
+    \item Real-time analytics data
+    \item IoT applications
+    \item Vooral data die niet zoveel zal wijzigen, maar tegenwoordig meer en meer voor alle soorten data
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{document-database.png}
+    \caption{Document Database}
+\end{figure}
+
+\subsubsection{Column store}
+
+\begin{itemize}
+    \item Dataopslag zal niet gebeuren op basis van records maar op basis van kolom
+    \item Veel sneller bij zeer complexe query's
+    \item Veel gebruikt voor data analyse systemen
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{column-store.png}
+    \caption{Column store}
+\end{figure}
+
+\subsubsection{Graph Database}
+
+\begin{itemize}
+    \item Opslaan van entiteit en relaties tussen verschillende entiteiten
+    \item Een entiteit is een soort node (object instantie) met properties
+    \item Een relatie bevat ook properties vb: friend relation, project relation..
+    \item De kracht zit in de relaties die je gaat opstellen tussen de entiteiten
+\end{itemize}
+
+\bold{Wanneer gebruiken?}
+
+\begin{itemize}
+    \item Social networking apps
+    \item Spatial data apps
+    \item Routing apps
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{graph-database.png}
+    \caption{Graph database}
+\end{figure}
+
+
+\subsection{Voorbeeld SQL}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{sql-normaliseren.png}
+    \caption{Normaliseren van data naar tabellen voor gebruik in SQL}
+\end{figure}
+
+\begin{itemize}
+    \item Normalisatie lukt wel maar blijft lastig
+    \item Er zullen zaken bijkomen, vb. bedrijf, job role, \dots
+    \item We moeten terug schema aanpassen
+    \item We kunnen niet alles voorzien
+    \item De data zit ook verspreid over de database $\Rightarrow$ complexe SELECT en JOIN nodig
+    \item Full Text search is lastig, we moeten alles kolommen checken bij het zoeken
+\end{itemize}
+
+\subsection{Voorbeeld NoSQL}
+
+\begin{itemize}
+    \item Een record zal een document worden
+    \item Makkelijk nieuwe velden toepassen
+    \item Formaat is JSON
+    \item We slaan data op als JSON in de database zelf
+    \item We moeten data niet meer uitlezen en INSERT opbouwen
+\end{itemize}
+
+\bold{Nadeel}: dubbele data, geen relaties tussen data
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{nosql.png}
+    \caption{Voorbeeld}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{nosql-techs.png}
+    \caption{NoSQL technologie"en}
+\end{figure}
+
+\subsection{CosmosDB}
+
+= CosmosDB is managed NoSQL database service op Azure
+
+\begin{itemize}
+    \item Geen onderhoud
+    \item Geen patching
+    \item Eenvoudige op te zetten
+    \item Pay what you use
+    \item Krachtige API's
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{cosmosdb.png}
+    \caption{Azure Cosmos DB}
+\end{figure}
+
+\begin{itemize}
+    \item Globaal gedistribueerde database
+    \begin{itemize}
+        \item Op eenvoudige manier de data zo dicht mogelijk bij de klant brengen
+        \item Op eenvoudige manier activeren in datacenter dicht bij de gebruiker
+        \item Geen complex configuratie voor nodig
+    \end{itemize}
+    \item Unlimited scalability
+    \begin{itemize}
+        \item Eenvoudig up- and down scaling wanneer je maar wilt
+    \end{itemize}
+    \item Low latency
+    \item Meerdere data modellen en API's beschikbaar
+    \begin{itemize}
+        \item Document DB API
+        \item MongoDB API
+        \item Gremlin API
+        \item \dots
+        \item Zeer belangrijk bij het migreren van bestaande toepassingen naar CosmosDB
+    \end{itemize}
+    \item SLA
+    \begin{itemize}
+        \item Van 99,99\% in een region, meerdere regions = hogere SLA
+    \end{itemize} 
+\end{itemize}
+
+\subsubsection{CosmosDB API}
+
+\begin{itemize}
+    \item Cosmos DB Account
+    \item Database
+    \begin{itemize}
+        \item Groep die meerdere Containers (Collection) bevat
+    \end{itemize} 
+    \item Container == Tabel (in klassieke SQL)
+    \begin{itemize}
+        \item Bevat een verzameling van verschillende JSON documenten
+    \end{itemize}
+    \item Item == Record (in klassieke SQL)
+    \begin{itemize}
+        \item JSON content
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{cosmosdb-api.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{CosmosDB API Account}
+
+\begin{itemize}
+    \item Wij gebruiken `SQL API'
+    \item Capacity Node:
+    \begin{itemize}
+        \item Kies hier `serverless', we betalen enkel voor wat we gebruiken
+        \item Kies `non production' om te testen
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{cosmosdb-api-account.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Kiezen van een API}
+
+\begin{itemize}
+    \item Bepalen bij aanmaak Account
+    \item Je kan deze niet wijzigen achteraf
+    \item Wij zullen SQL API gebruiken voor document databases
+    \item \bold{Opgepast:} SQL API is niet zo krachtig als de SQL taal die we kennen
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{cosmosdb-api-choice.png}
+    \caption{Kiezen van een API}
+\end{figure}
+
+
+\subsubsection{Container toevoegen}
+
+= vergelijkbaar met de klassieke tabel uit RDBMS
+
+\begin{itemize}
+    \item Unieke database naam
+    \item Unieke container naam (soort table)
+    \item Partition Key (zelfs concept als table storage)
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{cosmosdb-addcontainer.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Manueel data toevoegen}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{cosmosdb-adddata.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Firewall}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{cosmosdb-firewall.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Aanspreken vanuit Azure Functions met .NET}
+
+\begin{itemize}
+    \item Nuget Package: Microsoft.Azure.Cosmos
+    \item 2 belangrijke parameters: URI en PRIMARY KEY
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{cosmosdb-parameters.png}
+    \includegraphics[width=0.4\textwidth]{cosmosdb-localjson.png}
+    \caption{}
+\end{figure}
+
+\bold{Stap 1: Connectie maken met CosmosDB}
+
+\begin{itemize}
+    \item CosmosClient object aanmaken met parameters uit local.settings.json
+    \item Connectionstring meegeven
+    \item ConnectionMode op Gateway (Alternatief is direct maar werkt niet in Howest)
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{cosmosdb-stap1.png}
+    \caption{Verbinden met database via Environment Variables}
+\end{figure}
+
+
+\bold{Stap 2: Model van data die we wensen weg te schrijven}
+
+\begin{itemize}
+    \item {[JsonProperty]} gebruiken om lowercase property te bekomen in de database
+    \item Id voorzien die uniek is
+    \item PartitionKey moet ook aanwezig zijn in model
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{cosmosdb-stap2.png}
+    \caption{Datamodel}
+\end{figure}
+
+
+\bold{Stap 3: Deserialisatie}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{cosmosdb-stap3.png}
+    \caption{Deserialisatie}
+\end{figure}
+
+
+\bold{Stap 4: Wegschrijven naar database}
+
+\begin{itemize}
+    \item Ophalen database en container waarnaar we wensen weg te schrijven
+    \item Id invullen met unieke waarde
+    \item CreateItemAsync aanroepen met model
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{cosmosdb-stap1.png}
+    \caption{Wegschrijven van data}
+\end{figure}
+
+
+\bold{Stap 5: Bekijk data in Azure Portal of in Azure Storage Explorer}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{cosmosdb-stap5-1.png}
+    \includegraphics[width=0.3\textwidth]{cosmosdb-stap5-2.png}
+    \caption{Azure Portal / Azure Storage Explorer}
+\end{figure}
+
+\bold{Stap 6: Opvragen van data}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{cosmosdb-stap6.png}
+    \caption{Opvragen van data}
+\end{figure}
+
+\subsubsection{CosmosDB extra's}
+
+\begin{itemize}
+    \item Azure Search
+    \begin{itemize}
+        \item Krachtige zoekmachine boven CosmosDB
+        \item Text search
+        \item Indexing
+    \end{itemize}
+    \item Azure Functions
+    \begin{itemize}
+        \item CosmosDB Trigger
+        \item Bij toevoegen documenten $\Rightarrow$ functie activatie
+    \end{itemize}
+    \item Time To Live
+    \begin{itemize}
+        \item Automatisch verwijderen van items na x-aantal tijd
+        \item Container niveau
+        \item Item niveau
+    \end{itemize}
+\end{itemize}
+
+\subsection{Extra's}
+
+\begin{itemize}
+    \item Stored Procedures
+    \begin{itemize}
+        \item Functies in de database
+        \item Schrijven van complexe queries
+        \item Werken op collection niveau
+        \item Aanroepen via API of portal
+        \item Javascript
+    \end{itemize}
+    \item UDF (User Defined Functions)
+    \begin{itemize}
+        \item Functies die we aanroepen vanuit queries
+        \item Vb: berekening maken
+        \item JS
+    \end{itemize}
+    \item \url{https://docs.microsoft.com/en-us/azure/cosmos-db/programming}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{udf.png}
+    \caption{Voorbeeld UDF aanmaken}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{udf2.png}
+    \caption{UDF uitvoeren in query}
+\end{figure}
+
+
+\subsection{Samenvatting}
+
+\begin{itemize}
+    \item SQL vs NoSQL
+    \item Waarom en wanneer NoSQL databases?
+    \item Welke soorten NoSQL databases zijn er ?
+    \item Weet hoe je kan lezen en schrijven naar CosmosDB ?
+\end{itemize}
+
 \section{Examen}
 \begin{itemize}
     \item Theorie: 30\%
