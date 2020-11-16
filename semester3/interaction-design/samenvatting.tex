@@ -2060,6 +2060,439 @@ Waarbij x == column of row
     \item Auto-fill vs auto-fit?
 \end{itemize}
 
+\section{Data visualisatie}
+
+\subsection{Waarom data visualisatie}
+
+= om getallen in verhalen te veranderen
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dv-corona.png}
+    \caption{Actueel voorbeeld van datavisualisatie}
+\end{figure}
+
+
+\subsection{Soort data}
+
+\begin{itemize}
+    \item Time-based data
+    \item Categorized data
+    \item Geographic distribution
+    \item Multi-dimension data (meerdere variabelen per categorie)
+\end{itemize}
+
+\subsection{Wat wil je tonen?}
+
+\begin{itemize}
+    \item Vergelijkingen
+    \item Proporties
+    \item Tijd
+    \item Geografie
+    \item Relaties
+    \item Correlatie
+    \item Onderverdelingen
+\end{itemize}
+
+Verschillende manieren om dezelfde data te tonen
+
+\subsection{Chart models}
+
+\begin{itemize}
+    \item Barchart \& stacked barchart
+    \item Linechart
+    \item Piechart en donut chart
+    \item Map
+    \item Scatter plot
+    \item Bubble chart
+    \item Radar
+    \item \dots
+    \item Combinaties
+    \item Varianten
+\end{itemize}
+
+\subsubsection{Barchart}
+
+\begin{itemize}
+    \item Horizontale of verticale balken waarvan de lengte de waarde aantoont.
+    \item \bold{Gebruiken voor:}
+    \begin{itemize}
+        \item Tijd exploraties
+        \item Vergelijken van categorieën
+        \item Correlaties aantonen
+    \end{itemize}
+    \item \bold{Soort data:}
+    \begin{itemize}
+        \item Time based data
+        \item Categorized data
+    \end{itemize}
+    \item \textcolor{red}{Niet gebruiken om:}
+    \begin{itemize}
+        \item Waarden met verschillende units te vergelijken
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-barchart1.png}
+    \caption{Gecategorizeerde data}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-barchart2.png}
+    \caption{Gecategorizeerde data}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-barchart3.png}
+    \caption{Gecategorizeerde data}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-barchart4.png}
+    \caption{Histogram: voor tijdsgebaseerde data}
+\end{figure}
+
+\subsubsection{Stacked Barchart}
+
+\begin{itemize}
+    \item Elke balk is verdeeld in meerdere categorieën.
+    \item \bold{Gebruiken voor:}
+    \begin{itemize}
+        \item Tijd analyses
+        \item Vergelijken van categorieën
+        \item Correlaties aantonen
+        \item Onderverdelingen tonen
+    \end{itemize}
+    \item \bold{Soort data:}
+    \begin{itemize}
+        \item Time based data
+        \item Categorized data
+    \end{itemize}
+    \item \textcolor{red}{Niet gebruiken wanneer:}
+    \begin{itemize}
+        \item De focus ligt op het vergelijken van de grootte van de individuele categorie
+        \item De totale som van de elementen in de bar niet relevant is
+    \end{itemize}
+\end{itemize}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-stackedbarchart1.png}
+    \caption{}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-stackedbarchart2.png}
+    \caption{}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-stackedbarchart3.png}
+    \caption{}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-stackedbarchart4.png}
+    \caption{Google Drive storage capacity}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-stackedbarchart5.png}
+    \caption{Verkiezingsuitslag 2020}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-stackedbarchart7.png}
+    \includegraphics[width=0.3\textwidth]{dv-stackedbarchart6.png}
+    \caption{Verkoopcijfers van een bedrijf met 3 locaties per maand. Links: stacked, rechts, gewone barchart}
+\end{figure}
+
+\subsubsection{Linechart}
+
+\begin{itemize}
+    \item Serie van data punten geconnecteerd door lijn segmenten.
+    \item \bold{Gebruiken voor:}
+    \begin{itemize}
+        \item Tijd analyses (doorlopend)
+        \item Vergelijken
+        \item Correlaties aantonen
+    \end{itemize}
+    \item \bold{Soort data:}
+    \begin{itemize}
+        \item Time based data
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-linechart1.png}
+    \caption{}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-linechart2.png}
+    \caption{Grouped linechart}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-linechart3.png}
+    \caption{Corona}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-linechart4.png}
+    \caption{Area graph}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-linechart5.png}
+    \caption{Stacked area graph}
+\end{figure}
+
+\subsubsection{Barchart of Linechart?}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-bar-or-line1.png}
+    \includegraphics[width=0.3\textwidth]{dv-bar-or-line1-2.png}
+    \caption{Verkoopcijfers van een bedrijf per maan}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-bar-or-line2.png}
+    \caption{Temperatuur per uur}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-bar-or-line3.png}
+    \caption{Combinatie: verschillende data voorstellen op dezelfde grafiek}
+\end{figure}
+
+\subsubsection{Piechart}
+
+\begin{itemize}
+    \item Cirkelvormige grafiek verdeeld in segmenten die proporties voorstellen.
+    \item \bold{Gebruiken voor:}
+    \begin{itemize}
+        \item Vergelijken van categorieën
+        \item Onderverdelingen tonen
+    \end{itemize}
+    \item \bold{Soort data:}
+    \begin{itemize}
+        \item Categorized data
+    \end{itemize}
+    \item \textcolor{red}{Niet gebruiken wanneer:}
+    \begin{itemize}
+        \item Er meer dan 6 categorieën zijn
+        \item Enkel te gebruiken als er een totaal is.
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-piechart1.png}
+    \caption{}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-piechart2.png}
+    \caption{Most accurate piechart}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-piechart3.png}
+    \caption{Donut chart: gat in het midden van de pie. Je kan de lengte van de bogen lezen.}
+\end{figure}
+
+\subsubsection{Map}
+
+\begin{itemize}
+    \item Cirkelvormige grafiek verdeeld in segmenten die proporties voorstellen.
+    \item \bold{Gebruiken voor:}
+    \begin{itemize}
+        \item Geografische verspreiding
+        \item Tijd analyses
+        \item Vergelijken
+    \end{itemize}
+    \item \bold{Soort data:}
+    \begin{itemize}
+        \item Geographic distribution
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{dv-map1.png}
+    \includegraphics[width=0.2\textwidth]{dv-map2.png}
+    \caption{}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-map3.png}
+    \caption{}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-map4.png}
+    \caption{}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-map5.png}
+    \includegraphics[width=0.3\textwidth]{dv-map6.png}
+    \caption{}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-map7.png}
+    \includegraphics[width=0.3\textwidth]{dv-map8.png}
+    \caption{}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-map9.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Scatter plot}
+
+\begin{itemize}
+    \item Een grafiek met uitgezette punten die de relatie tussen twee sets gegevens weergeven.
+    \item \bold{Gebruiken voor:}
+    \begin{itemize}
+        \item Grote hoeveelheid data
+        \item Vergelijken tussen 2 values
+        \item Correlatie tussen 2 values
+        \item Tijd analyses
+    \end{itemize}
+    \item \bold{\bold{Soort data:}:}
+    \begin{itemize}
+        \item categorized data
+        \item multi-dimension data
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-scatter1.png}
+    \caption{}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-scatter2.png}
+    \caption{Types correlatie}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-scatter3.png}
+    \caption{Correlatiesterkte}
+\end{figure}
+
+\subsubsection{Bubble chart}
+
+\begin{itemize}
+    \item Multivariabele chart met meerdere variabelen
+    \item Uitgebreide versie van de scatter plot
+    \item Kan zonder axis
+    \item \bold{Gebruiken voor:}
+    \begin{itemize}
+        \item Alternatief voor bar chart
+        \item Vergelijken van categorieën door proporties
+        \item Onderverdelingen duidelijk maken
+    \end{itemize}
+    \item \bold{Soort data:}
+    \begin{itemize}
+        \item categorized data
+        \item Multi-dimensional data
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-bubble1.png}
+    \caption{}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-bubble2.png}
+    \caption{Aantal studenten per faculteit}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-bubble3.png}
+    \caption{Aantal fabricage bedrijven}
+\end{figure}
+
+\subsubsection{Radar}
+
+\begin{itemize}
+    \item Diagram dat wordt gebruikt om gelijktijdig waarden van meerdere indicatoren weer te geven.
+    \item \bold{Gebruiken voor:}
+    \begin{itemize}
+        \item het vergelijken van meerdere kwantitatieve variabelen
+        \item correlaties
+    \end{itemize}
+    \item \bold{Soort data:}
+    \begin{itemize}
+        \item categorized data
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-radar1.png}
+    
+    \caption{}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{dv-radar2.png}
+    \includegraphics[width=0.3\textwidth]{dv-radar3.png}
+    \caption{}
+\end{figure}
+
+
+\subsubsection{Interactie \& animatie}
+\begin{itemize}
+    \item Groot deel van data visualisatie
+    \item Helpt om vergelijkingen nog duidelijker te maken
+    \item Versterkt het verhaal
+\end{itemize}
+
+\bold{Voorbeelden:}
+
+\begin{itemize}
+    \item \url{https://www.gapminder.org/tools/#$state$time$value=1891;;&chart-type=bubbles}
+    \item \url{https://www.vrt.be/vrtnws/nl/2019/05/27/bekijk-hier-alle-verkiezingsresultaten/#/8/9/2000/kaart}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dv-interactie1.png}
+    \caption{Google Analytics}
+\end{figure}
+
+
+
+
+\subsection{Resources}
+
+\begin{itemize}
+    \item \url{https://www.reddit.com/r/dataisbeautiful}
+    \item \url{https://www.gapminder.org/answers/how-did-the-world-population-change/}
+    \item \url{https://www.gapminder.org/answers/how-does-income-relate-to-life-expectancy/}
+    \item \url{https://datavizcatalogue.com/search.html}
+    \item \url{https://www.ibm.com/design/v1/language/experience/data-visualization/}
+\end{itemize}
+
+\subsection{Libraries}
+
+\begin{itemize}
+    \item \url{https://thenextweb.com/dd/2015/06/12/20-best-javascript-chart-libraries/}
+\end{itemize}
 
 \end{document}
 
