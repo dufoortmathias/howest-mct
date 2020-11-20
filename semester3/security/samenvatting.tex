@@ -1308,6 +1308,136 @@ Mobiele apparaten bevatten heel veel gevoelige info en zijn daarom een groot doe
     \caption{}
 \end{figure}
 
+\section{Beschikbaarheid}
+
+\subsection{High Availability}
+
+\begin{itemize}
+    \item = (bijna) altijd beschikbaar
+    \item High availability op netwerkniveau
+    \item High availability systemen (=always on devices)
+    \item Clusters / load balancing (= meerdere high available servers die eenzelfde dienst kunnen aanbieden)
+    \item Redundante servers
+    \item Redundante serverruimte (disaster center, volledige verdubbeling van een datacenter)
+    \item Virtualisatie: 
+    \begin{itemize}
+        \item deel van infrastrucuur abstraheren
+        \item Problemen oplossen in VMs
+    \end{itemize} 
+\end{itemize}
+
+\subsection{Externe netwerk bedreigingen}
+
+\begin{itemize}
+    \item (Distributed) Denial of Service: (D)DOS
+    \item Portscanning
+    \item Sniffers
+    \item Man in the Middle (MITM)
+    \item Spoofing
+    \item \dots
+\end{itemize}
+
+\subsubsection{Denial of Service (DoS)}
+\begin{itemize}
+    \item E-mail bommen: vloedgolf van vele en/of grote e-mails, om de computer of mail service lam te leggen
+    \item Logic bomb: een soort tijdbom. De code wordt geactiveerd waneer een bepaalde actie gebeurt
+    \item Repetitive login
+    \item SYN-Flooding
+    \begin{itemize}
+        \item Misbruik maken van het TCP/IP protocol
+        \item Constant SYN-pakketten sturen met foute bron-IP-adressen
+        \item De server krijgt geen ACK omdat hij de SYN-ACK stuurt naar het verkeerde IP-adres.
+    \end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{tcp-normal.png}
+    \caption{Normal TCP/IP three-way handshake}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{tcp-synflood.png}
+    \caption{SYN Flooding}
+\end{figure}
+    \item UDP-Flooding
+    \begin{itemize}
+        \item Misbruik maken van het UDP protocol
+        \item Een groot aantal UDP pakketten sturen naar willekeurige poorten van een target
+        \item Het target zal:
+        \begin{enumerate}
+            \item Kijken of een applicatie luistert naar die poort
+            \item Vaststellen dat geen applicatie luistert naar die poort
+            \item Antwoorden met een ICMP Destination Unreachable pakket
+        \end{enumerate}
+        \item Het target zal constant hiermee bezig zijn $\Rightarrow$ kan geen service aanbieden aan echte clients
+    \end{itemize}
+    \item Ping of death
+    \begin{itemize}
+        \item Een normale ping is minder dan 100 bytes groot
+        \item Het is mogelijk om pings van een andere grootte (max. 65535 bytes) te sturen
+        \item Op oudere systemen: buffer overflow mogelijk $\Rightarrow$ system crash
+        \item Tegenwoordig: Ping Flooding: overbelasting $\Rightarrow$ minder toegankelijkheid van normaal internetverkeerd
+    \end{itemize}
+\end{itemize}
+
+
+
+
+\subsubsection{Distributed DoS (DDOS)}
+
+\begin{itemize}
+    \item DoS simultaan uit verschillende locaties
+    \item Zeer moeilijk tegen te houden
+    \item Meestal zijn de drones geinfecteerde thuis-PCs
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{ddos.png}
+    \caption{DDoS}
+\end{figure}
+
+\bold{Hoe een DDoS tegenhouden?}
+
+\begin{itemize}
+    \item Capaciteit uitbreiden (maar dit is zelden economisch intressant)
+    \item DDoS-beveiliging \& caching dienst zoals CloudFlare DDoS Protection
+    \begin{itemize}
+        \item Caching
+        \item Grote server-redundantie over de hele wereld
+        \item Keerzijde: CloudFlare is eigenlijk een Man In The Middle attack: CloudFlare zit altijd tussen client en server $\Rightarrow$ alle verkeer leesbaar door CloudFlare
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Spoofing}
+
+= Het vervalsen van informatie in de header:
+
+\begin{itemize}
+    \item IP spoofing
+    \item MAC spoofing
+    \item Email spoofing
+    \item \dots
+\end{itemize}
+
+\subsection{Uptime}
+
+Uptime != Availability
+
+\begin{itemize}
+    \item 99.9\% available = 8.76 uur per jaar onbeschikbaar
+    \item 99.999\% available = 5.26 min per jaar onbeschikbaar
+    \item Uptime wordt vaak genoteerd als `3 nines' (=99.9\%), `5 nines' (=99.999\%)
+    \item Als je voor `5 nines' availability betaalt, vertaalt dit niet altijd naar uptime:
+    \begin{itemize}
+        \item Stel: je hebt een webshop die meerdere services nodig heeft (website, backend, database, \dots)
+        \item Elke service heeft `5 nines' availability
+        \item Als 1 van de services down is, stopt de hele webshop met werken (=downtime)
+        \item 
+    \end{itemize}
+
+\end{itemize}
+
 \section{Examenvragen}
 
 \begin{itemize}
