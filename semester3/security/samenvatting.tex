@@ -1427,13 +1427,13 @@ Uptime != Availability
 \begin{itemize}
     \item 99.9\% available = 8.76 uur per jaar onbeschikbaar
     \item 99.999\% available = 5.26 min per jaar onbeschikbaar
-    \item Uptime wordt vaak genoteerd als `3 nines' (=99.9\%), `5 nines' (=99.999\%)
-    \item Als je voor `5 nines' availability betaalt, vertaalt dit niet altijd naar uptime:
+    \item Wordt vaak genoteerd als `3 nines' (=99.9\%), `5 nines' (=99.999\%)
+    \item Als je voor `5 nines' availability betaalt, vertaalt dit niet noodzakelijk naar uptime:
     \begin{itemize}
         \item Stel: je hebt een webshop die meerdere services nodig heeft (website, backend, database, \dots)
         \item Elke service heeft `5 nines' availability
         \item Als 1 van de services down is, stopt de hele webshop met werken (=downtime)
-        \item 
+        \item $\Rightarrow$ het kan dus zijn dat de uptime kleiner is dan de 99.999\% waarvoor je betaald hebt
     \end{itemize}
 
 \end{itemize}
