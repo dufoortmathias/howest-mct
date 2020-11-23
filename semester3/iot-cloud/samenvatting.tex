@@ -2971,6 +2971,433 @@ $\Rightarrow$ \bold{Bovenstaande zaken zijn niet altijd mogelijk met relationele
     \item Weet hoe je kan lezen en schrijven naar CosmosDB ?
 \end{itemize}
 
+\section{Docker}
+
+\subsection{Doelstellingen}
+
+Basis van Docker aanleren
+
+\begin{itemize}
+    \item Wat is Docker?
+    \item Waarom Docker gebruiken?
+    \item Basiswerking
+    \item Wat is de Docker File
+    \item Docker Registry
+    \item De basis Docker commando's
+\end{itemize}
+
+\subsection{Wat is Docker?}
+
+\subsubsection{Oude manier van applicatiedeploment}
+
+Applicatiedeployment == installatie van de applicatie
+
+\begin{itemize}
+    \item Verschillende applicaties op 1 server
+    \item De server bevat alle nodige libraries die alle applicaties nodig hebben
+    \item Zeer lastig om te beheren, wat als er nieuwe versies zijn, maar we updaten niet alle apps?
+    \item Applicaties zijn \bold{niet} gescheiden van elkaar
+    \item Veel werk wanneer we updates willen uitrollen
+    \item We hebben altijd een systeembeheerder nodig om updates uit te rollen
+\end{itemize}
+
+
+
+\subsubsection{Nieuwe manier van applicatiedeployment: Docker}
+
+\begin{itemize}
+    \item We verpakken de applicatie met zijn nodige libraries in een image die we dan kunnen opstarten als een container
+    \item Alle applicaties zijn gescheiden van elkaar, ze delen enkel de kernel van het OS
+    \item Er zijn geen versieconflicten tussen libraries
+    \item We kunnen makkelijker updates doen, we moeten gewoon een update doen van de image en de container starten
+    \item We hebben geen systeembeheerder nodig
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{docker-old-deployment.png}
+    \includegraphics[width=0.3\textwidth]{docker-new-deployment.png}
+    \caption{Oude vs nieuwe (Docker) manier}
+\end{figure}
+
+\subsection{Waarom Docker?}
+
+Eenvoudiger software distribueren
+
+\begin{itemize}
+    \item Verplaatsen workload naar Cloud
+    \item We maken meer en meer gebruik van verschillende platformen binnen 1 applicatie
+    \item We willen ons niet koppelen aan 1 cloud $\Rightarrow$ Vender locking vermijden
+    \item Azure, Amazon, Google, \dots: allemaal ondersteuning voor Docker
+    \item We meoten onze code \bold{niet} aanpassen, gewoon de container opstarten
+\end{itemize}
+
+\subsubsection{Docker scenario's}
+
+\begin{itemize}
+    \item Custom ML/Deep Learning model draaien in cloud omgeving
+    \begin{itemize}
+        \item Toegang tot GPU vanuit Docker enkel op Linux
+    \end{itemize}
+    \item Als je Cloud vendor neutraal wil zijn
+    \item Dev Ops deployments
+    \item Nieuwe technologie verkennen zonder uw machine te vervuilen
+    \item PC/MAC/Linux omgevingen in 1 team
+    \item Deployment op Raspberry Pi
+    \item \dots zoals er maar een Docker Engine aanwezig is
+\end{itemize}
+
+\subsection{Docker installatie}
+
+\begin{itemize}
+    \item Windows 10 Pro vereist
+    \item Docker Community Edition: \url{https://store.docker.com/editions/community/docker-ce-desktop-windows}
+\end{itemize}
+
+\subsection{Hoe werkt Docker?}
+
+\subsubsection{Docker Image}
+
+\begin{itemize}
+    \item Snapshot van files in een Linux file system
+    \item Basis van \bold{Image} is een Linux OS (Windows kan maar zien we niet)
+    \item Via een Docker file kunnen we een Docker image aanmaken
+    \item Bevat de ontwikkelde applicaties en de libraries die nodig zijn
+\end{itemize}
+
+\subsubsection{Docker Container}
+
+\begin{itemize}
+    \item Runtime instantie van een \bold{container} (beetje zoals aanmaken object op basis van een klasse (container image))
+    \item \bold{Docker containers} zijn ge"isoleerd van elkaar maar ze kunnen wel communiceren naar buiten toe
+    \item Volledige toegang tot CPU en memory 
+\end{itemize}
+
+\subsubsection{Docker Hub}
+
+\begin{itemize}
+    \item Public repository met images
+    \item \url{https://hub.docker.com/explore/}
+\end{itemize}
+
+\subsubsection{Docker Client}
+
+\begin{itemize}
+    \item Programma op PC van developer voor aanmaken Docker Images
+    \item Volledig commandline
+\end{itemize}
+
+\subsubsection{Wanneer een Docker Image klaar is}
+
+\begin{enumerate}
+    \item Push naar Docker Registry
+    \begin{itemize}
+        \item Docker Hub
+        \item Azure Container Registry
+    \end{itemize}
+    \item Container opzetten in Cloud omgeving op basis van Image uit de Registry
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{docker-container-lifecycle.png}
+    \caption{The Docker Container lifecycle}
+\end{figure}
+
+\subsection{Docker commando's}
+
+\begin{itemize}
+    \item docker pull nginx
+    \begin{itemize}
+        \item Download image `nginx' van Docker Hub
+    \end{itemize}
+    \item docker images
+    \begin{itemize}
+        \item Overzicht images op het systeem
+    \end{itemize}
+    \item docker run –p 80:80 nginx
+    \begin{itemize}
+        \item Opstarten van container op basis van image nginx en de poort 80 extern mappen met de poort in de container
+    \end{itemize}
+    \item docker ps
+    \begin{itemize}
+        \item Overzicht containers die actief zijn
+    \end{itemize}
+    \item docker exec -it 6becfdf32737 bash
+    \begin{itemize}
+        \item Inloggen in container met bash shell
+        \item /usr/share/nginx/html\#
+        \item apt-get update
+        \item apt-install nano
+    \end{itemize}
+    \item docker stop
+    \begin{itemize}
+        \item Stoppen van container
+    \end{itemize}
+    \item docker rm
+    \begin{itemize}
+        \item Verwijderen van container
+    \end{itemize}
+    \item docker rmi
+    \begin{itemize}
+        \item Verwijderen van image
+    \end{itemize}
+\end{itemize}
+
+\subsection{Dockerfile}
+
+\begin{itemize}
+    \item File \bold{zonder extensie} met als naam `Dockerfile'
+    \item Beschrijft build process image
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dockerfile-1.png}
+    \caption{Basis is altijd een andere reeds bestaande image}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dockerfile-2.png}
+    \caption{Via RUN commando kunnen we extra biblioteken installeren die de applicatie nodig heeft om te werken}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dockerfile-3.png}
+    \caption{Offici"ele repositories voor Dockerfiles}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dockerfile-4.png}
+    \caption{We moeten ook de applicatie naar de image kopiëren}
+\end{figure}
+
+\begin{itemize}
+    \item Meer info: \url{https://docs.docker.com/engine/reference/builder/\#usage}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dockerfile-5.png}
+    \caption{Een Dockerfile}
+\end{figure}
+
+\subsection{Build Image}
+
+
+\begin{itemize}
+    \item \url{https://docs.docker.com/engine/reference/commandline/build/}
+    \item docker build -t demonmct:first
+    \begin{itemize}
+        \item -t $\Rightarrow$ toevoegen na de : (=first)
+        \item Voor de : $\Rightarrow$ naam van de image (=demonmct)
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Run Container}
+
+\begin{itemize}
+    \item Opvragen van de images op uw systeem:
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{docker-runcontainer-1.png}
+    \caption{docker images}
+\end{figure}
+
+\begin{itemize}
+    \item Starten van een image:
+    \begin{itemize}
+        \item docker run -p 80:80 -t demonmct:first
+        \item -p = poort container mappen naar buiten
+        \item -t = name:tag van image die we opstarten
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Stop container}
+
+\begin{itemize}
+    \item Opvragen van alle containers die draaien:
+    \item docker ps -all
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{docker-runcontainer-2.png}
+    \caption{docker containers}
+\end{figure}
+
+\begin{itemize}
+    \item Container stoppen:
+    \item docker stop <containerid>
+\end{itemize}
+
+\subsection{Push naar Azure Container Registry}
+
+\begin{itemize}
+    \item Private repository voor Images
+    \item Image uploaden voor we deze online kunnen zetten
+    \item \url{https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-docker-cli}
+    \item Eerst inloggen in private registry:
+    \begin{itemize}
+        \item az acr login -name iocloudles
+    \end{itemize}
+    \item Voor we kunnen pushen moeten we de image taggen:
+    \begin{itemize}
+        \item docker tag demonmct:first iotcloudles.azurecr.io/demonmct
+        \item demonmct = naam image lokaal
+        \item iotcloudles.azurecr.io/demonmct = tag voor private repo: moet URL repo bevatten
+    \end{itemize}
+    \item docker push urlregistry/naam image
+    \begin{itemize}
+        \item hier: docker push iotcloudles.azurecr.io/demonmct
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{docker-azure.png}
+    \caption{Docker repository in Azure Portal}
+\end{figure}
+
+\subsection{Deploy Container Azure}
+
+\begin{itemize}
+    \item We maken Azure Web App for Containers aan
+    \item Nu moeten we Linux kiezen
+    \item Bij configure container: repo kiezen waar image staat
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{docker-container-azure.png}
+    \caption{Web App for Containers op Azure}
+\end{figure}
+
+
+\subsection{Docker Compose}
+
+Wat als we meerdere docker containers nodig hebben voor onze applicatie?
+
+\begin{itemize}
+    \item Cache Server
+    \item Database Servers
+    \item Meerdere webservers
+\end{itemize}
+
+Via Docker Compose kunnen we:
+
+\begin{itemize}
+    \item Alle containers definiëren in een yaml file
+    \item Via 1 commando zullen alle containers opgezet worden
+    \item We maken gebruik van docker-compose.yml
+\end{itemize}
+
+\subsubsection{Voorbeeld}
+
+We hebben volgende docker file
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{docker-compose-1.png}
+    \caption{Dockerfile}
+\end{figure}
+
+\begin{itemize}
+    \item We halen de image python:3.4-alpine op (\bold{FROM})
+    \item We maken via \bold{ADD} een folder `code' aan in de image
+    \item We stellen de werkmap in via \bold{WORKDIR} commando
+    \item Via \bold{RUN} doen we een pip install van alles wat in de requirements.txt zit
+    \item \bold{CMD} zal de applicatie starten
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{docker-compose-2.png}
+    \caption{Docker-compose.yml}
+\end{figure}
+
+\begin{itemize}
+    \item Services $\Rightarrow$ containers die je nodig hebt
+    \item Eigen naam geven:
+    \begin{itemize}
+        \item Web
+        \begin{itemize}
+            \item build: . $\Rightarrow$ op basis docker file
+            \item ports: welke poort gebruiken
+        \end{itemize}
+        \item Redis:
+        \begin{itemize}
+            \item image: welke image gebruiken voor redis container
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{docker-compose-3.png}
+    \caption{Starten via commando `docker-compose up' in de map van de docker-compose.yml file}
+\end{figure}
+
+\subsection{Docker Volumes}
+
+\begin{itemize}
+    \item Als we een container stoppen verliezen we alle info $\Rightarrow$ stateless
+    \item Wat met data?
+    \begin{itemize}
+        \item Externe services gebruiken:
+        \item SQL Azure Database
+        \item Azure Table Storage
+        \item CosmosDB
+    \end{itemize}
+    \item Je kan ook database draaien in Docker container
+    \begin{itemize}
+        \item MySQL
+        \item SQL Server
+        \item \dots
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Database in container}
+
+\begin{itemize}
+    \item Container afzetten $\Rightarrow$ data weg
+    \item Oplossing: Docker volumes
+    \item We mappen storage vanuit Cloud of locale PC schijf
+    \item De database zal daar zijn gegevens wegschrijven
+\end{itemize}
+
+\subsubsection{Volume commandos}
+
+Volume aanmaken:
+ 
+\begin{itemize}
+    \item docker volume create todo-db
+\end{itemize}
+
+Volume opgeven bij opstarten container via parameter
+
+\begin{itemize}
+    \item docker run -dp 3000:3000 -v todo-db:/etc/todos getting-started
+\end{itemize}
+
+\subsection{Samenvatting}
+
+\begin{itemize}
+    \item Wat is docker ?
+    \item Waarom docker gebruiken ?
+    \item Wat is een DockerFile ?
+    \item Wat is docker-compose ?
+    \item Wat is docker hub
+    \item De basiscommando’s weten wat ze doen, maar niet alle parameters
+    \item Wat zijn de manieren om bij docker applicaties correcte de data te kunnen wegschrijven ?
+    \item Wat zijn volumes ?
+\end{itemize}
+
 \section{Examen}
 \begin{itemize}
     \item Theorie: 30\%
