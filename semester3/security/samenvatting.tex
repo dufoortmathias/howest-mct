@@ -1438,6 +1438,58 @@ Uptime != Availability
 
 \end{itemize}
 
+\section{Web security}
+
+\begin{itemize}
+    \item Een belangrijke attack surface / point of entry (PoE)
+    \item Belangrijk naar reputatie
+    \item CMS-Systemen  (wordpress, drupal, joomla, ..)
+    \item Authenticatie / escalation
+    \item OWASP: \url{https://www.owasp.org}
+\end{itemize}
+
+\subsection{Vaak voorkomende problemen}
+
+\begin{itemize}
+    \item Injection (bvb SQL injection, command injection, \dots)
+    \item Cross site scripting (XSS)
+    \item Cookie stealing
+    \item Zie OWASP Top 10: top 10 meest voorkomende technieken
+\end{itemize}
+
+\subsection{Security scanners}
+
+Tools om websites te scannen op gekende kwetsbaarheden:
+
+\begin{itemize}
+    \item Nessus
+    \item Nikto
+    \item OpenVAS
+    \item OWASP Mantra
+    \item Burpsuite
+\end{itemize}
+
+\subsection{Risico's}
+
+\begin{itemize}
+    \item "Defacement"
+    \item Lek van credentials
+    \item Reputatie van het bedrijf
+    \item Diefstal (bij bvb webshops)
+    \item Totale controle van server \& alle systemen
+    \item \dots
+\end{itemize}
+
+\subsection{Remediation}
+
+\begin{itemize}
+    \item Don't be stupid
+    \item Gebruik sanitation libraries (no DIY!)
+    \item Update site framework, plugins \& libraries
+    \item Prepared statements for SQL (to remediate SQL injection)
+    \item Authentiation frameworks
+\end{itemize}
+
 \section{Examenvragen}
 
 \begin{itemize}
