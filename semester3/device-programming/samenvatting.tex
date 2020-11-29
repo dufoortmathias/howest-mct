@@ -28,6 +28,12 @@
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
 \definecolor{mymauve}{rgb}{0.58,0,0.82}
 
+% minted
+\usepackage{minted}
+\usemintedstyle{colorful}
+\setminted{frame=single,framesep=3pt,linenos}
+
+
 %Define csharp
 \lstdefinelanguage{csharp}{language=[Sharp]C, frame=lrtb, rulecolor=\color{blue!80!black}}
 
@@ -50,7 +56,7 @@
 
 .NET is a free, cross-platform, open source developer platform (*) for building many different types of applications.
 
-* languages + libraries
+* = languages + libraries
 
 \begin{figure}[H]
     \centering
@@ -63,16 +69,16 @@
 \begin{itemize}
     \item Syntax very similar to C, C++, Java \& JavaScript
     \item Functional programming language, cross-platform, open source
-    \item Approachable English-like language for OOP
+    \item Approachable English-like language for Object Oriented Programming (OOP)
 \end{itemize}
 
 \subsection{Applications}
 
 \begin{itemize}
-    \item desktop
-    \item web \& server
-    \item mobile
-    \item gaming
+    \item Desktop
+    \item Web \& Server
+    \item Mobile
+    \item Gaming
     \item IoT
     \item AI
 \end{itemize}
@@ -123,7 +129,7 @@
 \begin{itemize}
     \item `Target all platforms with a single, shared codebase for Android, iOS, Windows'. 
     \item Developen van Mobile devices lastig: verschillende platformen, verschillende talen voor elk device.
-    \item Oplossing: Xamarin
+    \item \bold{Oplossing:} Xamarin
     \item Extensie op Visual Studio.
 \end{itemize}
 
@@ -146,7 +152,7 @@
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{xamarin-codesharing.png}
-    \caption{.NET Standard vs Shared (Assets) Project}
+    \caption{.NET Standard (links) vs Shared Assets Project (rechts)}
 \end{figure}
 
 Met Shared Assets Project maken we de UI voor elk platform apart. Wij gaan vooral werken met .NET Standard.
@@ -163,16 +169,23 @@ Met Shared Assets Project maken we de UI voor elk platform apart. Wij gaan voora
 
 \section{C\# Syntax}
 
-\subsection{Python vs C\#}
+\subsection{Python vs C\# (Summary)}
 
 \begin{itemize}
-    \item curly brackets \{ \} in plaats van indenting
+    \item Curly brackets \{ \} in plaats van indenting
+    \item C\# = statically typed language: datatype is needed when declaring variables
+    \begin{itemize}
+        \item \underline{int} Number = 5;
+        \item \underline{string} Name = "Tuur";
+    \end{itemize}
+    \item Python = dynamically typed language: datatype not needed
+    \item C\# has more ways to create collections (Array, Dictionary, List)
 \end{itemize}
 
 \subsection{Datatypes}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{csharp-datatypes.png}
+    \includegraphics[width=0.7\textwidth]{csharp-datatypes.png}
     \caption{Datatypes in C\#}
 \end{figure}
 
@@ -185,19 +198,19 @@ Met Shared Assets Project maken we de UI voor elk platform apart. Wij gaan voora
 
 Collection type = fixed! $\Rightarrow$ Je kan alleen objecten van het gekozen type toevoegen aan een collection
 
-\begin{lstlisting}[language=csharp]
+\begin{minted}{csharp}
 //collections of type Person:
 Person[] teacherArr = new Person[10];
 List<Person> teacherList = new List<Person>();
 
 //You can only add Person objects to these collections!
-\end{lstlisting}
+\end{minted}
 
 
 \subsubsection{Arrays}
 = meerdere variabelen van hetzelfde type
 
-\begin{lstlisting}[language=csharp]
+\begin{minted}{csharp}
 //initialize int array with 10 positions:
 int[] numbers = new int[10];
 //save number 13 in the first position
@@ -206,11 +219,11 @@ numbers[0] = 13;
 Debug.WriteLine("The first number is:" +numbers[0]);
 //intialize and fill another array with 4 numbers:
 int[] startPositions = { 4, 1, 9, 3 };
-\end{lstlisting}
+\end{minted}
 
 \subsubsection{Dictionary <TKey, TValue>}
 
-\begin{lstlisting}[language=csharp]
+\begin{minted}{csharp}
 //declare dictionary with key type & value type
 Dictionary<string, int> studentScores = new Dictionary<string, int>();
 //add two elements (key value pairs)
@@ -218,12 +231,12 @@ studentScores.Add("Jean-Jacques", 13);
 studentScores.Add("Jean-Louis", 4);
 //get the score of Jean-Jacques
 int score = studentScores["Jean-Jacques"];
-\end{lstlisting}
+\end{minted}
 
 
 \subsubsection{List<T>}
 
-\begin{lstlisting}[language=csharp]
+\begin{minted}{csharp}
 //declare list, fill one by one:
 List<string> emailList = new List<string>();
 emailList.Add("stijn.walcarius@howest.be");
@@ -233,12 +246,12 @@ string first = emailList.ElementAt(0);
 string second = emailList[1];
 //declare + fill list:
 List<string> teacherList = new List<string> { "SWC", "FWA" };
-\end{lstlisting}
+\end{minted}
 
 \subsection{Selections}
 if / else if / else / switch
 
-\begin{lstlisting}[language=csharp]
+\begin{minted}{csharp}
 if(findTheoryTeacher == true) {
     email1 = "frederik.waeyaert@howest.be";
     email2 = null;
@@ -249,9 +262,9 @@ else if(findLabTeachers == true) {
 } else {
     email1 = email2 = null;
 }
-\end{lstlisting}
+\end{minted}
 
-\begin{lstlisting}[language=csharp]
+\begin{minted}{csharp}
 switch (teacher){
     case "SWC":
         email = "stijn.walcarius@howest.be";
@@ -263,38 +276,38 @@ switch (teacher){
         email = "info@howest.be";
         break;
 }
-\end{lstlisting}
+\end{minted}
 
 \subsection{Loops}
 for / foreach / while / do while
 
-\begin{lstlisting}[language=csharp]
+\begin{minted}{csharp}
 for(int i = 0; i < 100; i++) {
     //do something 100 times
 }
-\end{lstlisting}
+\end{minted}
 
-\begin{lstlisting}[language=csharp]
+\begin{minted}{csharp}
 List<string> teacherList = new List<string> { "SWC", "FWA" };
 foreach(string teacher in teacherList) {
     //do something
 }
-\end{lstlisting}
+\end{minted}
 
-\begin{lstlisting}[language=csharp]
+\begin{minted}{csharp}
 while(endOfClass == false){
     //might never be executed
 }
-\end{lstlisting}
+\end{minted}
 
-\begin{lstlisting}[language=csharp]
+\begin{minted}{csharp}
 do {
     //executed at least once!
 } while(endOfClass == false);
-\end{lstlisting}
+\end{minted}
 
 \subsection{Classes}
-\begin{lstlisting}[language=csharp]
+\begin{minted}{csharp}
 public class Person
 {
     //property
@@ -313,37 +326,37 @@ public class Person
         //do something
     }
 }
-\end{lstlisting}
+\end{minted}
 
 \subsection{Instantiate objects}
 
-\begin{lstlisting}[language=csharp]
+\begin{minted}{csharp}
 Persons p1 = new Person("Stijn");
 
 // Based on the following constructor in the Person class:
 public Person (string name) {
     this.Name = name;
 }
-\end{lstlisting}
+\end{minted}
 
 \subsection{Properties}
 
 \subsubsection{Fields vs properties}
 
 \begin{itemize}
-    \item Fields store the actual data
-    \item Properties are used to access those fields
+    \item \bold{Fields} store the actual data
+    \item \bold{Properties} are used to access those fields (getters \& setters)
     \item Auto-implemented properties have a hidden field
     \item Use properties to control field access
     \item Enhance input/output control using get \& set
-    \item Calculated properties build on other properties
+    \item Calculated properties are built on other properties
     \begin{itemize}
         \item No field required
         \item Reusability
     \end{itemize}
 \end{itemize}
 
-\begin{lstlisting}[language=csharp]
+\begin{minted}{csharp}
 //private field
 private int _id;
 
@@ -354,7 +367,7 @@ public int Id {
     // setter
     set { _id = value; }
 }
-\end{lstlisting}
+\end{minted}
 
 
 \subsubsection{Default values for properties}
@@ -375,7 +388,7 @@ public int Id {
     \item A constructor is called every time you create an instance of a class
     \item It is used to allow / force the user to provide certain values
     \item Default constructor is (only) added if a model has no constructors
-    \item Constructor overloading = multiple constructors with either \dots
+    \item \bold{Constructor overloading} = multiple constructors with either \dots
     \begin{itemize}
         \item \dots a different number of parameters, or
         \item \dots a different type of paramters, or
@@ -451,7 +464,7 @@ at run time and to invoke them."}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{embedded-files2.png}
-    \caption{}
+    \caption{Reading a file}
 \end{figure}
 
 \subsection{Summary}
@@ -480,12 +493,12 @@ at run time and to invoke them."}
 
 \subsection{Navigate forward}
 
-\begin{lstlisting}[language=csharp]
+\begin{minted}{csharp}
 Navigation.PushAsync(new FooPage());
 Navigation.PushModalAsync(new FooPage());
 
 // FooPage is hier de XAML page waar we willen naar navigeren
-\end{lstlisting}
+\end{minted}
 
 \begin{itemize}
     \item PushAsync vs PushModalAsync
@@ -515,14 +528,14 @@ Navigation.PushModalAsync(new FooPage());
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{navigation-stack-1.png}
-    \caption{Pushen op de stack}
+    \caption{Pushing to the stack}
 \end{figure}
 
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{navigation-stack-2.png}
-    \caption{Pop'en van de stack}
+    \caption{Pop-ing from the stack}
 \end{figure}
 
 \begin{figure}[H]
@@ -558,7 +571,7 @@ Navigation.PushModalAsync(new FooPage());
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{pagetypes.png}
-    \caption{}
+    \caption{Xamarin's page types}
 \end{figure}
 
 \subsection{Exchanging data}
@@ -588,7 +601,7 @@ How to exchange data between several pages:
 
 Er ontstaat een hi"erarchie.
 
-\begin{lstlisting}[language=csharp]
+\begin{minted}{csharp}
 // the base class: 
 
 public class Advisor
@@ -607,7 +620,7 @@ public class MinisterOfDefense : Adviser {
     // code here
 }
 
-\end{lstlisting}
+\end{minted}
 
 \begin{itemize}
     \item All C\# classes, of any type, are treated as if they ultimately derive from System.Object
@@ -640,7 +653,7 @@ public class MinisterOfDefense : Adviser {
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\textwidth]{inheritance-constructor.png}
+    \includegraphics[width=0.95\textwidth]{inheritance-constructor.png}
     \caption{Inheritance: constructor example}
 \end{figure}
 
@@ -670,7 +683,7 @@ Virtual properties/methods:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{inheritance-override.png}
-    \caption{}
+    \caption{virtual and override}
 \end{figure}
 
 
@@ -688,7 +701,7 @@ Abstract properties/methods:
     \centering
     \includegraphics[width=0.4\textwidth]{inheritance-abstract.png}
     \includegraphics[width=0.4\textwidth]{inheritance-abstract2.png}
-    \caption{}
+    \caption{abstract and override}
 \end{figure}
 
 
@@ -699,14 +712,14 @@ Abstract properties/methods:
 \bold{Example:} say we have a class Animal, and two classes Cat and Dog that inherit the Animal class.
 Then, this is possible: 
 
-\begin{lstlisting}[language=csharp]
+\begin{minted}{csharp}
 List<Animal> animals = new List<Animal>();
 Animal dog = new Dog();
 Animal cat = new Cat();
 
 animals.Add(dog);
 animals.Add(cat);
-\end{lstlisting}
+\end{minted}
 
 \begin{figure}[H]
     \centering
@@ -787,16 +800,15 @@ Interfaces in Xamarin(.Forms) is extremely useful:
 
 Say you need to get data from a specific sensor on your Android/iOS/UWP device. 
 We can create an interface in our project, and implement that interface in each device's code.
-Once we need to get that data, we can automatically call the correct method for the correct device,
-by just calling the interface's method.
+Once we need to get that data, we can automatically call the correct method for the correct device.
 
 \subsection{Summary}
 
 \begin{itemize}
-    \item You are convinced by the advantages of \bold{inheritance} and \bold{polymorphism}, and can explain using an example
-    \item  You understand the usage and consequences of the \bold{virtual} and \bold{abstract} keywords for properties and methods.
-    \item  You know when to use \bold{abstract classes} and/or \bold{interfaces}, and can explain the difference between those two.
-    \item  You understand the specific importance of interfaces in \bold{Xamarin}(.Forms)
+    \item You are convinced by the advantages of \bold{inheritance} and \bold{polymorphism}, and can explain using an example.
+    \item You understand the usage and consequences of the \bold{virtual} and \bold{abstract} keywords for properties and methods.
+    \item You know when to use \bold{abstract classes} and/or \bold{interfaces}, and can explain the difference between those two.
+    \item You understand the specific importance of interfaces in \bold{Xamarin}(.Forms)
 \end{itemize}
 
 \section{Asynchronous programming: async and await keywords}
@@ -875,7 +887,7 @@ To make the app continue to respond to use interaction while\dots:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{async-calling.png}
-    \caption{}
+    \caption{The await keyword}
 \end{figure}
 
 \subsection{Summary}
@@ -933,7 +945,7 @@ There are two Item Templates available to add XAML Content
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth]{xaml01.png}
-    \caption{}
+    \caption{Example}
 \end{figure}
 
 \begin{figure}[H]
@@ -951,7 +963,7 @@ There are two Item Templates available to add XAML Content
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{xaml04.png}
-    \caption{Child nodes}
+    \caption{Child nodes in a StackLayout}
 \end{figure}
 
 \subsubsection{C\# code with XAML}
@@ -962,15 +974,11 @@ There are two Item Templates available to add XAML Content
     \caption{x:Class}
 \end{figure}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{xaml05.png}
-    \caption{x:Class}
-\end{figure}
-
 \subsubsection{XAML Initialization}
 
-The code behind the constructor has a call to `InitializeComponent' which is responsible for loading the XAML and creating the objects
+The code behind the constructor has a call to `InitializeComponent' 
+which is responsible for loading the XAML and creating the objects.
+This method needs to run before doing anything else.
 
 \begin{figure}[H]
     \centering
@@ -982,9 +990,9 @@ The code behind the constructor has a call to `InitializeComponent' which is res
 
 \begin{itemize}
     \item Use \bold{x:Name} to assign field name $\Rightarrow$ allows you to reference element in XAML and C\#
-    \item Add a private field to the XAML-generated partial class (\bold{.g.cs})
+    \item This adds a private field to the XAML-generated partial class (file ending in \bold{.g.cs})
     \item Name must conform to C\# naming conventions
-    \item Name must be unique 
+    \item Name must be unique
 \end{itemize}
 
 \begin{figure}[H]
@@ -1066,7 +1074,7 @@ The rendered size of a view is a collaboration between the view itself and its l
 \subsubsection{Layout algorithm}
 
 \begin{enumerate}
-    \item Layout panel akss each child how much room it would like
+    \item Layout panel asks each child how much room it would like
     \item Then tells each child how much it gets
 \end{enumerate}
 
@@ -1194,8 +1202,8 @@ StackLayout arranges its children in a single column or a single row
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{xaml-stacklayout.png}
-    \caption{}
+    \includegraphics[width=0.1\textwidth]{xaml-stacklayout.png}
+    \caption{StackLayout}
 \end{figure}
 
 
@@ -1374,7 +1382,7 @@ Grid places its children into cells formed from rows and columns
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.2\textwidth]{xaml-grid1.png}
+    \includegraphics[width=0.1\textwidth]{xaml-grid1.png}
     \caption{}
 \end{figure}
 
@@ -1384,7 +1392,7 @@ You specify the shape of the grid by defining each row and column individually
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{xaml-grid2.png}
+    \includegraphics[width=0.4\textwidth]{xaml-grid2.png}
     \caption{}
 \end{figure}
 
@@ -1427,7 +1435,7 @@ becomes the size of the largest child
     \caption{Auto GridLength}
 \end{figure}
 
-\bold{Star GridLength}
+\bold{Star (*) GridLength}
 
 Star GridLength shares the available space proportionally among all rows/columns
 that use star sizing
@@ -1464,7 +1472,7 @@ Starts at 0:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{xaml-grid-numbering.png}
+    \includegraphics[width=0.2\textwidth]{xaml-grid-numbering.png}
     \caption{}
 \end{figure}
 
