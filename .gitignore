@@ -29,6 +29,9 @@ __latexindent_temp.tex
 *.synctex.gz(busy)
 *.pdfsync
 
+## Minted build files
+_minted*
+
 ## General files and folders
 .vscode/
 .DS_Store
