@@ -858,7 +858,7 @@ Reconnaissance = Information gathering = OSINT
     \item Information harvesting
 \end{itemize}
 
-\subsection{Fase 3: Vulnerability assessement}
+\subsection{Fase 3: Vulnerability assessment}
 
 \begin{itemize}
     \item Vulnerabilty scanners, zoals: Nexpose, Retina/Iris
@@ -1592,6 +1592,181 @@ Tools om websites te scannen op gekende kwetsbaarheden:
         \item = Bescherming van de persoonlijke gegevens van werknemers t.o.v. de controle op online-communicatiegegevens
         \item Meer info op leho bij Modules (cao-81.pdf)
     \end{itemize}
+\end{itemize}
+
+\section{Risico's}
+
+\begin{itemize}
+    \item De mate van bedreiging is niet beheersbaar
+    \item De kwetsbaarheid is te reduceren door de implementatie van tegenmaatregelen
+    \item Risico wordt uitgedrukt in euro per tijdeenheid: hoeveel geld zullen bedreigingen mij kosten?
+    \item Bedrijfsimpact van het risico bepaalt de opportuniteit van de beveiligingsinvestering
+    \item Bepalen van de financiële impact van een incident is uitermate bedrijfsspecifiek
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{risk.png}
+    \caption{}
+\end{figure}
+
+\subsection{Impact}
+
+Specifieke bedrijfsimpact == \bold{Business Impact Analysis (BIA)}
+
+\begin{itemize}
+    \item = Analyse van impact op een bepaald bedrijf
+\end{itemize}
+
+\subsubsection{Events}
+
+= Een gebeurtenis die een bepaalde impact heeft op het bedrijf
+
+\begin{itemize}
+    \item Bv: beschadiging van de server door een brand
+    \item Oplossing: backup terugzetten
+    \item Twee soorten doelen die moeten gehaald worden:
+    \begin{itemize}
+        \item RPO: Recovery Point Objective
+        \begin{itemize}
+            \item Bepaalt wat je terugzet bij een backup
+            \item Bv: RPO van 1 week $\Rightarrow$ elke week een backup maken van alle bestanden 
+            \item Gevolg: $\Rightarrow$ Laatste backup maximum 1 week oud
+        \end{itemize}
+        \item RTO: Recovery Time Objective
+        \begin{itemize}
+            \item Wanneer moeten we weer operationeel zijn?
+            \item Bv: 1 dag $\Rightarrow$ maximum een dag later terug operationeel, als een backup terugzetten max. 1 dag duurt
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+
+\subsection{Risk coping strategies}
+
+Als je een risico hebt, kan je deze dingen doen:
+
+\begin{itemize}
+    \item Risk Acceptance (aanvaarden)
+    \item Risk Avoidance (vermijden)
+    \item Risk Mitigation (tegenmaatregelen nemen, risico verlagen)
+    \item Risk Transference (risico bij iemand anders leggen)
+    \item Ignore it (NIET OK)
+\end{itemize}
+
+\bold{$\Rightarrow$ Risk management}
+
+
+\subsection{Risk assessment}
+\begin{itemize}
+    \item Hoe vinden we kwetsbaarheden? $\Rightarrow$ Security audit
+    \item Hoe meten we een bedreiging? $\Rightarrow$ Threat intelligence
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{risk-management-process.jpg}
+    \caption{Risk Management Process}
+\end{figure}
+
+\subsection{Security Audit}
+
+\begin{itemize}
+    \item Self assessment
+    \item Externe audit
+    \begin{itemize}
+        \item Penetration test 
+        \item Bv: Red teaming
+        \item Red vs Blue: 2 teams
+        \item Blue team verdedigt, Red team valt aan op een realistische manier
+        \item Blue team weet niet per se dat er zal aangevallen worden
+    \end{itemize} 
+\end{itemize}
+
+\subsubsection{Self assessment}
+
+\begin{itemize}
+    \item Incident response plan
+    \item Review van de procedures
+    \item Interne opleiding/informatie
+    \item Controle van back-up en recovery procedures
+\end{itemize}
+
+\subsubsection{Externe audit}
+
+\begin{itemize}
+    \item Pentest (penetration test)
+    \item Red-teaming (vs blue team)
+    \item Gebruik van offensieve technieken
+    \item Identificeert zwakheden
+\end{itemize}
+
+
+\subsection{Pentesting}
+
+\begin{itemize}
+    \item Black box testing 
+    \item White box testing
+    \item Grey box testing = combinatie van de twee. Als de Blackbox test niets opleverd kan je vragen voor bvb credentials van een user account, om dan daarmee verder te black box testen.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{pentesting.jpg}
+    \caption{Black-box vs White-box testing}
+\end{figure}
+
+\subsubsection{Scope van een pentest}
+
+\begin{itemize}
+    \item Scope defini"eren: wat mag/kan getest worden
+    \item Minimaliseren van bedrijfsimpact
+    \item Behouden van de relevantie van de test
+    \item Negatieve impact is niet uit te sluiten
+    \item Opletten met derde partijen
+\end{itemize}
+
+\subsubsection{Resultaat van een pentest}
+
+\begin{itemize}
+    \item $\Rightarrow$ Pentest report
+    \item Lange lijst (potenti"ele) kwetsbaarheden
+    \item Is geen `score' of `certificaat'
+    \item Duidelijk resultaat:
+    \begin{itemize}
+        \item Transparant
+        \item Prioriteiten
+        \item Aanbevelingen
+    \end{itemize}
+\end{itemize}
+
+\subsection{Tegenmaatregelen}
+
+= Mitigation
+
+\begin{itemize}
+    \item Corporate policy - Training - Awareness
+    \item Coding practices
+    \item Testing (pentesting)
+    \item Vulnerability management
+    \item Backup
+    \item Disaster recovery plan
+    \item Fysieke security
+    \item Firewall / IDS / IPS
+\end{itemize}
+
+\subsection{Tips}
+
+\begin{itemize}
+    \item Security is geen taak maar een proces
+    \item Security is nooit `af' maar in constante flux
+    \item Informeer gebruikers (awareness) (herhaaldelijk)
+    \item Ga voor de `quick wins'
+    \item Elimineer `low-hanging fruit'
+    \item Update software, infrastructuur en tools
+    \item Maak een corporate policy
+    \item Maak een disaster recover plan
+    \item Zorg voor een correcte back-up
 \end{itemize}
 
 \section{Examenvragen}
