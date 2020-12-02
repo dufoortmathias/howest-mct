@@ -19,8 +19,7 @@
  
 \newcommand{\bold}[1]{\textbf{#1}}
 
-%Define the listing package
-\usepackage{listings} %code highlighter
+\usepackage{minted}
 \usepackage{upquote}
 \usepackage{color} %use color
 \definecolor{mygreen}{rgb}{0,0.6,0}
@@ -51,10 +50,8 @@
     \item Geen eigen hardware (we kopen niets aan)
     \item Ongelimiteerde computing power
     \item Ongelimiteerde storage capaciteit
-    \item Scaling up and down op aanvraag of
-    automatisch
-    \item Scaling in en out op aanvraag of
-    automatisch
+    \item Scaling up and down op aanvraag of automatisch
+    \item Scaling in en out op aanvraag of automatisch
     \item Geografische spreiding
     \item Pay what you use
 \end{itemize}
@@ -72,13 +69,15 @@
     \item IT Afdeling is verantwoordelijk voor ALLES
     \item Back-up \& recovery
     \item Aankoop hardware
-    \item Scaling...
+    \item Scaling is duur
     \item Meeste vrijheid om te werken
     \item Soms investeren in hardware die je maar beperkt aantal dagen nodig hebt
-    \item Vb: webshop en kerstperiode
+    \begin{itemize}
+        \item Vb: webshop wordt meer belast tijdens de kerstperiode
+    \end{itemize}
     \item Soms verplicht door wetgeving
     \item Medische data
-    \item Financial data
+    \item Financi"ele data
     \item Gebrek aan vertrouwen bij public cloud provider (cfr NSA)
 \end{itemize}
 
@@ -89,7 +88,7 @@ Makes use of existing in-house infrastructure and Netplan cloud services to prov
     \item Eigen datacenter koppelen aan cloud omgeving
     \item Bepaalde diensten draaien in cloud omgeving andere in eigen datacenter
     \item Zware load laten uitvoeren op de cloud
-    \item Bepaalde data mag NIET in cloud opgeslagen worden vb: medical
+    \item Bepaalde data mag NIET in cloud opgeslagen worden (vb: medische gegevens)
     \item Kan ook gebruikt worden in back-up scenario’s
 \end{itemize}
 
@@ -122,7 +121,7 @@ Makes use of existing in-house infrastructure and Netplan cloud services to prov
     \item Zeer veel flexibiliteit
 \end{itemize}
 
-We zullen vooral dit gebruiken in IoT Cloud module.
+Wij zullen vooral PaaS gebruiken in deze module.
 
 \subsubsection{Talen}
 \begin{itemize}
@@ -169,7 +168,7 @@ We zullen vooral dit gebruiken in IoT Cloud module.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{magic-quadrant.png}
-    \caption{}
+    \caption{Magic Quadrant}
 \end{figure}
 
 
@@ -185,7 +184,7 @@ We kiezen voor Microsoft Azure omwille van:
 
 \subsection{Azure Portal}
 
-Inloggen via \url{portal.azure.com}
+Inloggen via \url{https://portal.azure.com}
 
 \begin{itemize}
     \item Beheren van uw Cloud services en applicaties
@@ -329,7 +328,7 @@ Hoe kan ik mijn VM `up and running' houden?
 \begin{itemize}
     \item Gedeelde server
     \item 1GB storage
-    \item Mogelijkheid tot DNS vb: www.mijnnaam.be
+    \item Mogelijkheid tot DNS, vb: \underline{www.mijnnaam.be}
 \end{itemize}
 
 \subsubsection{Basic, Premium}
@@ -346,18 +345,19 @@ Hoe kan ik mijn VM `up and running' houden?
 
 \subsubsection{Scale Up}
 \begin{itemize}
-    \item = vertical scaling
+    \item \bold{= vertical scaling}
     \item Server krachtiger maken, meer memory en CPU
 \end{itemize}
 
-Pros: 
+\bold{Pros: }
+
 \begin{itemize}
     \item Minder energie dan scale out
     \item Eenvoudiger te implementeren
     \item Minder licenties (n.v.t. op Azure Web App)
 \end{itemize}
 
-Cons:
+\bold{Cons: }
 
 \begin{itemize}
     \item Duurder
@@ -367,17 +367,17 @@ Cons:
 
 \subsubsection{Scale Out}
 \begin{itemize}
-    \item = horizontal scaling
+    \item \bold{= horizontal scaling}
     \item Meerdere machiens maar minder krachtig
 \end{itemize}
 
-Pros: 
+\bold{Pros: }
 \begin{itemize}
     \item Goedkoper
-    \item Betere bescherming bij hardware failure, hebt meerdere machines
+    \item Betere bescherming bij hardware failure: je hebt meerdere machines
 \end{itemize}
 
-Cons:
+\bold{Cons: }
 
 \begin{itemize}
     \item Meer licenties nodig (n.v.t. op Azure)
@@ -390,7 +390,6 @@ Cons:
 \subsection{Azure SQL}
 
 \begin{itemize}
-    \item 
     \item SQL Server Database op Cloud platform
     \item We moeten zelf geen hardware/software aankopen
     \item Niet verantwoordelijk voor backups
@@ -413,7 +412,7 @@ Cons:
         \item .NET
         \item Python
         \item PHP
-        \item Node
+        \item NodeJS
         \item \dots
     \end{itemize}
     \item High Availability
@@ -425,14 +424,8 @@ Cons:
     \item Verschillende pricing mogelijkheden
 \end{itemize}
 
-\subsubsection{Eigenschappen}
-\begin{itemize}
-    \item Database draait op een server
-    \item Verschillende pricing mogelijkheden
-\end{itemize}
-
 \subsubsection{Security}
-Azure FireWall: IP adres van je netwerk toelaten
+Azure Firewall: IP adres van je netwerk toelaten
 
 \subsubsection{Azure DTU}
 \begin{itemize}
@@ -445,9 +438,9 @@ Azure FireWall: IP adres van je netwerk toelaten
         \item I/O
     \end{itemize}
     \item Deze resources krijg je ter beschikking
+    \item vCores = virtuele CPUs die de service mag gebruiken
     \item Hoe meer DTU, hoe meer power, hoe duurder
     \item \url{https://docs.microsoft.com/en-us/azure/sql-database/sql-database-what-is-a-dtu}
-    \item vCores = virtuele CPUs die de service mag gebruiken
 \end{itemize}
 
 \subsubsection{Throttling}
@@ -455,15 +448,17 @@ Azure FireWall: IP adres van je netwerk toelaten
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{azure-throttling.png}
+    \includegraphics[width=0.7\textwidth]{azure-throttling.png}
     \caption{Throttling types}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{azure-throttling-modes.png}
+    \includegraphics[width=0.7\textwidth]{azure-throttling-modes.png}
     \caption{Throttling modes}
 \end{figure}
+
+\subsubsection{SQL via C\#}
 
 \begin{figure}[H]
     \centering
@@ -544,7 +539,7 @@ Azure FireWall: IP adres van je netwerk toelaten
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\textwidth]{azure-onderdelen.png}
-    \caption{}
+    \caption{Overzicht Azure onderdelen (ter illustratie: het zijn er veel)}
 \end{figure}
 
 \subsection{Samenvatting}
@@ -558,7 +553,7 @@ Azure FireWall: IP adres van je netwerk toelaten
     \item Voor en nadelen van Azure VM’s?
     \item Wanneer Azure VM gebruiken?
     \item Wat is SQL Azure en wat zijn DTU’s?
-    \item Wat is throttling?
+    \item Wat is throttling (bij SQL Azure)?
     \item Wat is een Azure Web App?
 \end{itemize}
 
@@ -568,12 +563,13 @@ Azure FireWall: IP adres van je netwerk toelaten
 
 \subsubsection{The Internet of Information}
 \begin{itemize}
-    \item Het draait om webpagina’s met content
+    \item = webpagina’s met content
     \begin{itemize}
         \item Opzoeken van informatie
         \item Raadplegen van informatie
         \item E-commerce
         \item Social networks
+        \item Entertainment
     \end{itemize}
     \item Technologie
     \begin{itemize}
@@ -589,6 +585,7 @@ Azure FireWall: IP adres van je netwerk toelaten
         \item Amazon
         \item Stackoverflow
         \item Nieuwssites
+        \item Reddit
     \end{itemize}
 \end{itemize}
 
@@ -597,7 +594,7 @@ Azure FireWall: IP adres van je netwerk toelaten
 \begin{itemize}
     \item Connectiviteit
     \begin{itemize}
-        \item Driving factor mobile applications
+        \item Driving factor for mobile applications
         \item Cross platform
         \item Data op makkelijke manier uitwissen
         \item Functionaliteit makkelijk aanroepen
@@ -618,7 +615,7 @@ Azure FireWall: IP adres van je netwerk toelaten
 = Connecting hardware
 
 \begin{itemize}
-    \item Device koppelen aan het internet
+    \item Devices koppelen aan het internet
     \begin{itemize}
         \item Versturen van informatie naar cloud
         \item Toestellen praten onderling met elkaar (M2M = machine to machine)
@@ -633,7 +630,7 @@ Azure FireWall: IP adres van je netwerk toelaten
         \item Smart thermostat
         \item Smart fridge
         \item Auto's die verbonden zijn met de cloud (Tesla)
-        \item Andere smart home devices (Alexa, \dots)
+        \item Andere smart home devices (Alexa, Google Home, \dots)
     \end{itemize}
 \end{itemize}
 
@@ -698,14 +695,14 @@ Onze focus: Internet of Things \& Internet of Services
 
 \subsubsection{Wat is HTTP?}
 \begin{itemize}
-    \item Hyper Tekst Transfer Protocol
+    \item Hyper-Text Transfer Protocol
     \item Onderliggende protocol waarop Internet werkt
     \item Opvragen van tekst, bestanden vanaf servers
     \item Request \textit{meestal} afkomstig van een webbrowser maar ook smartphone, IoT device
     \item HTTP zal bepalen hoe een request en response er moeten uitzien
     \item HTTP bevat een aantal commando’s: \bold{HTTP Verbs}
-    \item HTTP is \bold{stateless}, het zal dus geen rekening houden met voorgaan requests ("Fire and Forget")
-    \item HTTP is \bold{niet sessionless}, we kunnen cookies (client-side) gebruiken om data bij te houden
+    \item HTTP is \bold{stateless}: het zal geen rekening houden met voorgaan requests ("Fire and Forget")
+    \item HTTP is \bold{niet sessionless}: we kunnen cookies (client-side) gebruiken om data bij te houden
     \item HTTP is relatief eenvoudig: volledig text-based
 \end{itemize}
 
@@ -715,8 +712,8 @@ Onze focus: Internet of Things \& Internet of Services
 \begin{itemize}
     \item \bold{GET} - ophalen data (safe: wijzigt niets op server) (SELECT)
     \item \bold{POST} - Toevoegen data: vb: formulier (INSERT)
-    \item \bold{PUT} - Idempotent => meerdere requests => zelfde effect (UPDATE)
-    \item \bold{DELETE} - Idempotent => meerdere requests => zelfde effect (DELETE)
+    \item \bold{PUT} - Idempotent => meerdere requests hebben hetzelfde zelfde effect (UPDATE)
+    \item \bold{DELETE} - Idempotent => meerdere requests hebben hetzelfde zelfde effect (DELETE)
 \end{itemize}
 
 \subsubsection{HTTP status code}
@@ -751,7 +748,7 @@ Niet altijd evident om te weten wat je moet kiezen !
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{http-request.png}
-    \caption{HTTP GET-Request}
+    \caption{Voorbeeld HTTP GET-Request}
 \end{figure}
 
 \begin{itemize}
@@ -803,7 +800,7 @@ Niet altijd evident om te weten wat je moet kiezen !
     \item Platform-onafhankelijk (Windows, Linux, Android, iOS)
     \item 2 Protocollen:
     \begin{itemize}
-        \item SOAP (verouderd, meestal gebruikt tss 2000-2010, gebruiken wij niet)
+        \item SOAP (verouderd, meestal gebruikt tussen 2000-2010, gebruiken wij niet)
         \item REST (onze keuze)
     \end{itemize}
     \item Datatransport (formaat van de data) via
@@ -830,7 +827,7 @@ Niet altijd evident om te weten wat je moet kiezen !
     \item = AI API op Azure
     \begin{itemize}
         \item \url{https://azure.microsoft.com/en-us/services/cognitive-services/}
-        \item Spraak
+        \item Spraakherkenning
         \item Beeldherkenning
         \item Taal
         \item \dots
@@ -851,7 +848,7 @@ Alle voorgaande voorbeelden:
     \item Cross-platform
 \end{enumerate}
 
-Deze manier van werken zal je ongeveer altijd tegenkomen!
+Deze manier van werken zal je bijna altijd tegenkomen!
 
 \subsubsection{JSON}
 
@@ -890,15 +887,15 @@ Deze manier van werken zal je ongeveer altijd tegenkomen!
 \begin{itemize}
     \item Wanneer er meerdere JSON objecten zijn spreken we van een array
     \item Deze plaatsen we tussen []
-    \item Een key kan terug als value een array van andere JSON objecten zijn
+    \item Een value kan terug een array van andere JSON objecten zijn
 \end{itemize}
 
 \subsubsection{URL}
 \begin{itemize}
-    \item Alles is uniek identificeerbaar via een URL $\Rightarrow$ Uniform Resource Locator
+    \item Alles is uniek identificeerbaar via een URL (Uniform Resource Locator)
     \item Gebruik \bold{geen} spaties in de URL
     \item Gebruik \bold{geen} hoofdletters
-    \item Gebruik meervoud voor resource namen
+    \item Gebruik meervoud voor resource namen (gebruik users ipv user)
     \item Gebruik GEEN HTTP Verb om operatie aan te duiden (vb: geen get of post in url)!!
 \end{itemize}
 
@@ -919,9 +916,9 @@ Voorbeelden
 Wat als er iets foutloopt in een service?
 
 \begin{itemize}
-    \item Wat moet ik terugkeren ?
-    \item Stuur NOOIT maar dan ook NOOIT Exceptions of intern foutmeldingen van het systeem terug naar de client in productie systemen
-    \item Keer een status code Internal Sever Error 500 terug met eventueel wat informatie die jij opstelt
+    \item Wat moet ik returnen ?
+    \item Stuur \bold{NOOIT} Exceptions of interne foutmeldingen van het systeem terug naar de client in productie systemen
+    \item Keer een status code Internal Sever Error 500 terug met eventueel wat informatie die jij zelf opstelt
     \item Denk na welke info je bij de foutmelding wil terugsturen
     \begin{itemize}
         \item Geen connectie informatie
@@ -937,11 +934,11 @@ Wat als er iets foutloopt in een service?
     \begin{itemize}
         \item Alleen lezen (SELECT in database)
     \end{itemize}
-    \item PUT \& DELETE
+    \item HTTP PUT \& DELETE
     \begin{itemize}
         \item DELETE = DELETE in SQL
-        \item PUT = UPDATA in database
-        \item Idempotent methodes $\Rightarrow$ voer je ze 1x uit of 100x, het resultaat blijft hetzelfde
+        \item PUT = UPDATE in database
+        \item \bold{Idempotent methods} $\Rightarrow$ voer je ze 1x uit of 100x, het resultaat blijft hetzelfde
     \end{itemize}
     \item HTTP POST
     \begin{itemize}
@@ -958,7 +955,7 @@ Wat als er iets foutloopt in een service?
     \item Ieder request is onafhankelijk van elkaar
     \item Dit verhoogt de schaalbaarheid
     \item Eenvoudiger applicatie design
-    \item Vb: vanuit een mobile app vragen we sensor data op via webservice. 
+    \item \bold{\underline{Vb:}} vanuit een mobile app vragen we sensor data op via webservice. 
     De gebruiker van de app kan een filter instellen en wil enkel de temperatuur sensor data zien. 
     Dit wil zeggen bij iedere request naar de server MOET je meegeven welke data de gebruiker wil zien. 
     Je mag aan de server kant NIET bijhouden welke gebruiker welke sensors data wenst te zien
@@ -966,8 +963,9 @@ Wat als er iets foutloopt in een service?
 
 \subsubsection{Hoe maken we webservices?}
 
+Aanwezig op ieder platform:
+
 \begin{itemize}
-    \item Aanwezig op ieder platform
     \item PHP
     \begin{itemize}
         \item Laraval, Lumen, Wave
@@ -1009,7 +1007,7 @@ Wat als er iets foutloopt in een service?
     \item Concreet: we moeten dit proberen te vermijden
 \end{itemize}
 
-3 soorten security
+\subsubsection{3 soorten security}
 
 \begin{enumerate}
     \item Anonymous
@@ -1032,9 +1030,9 @@ In code: via HttpTrigger
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{azure-security-1.png}
-    \includegraphics[width=0.7\textwidth]{azure-security-2.png}
-    \includegraphics[width=0.7\textwidth]{azure-security-3.png}
+    \includegraphics[width=0.8\textwidth]{azure-security-1.png}
+    \includegraphics[width=0.8\textwidth]{azure-security-2.png}
+    \includegraphics[width=0.8\textwidth]{azure-security-3.png}
     \caption{}
 \end{figure}
 
@@ -1047,8 +1045,8 @@ In code: via HttpTrigger
 \subsubsection{Voordelen van key security}
 \begin{itemize}
     \item Makkelijk op te zetten
-    \item Beheer keys valt mee bij niet veel gebruikers
-    \item Ideaal voor scenario waar je control hebt over de client
+    \item Beheer keys valt mee bij laag aantal gebruikers
+    \item Ideaal voor scenario waar je controle hebt over de client
     \begin{itemize}
         \item Vb: je interne Android of iOS hebt (app niet publiek in store)
         \item Vb: interne web applications
@@ -1059,7 +1057,7 @@ In code: via HttpTrigger
 \begin{itemize}
     \item Key moet in de applicatie zitten die we verspreiden
     \begin{itemize}
-        \item Vb publieke mobile app’s die iedereen kan downloaden
+        \item \underline{Vb:} publieke mobile apps die iedereen kan downloaden
     \end{itemize}
     \item Bij zeer veel gebruikers zal key management lastig worden
 \end{itemize}
@@ -1086,7 +1084,7 @@ In code: via HttpTrigger
     \item Timer trigger
     \begin{itemize}
         \item via cron expressie de functie op een tijdstip uitvoeren
-        \item 0 * /5 * * * *  (=once every five minutes)
+        \item \mintinline{bash}{0 * /5 * * * *}  (=once every five minutes)
         \item \url{https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-timer}
     \end{itemize}
     \item IoT Hub Trigger
@@ -1100,14 +1098,14 @@ Welke nieuwe technologie moeten we volgen?
     \item GraphQL (\url{https://graphql.org/})
     \begin{itemize}
         \item Query taal voor API
-        \item We sturen queries door naar de API die resultaten zal terugkeren
+        \item We sturen queries door naar de API die resultaten zal returnen
         \item In volle ontwikkeling
     \end{itemize}
     \item gRPC (\url{https://grpc.io/})
     \begin{itemize}
         \item Open Source Remote Procedure Framework
         \item We roepen methodes aan op remote servers
-        \item Platform onafhankelijk en open source
+        \item Platform-onafhankelijk en open source
         \item Enkel HTTP/2
     \end{itemize}
     \item Mooie onderzoeksvragen voor Project 4 in 3MCT
@@ -1148,7 +1146,7 @@ Werking:
 \begin{itemize}
     \item Importeren requests library
     \item url opstellen die we willen aanroepen
-    \item Get() methode uitvoeren met url
+    \item requests.get() methode uitvoeren met url als parameter
     \item status\_code = HTTP Statuscode
     \item text = inhoud van response
 \end{itemize}
@@ -1179,8 +1177,8 @@ Werking:
 
 \begin{itemize}
     \item Ontvangen JSON string opslaan in variabele
-    \item Ontvangen JSON string inladen via load in een dictionary
-    \item Daarna kunnen we de waarden uit de dictionary opvragen zoals normaal
+    \item Ontvangen JSON string inladen via loads in een dictionary
+    \item Daarna kunnen we de waarden uit de dictionary opvragen zoals altijd
 \end{itemize}
 
 \subsection{Azure via .NET}
@@ -1192,15 +1190,15 @@ Werking:
 
 \subsection{Samenvatting}
 \begin{itemize}
-    \item Over welke soorten "Internet" spreken we ?
-    \item Wat zijn Webservices en hun eigenschappen
-    \item Wanneer moet je GET POST PUT DELETE gebruiken
-    \item Welk HTTP verbs zijn idempotent
-    \item Welke statuscodes moet ik terugsturen
-    \item Wat is JSON en zorg dat je manueel JSON kan schrijven
-    \item Hoe kan je Azure Functions aanroepen vanuit Python
-    \item Welk soorten Azure Functions zijn er
-    \item Wat is een cron expression
+    \item Over welke soorten `Internet'  spreken we?
+    \item Wat zijn Webservices en hun eigenschappen?
+    \item Wanneer moet je GET POST PUT DELETE gebruiken?
+    \item Welk HTTP verbs zijn idempotent?
+    \item Welke statuscodes moet ik terugsturen?
+    \item Wat is JSON en zorg dat je manueel JSON kan schrijven?
+    \item Hoe kan je Azure Functions aanroepen vanuit Python?
+    \item Welk soorten Azure Functions zijn er?
+    \item Wat is een cron expression?
 \end{itemize}
 
 \section{Azure Storage}
@@ -1212,7 +1210,7 @@ Werking:
     \item Basis voor heel wat Azure services: VM's, Functions, \dots
 \end{itemize}
 
-Soorten storage
+\subsection{Soorten storage}
 
 \begin{itemize}
     \item File (zien we niet in labo)
@@ -1240,18 +1238,18 @@ Soorten storage
 
 \begin{itemize}
     \item  Hard Disk maar in de Cloud
-    \item  Je kan deze mappen naar eigen pc, vb Z:\...
-    \item  Handig als je veilig files wil kopiëren tussen Cloud server en on premise server
+    \item  Je kan deze mappen naar eigen pc, vb Z:\textbackslash\dots
+    \item  Handig als je veilig files wil kopiëren tussen Cloud server en on-premise server
     \item  Zal de gekende protocollen volgen zoals SMB 3.0
     \item  Veel gebruikt in Hybrid Cloud
-    \item  Werkt niet op school (Blocked)
+    \item  Werkt niet op school (blocked)
     \item  Kan je thuis eens proberen
 \end{itemize}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{azure-storage-files.png}
-    \caption{}
+    \includegraphics[width=0.4\textwidth]{azure-storage-files.png}
+    \caption{Azure File Storage}
 \end{figure}
 
 
@@ -1263,22 +1261,21 @@ Soorten storage
     \item Ook mogelijkheid om datadisks te maken
     \item Hoge beschikbaarheid
     \item Lage latency
-    \item Hoge throughput(2000MB/s)
+    \item Hoge throughput (2000MB/s)
     \item Mogelijkheid voor SSD disk
-    \item Disk Encryption
-    beschikbaar
+    \item Disk Encryption beschikbaar
 \end{itemize}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{azure-storage-disk.png}
-    \caption{}
+    \caption{Azure Disk Storage}
 \end{figure}
 
 \subsection{Azure Blob Storage}
 
 \begin{itemize}
-    \item `blob' == binary large object
+    \item \bold{`blob'} == \bold{b}inary \bold{l}arge \bold{ob}ject
     \item Opslag van bestanden: afbeeldingen, PDF, CSS, JS files van web apps kan je hier plaatsen
     \item Single page apps (Vue, Angular, Blazor)
     \item Container
@@ -1292,15 +1289,20 @@ Soorten storage
             \item Container: extern lezen van volledige container is mogelijk
         \end{enumerate}
     \end{itemize}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\textwidth]{azure-blob-container.png}
+        \caption{Azure Blob container toevoegen in Azure Portal}
+    \end{figure}
     \item Bestanden uploaden via storage explorer (\url{https://azure.microsoft.com/en-us/features/storage-explorer/})
     \item Connecteren met accountnaam/access key
-    \item We kunnen bestanden opvragen via HTTP Request
+    \item We kunnen bestanden opvragen via HTTP Requests
 \end{itemize}
 
 \subsubsection{Pricing}
 
 \begin{itemize}
-    \item Prijs is per GB/per maand
+    \item Prijs is in GB/maand
     \item Hot of cool access
     \item We betalen ook de lees en schrijfoperaties
 \end{itemize}
@@ -1342,7 +1344,7 @@ Soorten storage
     \item Een applicatie zal berichten op de wachtrij plaatsen (\bold{Sender})
     \item Een tweede applicatie kan deze berichten op een zelf gekozen moment ophalen en verwerken (\bold{Receiver})
     \item We spreken over een \bold{\underline{decoupled}} applicatie: zender en ontvanger werken onafhankelijk van elkaar
-    \item Zeer schaalbaar voor meerdere queues op te starten
+    \item Zeer \bold{schaalbaar} voor meerdere queues op te starten
     \item \bold{Resilience}: buffer van berichten op queue zorgt ervoor dat er niks verloren gaat als back-end wegvalt
 \end{itemize}
 
@@ -1363,7 +1365,7 @@ Soorten storage
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{azure-storage-queues-voorbeeld.png}
-    \caption{}
+    \caption{Voorbeeld webshop}
 \end{figure}
 
 \subsubsection{Load leveling}
@@ -1376,7 +1378,7 @@ Soorten storage
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{load-leveling.png}
-    \caption{}
+    \caption{Load leveling}
 \end{figure}
 
 \subsubsection{Load balancing}
@@ -1394,7 +1396,7 @@ Soorten storage
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{load-balancing.png}
-    \caption{}
+    \caption{Load balancing}
 \end{figure}
 
 \subsubsection{Temporal decoupling}
@@ -1411,14 +1413,14 @@ Soorten storage
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{temporal-decoupling.png}
-    \caption{}
+    \caption{Temporal decoupling}
 \end{figure}
 
 \subsection{Azure Table Storage}
 
 \begin{itemize}
     \item NO-SQL key/value store
-    \item Opslag van Petabytes aan data
+    \item Opslag van PetaBytes aan data
     \item Geo-redundant storage
     \item Flexibel dataschema, aantal kolommen per rij moet niet hetzelfde zijn
     \item Vergelijk het met een spreadsheet die je invult
@@ -1430,13 +1432,13 @@ Soorten storage
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{azure-storage-table.png}
-    \caption{}
+    \caption{Structuur Azure Table Storage}
 \end{figure}
 
 \begin{itemize}
     \item Partitions
     \begin{itemize}
-        \item Verdelen van table over partities
+        \item Verdelen van tabel over partities
         \item Iedere partitie op eigen server
         \item Zal beter schalen en load verdelen op server
     \end{itemize}
@@ -1450,7 +1452,7 @@ Soorten storage
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{partitioning-tables.png}
-    \caption{}
+    \caption{Partitions}
 \end{figure}
 
 \subsubsection{Entities (rijen)}
@@ -1459,7 +1461,7 @@ Soorten storage
     \item Max 1MB
     \item 255 properties (kolommen), waarvan 3 verplicht:
     \begin{itemize}
-        \item Parition key
+        \item Partition key
         \item Row key
         \item Timestamp (automatisch)
     \end{itemize}
@@ -1477,14 +1479,14 @@ Soorten storage
 \subsubsection{Queries}
 
 \begin{itemize}
-    \item Max 1000 items terugkeren
+    \item Max 1000 items returnen
     \item Indien > 1000 $\Rightarrow$ Continuation token
     \item Query > 30 sec $\Rightarrow$ cancelled
     \item Geen index mogelijk
     \item Query op partition key \& row key $\Rightarrow$ snel
 \end{itemize}
 
-\subsubsection{Kolom types: }
+\subsubsection{Mogelijke kolom types: }
 
 \begin{itemize}
     \item Byte[] (=bytearray)
@@ -1518,7 +1520,7 @@ Met behulp van de Storage Explorer:
 \subsubsection{Wanneer?}
 
 \begin{itemize}
-    \item Opladen van bestanden op Blob storage
+    \item Uploaden van bestanden naar Blob storage
     \item Versturen van berichten naar wachtrijen (Queues)
     \item Wegschrijven van records naar Table Storage
 \end{itemize}
@@ -1528,7 +1530,7 @@ Dit kan je allemaal programmeren via C\#, Python of JavaScript
 \begin{itemize}
     \item In .NET Nuget Package toevoegen (zoals pip install bij Python)
     \item Rechtermuisknop op dependencies $\Rightarrow$ Manage Nuget packages
-    \item Zoeken achter juiste package, vb: Azure Storage
+    \item Zoeken naar juiste package, vb: Azure Storage
 \end{itemize}
 
 \begin{figure}[H]
@@ -1537,55 +1539,55 @@ Dit kan je allemaal programmeren via C\#, Python of JavaScript
     \caption{Azure Storage toevoegen in Visual Studio 2019}
 \end{figure}
 
-\subsection{Enkele scenario's}
+\subsection{Enkele scenario's (meer info: zie labo's)}
 
-\subsubsection{Post binary file naar Azure Functions en opslag in op Azure Blob}
+\subsubsection{Scenario 1: POST binary file naar Azure Functions en opslag in op Azure Blob}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{azure-storage-scenario-1.png}
+    \includegraphics[width=0.7\textwidth]{azure-storage-scenario-1.png}
     \caption{POST binary file naar Azure Functions, opslag in Azure blob}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{scenario-1-1.png}
+    \includegraphics[width=0.6\textwidth]{scenario-1-1.png}
     \caption{De Binary data komt in de body van het HTTP Request via Postman}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{scenario-1-2.png}
+    \includegraphics[width=0.6\textwidth]{scenario-1-2.png}
     \caption{Daarna slaan we de file op in de Blob Storage}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{scenario-1-3.png}
+    \includegraphics[width=0.9\textwidth]{scenario-1-3.png}
     \caption{Via de parameter in URL geven we de naam van het bestand mee aan service}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{scenario-1-4.png}
+    \includegraphics[width=0.95\textwidth]{scenario-1-4.png}
     \caption{Connectie maken met storage via connectiestring die we ophalen uit localsettings.json file (Connectiestring Storage staat op Azure)}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.3\textwidth]{scenario-1-6.png}
+    \includegraphics[width=0.8\textwidth]{scenario-1-6.png}
     \caption{Via CloudBlobClient kunnen we praten met de storage}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{scenario-1-7.png}
+    \includegraphics[width=0.8\textwidth]{scenario-1-7.png}
     \caption{We halen referentie op naar de container waar we de files willen opslaan}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{scenario-1-8.png}
+    \includegraphics[width=0.8\textwidth]{scenario-1-8.png}
     \caption{We maken `lege' file aan}
 \end{figure}
 
@@ -1595,18 +1597,18 @@ Dit kan je allemaal programmeren via C\#, Python of JavaScript
     \caption{We uploaden de stream van de body in de `lege' file}
 \end{figure}
 
-\subsubsection{Scenario 2}
+\subsubsection{Scenario 2: Stuur e-mail wanneer een blob verschijnt op Azure Blob}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{azure-storage-scenario-2.png}
-    \caption{Send e-mail wanneer een blob verschijnt op Azure Blob}
+    \includegraphics[width=0.6\textwidth]{azure-storage-scenario-2.png}
+    \caption{Stuur e-mail wanneer een blob verschijnt op Azure Blob}
 \end{figure}
 
 \bold{Blob trigger}
 
 \begin{itemize}
-    \item Functie uitvoeren als er een Blob file aangemaakt is in een container
+    \item Functie die automatisch uitvoert als er een Blob file aangemaakt wordt
     \item Vb:
     \begin{itemize}
         \item Uploaden van foto's naar blob voor betere verwerking
@@ -1639,6 +1641,8 @@ Dit kan je allemaal programmeren via C\#, Python of JavaScript
 
 \bold{SendGrid}
 
+= Library om emails te sturen
+
 \begin{enumerate}
     \item In Azure Portal: nieuwe resource: `SendGrid Email Delivery'
     \item Kies voor het `Free' pricing tier
@@ -1660,11 +1664,11 @@ Dit kan je allemaal programmeren via C\#, Python of JavaScript
     \item SMTP mogelijkheden
 \end{itemize}
 
-\subsubsection{Scenario 3}
+\subsubsection{Scenario 3: We vullen een Azure Storage Queue voor verwerking door Azure Functions}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{azure-storage-scenario-3.png}
+    \includegraphics[width=0.7\textwidth]{azure-storage-scenario-3.png}
     \caption{We vullen een wachtrij voor verwerking door Azure Functions}
 \end{figure}
 
@@ -1674,7 +1678,7 @@ Dit kan je allemaal programmeren via C\#, Python of JavaScript
     \item Functie zal actief worden bij ontvangst van een bericht op de Queue
     \item Ideaal voor het bufferen bij pieken
     \item Eenvoudig in gebruik
-    \item In Visual studio: 
+    \item In Visual Studio: 
     \begin{itemize}
         \item Nieuwe Azure Function `Queue Trigger' met:
         \item Connectionstring = de connection key die bij de Queue storage hoort
@@ -1685,25 +1689,24 @@ Dit kan je allemaal programmeren via C\#, Python of JavaScript
 \bold{Table Storage}
 
 \begin{itemize}
-    \item We ontvangen bericht en schrijven we naar Azure Table Storage
+    \item We ontvangen bericht en we schrijven naar Azure Table Storage
     \item We maken gebruik van de Nuget package `Microsoft.Azure.Cosmos.Table'
     \item We gaan temperatuur wegschrijven naar Azure Table Storage
 \end{itemize}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{scenario-3-1.png}
+    \includegraphics[width=0.95\textwidth]{scenario-3-1.png}
     \caption{Temperatuur wegschrijven naar Table Storage}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth]{scenario-3-2.png}
-    \caption{Objecten voor Table Storage moeten erven van Table Entity}
+    \caption{Objecten voor Table Storage moeten erven van TableEntity}
 \end{figure}
 
 \bold{Hoe de Queue vullen? Meerdere mogelijkheden: }
-
 
 \begin{itemize}
     \item Via website formulier
@@ -1745,14 +1748,14 @@ Dit kan je allemaal programmeren via C\#, Python of JavaScript
 \subsection{Samenvatting}
 
 \begin{itemize}
-    \item Welke zijn de verschillende soorten Azure Storage en wat is hun doel ?
-    \item Wat is Azure Blob storage en wanneer gebruik je deze ?
-    \item Wat is Azure Storage Queues en wanneer gebruik ik deze ?
-    \item Wat is Azure Table Storage en wanneer gebruik ik deze ?
-    \item Wat zijn partitions in Azure Table Storage ?
-    \item Hoe werken Azure Functions Blob Triggers ?
-    \item Waarvoor kan ik Azure Functions Blob Trigger gebruiken ?
-    \item Wat is SendGrid ?
+    \item Welke zijn de verschillende soorten Azure Storage en wat is hun doel?
+    \item Wat is Azure Blob storage en wanneer gebruik je deze?
+    \item Wat is Azure Storage Queues en wanneer gebruik ik deze?
+    \item Wat is Azure Table Storage en wanneer gebruik ik deze?
+    \item Wat zijn partitions in Azure Table Storage?
+    \item Hoe werken Azure Functions Blob Triggers?
+    \item Waarvoor kan ik Azure Functions Blob Trigger gebruiken?
+    \item Wat is SendGrid?
     \item Good practices
 \end{itemize}
 
