@@ -916,7 +916,7 @@ Voorbeelden
 Wat als er iets foutloopt in een service?
 
 \begin{itemize}
-    \item Wat moet ik returnen ?
+    \item Wat moet ik returnen?
     \item Stuur \bold{NOOIT} Exceptions of interne foutmeldingen van het systeem terug naar de client in productie systemen
     \item Keer een status code Internal Sever Error 500 terug met eventueel wat informatie die jij zelf opstelt
     \item Denk na welke info je bij de foutmelding wil terugsturen
@@ -1811,7 +1811,7 @@ Dit kan je allemaal programmeren via C\#, Python of JavaScript
 \subsection{Eigenschappen}
 
 \begin{itemize}
-    \item We spreken van een Publishing/Subscriber (Pub/Sub) protocol
+    \item We spreken van een \bold{Publishing/Subscriber (Pub/Sub)} protocol
     \item Centraal staat de broker die de bemiddeling doet tussen de clients
     \item 1/meerdere clients schrijven zich in (subscribe) voor een onderwerp of \bold{`Topic'}
     \item 1/meerdere clients kunnen een bericht plaatsen (publish) op een \bold{`Topic'}
@@ -1859,8 +1859,6 @@ Devices hebben \bold{Subscription} op een of meerdere \bold{Topics}
 
 \subsubsection{Wildcards}
 
-
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{mqtt-wildcards.png}
@@ -1877,7 +1875,7 @@ Devices hebben \bold{Subscription} op een of meerdere \bold{Topics}
 \subsection{Quality Of Service (QoS)}
 = een overeenkomst tussen zender en ontvanger om te garanderen dat een bericht geleverd wordt.
 
-3 niveau's: 
+\bold{3 niveau's:}
 \begin{enumerate}
     \item Fire and forget
     \item Delivered at least once
@@ -1887,7 +1885,7 @@ Devices hebben \bold{Subscription} op een of meerdere \bold{Topics}
 \subsubsection{Level 0: Fire and forget}
 
 The sender tries with best effort to send the message and relies
-on the reliability of TCP. No retransmission takes place.
+on the reliability of TCP. No retransmission takes place in case of failure.
 
 \subsubsection{Level 1: Delivered at least once}
 
@@ -1945,7 +1943,7 @@ MQTT.FX of MQTT Lens of MQTT Box (Windows Store) installeren om de broker te tes
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{mqtt-tools.png}
+    \includegraphics[width=\textwidth]{mqtt-tools.png}
     \caption{MQTT Tools}
 \end{figure}
 
@@ -1989,7 +1987,7 @@ Met MQTT library voor .NET (Nuget package downloaden in Visual Studio)
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{mqtt-python.png}
+    \includegraphics[width=\textwidth]{mqtt-python.png}
     \caption{}
 \end{figure}
 
@@ -2085,11 +2083,11 @@ Als we op een drukknop aangesloten aan de RPI drukken:
 \subsection{Samenvatting}
 
 \begin{itemize}
-    \item Wat is MQTT ?
-    \item Wat zijn topics \& subscriptions ?
-    \item Welke vormen van topics zijn er, Wilcards etc
-    \item Wat is QoS en welke zijn er ?
-    \item Welke opstellingen zijn er mogelijk ?
+    \item Wat is MQTT?
+    \item Wat zijn topics \& subscriptions?
+    \item Welke vormen van topics zijn er, wildcards etc
+    \item Wat is QoS en welke zijn er?
+    \item Welke opstellingen zijn er mogelijk?
 \end{itemize}
 
 \section{IoT Hub}
@@ -2102,11 +2100,11 @@ Azure IoT Hub is a fully managed service that enables \bold{reliable} and \bold{
     \item Managed Service: we moeten niks installeren in de cloud
     \item Bi-Directional Communication
     \item \bold{Miljoenen} toestellen
-    \item Support voor meerdere talen (C\#,Python,C,Node)
+    \item Support voor meerdere talen (C\#, Python, C, NodeJS)
     \item HTTPS/AMQP/MQTT protocol support
     \item Versturen telemetrie data $\Rightarrow$ Device To Cloud
     \item Ontvangen van commands $\Rightarrow$ Cloud To Device
-    \item Beheer van devices via digital twin
+    \item Beheer van devices via \bold{digital twin}
     \item Queries op devices
     \item End-to-end security
     \item Certificaten per device
@@ -2144,9 +2142,9 @@ Azure IoT Hub is a fully managed service that enables \bold{reliable} and \bold{
 
 \bold{Oplossing:}
 \begin{itemize}
-    \item Field gateway
+    \item Field gateway gebruiken
     \item Kan Raspi zijn, maar ook industriele PC
-    \item Krachtig genoeg om veilig met het internet te communiceren
+    \item = Device dat krachtig genoeg is om veilig met het internet te communiceren
     \item Field gateway zal lokaal met de minder krachtige device praten via CoAP, Bluetooth, AllJoyn, \dots
 \end{itemize}
 
@@ -2164,11 +2162,11 @@ Azure IoT Hub is a fully managed service that enables \bold{reliable} and \bold{
     \caption{Opstelling Field gateway}
 \end{figure}
 
-\bold{D2C:} Low powerd device zal communiceren met Raspi (Gateway)
-Gateway zal data doorsturen naar Cloud
+\bold{D2C:} Low powerd device zal communiceren met Raspi (Gateway).
+Gateway zal data doorsturen naar Cloud.
 
-\bold{C2D:} IoT hub zal commando sturen naar Raspi (Gateway). Raspi zal commando
-naar juiste device sturen
+\bold{C2D:} IoT hub zal commando sturen naar Raspi (Gateway). 
+Raspi zal commando naar juiste device sturen.
 
 \subsection{Hoe data verwerken die binnenkomt op IoT Hub?}
 
@@ -2179,7 +2177,7 @@ naar juiste device sturen
     \item Azure Functions
     \begin{itemize}
         \item Ontvangen van berichten
-        \item Versturen van berichten (commando) naar IoT Hub
+        \item Versturen van berichten (commandos) naar IoT Hub
     \end{itemize}
 \end{itemize}
 
@@ -2196,9 +2194,9 @@ naar juiste device sturen
 
 We hebben 10.000 toestellen verbonden met Azure IoT Hub. Deze toestellen sturen een
 motor aan. Het aantal RPM zit vast in het Python script vb. 5000.
-We willen aanpassing sturen naar 5000 toestellen.
+We willen een aanpassing sturen naar 5000 toestellen.
 
-Hoe kunnen we dit gaan doen ?
+Hoe kunnen we dit gaan doen?
 
 \bold{Oplossing: IoT Hub Device Twin}
 
@@ -2217,7 +2215,6 @@ Hoe kunnen we dit gaan doen ?
 \begin{itemize}
     \item We wensen enkel temperaturen boven een bepaalde waarde te loggen
     \item Instellen van parameter tijdstip van doorsturen
-    \item Alles wat configureerbaar moet zijn op afstand
 \end{itemize}
 
 \textcolor{red}{Dit is een belangrijk verschil met MQTT, daar hebben we deze infrastructuur NIET. We
@@ -2235,17 +2232,17 @@ moeten dit zelf maken door berichten te sturen naar toestel en omgekeerd}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{iot-device-twin.png}
+    \includegraphics[width=0.7\textwidth]{iot-device-twin.png}
     \caption{}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{iot-device-twin2.png}
+    \includegraphics[width=0.95\textwidth]{iot-device-twin2.png}
     \caption{Properties opvragen en rapporteren in JSON}
 \end{figure}
 
-\subsubsection{Device methodes}
+\subsubsection{Direct methods}
 
 \begin{itemize}
     \item Methodes op toestel activeren en dit vanop afstand
@@ -2321,7 +2318,7 @@ In Visual Studio:
     \item Eerste filtering van data op device doen
     \item Niet alles doorsturen naar Cloud
     \item Offline scenario voorzien
-    \item Kosten in de cloud dalen
+    \item Kosten in de cloud doen dalen
     \item Makkelijk updaten van IoT Edge device
 \end{itemize}
 
@@ -2345,7 +2342,7 @@ In Visual Studio:
 
 \begin{itemize}
     \item Draait op bv RPi of industriele PC
-    \item Installatie van workloads \& update op device
+    \item Installatie van workloads \& updates gebeuren op device
     \item Beveiligen van Edge communicatie
     \item Verantwoordelijk voor het uitvoeren van de modules
     \item Status health rapporteren aan de Cloud voor remote monitoring
@@ -2356,8 +2353,8 @@ In Visual Studio:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{iot-edge3.png}
-    \caption{}
+    \includegraphics[width=0.7\textwidth]{iot-edge3.png}
+    \caption{Voorstelling Edge device}
 \end{figure}
 
 \subsubsection{Modules}
@@ -2372,15 +2369,15 @@ In Visual Studio:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{iot-edge4.png}
-    \caption{}
+    \includegraphics[width=0.7\textwidth]{iot-edge4.png}
+    \caption{Modules die worden toegevoegd aan het Edge device}
 \end{figure}
 
 \bold{Voorbeelden:}
 
 \begin{enumerate}
     \item Module die data filtert voor deze naar de cloud te sturen
-    \item Module die data omzet van XML naar JSOn voor deze naar de cloud te sturen
+    \item Module die data omzet van XML naar JSON voor deze naar de cloud te sturen
 \end{enumerate}
 
 \subsection{IoT in de Cloud vs IoT on the edge}
@@ -2404,11 +2401,11 @@ In Visual Studio:
 \subsection{Samenvatting}
 
 \begin{itemize}
-    \item Wat en waarom IoT hub ?
-    \item Waar zijn digitale twins bij IoT Hub en wat zijn de voordelen ?
-    \item Wat zijn direct methods en wanneer gebruiken we dit ?
-    \item Wat is IoT Edge ?
-    \item Wanneer gebruiken we IoT Edge en wanneer IoT Hub ?
+    \item Wat en waarom IoT hub?
+    \item Waar zijn digitale twins bij IoT Hub en wat zijn de voordelen?
+    \item Wat zijn direct methods en wanneer gebruiken we dit?
+    \item Wat is IoT Edge?
+    \item Wanneer gebruiken we IoT Edge en wanneer IoT Hub?
 \end{itemize}
 
 \section{Azure CosmosDB}
@@ -2439,7 +2436,7 @@ In Visual Studio:
         \item Data wijzigen (UPDATE)
         \item Data verwijderen (DELETE)
     \end{itemize}
-    \item Via DDL kunnen we tabellen aanmaken (CREATE TABLE), \dots
+    \item Via DDL kunnen we tabellen aanmaken (CREATE TABLE)
     \item Wij kennen:
     \begin{itemize}
         \item SQL Database (Op Azure)
@@ -2477,7 +2474,7 @@ In Visual Studio:
     \item Concurrency: veel gebruikers op hetzelfde moment: 10000 tot miljoenen
     \item Globaal bereikbaar en responsive
     \item Connectivity: veel gebruikers maar ook toestellen schrijven nu data weg of moeten data kunnen lezen
-    \item Kan verschillende soorten data opslaan, structured,semi-structured en unstructured data
+    \item Kan verschillende soorten data opslaan: structured, semi-structured en unstructured data
     \item Horizontal scaling, we kunnen eenvoudige meerdere servers toevoegen
 \end{itemize}
 
@@ -2503,16 +2500,15 @@ $\Rightarrow$ \bold{Bovenstaande zaken zijn niet altijd mogelijk met relationele
 
 \bold{Bij Relationeel (RDBMS)}
 
-
 \begin{itemize}
-    \item Gedeelde storage failure
-    \item Volledige applicatie down
+    \item Gedeeltelijke storage failure
+    \item $\Rightarrow$ Volledige applicatie down
 \end{itemize}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{rdbms-availability.png}
-    \caption{Beschikbaarheid bij RDBMS: single point of failure}
+    \caption{Beschikbaarheid bij RDBMS: bij beide scenario's een single point of failure}
 \end{figure}
 
 \bold{Bij NoSQL}
@@ -2534,7 +2530,7 @@ $\Rightarrow$ \bold{Bovenstaande zaken zijn niet altijd mogelijk met relationele
 
 \begin{itemize}
     \item Database in verschillende datacenters
-    \item Zo dicht mogelijk bij de klant draaien latency zo < mogelijk
+    \item Zo dicht mogelijk bij de klant draaien $\Rightarrow$ latency zo < mogelijk
     \item Automatische replicatie van data tussen de verschillende datacenters
 \end{itemize}
 
@@ -2549,7 +2545,7 @@ $\Rightarrow$ \bold{Bovenstaande zaken zijn niet altijd mogelijk met relationele
 \begin{itemize}
     \item NoSQL is een gedistribueerd systeem
     \item We hebben meerdere servers (we noemen dit ook soms nodes)
-    \item Deze servers of nodes communiceren met elkaar over een netwerk
+    \item Deze nodes communiceren met elkaar over een netwerk
     \item Data zal op meerdere machines staan
     \item We merken dit niet, is transparant voor de applicatie
 \end{itemize}
@@ -2557,7 +2553,7 @@ $\Rightarrow$ \bold{Bovenstaande zaken zijn niet altijd mogelijk met relationele
 \subsection{Soorten NoSQL Databases}
 
 \begin{enumerate}
-    \item Key/Value (bv Azure table storage)
+    \item Key/Value database (bv Azure table storage)
     \item Document database
     \item Column store (zien we niet)
     \item Graph (zien we niet)
@@ -2577,14 +2573,14 @@ $\Rightarrow$ \bold{Bovenstaande zaken zijn niet altijd mogelijk met relationele
 \bold{Wanneer gebruiken?}
 
 \begin{itemize}
-    \item Sessie informatie gebruiker, user profiles, shoppint basket
-    \item Data waar je minder moet in gaan zoeken via een query
+    \item Sessie-informatie gebruiker, user profiles, shopping basket
+    \item Data waar je minder moet in gaan zoeken via queries
     \item Data zonder relaties
 \end{itemize}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{key-value.png}
+    \includegraphics[width=0.6\textwidth]{key-value.png}
     \caption{Key-value database}
 \end{figure}
 
@@ -2593,7 +2589,7 @@ $\Rightarrow$ \bold{Bovenstaande zaken zijn niet altijd mogelijk met relationele
 
 \begin{itemize}
     \item Basis is een document, geen record
-    \item Het formaat is meestal JSON, maar XML of BSON (binary json) zijn ook mogelijk
+    \item Het formaat is meestal JSON, maar XML of BSON (binary JSON) zijn ook mogelijk
     \item Het document zal zichzelf beschrijven, geen schema nodig zoals bij een SQL database
     \item Niet iedere document moet volgens hetzelfde schema zijn
     \item Er is een query taal om de data op te vragen en te doorzoeken
@@ -2609,7 +2605,7 @@ $\Rightarrow$ \bold{Bovenstaande zaken zijn niet altijd mogelijk met relationele
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{document-database.png}
+    \includegraphics[width=0.5\textwidth]{document-database.png}
     \caption{Document Database}
 \end{figure}
 
@@ -2632,7 +2628,7 @@ $\Rightarrow$ \bold{Bovenstaande zaken zijn niet altijd mogelijk met relationele
 \begin{itemize}
     \item Opslaan van entiteit en relaties tussen verschillende entiteiten
     \item Een entiteit is een soort node (object instantie) met properties
-    \item Een relatie bevat ook properties vb: friend relation, project relation..
+    \item Een relatie bevat ook properties, \underline{vb:} friend relation, project relation \dots
     \item De kracht zit in de relaties die je gaat opstellen tussen de entiteiten
 \end{itemize}
 
@@ -2650,12 +2646,13 @@ $\Rightarrow$ \bold{Bovenstaande zaken zijn niet altijd mogelijk met relationele
     \caption{Graph database}
 \end{figure}
 
+\subsection{Normalisatie}
 
-\subsection{Voorbeeld SQL}
+\subsubsection{Voorbeeld SQL}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{sql-normaliseren.png}
+    \includegraphics[width=0.6\textwidth]{sql-normaliseren.png}
     \caption{Normaliseren van data naar tabellen voor gebruik in SQL}
 \end{figure}
 
@@ -2668,7 +2665,7 @@ $\Rightarrow$ \bold{Bovenstaande zaken zijn niet altijd mogelijk met relationele
     \item Full Text search is lastig, we moeten alles kolommen checken bij het zoeken
 \end{itemize}
 
-\subsection{Voorbeeld NoSQL}
+\subsubsection{Voorbeeld NoSQL}
 
 \begin{itemize}
     \item Een record zal een document worden
@@ -2682,13 +2679,13 @@ $\Rightarrow$ \bold{Bovenstaande zaken zijn niet altijd mogelijk met relationele
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.3\textwidth]{nosql.png}
-    \caption{Voorbeeld}
+    \includegraphics[width=0.4\textwidth]{nosql.png}
+    \caption{Voorbeeld NoSQL}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{nosql-techs.png}
+    \includegraphics[width=0.3\textwidth]{nosql-techs.png}
     \caption{NoSQL technologie"en}
 \end{figure}
 
@@ -2699,7 +2696,7 @@ $\Rightarrow$ \bold{Bovenstaande zaken zijn niet altijd mogelijk met relationele
 \begin{itemize}
     \item Geen onderhoud
     \item Geen patching
-    \item Eenvoudige op te zetten
+    \item Eenvoudig op te zetten
     \item Pay what you use
     \item Krachtige API's
 \end{itemize}
@@ -2730,9 +2727,11 @@ $\Rightarrow$ \bold{Bovenstaande zaken zijn niet altijd mogelijk met relationele
         \item \dots
         \item Zeer belangrijk bij het migreren van bestaande toepassingen naar CosmosDB
     \end{itemize}
-    \item SLA
+    \item Service Level Agreement (SLA)
     \begin{itemize}
-        \item Van 99,99\% in een region, meerdere regions = hogere SLA
+        \item = uptime-garantie aangeboden door de vendor (hier: Azure)
+        \item Vanaf 99,99\% in een region
+        \item Meerdere regions = hogere SLA
     \end{itemize} 
 \end{itemize}
 
@@ -2757,7 +2756,7 @@ $\Rightarrow$ \bold{Bovenstaande zaken zijn niet altijd mogelijk met relationele
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{cosmosdb-api.png}
-    \caption{}
+    \caption{Structuur CosmosDB API}
 \end{figure}
 
 \subsubsection{CosmosDB API Account}
@@ -2774,7 +2773,7 @@ $\Rightarrow$ \bold{Bovenstaande zaken zijn niet altijd mogelijk met relationele
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{cosmosdb-api-account.png}
-    \caption{}
+    \caption{CosmosDB Account aanmaken in Azure Portal}
 \end{figure}
 
 \subsubsection{Kiezen van een API}
@@ -2805,8 +2804,8 @@ $\Rightarrow$ \bold{Bovenstaande zaken zijn niet altijd mogelijk met relationele
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.3\textwidth]{cosmosdb-addcontainer.png}
-    \caption{}
+    \includegraphics[width=0.5\textwidth]{cosmosdb-addcontainer.png}
+    \caption{Toevoegen van een container}
 \end{figure}
 
 \subsubsection{Manueel data toevoegen}
@@ -2814,7 +2813,7 @@ $\Rightarrow$ \bold{Bovenstaande zaken zijn niet altijd mogelijk met relationele
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{cosmosdb-adddata.png}
-    \caption{}
+    \caption{Toevoegen van data}
 \end{figure}
 
 \subsubsection{Firewall}
@@ -2822,7 +2821,7 @@ $\Rightarrow$ \bold{Bovenstaande zaken zijn niet altijd mogelijk met relationele
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{cosmosdb-firewall.png}
-    \caption{}
+    \caption{Firewall instellen}
 \end{figure}
 
 \subsubsection{Aanspreken vanuit Azure Functions met .NET}
@@ -2836,7 +2835,7 @@ $\Rightarrow$ \bold{Bovenstaande zaken zijn niet altijd mogelijk met relationele
     \centering
     \includegraphics[width=0.3\textwidth]{cosmosdb-parameters.png}
     \includegraphics[width=0.4\textwidth]{cosmosdb-localjson.png}
-    \caption{}
+    \caption{Parameters in Azure Portal en in C\#}
 \end{figure}
 
 \bold{Stap 1: Connectie maken met CosmosDB}
@@ -2874,7 +2873,7 @@ $\Rightarrow$ \bold{Bovenstaande zaken zijn niet altijd mogelijk met relationele
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{cosmosdb-stap3.png}
-    \caption{Deserialisatie}
+    \caption{Deserialiseren van de JSON naar een object van het Datamodel}
 \end{figure}
 
 
@@ -2970,30 +2969,30 @@ $\Rightarrow$ \bold{Bovenstaande zaken zijn niet altijd mogelijk met relationele
 \begin{itemize}
     \item SQL vs NoSQL
     \item Waarom en wanneer NoSQL databases?
-    \item Welke soorten NoSQL databases zijn er ?
-    \item Weet hoe je kan lezen en schrijven naar CosmosDB ?
+    \item Welke soorten NoSQL databases zijn er?
+    \item Hoe kan je lezen en schrijven naar CosmosDB?
 \end{itemize}
 
 \section{Docker}
 
 \subsection{Doelstellingen}
 
-Basis van Docker aanleren
+Basis van Docker aanleren:
 
 \begin{itemize}
     \item Wat is Docker?
     \item Waarom Docker gebruiken?
     \item Basiswerking
-    \item Wat is de Docker File
+    \item Wat is de Dockerfile
     \item Docker Registry
     \item De basis Docker commando's
 \end{itemize}
 
 \subsection{Wat is Docker?}
 
-\subsubsection{Oude manier van applicatiedeploment}
-
 Applicatiedeployment == installatie van de applicatie
+
+\subsubsection{Oude manier van applicatiedeployment}
 
 \begin{itemize}
     \item Verschillende applicaties op 1 server
@@ -3003,8 +3002,6 @@ Applicatiedeployment == installatie van de applicatie
     \item Veel werk wanneer we updates willen uitrollen
     \item We hebben altijd een systeembeheerder nodig om updates uit te rollen
 \end{itemize}
-
-
 
 \subsubsection{Nieuwe manier van applicatiedeployment: Docker}
 
@@ -3040,21 +3037,22 @@ Eenvoudiger software distribueren
 \begin{itemize}
     \item Custom ML/Deep Learning model draaien in cloud omgeving
     \begin{itemize}
-        \item Toegang tot GPU vanuit Docker enkel op Linux
+        \item Toegang tot GPU vanuit Docker enkel mogelijk op Linux
     \end{itemize}
     \item Als je Cloud vendor neutraal wil zijn
     \item Dev Ops deployments
     \item Nieuwe technologie verkennen zonder uw machine te vervuilen
-    \item PC/MAC/Linux omgevingen in 1 team
+    \item Windows/Mac/Linux omgevingen in 1 team
     \item Deployment op Raspberry Pi
-    \item \dots zoals er maar een Docker Engine aanwezig is
+    \item \dots zolang er maar een Docker Engine aanwezig is
 \end{itemize}
 
 \subsection{Docker installatie}
 
 \begin{itemize}
     \item Windows 10 Pro vereist
-    \item Docker Community Edition: \url{https://store.docker.com/editions/community/docker-ce-desktop-windows}
+    \item Docker Community Edition: 
+    \item \url{https://store.docker.com/editions/community/docker-ce-desktop-windows}
 \end{itemize}
 
 \subsection{Hoe werkt Docker?}
@@ -3064,7 +3062,7 @@ Eenvoudiger software distribueren
 \begin{itemize}
     \item Snapshot van files in een Linux file system
     \item Basis van \bold{Image} is een Linux OS (Windows kan maar zien we niet)
-    \item Via een Docker file kunnen we een Docker image aanmaken
+    \item Via een Dockerfile kunnen we een Docker Image aanmaken
     \item Bevat de ontwikkelde applicaties en de libraries die nodig zijn
 \end{itemize}
 
@@ -3107,7 +3105,7 @@ Eenvoudiger software distribueren
     \caption{The Docker Container lifecycle}
 \end{figure}
 
-\subsection{Docker commando's}
+\subsection{Voorbeelden Docker commando's}
 
 \begin{itemize}
     \item docker pull nginx
@@ -3169,7 +3167,7 @@ Eenvoudiger software distribueren
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{dockerfile-3.png}
-    \caption{Offici"ele repositories voor Dockerfiles}
+    \caption{Offici"ele repositories voor Dockerfiles in Docker Hub}
 \end{figure}
 
 \begin{figure}[H]
@@ -3350,9 +3348,8 @@ We hebben volgende docker file
 
 \begin{itemize}
     \item Als we een container stoppen verliezen we alle info $\Rightarrow$ stateless
-    \item Wat met data?
+    \item Wat met data? Externe services gebruiken:
     \begin{itemize}
-        \item Externe services gebruiken:
         \item SQL Azure Database
         \item Azure Table Storage
         \item CosmosDB
@@ -3391,14 +3388,14 @@ Volume opgeven bij opstarten container via parameter
 \subsection{Samenvatting}
 
 \begin{itemize}
-    \item Wat is docker ?
-    \item Waarom docker gebruiken ?
-    \item Wat is een DockerFile ?
-    \item Wat is docker-compose ?
+    \item Wat is docker?
+    \item Waarom docker gebruiken?
+    \item Wat is een DockerFile?
+    \item Wat is docker-compose?
     \item Wat is docker hub
     \item De basiscommando’s weten wat ze doen, maar niet alle parameters
-    \item Wat zijn de manieren om bij docker applicaties correcte de data te kunnen wegschrijven ?
-    \item Wat zijn volumes ?
+    \item Wat zijn de manieren om bij docker applicaties correcte de data te kunnen wegschrijven?
+    \item Wat zijn volumes?
 \end{itemize}
 
 \section{Examen}
