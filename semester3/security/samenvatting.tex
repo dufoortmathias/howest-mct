@@ -59,7 +59,7 @@
 
 \begin{itemize}
     \item Niet iedereen heeft even goede bedoelingen
-    \item Grote hoeveelheid mensen = veel potenti"ele slachtoffers (internet == iedereen zeer bereikbaar)
+    \item Grote hoeveelheid mensen = veel potenti"ele slachtoffers (internet $\Rightarrow$ iedereen zeer bereikbaar)
     \item Er is geen magische one-size-fits-all oplossing
     \item Verantwoordelijkheid van iedereen
     \item Tegenmaatregelen nemen
@@ -122,10 +122,6 @@
 \url{https://en.wikipedia.org/wiki/Information_security#Integrity}
 
 \url{https://en.wikipedia.org/wiki/Information_security#Availability}
-
-\subsubsection{Voorbeelden}
-
-TODO
 
 \subsection{Bedreiging vs kwetsbaarheid}
 \bold{Bedreiging (threat)} = potenti"ele negatieve actie dat een ongewenste impact heeft op een computersysteem of applicatie.
@@ -1769,6 +1765,441 @@ Als je een risico hebt, kan je deze dingen doen:
     \item Zorg voor een correcte back-up
 \end{itemize}
 
+\section{IoT Security}
+
+\begin{itemize}
+    \item Securty vaak afwezig of slecht geimplementeerd
+    \item Privacy?
+    \item Cloud interface / versleuteling communicatie
+    \item Firmware vaak niet beschikbaar of worden niet geupdatet
+\end{itemize}
+
+\subsection{Industrial security}
+
+\begin{itemize}
+    \item Stuxnet 
+    \begin{itemize}
+        \item = worm in Siemens-apperatuur
+        \item Gebouwd om PLC's te infecteren met als doel een defect te veroorzaken in nucleaire installaties
+        \item \url{https://nl.wikipedia.org/wiki/Stuxnet}
+    \end{itemize}
+    \item Oorzaak: Andere prioriteiten: CIA <> AIC
+    \item Langere levensduur van systemen
+    \item Moeilijker patchmanagement (conformiteit)
+    \item SCADA interface op ICT netwerk voor ERP
+\end{itemize}
+
+\subsection{Industrial control systems (ICS)}
+
+\begin{itemize}
+    \item Robots
+    \item Sensoren
+    \item Productiemachines
+    \item \bold{Securityprobleem:} men wil alles linken met elkaar en met het internet
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{iot-industrial-control-systems.png}
+    \caption{Industrial control system (ICS)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{iot-ics2.png}
+    \caption{ICS schema}
+\end{figure}
+
+\subsubsection{In welke sectoren?}
+
+Overal:
+
+\begin{itemize}
+    \item Kernenergie
+    \item Olie \& gas
+    \item Transport
+    \item Water
+    \item Pharmabedrijfen
+    \item Groene energie
+    \item \dots
+\end{itemize}
+
+\subsubsection{Protocollen}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{iot-ics-protocollen.png}
+    \caption{Industri"ele communicatie}
+\end{figure}
+
+\begin{itemize}
+    \item Deze protocollen zijn niet echt ontwikkeld met veiligheid in het achterhoofd
+    \item Alleen voor basisfunctionaliteit op meestal oude systemen
+    \item Potenti"ele problemen (bv Shodan)
+\end{itemize}
+
+\section{Encryptie}
+
+\begin{itemize}
+    \item Gaat over:
+    \begin{itemize}
+        \item Geheimhouding
+        \item Authenticatie
+        \item Integriteit behouden
+    \end{itemize}
+    \item Helpt niet met beschikbaarheid (vaak het omgekeerde effect)
+    \item Nonrepudation (=onweerlegbaarheid)
+    \begin{itemize}
+        \item "In authenticiteit, een dienst die zorgt voor het bewijs van de integriteit en oorsprong van de data, beide in een onvergetelijke relatie, welke geverifieerd kan worden door elke derde partij op elk moment"
+        \item \url{https://nl.wikipedia.org/wiki/Onweerlegbaarheid#Crypto-technische\_betekenis}
+    \end{itemize}
+\end{itemize}
+
+\subsection{Traditionele cryptografie}
+
+\begin{itemize}
+    \item Substitutie
+    \item Transpositie
+    \item One-time pad
+\end{itemize}
+
+\bold{Voorbeeld}: ROT-13: Schuif elke letter in een zin 13 plaatsen op in het alfabet:
+
+`Een leesbare zin' $\Rightarrow$ `Rra yrrfoner mva'
+
+\subsection{Symmetrische encryptie}
+
+\begin{itemize}
+    \item Alleen Geheimhouding
+    \item \bold{Geen} authenticatie
+    \item Eenvoudig
+    \item Snel (performant)
+\end{itemize}
+
+\subsubsection{Triple DES}
+
+\begin{itemize}
+    \item Met 2 of 3 sleutels
+    \item Verhoogde veiligheid
+    \item Kan in hardware
+\end{itemize}
+
+\subsubsection{Voorbeelden}
+
+\begin{itemize}
+    \item DES
+    \begin{itemize}
+        \item Block-cipher van 64 bit
+        \item 16 encryptiecycli met telkens andere subkey
+        \item Bitlengte van de sleutel is bepalend, 56bit is tegenwoordig te laag
+    \end{itemize}
+    \item AES
+    \begin{itemize}
+        \item = Rijndael (originele naam)
+        \item Advanced Encryption Standard
+        \item Veiliger dan DES
+    \end{itemize}
+    \item IDEA
+    \item CAST-128
+    \item Blowfish (variabele sleutellengte)
+\end{itemize}
+
+\subsection{Assymetrische encryptie}
+
+\begin{itemize}
+    \item Public key encryptie, bv: \bold{RSA}, \bold{ECC}
+    \item Geheimhouding
+    \item Authenticatie
+    \item Werkt met sleutel\bold{paren}
+    \begin{itemize}
+        \item Private sleutel (=geef je aan niemand)
+        \item Publieke sleutel (= geef je aan iedereen)
+    \end{itemize}
+    \item Zeer berekeningsintensief
+    \item Het is niet mogelijk om de private sleutel te berekenen uit de publieke sleutel
+\end{itemize}
+
+\subsection{Hashing}
+
+= een bepaalde string van variabele lengte omzetten in iets met vaste lengte en vast format. 
+
+\subsubsection{Eigenschappen}
+
+\begin{itemize}
+    \item Variabele inputlengte
+    \item Vaste outputlengte
+    \item Kleine inputvariatie resulteert in grote outputvariatie
+    \item Niet reversibel
+\end{itemize}
+
+\subsubsection{Voorbeelden}
+
+\begin{itemize}
+    \item MD5
+    \begin{itemize}
+        \item MD5 is gekraakt: het is mogelijk om expres dezelfde hash te genereren uit een verschillende input via het MD5 algoritme.
+        \item Daarom niet (meer) betrouwbaar
+    \end{itemize}
+    \item SHA2
+    \item \dots
+\end{itemize}
+
+\subsection{Diffie-Hellman exchange}
+
+\begin{itemize}
+    \item Uitwisselen van een shared secret (key)
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{diffie-hellman.png}
+    \caption{}
+\end{figure}
+
+\subsection{Crypto algoritmes}
+
+\subsubsection{Schneier's Law}
+
+Anyone, from the most clueless amateur to the best cryptographer, 
+can create an algorithm that he himself can't break. 
+It's not even hard. What is hard is creating an algorithm that no one else can break, 
+even after years of analysis. 
+And the only way to prove that is to subject the algorithm to years of analysis by the best cryptographers around.
+
+
+\begin{itemize}
+    \item \bold{Laat het ontwerpen van crypto over aan professionals}
+    \item \url{http://www.moserware.com/2009/09/stick-figure-guide-to-advanced.html}
+\end{itemize}
+
+\subsection{Veilige websites}
+
+\begin{itemize}
+    \item HTTPS ipv HTTP voor `velige' verbindingen
+    \item Kwaadwillige sites kunnen ook HTTPS gebruiken
+    \item SSL betekent enkel dat gegevens niet kunnen worden afgeluisterd
+\end{itemize}
+
+\subsubsection{Praktisch gebruik}
+
+\begin{itemize}
+    \item SSL certificaten
+    \item E-mail versleutelen
+    \item E-mail afzender identificatie
+    \item Websites
+    \item API's
+    \item \dots
+\end{itemize}
+
+\subsection{Belangrijke tips}
+
+\begin{itemize}
+    \item Gebruik steeds een correct algoritme voor de toepassing
+    \item Checksum != hashing
+    \item CRC (cyclic redundancy check) is OK voor foutcontrole, niet voor authenticatie
+    \begin{itemize}
+        \item Voorbeeld: check op rekeningnummers / creditkaarten
+    \end{itemize} 
+\end{itemize}
+
+\subsection{PKI}
+
+= Public Key Infrastructure
+
+\begin{itemize}
+    \item Assymtrische encryptie: met public en private key
+\end{itemize}
+
+\subsubsection{Doel}
+
+Het versturen van een geheim bericht over een onveilig medium.
+
+\subsubsection{Stappenplan om een tekst te versleutelen}
+
+\begin{enumerate}
+    \item Alice en Bob willen communiceren
+    \item Alice en Bob maken elk een sleutelpaar (private en public)
+    \item De publieke sleutel van Alice sturen we naar Bob
+    \item De publieke sleutel van Bob sturen we naar Alice
+    \item Alice wil een tekst veilig doorsturen
+    \item Alice maakt een hash van de tekst. De tekst wordt versleuteld met behulp van haar private sleutel
+    \item Bob decodeert de sleutel met behulp van de publieke sleutel van Alice
+\end{enumerate}
+
+\subsubsection{Wat als er een Man In The Middle is?}
+
+Man in the middle = Eve
+
+\begin{enumerate}
+    \item Eve stuurt een publieke sleutel naar Alice en zegt dat die van Bob is
+    \item Eve stuurt een publieke sleutel naar Bob en zegt dat die van Alice is
+    \item Eve kan berichten sturen in naam van Alice en Bob
+\end{enumerate}
+
+\subsubsection{Hoe een publieke sleutel veilig versturen?}
+
+Gebruikmaken van een CA (=Certificate Authority)
+
+\begin{itemize}
+    \item Gecentraliseerde authoriteit
+    \item Zowel Alice als Bob aanvaarden de authoriteit van de CA
+    \item De CA genereert een sleutelpaar (publiek en privaat)
+    \item Iedereen kent de publieke sleutel (inbouwen in alle computers, zit in de Certificate Store van Windows of wordt via browsers meegegeven)
+    \item Alice stuurt haar eigen publieke sleutel deze keer niet naar Bob, maar naar de CA. Bob doet hetzelfde
+    \item De CA zal de public key van Alice versleutelen met zijn eigen private key. Alice krijgt deze digitale handtekening om te bevestigen op haar publieke sleutel.
+    \item Alice heeft nu een publieke sleutel die is voorzien van een digitale handtekening van de CA
+    \item Nu zal Alice haar publieke sleutel gehandtekend naar Bob sturen
+    \item Communicatie kan nu veilig verlopen.
+\end{itemize}
+
+Er zijn wel nog 2 problemen:
+
+\begin{enumerate}
+    \item De private key van de CA mag NOOIT gekend worden
+    \item Er bestaan ook Fake CA's (al gebeurd bij Dell)
+\end{enumerate}
+
+\section{DNS}
+
+Wordt gebruikt om een FQDN (Fully Qualified Domain Name) om te zetten naar een IP-adres
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{dns.png}
+    \caption{Werking DNS}
+\end{figure}
+
+
+\subsection{Potenti"ele problemen met DNS}
+
+\begin{itemize}
+    \item Een van de oudste protocollen op het internet
+    \item Gemaakt in de tijd waar hosts gekend en vertrouwd waren
+    \item Het design van DNS is onveilig, security was geen vereiste
+\end{itemize}
+
+\subsection{2 Attack vectors}
+
+\begin{enumerate}
+    \item Channel
+    \begin{itemize}
+        \item = De verbinding tussen de servers, de clients en de resolvers
+    \end{itemize}
+    \item Data (in caches)
+    \begin{itemize}
+        \item Wat er wordt verstuurd
+        \item Cache poisoning, Man-in-the-middle
+        \item Wijziging van data (ip adressen van betrouwbare sites vervangen door eigen ip adres)
+        \item Kaminsky attack
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Kaminsky Attack}
+
+\begin{itemize}
+    \item Je zorgt dat de resolver geen gecachte informatie heeft over een bepaald domain
+    \item Je vraagt informatie over dat domein
+    \item Je geeft direct een antwoord met je eigen informatie
+    \item Zo zorg je ervoor dat elke client die informatie vraagt de verkeerde informatie krijgt
+\end{itemize}
+
+\subsection{DNSSEC}
+
+\begin{itemize}
+    \item = DNS Security Extensions
+    \item Gemaakt om het DNS protocol te voorzien van een digitale handtekening
+    \item Beveiligen tegen bovenstaande attack vectors
+    \item Met publieke en private sleutels
+    \item Omdat de publieke sleutel zichtbaar is voor iedereen, is die na heel lange tijd kraakbaar $\Rightarrow$ sleutel moet na bepaalde tijd verlopen
+    \item Daarom worden 2 types sleutels gebruikt:
+    \begin{enumerate}
+        \item Zone Signing Key (ZSK): korter, kwetsbaarder, moet sneller vervangen worden
+        \item Key Signing Key (KSK), wordt gebruikt om de sleutels zelf te authenticeren, cryptografisch sterker
+    \end{enumerate}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{dnssec.png}
+    \caption{DNSSEC}
+\end{figure}
+
+\subsubsection{Algoritmes}
+
+\begin{itemize}
+    \item Vroeger: MD5
+    \item Nu: RSA
+\end{itemize}
+
+\subsubsection{NSEC records}
+
+\bold{Probleem:} Die gepubliceerde informatie wordt enkel gecertificeerd voor records die al bestaan. 
+Er is niet dat men tegenhoudt om een nieuw subdomain te maken voor een bestaand domein om daar een soort Kaminsky attack op toe te passen.
+Manier nodig om te zeggen of een subdomain bestaat of niet.
+
+\bold{Oplossing:} NSEC records
+
+\begin{itemize}
+    \item Record die subdomein bijhoudt
+    \item Elke record verwijst naar de volgende entry
+    \item De records staan in alfabetische volgorde
+    \item Problemen:
+    \begin{itemize}
+        \item Meer belasting op systeem
+        \item Alle records zijn enumereerbaar
+        \item = \bold{Zone walking}
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{nsec.png}
+    \caption{Het NS-record bestaat altijd $\Rightarrow$ de rest is enumereerbaar via de NSEC records}
+\end{figure}
+
+Dit is dus een zeer groot probleem
+
+\subsubsection{NSEC3}
+
+\begin{itemize}
+    \item NSEC records worden gehashed
+    \item Nog altijd alfabetisch
+\end{itemize}
+
+\section{Exploits}
+
+= stukjes code om een bepaalde kwetsbaarheid uit te buiten
+
+\begin{itemize}
+    \item Reversing 
+    \item Decompilers
+    \item Debuggers
+\end{itemize}
+
+\subsection{Reverse engineering}
+
+\begin{itemize}
+    \item Let op met IL-talen (Intermediate Language) = Java/.NET/\dots, alles dat reflection ondersteund
+    \item Obfuscatie is mogelijk, maar gebeurt meestal volgens vaste methodes, dus deobfuscatie kan gebeuren 
+\end{itemize}
+
+\subsection{Fuzzing}
+
+\begin{itemize}
+    \item Random dingen proberen tot iets onverwachts gebeurt
+    \item Dit kan je dan onderzoeken (in een debugger) en uitbuiten (met bv een buffer overflow of een use-after-free)
+\end{itemize}
+
+\subsection{Shellcode}
+
+\begin{itemize}
+    \item = ASCII-gecodeerde uitvoerbare code
+    \item Shellcode in memory proberen te krijgen om te exploiten
+    \item Om bijvoorbeeld te springen over een if-statement
+    \item Let op voor Endianness: Little Endian != Big Endian. Heel veel protocollen keren de volgorde van de bytes om.
+\end{itemize}
+
+
 \section{Examenvragen}
 
 \begin{itemize}
@@ -1777,6 +2208,17 @@ Als je een risico hebt, kan je deze dingen doen:
     \item Geef een paar voorbeelden van vulnerability scanners 
     \begin{itemize}
         \item (penVas, Nessus, Nikto, wpscan, joomscan \dots
+    \end{itemize}
+    \item Types encryptie + voorbeelden
+    \item Wat is AES? Wat is RSA? Nadelen?
+    \item Wat is het verschil tussen checksums en hashing?
+    \item Het Diffie-Hellman-protocol wordt gebruikt om...
+    \begin{itemize}
+        \item Een shared secret uit te wisselen 
+    \end{itemize}
+    \item Volgens de GDPR moet je een nette werkplaats hebben, waar of niet waar?
+    \begin{itemize}
+        \item Waar: Clean desk policy
     \end{itemize}
 \end{itemize}
 
