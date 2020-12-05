@@ -1958,12 +1958,32 @@ Overal:
 \subsection{Diffie-Hellman exchange}
 
 \begin{itemize}
-    \item Uitwisselen van een shared secret (key)
+    \item Uitwisselen van een shared secret (key) zodat die key kan gebruikt worden om berichten te versleutelen
+    \item \url{https://www.youtube.com/watch?v=NmM9HA2MQGI}
+    \item \url{https://www.youtube.com/watch?v=Yjrfm_oRO0w}
 \end{itemize}
+
+\subsubsection{Werking}
+
+Hoe werkt een Diffie-Hellman exchange tussen 2 mensen Alice en Bob, met Eve in de midden (Man in the middle)?
+
+\begin{enumerate}
+    \item Alice en Bob wisselen een priemgetal $P$ en een getal $G$ (=generator).
+    \begin{itemize}
+        \item $P > G$
+        \item G is een primitieve wortel van P
+        \item \url{https://en.wikipedia.org/wiki/Primitive\_root\_modulo\_n}
+        \item Eve ziet $P$ en $G$
+    \end{itemize} 
+    \item Alice en Bob kiezen een willekeurig getal A en B die ze geheim houden
+    \item $Y_A = G^{X_A} (mod P)$ en $Y_B = G^{X_B} (mod P)$
+    \item Alice geeft $Y_A$ aan Bob, Bob geeft $Y_B$ aan Alice. Eve ziet $Y_A$ en $Y_B$
+    \item De secret key voor Alice is ${Y_B}^{X_A} (mod P)$, voor Bob ${Y_A}^{X_B} (mod P)$
+\end{enumerate}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{diffie-hellman.png}
+    \includegraphics[width=0.95\textwidth]{diffie-hellman.png}
     \caption{}
 \end{figure}
 
