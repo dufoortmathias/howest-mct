@@ -89,10 +89,8 @@
     \item Tegenmaatregelen reduceren kwetsbaarheid
     \item Bedrijfsimpact van het risico bepaalt de opportuniteit van de beveiligingsinvestering
     \item Bepalen van de financiële impact van een incident is uitermate bedrijfsspecifiek
+    \item \bold{Voorbeeld:} De defacement van de website van een bakkerij is een vrij laag risico omdat er weinig financiële impact is.
 \end{itemize}
-
-
-
 
 \subsection{Theoretisch model}
 \textcolor{red}{\bold{WORDT GEVRAAGD OP EXAMEN}}
@@ -146,7 +144,7 @@
 \begin{itemize}
     \item Vallen 1 of meerdere doelen aan
     \item Kunnen toevallig of kwaadwillig beraamd zijn
-    \item Gaan uit van `agenten' (personen/organistaties) of gebeurtenissen
+    \item Gaan uit van `agenten' (personen/organistaties) of gebeurtenissen (externe factoren: brand, stroomuitval)
 \end{itemize}
 
 \subsection{Voorbeelden}
@@ -174,7 +172,7 @@
     \item Intern
     \begin{itemize}
         \item Diefstal
-        \item Wraak
+        \item Wraak na ontslag
     \end{itemize}
     \item Extern
     \begin{itemize}
@@ -200,15 +198,15 @@
 \begin{itemize}
     \item Spear phishing
     \begin{itemize}
-        \item doelgerichter
-        \item specifiek
-        \item afzender spoofen naar iemand die het slachtoffer persoonlijk kent, slachtoffer aanspreken met echte naam
+        \item Doelgerichter
+        \item Specifiek
+        \item Afzender spoofen naar iemand die het slachtoffer persoonlijk kent, slachtoffer aanspreken met echte naam
     \end{itemize}
     \item Double barrel attack
     \begin{itemize}
         \item Double barrel = tweeloopsgeweer
         \item Twee emails sturen: 1 heel duidelijk spam, de andere een reactie van de organisatie (bvb bank) die vraagt om op te letten voor phishing mails. 
-        \item De tweede mail bevat vaak een link om je wachtwoord te veranderen $\Rightarrow$ link naar valse site
+        \item De tweede mail, ook gestuurd door de aanvaller, bevat vaak een link om je wachtwoord te veranderen $\Rightarrow$ link naar valse site
     \end{itemize}
 \end{itemize}
 
@@ -257,6 +255,7 @@ Oplichting via: \dots
     \item Vaak pc overnemen met teamviewer en dergelijke
     \item Geld vragen om pc te `herstellen'
     \item Zie ook: refund scams, IRS scams, \dots
+    \item Interne werking van een scam center: \url{https://www.youtube.com/watch?v=le71yVPh4uk}
 \end{itemize}
 
 \subsection{Money mule}
@@ -265,7 +264,7 @@ Oplichting via: \dots
 \begin{itemize}
     \item De crimineel contacteert het slachtoffer met een jobaanbieding
     \item De job bestaat uit het overschrijven van bedragen via zijn/haar bankrekening
-    \item Voor elke overschrijving 
+    \item Voor elke overschrijving krijgt de money mule een deel van het geld als loon.
 \end{itemize}
 
 \subsection{Malware}
@@ -349,10 +348,10 @@ Een techniek waarbij een crimineel een aanval op computersystemen tracht te onde
 De stereotiepe `hacker':
 \begin{itemize}
     \item De blueprint opgevoerd door de media
-    \item Is gebaseerd op reele figuren
+    \item Is gebaseerd op re"ele figuren
     \item Vormt een rolmodel voor een bepaalde subcultuur
     \item Het woord `hacker' is vaak nietszeggend
-    \item `Script kiddies', `Wannabees', `Crackers'
+    \item `Script kiddies', `Wannabees', `Crackers' zijn synoniemen
     \item Bedreiging groot door grote aantallen
     \item Hoofddeksels (hacker ethics):
     \begin{itemize}
@@ -393,7 +392,7 @@ De stereotiepe `hacker':
     \item Bijgevolg elementair om te beslissen over opportuniteit van \bold{tegenmaatregelen}
 \end{itemize}
 
-Real-time maps
+Real-time maps:
 
 \begin{itemize}
     \item \url{https://www.fireeye.com/cyber-map/threat-map.html}
@@ -404,7 +403,7 @@ Real-time maps
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{threat-intelligence.png}
-    \caption{Threat intelligence}
+    \caption{Threat intelligence realtime kaart}
 \end{figure}
 
 \section{Beveiligen}
@@ -437,6 +436,7 @@ Real-time maps
     \item \url{http://www.shodanhq.com}
     \item Zoekt naar geconnecteerde devices
     \item Webcams, videofoons, windturbines, waterkrachtcentrales, PLC's, \dots
+    \item Veel van deze devices zijn niet (genoeg) beveiligd
 \end{itemize}
 
 
@@ -467,7 +467,8 @@ We moeten zoeken naar een gebalanceerde compromis voor alle stakeholders.
 
 Een bruikbare infrastructuur kan nooit 100\% veilig zijn $\Rightarrow$ voorzichtig afwegen van alle parameters en belangen.
 
-\bold{Voorbeeld: } een fingerprint reader: handig, maar niet zo veilig. Iemand met slechte bedoelingen kan de vingerafdruk kopi"eren.
+\bold{Voorbeeld: } een fingerprint reader: handig, maar niet zo veilig. Een vingerafdruk is kopieerbaar.
+Een wachtwoord is veiliger want als het gekend is kan je het makkelijk vervangen. Een vingerafdruk is niet vervangbaar.
 
 \subsection{Tegenmaatregelen (mitigation)}
 
@@ -487,14 +488,14 @@ Een bruikbare infrastructuur kan nooit 100\% veilig zijn $\Rightarrow$ voorzicht
 
 \begin{itemize}
     \item Layered security
-    \item Strategie bij incident
+    \item Strategie nodig bij incident
     \item Plannen en documenteren
     \item Nooit alle eieren in 1 mandje leggen
 \end{itemize}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{layered-security.png}
+    \includegraphics[width=0.8\textwidth]{layered-security.png}
     \caption{Layered security}
 \end{figure}
 
@@ -573,6 +574,7 @@ Een bruikbare infrastructuur kan nooit 100\% veilig zijn $\Rightarrow$ voorzicht
     \item Maak eventueel gebruik van een \underline{wachtwoordkluis}
     \item Let erop door de organisatie goedgekeurde wachtwoordkluis-software te gebruiken
     \item Noteer wachtwoorden NOOIT waar deze door derden kunnen worden achterhaald
+    \item \url{https://xkcd.com/936/}
 \end{itemize}
 
 \subsection{Beveiliging op `Hebben'-basis}
@@ -616,14 +618,14 @@ Een bruikbare infrastructuur kan nooit 100\% veilig zijn $\Rightarrow$ voorzicht
 
 \subsection{Privilege escalation}
 
-= zichzelf op een ander gebruikersniveau zetten
+= zichzelf op een ander gebruikersniveau zetten. 2 vormen:
 
 \begin{itemize}
     \item Horizontal escalation
     \begin{itemize}
         \item Session hijacking van een andere gebruiker
         \item = toegang verkrijgen van het account van een andere gebruiker
-        \item bv: inloggen in Facebook en via je account in het account van een andere gebruiker geraken
+        \item \underline{Bv:} Via je eigen Facebook-account in het account van een andere gebruiker geraken
     \end{itemize}
     \item Vertical escalation
     \begin{itemize}
@@ -632,13 +634,12 @@ Een bruikbare infrastructuur kan nooit 100\% veilig zijn $\Rightarrow$ voorzicht
     \end{itemize}
 \end{itemize}
 
-
 \section{Backup}
 
 \begin{itemize}
     \item Essentieel voor het beschermen van data
     \item Concrete back-up policy
-    \item Disaster recovery paln
+    \item Disaster recovery plan
 \end{itemize}
 
 \subsection{Veelgebruikte backup-media}
@@ -653,10 +654,11 @@ Een bruikbare infrastructuur kan nooit 100\% veilig zijn $\Rightarrow$ voorzicht
 
 \subsection{LTO Tapes}
 
-LTO = Linear Tape Open = open standaard
+LTO = Linear Tape Open
 
 \begin{itemize}
     \item Worden nog altijd gebruikt, up-to-date
+    \item Open standaard
     \item Hoge capaciteit (10-12TB per tape)
     \item Hoge transfer rate (500MB/s)
     \item Redeljk goedkoop, iets duurder dan harde schijven per GB
@@ -698,7 +700,7 @@ LTO = Linear Tape Open = open standaard
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.3\textwidth]{321-regel.png}
-    \caption{3-2-1-regel: 3 copies, 2 formats, 1 offsite}
+    \caption{3-2-1-regel: 3 kopie"en op 2 formats, met 1 offsite}
 \end{figure}
 
 
@@ -807,7 +809,7 @@ LTO = Linear Tape Open = open standaard
 
 \subsection{Fase 1: Reconnaissance}
 
-Reconnaissance = Information gathering = OSINT
+Reconnaissance = Information gathering = OSINT (\bold{O}pen \bold{S}ource \bold{INT}elligence = informatie die publiek beschikbaar is)
 
 \begin{itemize}
     \item Verzamelen van informatie over het target
@@ -830,6 +832,7 @@ Reconnaissance = Information gathering = OSINT
     \item DNS
     \item Sociale netwerken
     \item Bedrijfssite
+    \item Maltego: programma op Kali Linux
     \item \dots
 \end{itemize}
 
@@ -857,10 +860,10 @@ Reconnaissance = Information gathering = OSINT
 \subsection{Fase 3: Vulnerability assessment}
 
 \begin{itemize}
-    \item Vulnerabilty scanners, zoals: Nexpose, Retina/Iris
+    \item Vulnerability scanners, zoals: Nexpose, Retina/Iris
     \begin{itemize}
         \item Geeft een rapport van kwetsbaarheden op het systeem
-        \item Niet context-bewust: een scanner weet niet per se welke bestanden intressant zijn
+        \item Niet context-bewust: een scanner weet niet welke bestanden intressant zijn
         \item Heel veel informatie
     \end{itemize}
     \item Identificatie uit CVE (common vulnerabilities and exposures) database
@@ -887,7 +890,7 @@ Reconnaissance = Information gathering = OSINT
 \section{Sociale media}
 
 \begin{itemize}
-    \item Oversharing: alles in detail delen met iedereen
+    \item \bold{Oversharing:} alles in detail delen met iedereen
     \item Mensen hebben niet door wat de impact daarvan is
     \item \url{https://www.youtube.com/watch?v=F7pYHN9iC9I}
     \item Op sociale media posten = vertellen aan willekeurige vreemden
@@ -913,15 +916,16 @@ Het kan ook soms een \bold{informatielek} zijn voor de organisatie waarvoor je w
 \section{Social engineering}
 
 \begin{itemize}
-    \item Zie Kevin Mitnick's "The art of deception"
-    \item De menselijke schakel in security
+    \item Zie Kevin Mitnick's "The art of deception":
+    \item \url{https://en.wikipedia.org/wiki/The\_Art\_of\_Deception}
+    \item De menselijke schakel in security uitbuiten
     \item Misbruik van inherente psychologische kenmerken van mensen
     \item Vertrouwen, hulpvaardigheid, empathie, \dots misbruiken
 \end{itemize}
 
 \subsection{Pretexting}
 
-= Het cre"eeren van een scenario om het 
+= Het cre"eren van een scenario om het 
 slachtoffer te engageren zodat het slachtoffer 
 makkelijker informatie weggeeft of acties onderneemt 
 die het slachtoffer normaal niet zou doen.
@@ -931,17 +935,17 @@ die het slachtoffer normaal niet zou doen.
 
 \begin{itemize}
     \item Vertrouwen verkrijgen in uniform, met een impersonatie, \dots
-    \item Over telefoon, gebruik van interne lijn, \dots
-    \item Over email, spoofing, \dots
+    \item Over telefoon: gebruik van interne lijn, \dots
+    \item Over email: spoofing, \dots
 \end{itemize}
 
 \subsection{Informatielekken}
 
 \begin{itemize}
-    \item Afval met gevoelige inhoud vernietigen (tegengaan van dumpsterdiving)
+    \item Afval met gevoelige inhoud vernietigen (papierversnipperaar, tegengaan van dumpsterdiving)
     \item Voorzichtig omgaan met vertrouwelijke info
     \item Geen kritische info op toestellen of prikborden
-    \item In een bedrijf geraken via de nooduitgang door bvb te praten met de rokers en dan samen naar binnen te wandelen, terwijl je doet alsof je daar werkt.
+    \item \underline{Voorbeeld:} In een bedrijf geraken via de nooduitgang door te praten met de rokers en dan samen naar binnen te wandelen, terwijl je doet alsof je daar werkt.
 \end{itemize}
 
 \subsubsection{Remediering}
@@ -949,7 +953,7 @@ die het slachtoffer normaal niet zou doen.
 \begin{itemize}
     \item Opleiding
     \item Waakzaamheid
-    \item Strike security policy
+    \item Strikte security policy
 \end{itemize}
 
 \subsection{Afluisteren}
@@ -960,7 +964,6 @@ die het slachtoffer normaal niet zou doen.
     \item Sniffing (=de diefstal/interceptie van data via het onderscheppen van netwerkverkeer)
     \item Hubs vs Switches: sniffing op een hub is veel eenvoudiger, worden ook minder gebruikt
 \end{itemize}
-
 
 
 \subsubsection{Man in the middle attack}
@@ -1042,7 +1045,6 @@ die het slachtoffer normaal niet zou doen.
     \item Bootsectorvirussen
     \item Macrovirussen
     \item Wormen = virus zonder symbiant (=drager)
-    \item Virustechnologie
 \end{itemize}
 
 \subsubsection{Virustechnologie}
@@ -1091,7 +1093,8 @@ die het slachtoffer normaal niet zou doen.
     \end{itemize}
     \item RATs = Remote Access Tools:
     \begin{itemize}
-        \item Bv: backorifice $\Rightarrow$ neemt het systeem over
+        \item \underline{Voorbeeld:} Backorifice $\Rightarrow$ neemt het systeem over
+        \item \url{https://en.wikipedia.org/wiki/Back\_Orifice}
     \end{itemize}
     \item Ransomware
 \end{itemize}
@@ -1117,7 +1120,7 @@ BIOS = Basic Input/Output System
 
 \subsubsection{UEFI}
 
-= Unified Extensible Firmware Interface, vervangt tegenwoordig de BIOS op computers):
+= Unified Extensible Firmware Interface, vervangt tegenwoordig de BIOS op computers:
 
 \begin{itemize}
     \item Is universeel en uitbreidbaar
@@ -1152,7 +1155,8 @@ BIOS = Basic Input/Output System
     \item Link kan een ander doel hebben dan wordt weergegeven
     \item Opgepast voor homograaf-URL (punycode)
     \begin{itemize}
-        \item Bvb Cyrilische tekens in een URL:
+        \item Bvb Cyrilische tekens in een URL
+        \item Hier leidt https://apple.com naar een andere site, want er staat niet echt apple.com maar iets dat er heel sterk op lijkt:
         \item \includegraphics[width=0.2\textwidth]{link2.png}
     \end{itemize}
     \item Controleer de link! 
@@ -1203,8 +1207,8 @@ BIOS = Basic Input/Output System
 \subsection{Acceptabel gebruik / Policy}
 
 \begin{itemize}
-    \item Geeft vaak de indruk de gebruiker van te willen beperken
-    \item Porbeert een balans te vinden tussen acceptabel risico en bruikbaarheid
+    \item Geeft vaak de indruk de gebruiker te willen beperken
+    \item Probeert een balans te vinden tussen acceptabel risico en bruikbaarheid
     \item Is noodzakelijk om de systemen beheersbaar te houden
     \item Dient steeds strikt te worden opgevolgd
 \end{itemize}
@@ -1213,7 +1217,9 @@ BIOS = Basic Input/Output System
 
 \begin{itemize}
     \item E-mail / groupware oplossingen
-    \item Allicht veiliger dan een eigen exchange-server
+    \begin{itemize}
+        \item Allicht veiliger dan een eigen exchange-server
+    \end{itemize}
     \item On-line boekhoudsoftware
     \item Onfeilbaar? Perfect? 
     \item Threat model / risk analysis: analyse van meest kwetsbare onderdelen
@@ -1295,7 +1301,7 @@ Mobiele apparaten bevatten heel veel gevoelige info en zijn daarom een groot doe
         \item = Volledige remote controle, apps/malware op afstand installeren
         \item Fake MDM software bestaat op iPhone, minder op Android
     \end{itemize}
-    \item Oplossing: MDM software zoals Samsung Knox
+    \item Oplossing voor bedrijven: Betrouwbare MDM software gebruiken zoals Samsung Knox
 \end{itemize}
 
 \begin{figure}[H]
@@ -1341,14 +1347,19 @@ Mobiele apparaten bevatten heel veel gevoelige info en zijn daarom een groot doe
     \item SYN-Flooding
     \begin{itemize}
         \item Misbruik maken van het TCP/IP protocol
-        \item Constant SYN-pakketten sturen met foute bron-IP-adressen
-        \item De server krijgt geen ACK omdat hij de SYN-ACK stuurt naar het verkeerde IP-adres.
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.3\textwidth]{tcp-normal.png}
+            \caption{Normal TCP/IP three-way handshake}
+        \end{figure}
     \end{itemize}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.3\textwidth]{tcp-normal.png}
-    \caption{Normal TCP/IP three-way handshake}
-\end{figure}
+    \begin{enumerate}
+        \item De aanvaller stuurt constant SYN-paketten van de server
+        \item De server stuurt een bericht SYN-ACK terug en wacht op een ACK als antwoord
+        \item De server blijft wachten en krijgt nooit een ACK-terug
+        \item Als een legetieme gebruiker probeert te verbinden krijgt die nooit een SYN-ACK terug omdat de server overbelast is.
+    \end{enumerate}
+
 
 \begin{figure}[H]
     \centering
@@ -1401,7 +1412,7 @@ Mobiele apparaten bevatten heel veel gevoelige info en zijn daarom een groot doe
     \begin{itemize}
         \item Caching
         \item Grote server-redundantie over de hele wereld
-        \item Keerzijde: CloudFlare is eigenlijk een Man In The Middle attack: CloudFlare zit altijd tussen client en server $\Rightarrow$ alle verkeer leesbaar door CloudFlare
+        \item Keerzijde: CloudFlare is eigenlijk een Man In The Middle attack: CloudFlare zit altijd tussen client en server $\Rightarrow$ alle verkeer leesbaar door CloudFlare.
     \end{itemize}
 \end{itemize}
 
@@ -1426,7 +1437,7 @@ Uptime != Availability
     \item Wordt vaak genoteerd als `3 nines' (=99.9\%), `5 nines' (=99.999\%)
     \item Als je voor `5 nines' availability betaalt, vertaalt dit niet noodzakelijk naar uptime:
     \begin{itemize}
-        \item Stel: je hebt een webshop die meerdere services nodig heeft (website, backend, database, \dots)
+        \item Stel: een webshop die meerdere services nodig heeft (website, backend, database, \dots)
         \item Elke service heeft `5 nines' availability
         \item Als 1 van de services down is, stopt de hele webshop met werken (=downtime)
         \item $\Rightarrow$ het kan dus zijn dat de uptime kleiner is dan de 99.999\% waarvoor je betaald hebt
@@ -1438,9 +1449,9 @@ Uptime != Availability
 
 \begin{itemize}
     \item Een belangrijke attack surface / point of entry (PoE)
-    \item Belangrijk naar reputatie
+    \item Belangrijk naar reputatie (defacement, minder vertrouwen na een hack)
     \item CMS-Systemen  (wordpress, drupal, joomla, ..)
-    \item Authenticatie / escalation
+    \item Authenticatie omzeilen / escalation
     \item OWASP: \url{https://www.owasp.org}
 \end{itemize}
 
@@ -1468,7 +1479,7 @@ Tools om websites te scannen op gekende kwetsbaarheden:
 \subsection{Risico's}
 
 \begin{itemize}
-    \item "Defacement"
+    \item Defacement: de aanvaller verandert de website om bvb klanten weg te jagen
     \item Lek van credentials
     \item Reputatie van het bedrijf
     \item Diefstal (bij bvb webshops)
@@ -1482,7 +1493,7 @@ Tools om websites te scannen op gekende kwetsbaarheden:
     \item Don't be stupid
     \item Gebruik sanitation libraries (no DIY!)
     \item Update site framework, plugins \& libraries
-    \item Prepared statements for SQL (to remediate SQL injection)
+    \item Prepared statements for SQL (om SQL injection tegen te gaan)
     \item Authentiation frameworks
 \end{itemize}
 
@@ -1574,7 +1585,7 @@ Tools om websites te scannen op gekende kwetsbaarheden:
     \item Afdwingen van de AUP
     \item Door de gebruikers te informeren
     \item De noodzakelijkheid te duiden
-    \item Awareness cree"eren bij de gebruikers
+    \item Awareness cre"eren bij de gebruikers
 \end{itemize}
 
 \subsection{Gedragscode voor de informatiebeheerder}
@@ -1691,7 +1702,7 @@ Als je een risico hebt, kan je deze dingen doen:
 \subsubsection{Externe audit}
 
 \begin{itemize}
-    \item Pentest (penetration test)
+    \item Pentest (penetration test) laten uitvoeren
     \item Red-teaming (vs blue team)
     \item Gebruik van offensieve technieken
     \item Identificeert zwakheden
@@ -1876,14 +1887,6 @@ Overal:
     \item Snel (performant)
 \end{itemize}
 
-\subsubsection{Triple DES}
-
-\begin{itemize}
-    \item Met 2 of 3 sleutels
-    \item Verhoogde veiligheid
-    \item Kan in hardware
-\end{itemize}
-
 \subsubsection{Voorbeelden}
 
 \begin{itemize}
@@ -1902,6 +1905,14 @@ Overal:
     \item IDEA
     \item CAST-128
     \item Blowfish (variabele sleutellengte)
+\end{itemize}
+
+\subsubsection{Triple DES}
+
+\begin{itemize}
+    \item Met 2 of 3 sleutels
+    \item Verhoogde veiligheid
+    \item Kan in hardware
 \end{itemize}
 
 \subsection{Assymetrische encryptie}
@@ -1940,7 +1951,7 @@ Overal:
         \item MD5 is gekraakt: het is mogelijk om expres dezelfde hash te genereren uit een verschillende input via het MD5 algoritme.
         \item Daarom niet (meer) betrouwbaar
     \end{itemize}
-    \item De SHA2 familie:
+    \item De SHA2-familie:
     \begin{itemize}
         \item SHA256
         \begin{itemize}
@@ -1950,22 +1961,21 @@ Overal:
         \begin{itemize}
             \item Wordt tegenwoordig gebruikt om Linux-wachtwoorden veilig op te slaan
         \end{itemize}
-        \item \dots
     \end{itemize}
-    
+    \item \dots
 \end{itemize}
 
 \subsection{Diffie-Hellman exchange}
 
 \begin{itemize}
     \item Uitwisselen van een shared secret (key) zodat die key kan gebruikt worden om berichten te versleutelen
-    \item \url{https://www.youtube.com/watch?v=NmM9HA2MQGI}
-    \item \url{https://www.youtube.com/watch?v=Yjrfm_oRO0w}
+    \item Basis: \url{https://www.youtube.com/watch?v=NmM9HA2MQGI}
+    \item Wiskundige uitleg: \url{https://www.youtube.com/watch?v=Yjrfm_oRO0w}
 \end{itemize}
 
 \subsubsection{Werking}
 
-Hoe werkt een Diffie-Hellman exchange tussen 2 mensen Alice en Bob, met Eve in de midden (Man in the middle)?
+Hoe werkt een Diffie-Hellman exchange tussen 2 mensen Alice en Bob, met een aanvaller Eve in de midden (Man in the middle)?
 
 \begin{enumerate}
     \item Alice en Bob wisselen een priemgetal $P$ en een getal $G$ (=generator).
@@ -1975,16 +1985,16 @@ Hoe werkt een Diffie-Hellman exchange tussen 2 mensen Alice en Bob, met Eve in d
         \item \url{https://en.wikipedia.org/wiki/Primitive\_root\_modulo\_n}
         \item Eve ziet $P$ en $G$
     \end{itemize} 
-    \item Alice en Bob kiezen een willekeurig getal A en B die ze geheim houden
-    \item $Y_A = G^{X_A} (mod P)$ en $Y_B = G^{X_B} (mod P)$
-    \item Alice geeft $Y_A$ aan Bob, Bob geeft $Y_B$ aan Alice. Eve ziet $Y_A$ en $Y_B$
-    \item De secret key voor Alice is ${Y_B}^{X_A} (mod P)$, voor Bob ${Y_A}^{X_B} (mod P)$
+    \item Alice en Bob kiezen een willekeurig getal A en B die ze geheim houden.
+    \item $Y_A = G^{X_A} (\mathrm{mod}\ P)$ en $Y_B = G^{X_B}(\mathrm{mod}\ P)$
+    \item Alice geeft $Y_A$ aan Bob, Bob geeft $Y_B$ aan Alice. Eve ziet $Y_A$ en $Y_B$.
+    \item De secret key voor Alice is ${Y_B}^{X_A} (\mathrm{mod}\ P)$, voor Bob ${Y_A}^{X_B} (\mathrm{mod}\ P)$
 \end{enumerate}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\textwidth]{diffie-hellman.png}
-    \caption{}
+    \caption{Voorbeeld met $P=11$, $G=7$ $X_A = 6$, $X_B = 9$ $\Rightarrow$ secret key is $3$}
 \end{figure}
 
 \subsection{Crypto algoritmes}
@@ -2011,7 +2021,7 @@ And the only way to prove that is to subject the algorithm to years of analysis 
     \item SSL betekent enkel dat gegevens niet kunnen worden afgeluisterd
 \end{itemize}
 
-\subsubsection{Praktisch gebruik}
+\subsection{Praktisch gebruik}
 
 \begin{itemize}
     \item SSL certificaten
@@ -2038,7 +2048,7 @@ And the only way to prove that is to subject the algorithm to years of analysis 
 = Public Key Infrastructure
 
 \begin{itemize}
-    \item Assymtrische encryptie: met public en private key
+    \item Assymetrische encryptie: met public en private key
 \end{itemize}
 
 \subsubsection{Doel}
@@ -2077,8 +2087,8 @@ Gebruikmaken van een CA (=Certificate Authority)
     \item De CA genereert een sleutelpaar (publiek en privaat)
     \item Iedereen kent de publieke sleutel (inbouwen in alle computers, zit in de Certificate Store van Windows of wordt via browsers meegegeven)
     \item Alice stuurt haar eigen publieke sleutel deze keer niet naar Bob, maar naar de CA. Bob doet hetzelfde
-    \item De CA zal de public key van Alice versleutelen met zijn eigen private key. Alice krijgt deze digitale handtekening om te bevestigen op haar publieke sleutel.
-    \item Alice heeft nu een publieke sleutel die is voorzien van een digitale handtekening van de CA
+    \item De CA zal de public key van Alice versleutelen met zijn eigen private key. Alice krijgt deze gehandtekende publieke sleutel terug.
+    \item Alice heeft nu een publieke sleutel die is voorzien van een digitale handtekening van de CA.
     \item Nu zal Alice haar publieke sleutel gehandtekend naar Bob sturen
     \item Communicatie kan nu veilig verlopen.
 \end{itemize}
@@ -2086,7 +2096,7 @@ Gebruikmaken van een CA (=Certificate Authority)
 Er zijn wel nog 2 problemen:
 
 \begin{enumerate}
-    \item De private key van de CA mag NOOIT gekend worden
+    \item De private key van de CA mag NOOIT gekend worden. Indien wel gekend $\Rightarrow$ hernieuwen
     \item Er bestaan ook Fake CA's (al gebeurd bij Dell)
 \end{enumerate}
 
@@ -2106,7 +2116,7 @@ Wordt gebruikt om een FQDN (Fully Qualified Domain Name) om te zetten naar een I
 \begin{itemize}
     \item Een van de oudste protocollen op het internet
     \item Gemaakt in de tijd waar hosts gekend en vertrouwd waren
-    \item Het design van DNS is onveilig, security was geen vereiste
+    \item Het design van DNS is onveilig, security was toen geen vereiste
 \end{itemize}
 
 \subsection{2 Attack vectors}
@@ -2118,20 +2128,26 @@ Wordt gebruikt om een FQDN (Fully Qualified Domain Name) om te zetten naar een I
     \end{itemize}
     \item Data (in caches)
     \begin{itemize}
-        \item Wat er wordt verstuurd
-        \item Cache poisoning, Man-in-the-middle
-        \item Wijziging van data (ip adressen van betrouwbare sites vervangen door eigen ip adres)
-        \item Kaminsky attack
+        \item = Wat er wordt verstuurd
+        \item Kwetsbaar voor:
+        \begin{itemize}
+            \item Man-in-the-middle attack
+            \item Wijziging van data (ip adressen van betrouwbare sites vervangen door eigen ip adres)
+            \item Kaminsky attack
+        \end{itemize}
     \end{itemize}
 \end{enumerate}
 
 \subsection{Kaminsky Attack}
 
+= DNS spoofing / DNS cache poisoning
+
 \begin{itemize}
     \item Je zorgt dat de resolver geen gecachte informatie heeft over een bepaald domain
-    \item Je vraagt informatie over dat domein
+    \item Je vraagt informatie over dat domein.
     \item Je geeft direct een antwoord met je eigen informatie
-    \item Zo zorg je ervoor dat elke client die informatie vraagt de verkeerde informatie krijgt
+    \item Zo zorg je ervoor dat elke client die die informatie vraagt de verkeerde informatie krijgt
+    \item \url{https://www.youtube.com/watch?v=7MT1F0O3_Yw}
 \end{itemize}
 
 \subsection{DNSSEC}
@@ -2165,8 +2181,8 @@ Wordt gebruikt om een FQDN (Fully Qualified Domain Name) om te zetten naar een I
 \subsubsection{NSEC records}
 
 \bold{Probleem:} Die gepubliceerde informatie wordt enkel gecertificeerd voor records die al bestaan. 
-Er is niet dat men tegenhoudt om een nieuw subdomain te maken voor een bestaand domein om daar een soort Kaminsky attack op toe te passen.
-Manier nodig om te zeggen of een subdomain bestaat of niet.
+Er is niets dat men tegenhoudt om een nieuw subdomain te maken voor een bestaand domein om daar een soort Kaminsky attack op toe te passen.
+$\Rightarrow$ Manier nodig om te zeggen of een subdomain bestaat of niet.
 
 \bold{Oplossing:} NSEC records
 
@@ -2210,7 +2226,7 @@ Dit is dus een zeer groot probleem
 \subsection{Reverse engineering}
 
 \begin{itemize}
-    \item Let op met IL-talen (Intermediate Language) = Java/.NET/\dots, alles dat reflection ondersteund
+    \item Let op met IL-talen (Intermediate Language) = Java/.NET/\dots, alles dat Reflection ondersteund
     \item Obfuscatie is mogelijk, maar gebeurt meestal volgens vaste methodes, dus deobfuscatie kan gebeuren 
 \end{itemize}
 
