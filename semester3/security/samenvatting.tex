@@ -839,7 +839,7 @@ Reconnaissance = Information gathering = OSINT (\bold{O}pen \bold{S}ource \bold{
 \begin{itemize}
     \item nmap : overlopen van services op het systeem
     \item port-scanners
-    \item SNMP
+    \item SNMP: \url{https://en.wikipedia.org/wiki/Simple\_Network\_Management\_Protocol#Using\_SNMP\_to\_attack\_a\_network}
     \item Wireshark / sniffing
     \item \dots
 \end{itemize}
@@ -1038,6 +1038,14 @@ die het slachtoffer normaal niet zou doen.
     \caption{2.4GHz/5GHz vs SubGHz}
 \end{figure}
 
+\subsection{Tools}
+
+Er bestaan verschillende tools om draadloze netwerken te scannen:
+
+\begin{itemize}
+    \item Kismet: wireless netwerk en device detector, sniffer, \dots
+    \item Aircrack-ng: softwarepakket dat wireless netwerken kan afluisteren, en WEP- en WPA-sleutels kraken
+\end{itemize}
 
 \section{Virussen en malware}
 
@@ -1098,8 +1106,12 @@ die het slachtoffer normaal niet zou doen.
     \begin{itemize}
         \item \underline{Voorbeeld:} Backorifice $\Rightarrow$ neemt het systeem over
         \item \url{https://en.wikipedia.org/wiki/Back\_Orifice}
+        \item Een Remote Access Trojan = een Remote Access Tool die kwaadwillig gebruikt wordt
     \end{itemize}
     \item Ransomware
+    \begin{itemize}
+        \item Maakt de data op je PC onbruikbaar tot je losgeld betaalt aan de criminelen.
+    \end{itemize}
 \end{itemize}
 
 
@@ -2238,6 +2250,7 @@ Dit is dus een zeer groot probleem
 \begin{itemize}
     \item Random dingen proberen tot iets onverwachts gebeurt
     \item Dit kan je dan onderzoeken (in een debugger) en uitbuiten (met bv een buffer overflow of een use-after-free)
+    \item \url{https://www.youtube.com/watch?v=1S0aBV-Waeo}
 \end{itemize}
 
 \subsection{Shellcode}
