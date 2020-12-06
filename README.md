@@ -2,7 +2,7 @@
 
 ## Hoe bijdragen?
 
-Deze samenvattingen zijn geschreven in LaTeX (.tex bestanden) en worden gecompileerd naar .pdf bestanden. Deze voorbeelden staan gecompileerd in de [how-to-contribute/](how-to-contribute/) map.
+Deze samenvattingen zijn geschreven in LaTeX (.tex bestanden) en worden gecompileerd naar .pdf bestanden. Onderstaande voorbeelden staan gecompileerd in de [how-to-contribute/](how-to-contribute/) map.
 
 Hier een korte tutorial van LaTeX:
 
