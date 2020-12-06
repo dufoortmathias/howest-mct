@@ -1,14 +1,32 @@
-# Howest MCT Samenvattingen
+\documentclass{article}
+% type document ^
 
-## Hoe bijdragen?
+% voor \url{}
+\usepackage{hyperref}
 
-Deze samenvattingen zijn geschreven in LaTeX (.tex bestanden) en worden gecompileerd naar .pdf bestanden. Deze voorbeelden staan gecompileerd in de /how-to-contribute map.
+% voor [H] bij figures
+\usepackage{float}
 
-Hier een korte tutorial van LaTeX:
+% voor \includegraphics
+\usepackage{graphicx}
 
-### Headings
+% voor \caption{}
+\usepackage{caption}
 
-```tex
+% voor code syntax highlighting
+\usepackage{minted}
+
+% beter font
+\usepackage[T1]{fontenc}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+% betere indentation
+\usepackage[parfill]{parskip}
+
+% begin het document
+\begin{document}
+
 % Voor een hoofdstuk:
 \section{Dit is een section}
 
@@ -19,48 +37,37 @@ Hier een korte tutorial van LaTeX:
 \subsubsection{Dit is een subsubsection}
 
 Hello world
-```
 
-### Text styling
+\section{Text styling}
 
-```tex
 \url{https://www.example.com} % creëert een klikbare link
+
 \underline{onderlijnde tekst}
+
 \textit{Schuine tekst}
+
 \textbf{Vette tekst}
 
-% ik zet volgende lijn in het begin van elk .tex bestand: 
-\newcommand{\bold}[1]{\textbf{#1}}
-% om 
-\bold{Vette tekst} 
-% te kunnen gebruiken
-```
+\section{Lijsten}
 
-### Lijsten
+\subsection{Ongeordend}
 
-#### Ongeordend
-
-```tex
 \begin{itemize}
     \item Eerste item
     \item Tweede item
     \item Derde item
 \end{itemize}
-```
 
-#### Geordend
+\subsection{Geordend}
 
-```tex
 \begin{enumerate}
     \item Eerste item
     \item Tweede item
     \item Derde item
 \end{enumerate}
-```
 
-#### Lijsten kan je nesten
+\subsection{Lijsten kan je nesten}
 
-```tex
 \begin{itemize}
     \item Eerste item
     \begin{itemize}
@@ -74,11 +81,9 @@ Hello world
         \item Genest item 3
     \end{enumerate}
 \end{itemize}
-```
 
-### Afbeeldingen
+\section{Afbeeldingen}
 
-```tex
 \begin{figure}[H] % deze [H] is nodig om de afbeelding op de juiste plaats te zetten
     \centering % dit centreert de afbeelding horizontaal
     \includegraphics[width=0.5\textwidth]{images/test.jpg}
@@ -86,12 +91,9 @@ Hello world
     % pad is relatief t.o.v. .tex bestand
     \caption{Dit is een caption onder de afbeelding}
 \end{figure}
-```
 
-### Code
+\section{Code}
 
-```tex
-% Gebruik het minted commando met de taal tussen de {}:
 \begin{minted}{python}
 def function():
     for i in range(10):
@@ -100,4 +102,5 @@ def function():
 if __name__ == "__main__":
     function()
 \end{minted}
-```
+
+\end{document}
