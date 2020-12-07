@@ -9,4 +9,7 @@ jobs:
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v2
         with:
-          root_file: samenvatting.tex
+          run: |
+            for d in */*/ ; do
+              latexmk -pdf -shell-escape -interaction=nonstopmode -halt-on-error -cd ${d}samenvatting.tex
+            done
