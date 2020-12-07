@@ -14,4 +14,14 @@ jobs:
               directory=$(dirname "$f");
               echo $directory;
               latexmk -pdf -shell-escape -interaction=nonstopmode -halt-on-error -cd $f; 
-            done
+            done;
+      - name: Commit files
+        run: |
+          git config --local user.email "vanhouttetuur@gmail.com"
+          git config --local user.name "zjeffer"
+          git commit -am "Upload pdf files"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
