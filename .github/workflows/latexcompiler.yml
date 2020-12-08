@@ -17,6 +17,7 @@ jobs:
         with:
           run: |
             for f in $(echo ${{ steps.getfile.outputs.files }} | grep -i '*.tex'); do
+              echo $f;
               latexmk -pdf -shell-escape -interaction=nonstopmode -halt-on-error -cd $f; 
             done;
       - name: Commit files
