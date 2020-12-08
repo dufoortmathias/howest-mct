@@ -10,9 +10,7 @@ jobs:
         uses: xu-cheng/texlive-action/full@v1
         with:
           run: |
-            for f in $(find . -name 'samenvatting.tex'); do
-              directory=$(dirname "$f");
-              echo $directory;
+            for f in $(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep -i '*.tex'); do
               latexmk -pdf -shell-escape -interaction=nonstopmode -halt-on-error -cd $f; 
             done;
       - name: Commit files
