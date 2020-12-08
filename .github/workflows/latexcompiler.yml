@@ -6,11 +6,17 @@ jobs:
     steps:
       - name: Set up Git repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: get changed files
+        id: getfile
+        run: |
+          echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | xargs)"
       - name: Compile LaTeX document
         uses: xu-cheng/texlive-action/full@v1
         with:
           run: |
-            for f in $(/usr/bin/git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep -i '*.tex'); do
+            for f in $(echo ${{ steps.getfile.outputs.files }} | grep -i '*.tex'); do
               latexmk -pdf -shell-escape -interaction=nonstopmode -halt-on-error -cd $f; 
             done;
       - name: Commit files
