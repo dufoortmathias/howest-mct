@@ -18,109 +18,12 @@
 \graphicspath{{img/}}
  
 \newcommand{\bold}[1]{\textbf{#1}}
+\usepackage{color}
 
-%Define the listing package
-\usepackage{listings} %code highlighter
-\usepackage{upquote}
-\usepackage{color} %use color
-\definecolor{mygreen}{rgb}{0,0.6,0}
-\definecolor{mygray}{rgb}{0.5,0.5,0.5}
-\definecolor{mymauve}{rgb}{0.58,0,0.82}
-\definecolor{lightgray}{rgb}{0.95, 0.95, 0.95}
-\definecolor{darkgray}{rgb}{0.4, 0.4, 0.4}
-\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
-
-
-\lstset{%
-    % General design
-    backgroundcolor=\color{lightgray},
-    basicstyle={\small\ttfamily},   
-    frame=l,
-    % Code design
-    identifierstyle=\color{black},
-    keywordstyle=\color{blue}\bfseries,
-    ndkeywordstyle=\color{greenCode}\bfseries,
-    stringstyle=\color{red}\ttfamily,
-    commentstyle=\color{darkgray}\ttfamily,
-    % Code
-    tabsize=4,
-    showtabs=false,
-    showspaces=false,
-    showstringspaces=false,
-    extendedchars=true,
-    breaklines=true,
-    % line-numbers
-    xleftmargin={0.75cm},
-    numbers=left,
-    stepnumber=1,
-    firstnumber=1,
-    numberfirstline=true,
-}
-
-\lstdefinelanguage{CSS}{
-    classoffset=0,
-    keywords={accelerator,azimuth,background,background-attachment,
-    background-color,background-image,background-position,
-    background-position-x,background-position-y,background-repeat,
-    behavior,border,border-bottom,border-bottom-color,
-    border-bottom-style,border-bottom-width,border-collapse,
-    border-color,border-left,border-left-color,border-left-style,
-    border-left-width,border-right,border-right-color,
-    border-right-style,border-right-width,border-spacing,
-    border-style,border-top,border-top-color,border-top-style,
-    border-top-width,border-width,bottom,caption-side,clear,
-    clip,color,content,counter-increment,counter-reset,cue,
-    cue-after,cue-before,cursor,direction,display,elevation,
-    empty-cells,filter,float,font,font-family,font-size,
-    font-size-adjust,font-stretch,font-style,font-variant,
-    font-weight,height,ime-mode,include-source,
-    layer-background-color,layer-background-image,layout-flow,
-    layout-grid,layout-grid-char,layout-grid-char-spacing,
-    layout-grid-line,layout-grid-mode,layout-grid-type,left,
-    letter-spacing,line-break,line-height,list-style,
-    list-style-image,list-style-position,list-style-type,margin,
-    margin-bottom,margin-left,margin-right,margin-top,
-    marker-offset,marks,max-height,max-width,min-height,
-    min-width,-moz-binding,-moz-border-radius,
-    -moz-border-radius-topleft,-moz-border-radius-topright,
-    -moz-border-radius-bottomright,-moz-border-radius-bottomleft,
-    -moz-border-top-colors,-moz-border-right-colors,
-    -moz-border-bottom-colors,-moz-border-left-colors,-moz-opacity,
-    -moz-outline,-moz-outline-color,-moz-outline-style,
-    -moz-outline-width,-moz-user-focus,-moz-user-input,
-    -moz-user-modify,-moz-user-select,orphans,outline,
-    outline-color,outline-style,outline-width,overflow,
-    overflow-X,overflow-Y,padding,padding-bottom,padding-left,
-    padding-right,padding-top,page,page-break-after,
-    page-break-before,page-break-inside,pause,pause-after,
-    pause-before,pitch,pitch-range,play-during,position,quotes,
-    -replace,richness,right,ruby-align,ruby-overhang,
-    ruby-position,-set-link-source,size,speak,speak-header,
-    speak-numeral,speak-punctuation,speech-rate,stress,
-    scrollbar-arrow-color,scrollbar-base-color,
-    scrollbar-dark-shadow-color,scrollbar-face-color,
-    scrollbar-highlight-color,scrollbar-shadow-color,
-    scrollbar-3d-light-color,scrollbar-track-color,table-layout,
-    text-align,text-align-last,text-decoration,text-indent,
-    text-justify,text-overflow,text-shadow,text-transform,
-    text-autospace,text-kashida-space,text-underline-position,top,
-    unicode-bidi,-use-link-source,vertical-align,visibility,
-    voice-family,volume,white-space,widows,width,word-break,
-    word-spacing,word-wrap,writing-mode,z-index,zoom},
-    keywordstyle=\color{blue},
-    classoffset=1,
-    morekeywords={var, --*},
-    keywordstyle=\color{mymauve},
-    classoffset=0,
-    sensitive=true,
-    morecomment=[l]{//},
-    morecomment=[s]{/*}{*/},
-    morestring=[b]',
-    morestring=[b]",
-    moredelim=[is][\bfseries]{/@}{@/}, % Typesets characters between /@ and @/ delimeters in boldface.
-}
-
-
+% minted for code blocks
+\usepackage{minted}
+\usemintedstyle{colorful}
+\setminted{frame=single,framesep=3pt,linenos}
 
 \begin{document}
 
@@ -153,21 +56,25 @@
 \subsubsection{Custom property: defining the variable}
 Custom property: value
 
-\begin{lstlisting}[language=CSS]
---my-cool-color: HotPink;
-\end{lstlisting}
+\begin{minted}{css}
+:root {
+    --my-cool-color: HotPink;
+}
+\end{minted}
 
 \subsubsection{Cascading variable: applying the variable}
 
 Applying your custom property using the var() function
 
-\begin{lstlisting}[language=CSS]
-var(--my-cool-color)
-\end{lstlisting}
+\begin{minted}{css}
+.element {
+    color: var(--my-cool-color)
+}
+\end{minted}
 
 \subsection{Syntax}
 
-\begin{lstlisting}[language=CSS]
+\begin{minted}{css}
 :root {
     --my-cool-color: HotPink;
 }
@@ -179,11 +86,11 @@ p {
 .foo {
     background-color: var(--my-cool-color);
 }
-\end{lstlisting}
+\end{minted}
 
 \subsubsection{CSS Variables Are Case Sensitive}
 
-\begin{lstlisting}[language=CSS]
+\begin{minted}{css}
 :root {
     --foo: HotPink;
     --FOO: #BADA55;
@@ -194,42 +101,42 @@ p {
 .foo {
     background-color: var(--FOO);
 }
-\end{lstlisting}
+\end{minted}
 
 
 \subsubsection{This is wrong}
 
-\begin{lstlisting}[language=CSS]
+\begin{minted}{css}
 .test {
     --side: margin-top;
     var(--side): 20px
 }
-\end{lstlisting}
+\end{minted}
 
 \subsubsection{Use the calc() function to do math}
 
-\begin{lstlisting}[language=CSS]
+\begin{minted}{css}
 :root {
     --whitespace: 20px;
     --whitespace-lg: var(--whitespace) * 2; /* won't work */
     --whitespace-lg: calc(var(--whitespace) * 2); /* correct */
 }
-\end{lstlisting}
+\end{minted}
 
 \subsubsection{Kan ook shorthand values bevatten}
 
-\begin{lstlisting}[language=CSS]
+\begin{minted}{css}
 :root {
     --transition: all .1s ease-out;
 }
 a {
     transition: var(--transition);
 }   
-\end{lstlisting}
+\end{minted}
 
 \subsubsection{Kan ook bestaan uit andere variables.}
 
-\begin{lstlisting}[language=CSS]
+\begin{minted}{css}
 :root {
     --transition-property: all;
     --transition-duration: .1s;
@@ -242,11 +149,11 @@ a {
 a {
     transition: var(--transition);
 }
-\end{lstlisting}
+\end{minted}
 
 \subsubsection{Default values}
 
-\begin{lstlisting}[language=CSS]
+\begin{minted}{css}
 .c-button {
     border: 1px solid var(--button-color, HotPink);
     background-color: transparent;
@@ -257,11 +164,11 @@ a {
 .c-button--beta {
     --button-color: #BADA55;
 }
-\end{lstlisting}
+\end{minted}
 
 \subsubsection{Default values with other variables}
 
-\begin{lstlisting}[language=CSS]
+\begin{minted}{css}
 :root {
     --color-pink: HotPink;
     --color-badass: #BADA55;
@@ -274,19 +181,20 @@ a {
 }
 .c-button--beta {
     --button-color: var(--color-badass);
-\end{lstlisting}
+}
+\end{minted}
 
 \subsection{Cascade}
 CSS Variables Are Subject to the Cascade and Inheritance rules
 
 \url{https://codepen.io/simoncoudeville-nmct/pen/BaBMGPZ}
 
-\begin{lstlisting}[language=CSS]
+\begin{minted}{css}
 :root {
     --my-cool-color: HotPink;
 }
-/* Alle elementen binnen de root waar je --
-my-cool-color variable toepast zullen de
+/* Alle elementen binnen de root waar je 
+--my-cool-color variable toepast zullen de
 value HotPink overerven. */
 
 p {
@@ -294,18 +202,17 @@ p {
 }
 
 .foo {
-/* Elke paragraaf in het element met
-de class ".foo" krijgt de kleur #BADA55.*/
-
---my-cool-color: #BADA55;
+    /* Elke paragraaf in het element met
+    de class ".foo" krijgt de kleur #BADA55.*/
+    --my-cool-color: #BADA55;
 }
-\end{lstlisting}
+\end{minted}
 
 \url{https://codepen.io/simoncoudeville-nmct/pen/aboMBop}
 
 \subsubsection{CSS variables can be made conditional with @media and other conditional rules}
 
-\begin{lstlisting}[language=CSS]
+\begin{minted}{css}
 :root {
     --whitespace: 1em;
 }
@@ -318,14 +225,14 @@ de class ".foo" krijgt de kleur #BADA55.*/
     padding: var(--whitespace);
 }
 
-\end{lstlisting}
+\end{minted}
 
 
 \url{https://codepen.io/simoncoudeville-nmct/pen/JjXaQwB}
 
 \subsubsection{Ideal for dark themes}
 
-\begin{lstlisting}[language=CSS]
+\begin{minted}{css}
 :root {
     --color: white;
     --background-color: black
@@ -340,14 +247,14 @@ de class ".foo" krijgt de kleur #BADA55.*/
     background-color: var(--background-color);
     color: var(--color);
 }
-\end{lstlisting}
+\end{minted}
 
 \url{https://codepen.io/simoncoudeville-nmct/pen/eYOxbPp}
 
 \subsection{Hoisting}
 = Accessing a Variable First and Declaring Later
 
-\begin{lstlisting}[language=CSS]
+\begin{minted}{css}
 body{
     background: var(--bg-fill);
 }
@@ -355,7 +262,7 @@ body{
     --bg-fill: green;
 }
 
-\end{lstlisting}
+\end{minted}
 
 \subsection{Scoped variables}
 
@@ -367,11 +274,11 @@ Twee soorten:
 
 \subsubsection{Global scoped variables}
 
-\begin{lstlisting}[language=CSS]
+\begin{minted}{css}
 :root {
     --global-color: black;
 }
-\end{lstlisting}
+\end{minted}
 \begin{itemize}
     \item :root is a CSS pseudo-class selector used to select the element that represents the root of the document.
     \item :root is hetzelfde als html maar is specifieker
@@ -398,7 +305,7 @@ Global variables kan je overal hergebruiken en overschrijven. Ideaal dus voor va
     \item Ideaal voor components.
 \end{itemize}
 
-\begin{lstlisting}[language=CSS]
+\begin{minted}{css}
 .alert {
     --alert-color: #222;
     color: var(--alert-color);
@@ -411,7 +318,7 @@ Global variables kan je overal hergebruiken en overschrijven. Ideaal dus voor va
     --button-fontSize: var(--global-fontSize);
     font-size: var(--button-fontSize);
 }
-\end{lstlisting}
+\end{minted}
 
 
 \subsection{Naming system}
@@ -448,7 +355,7 @@ They follow this formula:
 \end{itemize}
 
 
-\begin{lstlisting}[language=CSS]
+\begin{minted}{css}
 .c-alert {
     /* Component scoped variables are always defined by global variables */
     --c-alert--Padding: var(--global--spacer--md);
@@ -467,7 +374,7 @@ They follow this formula:
 .c-alert__title {
     font-size: var(--c-alert__title--fontSize);
 }
-\end{lstlisting}
+\end{minted}
 
 \subsection{Herhalingsvragen}
 
@@ -499,13 +406,13 @@ They follow this formula:
 
 \subsubsection{Basic form syntax}
 
-\begin{lstlisting}[language=HTML]
+\begin{minted}{html}
 <form action="">
     <input type="">
     ...
     Submit
 </form>
-\end{lstlisting}
+\end{minted}
 
 \bold{Maak geen forms zonder (submit) button!} Zonder (submit) button kan je niet op enter duwen
 
@@ -823,10 +730,10 @@ Geschiedenis van de radio-button: \url{https://www.jitbit.com/radio-button/}
     \item Label text is apart aanspreekbaar met CSS.
 \end{itemize}
 
-\begin{lstlisting}[language=HTML]
+\begin{minted}{html}
 <label for="input_id">label text</label>
 <input type="text" name="whatever" id="input_id">
-\end{lstlisting}
+\end{minted}
 
 
 
@@ -836,12 +743,12 @@ Geschiedenis van de radio-button: \url{https://www.jitbit.com/radio-button/}
     \item Label text is niet aanspreekbaar met CSS.
 \end{itemize}
 
-\begin{lstlisting}[language=HTML]
+\begin{minted}{html}
     <label>
         label text
         <input type="text" name="whatever" id="input_id">
     </label>
-    \end{lstlisting}
+    \end{minted}
 
 
 \subsection{Buttons}
@@ -849,25 +756,25 @@ Geschiedenis van de radio-button: \url{https://www.jitbit.com/radio-button/}
 
 \subsubsection{Als input type}
 
-\begin{lstlisting}[language=HTML]
+\begin{minted}{html}
 <input type="submit" value="verzenden">
 <input type="button" value="verzenden">
-\end{lstlisting}
+\end{minted}
 
 \subsubsection{Als button element}
 
-\begin{lstlisting}[language=HTML]
+\begin{minted}{html}
 <button>verzenden</button>
-\end{lstlisting}
+\end{minted}
 
 \bold{Gebruik het button element!}
 
-\begin{lstlisting}[language=HTML]
+\begin{minted}{html}
 <button class="c-button">
     <span class="c-button__label">Verzenden</span>
-    <svg class="c-button__symbol>...</svg>
+    <svg class="c-button__symbol">...</svg>
 </button>
-\end{lstlisting}
+\end{minted}
 
 \subsection{States}
 \begin{enumerate}
@@ -1284,13 +1191,13 @@ Duidelijke feedback bij:
     \item Arrays (behouden een element met een bepaalde positie/nummer)
 \end{itemize}
 
-\begin{lstlisting}
+\begin{minted}{js}
 let anObject = {
     fork: 'Fork'
 }
 
 let anArray = ['Fork', 'Spoon'];
-\end{lstlisting}
+\end{minted}
 
 
 \subsection{API calls in JS}
@@ -1301,7 +1208,7 @@ let anArray = ['Fork', 'Spoon'];
     \item Fetch API returns een promise (belofte)
 \end{itemize}
 
-\begin{lstlisting}
+\begin{minted}{js}
 const serverendpoint = "https://api.example.com/v1/endpoint"
 
 // GET
@@ -1314,7 +1221,7 @@ fetch(serverEndPoint)
         // Callback
         console.log(JSON.stringify(json));
     });
-\end{lstlisting}
+\end{minted}
 
 \subsubsection{Async/await functie}
 
@@ -1324,19 +1231,19 @@ fetch(serverEndPoint)
     \item In plaats van `.then' gebruik je `await', met `async' in de functiedeclaration
 \end{itemize}
 
-\begin{lstlisting}
+\begin{minted}{js}
 const getAPINewWay = async function() {
     const get = await fetch(serverEndPoint, { headers: headers });
     const joke = await get.json();
     console.log({ joke });
 };
-\end{lstlisting}
+\end{minted}
 
 Kan nog beter: we kunnen de promise pas afwachten als de tweede \bold{`then'} voltooid is
 
-\begin{lstlisting}
+\begin{minted}{js}
 const data = await fetchData(serverEndPoint);
-\end{lstlisting}
+\end{minted}
 
 \subsubsection{Error handling}
 
@@ -1348,10 +1255,10 @@ Later maken we sowieso een class voor data-access, authentication, etc\dots
 \subsection{Debugging}
 
 \subsubsection{Logging}
-\begin{lstlisting}
+\begin{minted}{js}
 console.log({myVariable, anotherOne});
 console.table([arrItems]); // voor arrays kan je console.table() gebruiken
-\end{lstlisting}
+\end{minted}
 
 \subsubsection{Browser breakpoints}
 
@@ -1575,22 +1482,25 @@ Wordt bepaald door:
 
 \bold{Voorbeelden}
 
-\begin{lstlisting}[language=CSS]
-// Welke property er moet geanimeerd worden (default: all, optioneel)
-transition-property: scale;
+\begin{minted}{css}
+.transition {
+    // Welke property er moet geanimeerd worden (default: all, optioneel)
+    transition-property: scale;
 
-// duur van de animatie, in miliseconden of seconden
-transition-duration: 300ms;
+    // duur van de animatie, in miliseconden of seconden
+    transition-duration: 300ms;
 
-// easing (optioneel)
-transition-timing-function: ease-in;
+    // easing (optioneel)
+    transition-timing-function: ease-in;
 
-// vertraging vooraleer de animatie start
-transition-delay: 1s;
+    // vertraging vooraleer de animatie start
+    transition-delay: 1s;
 
-// transition property: shorthand voor:
-transition: [transition-property] [transition-duration] [transition-timing-function] [transition-delay];
-\end{lstlisting}
+    // transition property: shorthand voor:
+    transition: [transition-property] [transition-duration] 
+        [transition-timing-function] [transition-delay];
+}
+\end{minted}
 
 \bold{Basic voorbeeld:}
 
@@ -1624,15 +1534,17 @@ transition: [transition-property] [transition-duration] [transition-timing-funct
 \end{itemize}
 
 \subsubsection{Multiple transitions}
-\begin{lstlisting}[language=CSS]
-transition: width 1s ease-in, height 2s ease-out, background-color 3s ease-in-out, transform 4s linear;
+\begin{minted}{css}
+.transition {
+    transition: width 1s ease-in, height 2s ease-out, background-color 3s ease-in-out, transform 4s linear;
 
-// of:
+    // of:
 
-transition-property: width, height, background-color, transform;
-transition-duration: 1s, 2s, 3s, 4s;
-transition-timing-function: ease-in, ease-out, ease-in-out, linear;
-\end{lstlisting}
+    transition-property: width, height, background-color, transform;
+    transition-duration: 1s, 2s, 3s, 4s;
+    transition-timing-function: ease-in, ease-out, ease-in-out, linear;
+}
+\end{minted}
 
 \url{https://codepen.io/simoncoudeville-nmct/pen/rQOmGB}
 
@@ -1786,7 +1698,7 @@ transition-timing-function: ease-in, ease-out, ease-in-out, linear;
     \item Default source order van de children maar laat toe om de order zowel verticaal als horizontaal te veranderen.
 \end{itemize}
 
-\begin{lstlisting}[language=HTML]
+\begin{minted}{html}
 <!-- Container is de grid container -->
 <div class="container">
     <div class="item item-1"></div>
@@ -1802,7 +1714,7 @@ transition-timing-function: ease-in, ease-out, ease-in-out, linear;
     </div>
     <div class="item"></div>
 </div>
-\end{lstlisting}
+\end{minted}
 
 \subsection{Grid line}
 
@@ -2001,7 +1913,7 @@ Waarbij x == column of row
 
 \subsubsection{Voorbeeld}
 
-\begin{lstlisting}[language=CSS]
+\begin{minted}{css}
 .container {
     grid-template-columns: 50px 50px 50px 50px;
     grid-template-rows: auto;
@@ -2010,7 +1922,7 @@ Waarbij x == column of row
         "main main . sidebar"
         "footer footer footer footer";
 }
-\end{lstlisting}
+\end{minted}
 
 
 \begin{figure}[H]
