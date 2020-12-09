@@ -18,7 +18,8 @@ jobs:
           run: |
             for f in $(echo ${{ steps.getfile.outputs.files }}); do
               echo $f;
-              if grep -q 'samenvatting.tex' $f; then
+              if echo "$f" | grep -q '.tex'; then
+                echo "true";
                 latexmk -pdf -shell-escape -interaction=nonstopmode -halt-on-error -cd $f; 
               fi;
             done;
