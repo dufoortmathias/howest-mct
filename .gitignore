@@ -44,5 +44,6 @@ semester2/project1/
 semester2/ui-design/labo/
 semester3/interaction-design/labo/
 
-
+## PDF compilation is now handled with a Github Action
+.pdf
 
