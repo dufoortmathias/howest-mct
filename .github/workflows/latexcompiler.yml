@@ -24,7 +24,7 @@ jobs:
         run: |
           git config --local user.email "vanhouttetuur@gmail.com"
           git config --local user.name "zjeffer"
-          git commit -am "Upload pdf files"
+          git commit -am "Upload pdf files" || echo "Nothing to update"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
