@@ -16,9 +16,11 @@ jobs:
         uses: xu-cheng/texlive-action/full@v1
         with:
           run: |
-            for f in $(echo "${{ steps.getfile.outputs.files }}" | grep -i '*.tex'); do
+            for f in $(echo ${{ steps.getfile.outputs.files }}); do
               echo $f;
-              latexmk -pdf -shell-escape -interaction=nonstopmode -halt-on-error -cd $f; 
+              if grep -q 'samenvatting.tex' $f; then
+                latexmk -pdf -shell-escape -interaction=nonstopmode -halt-on-error -cd $f; 
+              fi;
             done;
       - name: Commit files
         run: |
