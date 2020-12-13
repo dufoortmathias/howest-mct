@@ -1484,19 +1484,19 @@ Wordt bepaald door:
 
 \begin{minted}{css}
 .transition {
-    // Welke property er moet geanimeerd worden (default: all, optioneel)
+    /* Welke property er moet geanimeerd worden (default: all, optioneel) */
     transition-property: scale;
 
-    // duur van de animatie, in miliseconden of seconden
+    /* duur van de animatie, in miliseconden of seconden */
     transition-duration: 300ms;
 
-    // easing (optioneel)
+    /* easing (optioneel) */
     transition-timing-function: ease-in;
 
-    // vertraging vooraleer de animatie start
+    /* vertraging vooraleer de animatie start */
     transition-delay: 1s;
 
-    // transition property: shorthand voor:
+    /* transition property: shorthand voor: */
     transition: [transition-property] [transition-duration] 
         [transition-timing-function] [transition-delay];
 }
@@ -1538,7 +1538,7 @@ Wordt bepaald door:
 .transition {
     transition: width 1s ease-in, height 2s ease-out, background-color 3s ease-in-out, transform 4s linear;
 
-    // of:
+    /* of: */
 
     transition-property: width, height, background-color, transform;
     transition-duration: 1s, 2s, 3s, 4s;
