@@ -16,7 +16,7 @@
 \renewcommand{\familydefault}{\sfdefault}
 
 \graphicspath{{img/}}
- 
+
 \newcommand{\bold}[1]{\textbf{#1}}
 
 %Define the listing package
@@ -391,7 +391,7 @@ public int Id {
     \item \bold{Constructor overloading} = multiple constructors with either \dots
     \begin{itemize}
         \item \dots a different number of parameters, or
-        \item \dots a different type of paramters, or
+        \item \dots a different type of parameters, or
         \item \dots the same parameters in a different order
     \end{itemize}
     \item Constructors should call each other for enhanced efficiency
@@ -404,11 +404,21 @@ public int Id {
 \begin{itemize}
     \item Namespaces
     \item System.Reflection
-    \item Embedded Files
     \item System.IO
+    \item Embedded Files
 \end{itemize}
 
 \subsection{Namespaces}
+
+Door `using' te gebruiken kunnen we de namespace weglaten:
+
+\begin{minted}{csharp}
+// Dan schrijven we:
+using System.Diagnostics; // in het begin van het bestand
+Debug.WriteLine("This is a debug message");
+// In plaats van:
+Debug.WriteLine("This is a debug message");
+\end{minted}
 
 \begin{figure}[H]
     \centering
@@ -424,14 +434,33 @@ assemblies and the types defined within, such as classes, interfaces,
 and value types. You can also use \bold{reflection} to create type instances
 at run time and to invoke them."}
 
+\begin{minted}{csharp}
+// Using GetType to obtain type information:
+int i = 42;
+Type type = i.GetType();
+Console.WriteLine(type);
+// Output: System.Int32
+
+// Using Reflection to get information of an Assembly:
+Assembly info = typeof(int).Assembly;
+Console.WriteLine(info);
+// Output: System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, 
+    PublicKeyToken=7cec85d7bea7798e
+\end{minted}
 
 \subsection{System.IO}
 
-= Input/Output \url{https://developer.xamarin.com/api/namespace/System.IO/}
+= Input/Output \url{https://docs.microsoft.com/en-us/dotnet/api/system.io?view=net-5.0}
 
 \begin{itemize}
     \item StreamReader \url{https://developer.xamarin.com/api/type/System.IO.StreamReader/}
+    \begin{itemize}
+        \item To read files 
+    \end{itemize}
     \item StreamWriter \url{https://developer.xamarin.com/api/type/System.IO.StreamWriter/}
+    \begin{itemize}
+        \item To write files 
+    \end{itemize}
 \end{itemize}
 
 \subsection{Embedded files}
@@ -447,12 +476,12 @@ at run time and to invoke them."}
     \caption{Embedded files inladen in een Visual Studio project: rechtermuisknop op 1 of meerdere files $\Rightarrow$ properties $\Rightarrow$ build action = Embedded resources}
 \end{figure}
 
-\subsubsection{Read an embedded file in Xamarin}
+\subsubsection{Read an embedded file in Xamarin (using Reflection)}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{embedded-files.png}
-    \caption{}
+    \caption{Reading a file using StreamReader}
 \end{figure}
 
 \begin{itemize}
@@ -464,7 +493,7 @@ at run time and to invoke them."}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{embedded-files2.png}
-    \caption{Reading a file}
+    \caption{Processing the file's content}
 \end{figure}
 
 \subsection{Summary}
@@ -527,33 +556,33 @@ Navigation.PushModalAsync(new FooPage());
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{navigation-stack-1.png}
+    \includegraphics[width=0.4\textwidth]{navigation-stack-1.png}
     \caption{Pushing to the stack}
 \end{figure}
 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{navigation-stack-2.png}
+    \includegraphics[width=0.4\textwidth]{navigation-stack-2.png}
     \caption{Pop-ing from the stack}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{navigation-stack-3.png}
+    \includegraphics[width=0.4\textwidth]{navigation-stack-3.png}
     \caption{InsertPageBefore}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{navigation-stack-4.png}
+    \includegraphics[width=0.4\textwidth]{navigation-stack-4.png}
     \caption{RemovePage}
 \end{figure}
 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{navigation-stack-4.png}
+    \includegraphics[width=0.4\textwidth]{navigation-stack-4.png}
     \caption{PopToRoot}
 \end{figure}
 
@@ -599,7 +628,7 @@ How to exchange data between several pages:
 
 = klasses nemen methods en properties over van een andere klasse. 
 
-Er ontstaat een hi"erarchie.
+Er ontstaat een hi\"erarchie.
 
 \begin{minted}{csharp}
 // the base class: 
@@ -629,7 +658,7 @@ public class MinisterOfDefense : Adviser {
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{inheritance.png}
-    \caption{}
+    \caption{Specialisation \& Generalisation}
 \end{figure}
 
 \begin{itemize}
@@ -670,8 +699,8 @@ public is the default access modifier.
 \subsubsection{Properties/methods: VIRTUAL and OVERRIDE}
 
 When you want to override a method from the base class, 
-use the virtual keyword in the base method,
-and the override method in the derived method.
+use the \bold{virtual} keyword in the base method,
+and the \bold{override} keyword in the derived method.
 
 Virtual properties/methods:
 \begin{itemize}
@@ -736,9 +765,19 @@ animals.Add(cat);
 \begin{itemize}
     \item Interfaces can be seen as contracts for classes
     \item Implementing = applying the contract
-    \item An interface \bold{forces} all implementing classes to implement all properties and/or methods
+    \item An interface \bold{forces} all implementing classes to implement \bold{all} properties and/or methods
     \item An interface has no default implementation on its own (=you can't create an instance from an interface)
 \end{itemize}
+
+\begin{minted}{csharp}
+// You can't create an instance from an interface:
+interface IAdvisor{
+    void Advise();
+}
+
+// This will create an error:
+IAdvisor advisor = new IAdvisor();
+\end{minted}
 
 \subsubsection{Summary}
 
@@ -751,7 +790,7 @@ animals.Add(cat);
 \subsubsection{Example}
 
 \begin{itemize}
-    \item The IAdvisor interface has an Advice() method (notice that method has no default implementation)
+    \item The IAdvisor interface has an Advise() method (notice that method has no default implementation)
     \item Every class that implements this interface also must have its own Advice() method
     \item A class can implement multiple interfaces (see the MicrosoftCEO class)
     \item In the PrimeMinister class:
@@ -768,7 +807,7 @@ animals.Add(cat);
     \caption{Interfaces example}
 \end{figure}
 
-\subsection{Composition}
+\subsection{Composition vs Aggregation}
 
 = Creating an instance of an object from a class in another class.
 
@@ -817,9 +856,9 @@ Once we need to get that data, we can automatically call the correct method for 
 
 To make the app continue to respond to use interaction while\dots:
 \begin{itemize}
-    \item Reading from or writing to a database or file
-    \item Accessing a web service
-    \item Performing data processing
+    \item \dots Reading from or writing to a database or file
+    \item \dots Accessing a web service
+    \item \dots Performing data processing
 \end{itemize}
 
 \subsection{Example: newspaper app}
@@ -880,7 +919,11 @@ To make the app continue to respond to use interaction while\dots:
 \subsection{Calling an asynchronous function}
 
 \begin{itemize}
-    \item `async' in both the function you call it in, and the function you are calling
+    \item `async' in the headers of:
+    \begin{itemize}
+        \item the function you call it in (FillNewsItemsAsync)
+        \item the function you are calling (GetNewsItemsAsync)
+    \end{itemize}
     \item await when calling the function
 \end{itemize}
 
