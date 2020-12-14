@@ -18,12 +18,13 @@
 \graphicspath{{img/}}
  
 \newcommand{\bold}[1]{\textbf{#1}}
-\usepackage{color}
+\usepackage{xcolor}
 
 % minted for code blocks
 \usepackage{minted}
 \usemintedstyle{colorful}
-\setminted{frame=single,framesep=3pt,linenos}
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\setminted{frame=single,framesep=2pt,linenos,bgcolor=bg}
 
 \begin{document}
 
