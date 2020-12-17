@@ -12,6 +12,7 @@
 *.cb2
 .*.lb
 __latexindent_temp.tex
+*.pyg
 
 ## Bibliography auxiliary files (bibtex/biblatex/biber):
 *.bbl
