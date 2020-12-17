@@ -22,7 +22,7 @@
 
 % minted for code blocks
 \usepackage{minted}
-\usemintedstyle{colorful}
+% \usemintedstyle{colorful}
 \setminted{frame=single,framesep=3pt,linenos}
 
 \begin{document}
@@ -282,8 +282,10 @@ Twee soorten:
 \begin{itemize}
     \item :root is a CSS pseudo-class selector used to select the element that represents the root of the document.
     \item :root is hetzelfde als html maar is specifieker
-    \item :root = html
-    \item :root > html
+    \begin{itemize}
+        \item :root = html
+        \item :root > html
+    \end{itemize}
 \end{itemize}
 
 \url{https://codepen.io/simoncoudeville-nmct/pen/OJLBKXq}
@@ -510,12 +512,20 @@ Geschiedenis van de radio-button: \url{https://www.jitbit.com/radio-button/}
 
 \bold{Laat een checkbox er nooit uitzien als een radio button en omgekeerd!}
 
-\subsection{Checkbox or toggle?}
+\subsection{Toggle or Checkbox?}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.2\textwidth]{toggle-switch.png}
     \caption{Links: toggle switch, rechts: checkbox}
 \end{figure}
+
+\subsubsection{Toggle switch = veredelde checkbox}
+\begin{itemize}
+    \item Aan of af zetten
+    \item Instant response zonder confirmatie
+    \item Afzonderlijke features of settings
+    \item Enkele aan/af beslissing
+\end{itemize}
 
 \subsubsection{Checkbox}
 \begin{itemize}
@@ -524,14 +534,6 @@ Geschiedenis van de radio-button: \url{https://www.jitbit.com/radio-button/}
     \item Meerdere opties die bij elkaar horen
     \item Checken van sub options (intermediate state)
     \item Enkele ja/nee optie
-\end{itemize}
-
-\subsubsection{Toggle switch = veredelde checkbox}
-\begin{itemize}
-    \item Aan of af zetten
-    \item Instant response zonder confirmatie
-    \item Afzonderlijke features of settings
-    \item Enkele aan/af beslissing
 \end{itemize}
 
 \subsubsection{Voorbeelden}
