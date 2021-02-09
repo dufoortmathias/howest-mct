@@ -45,6 +45,7 @@ semester2/project1/
 semester2/ui-design/labo/
 semester3/interaction-design/labo/
 semester4/big-data/labo/
+semester4/advanced-programming-maths/labo/
 
 ## PDF compilation is now handled with a Github Action
 samenvatting.pdf
