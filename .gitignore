@@ -47,6 +47,7 @@ semester3/interaction-design/labo/
 semester4/big-data/labo/
 semester4/advanced-programming-maths/labo/
 semester4/linux-os/labo/
+semester4/backend-development/labo/
 
 ## PDF compilation is now handled with a Github Action
 #samenvatting.pdf
