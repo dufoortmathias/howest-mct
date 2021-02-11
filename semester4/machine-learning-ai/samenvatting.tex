@@ -31,6 +31,7 @@
 
 % code
 \usepackage{minted}
+\setminted{frame=single,framesep=3pt,linenos}
 \usepackage{upquote}
 \usepackage{color}
 
@@ -266,6 +267,362 @@ Hoe stuurhoek bepalen bij een self-driving car?
 \end{figure}
 
 \section{Enkelvoudige Lineaire regressie}
+
+\subsection{Voorbeeld}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{lineaire-regressie-voorbeeld.png}
+    \caption{Voorspel de bloeddruk op basis van leeftijd en gewicht}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{features:} leeftijd en gewicht
+    \item \textbf{target:} bloeddruk (=wat je wil voorspellen = output = label)
+    \item \textbf{trainingset:} 11 training examples (=samples)
+\end{itemize}
+
+\begin{theorem}[Regressie-analyse]
+Regressie-analyse is het modelleren van of het zoeken naar een verband op basis van één of meerdere variabelen.
+
+Bij regressie is de output/target een (continue) variabele
+\end{theorem}
+
+\subsubsection{Scatterplot}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{lineaire-regressie-voorbeeld-scatterplot.png}
+    \caption{Scatterplot: de grafiek toont een positieve correlatie $\Rightarrow$ een sterk verband}
+\end{figure}
+
+\subsection{De hypothese}
+
+\begin{theorem}[De hypothese]
+Het verband (model of hypothese) $h_{\theta}(x)$ is van de vorm:
+
+\begin{equation}
+h_{\theta}(x) = \theta_0 + \theta_1x
+\end{equation}
+\end{theorem}
+
+Bepalen van de optimale waarden voor $\theta_0$ en $\theta_1$:
+
+\begin{itemize}
+    \item $\theta_0$ = snijpunt van de y-as (= noemen we ook de \textbf{bias})
+    \item $\theta_1$ = helling van de rechte (rico)
+\end{itemize}
+
+De parameters $\theta_i$ = \textbf{weights}
+
+Het zoeken van het model / hypothese = \textbf{training / learning}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{lineaire-regressie-hypothese.png}
+    \caption{Lineaire trnedlijn met model $h_{\theta}(x)$}
+\end{figure}
+
+$\mathbf{R^2}$\textbf{-waarde:} determinatiecoëfficiënt
+
+\subsection{De kostenfunctie}
+
+We moeten de kostenfunctie $J(\theta)$ via de \textbf{Least Mean Squared} methode (LMS). 
+
+\begin{equation}
+J(\theta) = \frac{1}{2\cdot m} \cdot \sum_{i=1}^m (h_{\theta}(x^{i}) - y^i)^2
+\end{equation}
+
+\begin{itemize}
+    \item $m =$ de bias $=$ snijpunt met de y-as
+    \item De kostenfunctie berekent de gemiddelde fout door alle fouten op te tellen
+    \item Elke fout wordt gekwadrateerd om:
+    \begin{itemize}
+        \item negatieve waardes positief te maken
+        \item de fout uit te groten
+    \end{itemize}
+\end{itemize}
+
+\subsection{Gradient Descent (GDS)}
+
+\begin{equation}
+J(\theta_0, \theta_1) = \frac{1}{2\cdot m} \cdot \sum_{i=1}^m ((\theta_1\cdot x^i + \theta_0) - y^i)^2
+\end{equation}
+
+Stel de parameters $\theta_0$ en $\theta_1$ voortdurend bij in een iteratief proces 
+tot je de waarden voor $\theta_0$ en $\theta_1$ hebt gevonden die de kleinst mogelijke waarde. Start met willekeurige waarden.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{gradient-descent-theta0.png}
+    \caption{De GDS als $\theta_0 = 0$}
+\end{figure}
+
+\begin{itemize}
+    \item Je krijgt een dalparabool als uitkomst 
+    \item Je kan aflezen wat de parameters moeten zijn om de kleinst mogelijke waarde te vinden
+    \item In de realiteit heb je vaak veel meer dan 2 gewichten
+    \begin{itemize}
+        \item Voorbeeld: de textgenererende AI GPT-3 heeft rond de 175 miljard gewichten 
+        \item $\Rightarrow$ veel rekenkracht nodig om beste uitkomst te vinden
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Learning rate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{gradient-descent-afgeleiden.png}
+    \caption{De parameters $\theta_0$ en $\theta_1$ stellen we constant bij (formules niet te kennen)}
+\end{figure}
+
+\begin{itemize}
+    \item We bepalen de afgeleide (= de gradient, de helling) van $\theta_0$ en $\theta_1$
+    \item We gebruiken die afgeleiden om een betere $\theta_0$ en $\theta_1$ te vinden.
+    \item We vermenigvuldigen de gradient met een variable $\eta$ (=de learning rate)
+    \item Onze nieuwe $\theta$ wordt berekend met behulp van de oude $\theta$ en de afgeleide maal de learning rate. 
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{lineaire-regressie-learning-rate.png}
+    \caption{Learning rate $\eta$: bij een te kleine/te grote $\eta$ hebben we te veel stappen}
+\end{figure}
+
+De learning rate $\eta$ stellen we constant bij om met zo weinig aantal stappen het optimum te bereiken.
+
+
+\section{Meervoudige lineaire regressie}
+
+\begin{theorem}[Meervoudige lineaire regressie]
+Bij meervoudige lineaire regressie (multiple regression) wordt het model/hypothese bepaald 
+aan de hand van een trainingset met \textbf{meerdere features}.
+\end{theorem}
+
+\begin{itemize}
+    \item Bloeddruk wordt bepaald a.d.h.v. gewicht en leeftijd
+    \item De kwaliteit van wijn wordt voorspeld op basis van: zuurtegraad, suikergehalte, chloriden, dichtheid, sulfaten, hoeveelheid alcohol, \dots
+    \item Het warmeverlies van een huis wordt voorspeld op basis van: het type glas, muurisolatie, oriëntatie van het huis, \dots
+\end{itemize}
+
+\begin{equation}
+h_{\theta}(x) = \theta_0 + \theta_1x_1 + \theta_2x_2 + \dots + \theta_nx_n + 
+\end{equation}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{multiple-regression-voorbeeld.png}
+    \caption{\textbf{Voorbeeld:} voorspel de huisprijs op basis van deze features }
+\end{figure}
+
+\subsection{Statistische vooranalyse}
+
+\subsubsection{Consistentie van de dataset}
+
+\begin{itemize}
+    \item Volledigheid van de dataset
+    \item Inconsistenties
+    \item Spreiding van de gegevens
+\end{itemize}
+
+We verwijderen de CHAS kolom:
+
+\begin{minted}{python}
+dataset.drop('CHAS', axis=1, inplace=True)
+\end{minted}
+
+
+\subsubsection{Uitschieters}
+
+\begin{itemize}
+    \item Vinden en verwijderen van extreme waarden/samples
+    \item Geavanceerde technieken: zie later bij clustering
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{multiple-regression-uitschieters.png}
+    \caption{Uitschieters}
+\end{figure}
+
+
+\subsubsection{Onderlinge correlatie}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{multiple-regression-heatmap.png}
+    \includegraphics[width=0.45\textwidth]{multiple-regression-pairplot.png}
+    \caption{Heatmap en pairplot van de onderline correlatie tussen de features}
+\end{figure}
+
+\subsection{Features en targets}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{multiple-regression-features-targets.png}
+    \caption{Dataset opsplitsen in features en targets}
+\end{figure}
+
+\begin{minted}{python}
+y = dataset['target_kolom'].values
+X = dataset.drop('target_kolom',axis=1).values
+# Alternatief
+features=list(dataset.columns[:dataset.columns.size-1])
+X = dataset[features].values
+y = dataset['Price'].values
+\end{minted}
+
+\subsection{Trainen van het model}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{multiple-regression-training-testset.png}
+    \caption{Dataset opsplitsen in training set en test set}
+\end{figure}
+
+\begin{itemize}
+    \item Belangrijk om eerst de data te randomiseren: te data zou gesorteerd kunnen zijn, dat willen we vermijden
+    \item Stel dat huizenprijzen van laag naar hoog gesorteerd is, en je traint de data op de eerste 75\%, en test de laatste 25\%.
+    Resultaat: Het model zal niet getraind zijn op dure huizen.
+    \item Ander voorbeeld: stel dat je een self-driving AI alleen traint op de autosnelweg, en dan test in een zone-30 straat bij een school...
+\end{itemize}
+
+
+\begin{minted}{python}
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, 
+random_state=0)
+\end{minted}
+
+\subsubsection{Initialiseren en trainen van het regressiemodel}
+
+\begin{minted}{python}
+lregmodel = linear_model.LinearRegression()
+lregmodel.fit(X_train, y_train)
+\end{minted}
+
+Model:
+
+\begin{minted}{python}
+print('coeffs: ', lregmodel.coef_)
+print('intercept', lregmodel.intercept_)
+
+>> coeffs: [ -3.56141289e+00, 4.05479295 e-01, 8.14080284 e-01, 
+    8.96450415 e+01, -3.02997261e-01, -2.77339444e+01, 
+    7.47151897 e+00, -2.92233040e-01, -1.61741146e+01, 
+    -1.17962045e +01]
+
+>> intercept: 650.652022517
+\end{minted}
+
+Price = - 3.56 × CRIM + 0.41 × ZN + 0.81 × INDUS - 270.51 × NOX + 89.65 × RM
+- 0.30 × AGE - 27.74 × DIS + 7.47 × RAD - 0.29 × TAX - 16, 17 × PT
++ 0.08 × B - 11.80 × LSTAT + 650.65
+
+
+\subsection{Testen van het model}
+
+\subsubsection{Voorspellingen maken}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{multiple-regression-voorspelling.png}
+    \caption{Voorspel de prijs van een huis met deze features}
+\end{figure}
+
+\begin{minted}{python}
+house = np.array([0.11, 0, 12.03, 0.57, 6.80, 89.30, 2.39, 1, 
+273, 21.00, 393.45, 6.48])
+
+price = lregmodel.predict(house.reshape(1, -1))
+
+print('De prijs van het huis bedraagt: ', price)
+
+>> De prijs van het huis bedraagt: 563.68335073
+\end{minted}
+
+\begin{itemize}
+    \item reshape(1, -1) maakt een rijvector
+    \item Werkelijke prijs: 562.00
+\end{itemize}
+
+\subsection{Performantie en scores van het model}
+
+\subsubsection{Mean Absolute Error (MAE)}
+
+\begin{theorem}[MAE]
+De Mean Absolute Error (MAE) is \textbf{het gemiddelde van de absolute waarden} van het verschil
+tussen de werkelijke waarden $y_i$ en de voorspelde waarden $\hat{y}_i$.
+
+\begin{equation}
+\text{MAE} = \frac{1}{n} \cdot \sum_{i=1}^n | y_i - \hat{y}_i |
+\end{equation}
+\end{theorem}
+
+\begin{minted}{python}
+from sklearn.metrics import mean_absolute_error
+
+y_predicted = lgregmodel.predict(X_test)
+MAE = mean_absolute_error(y_test, y_predicted)
+
+print('MAE= ', MAE)
+
+>> MAE = 64.0090867586
+
+\end{minted}
+
+\subsubsection{Mean Squared Error (MSE)}
+
+\begin{theorem}[MSE]
+De Mean Squared Error (MSE) is \textbf{het gemiddelde van de gekwadrateerde waarden} van het verschil tussen de werkelijke waarden $y_i$ en
+de voorspelde waarden $\hat{y}_i$.
+
+\begin{equation}
+\text{MSE} = \frac{1}{n} \cdot \sum_{i=1}^n ( y_i - \hat{y}_i )^2
+\end{equation}
+\end{theorem}
+
+\begin{minted}{python}
+from sklearn.metrics import mean_squared_error
+
+y_predicted = lregmodel.predict(X_test)
+MSE = mean_squared_error(y_test, y_predicted)
+
+print('MSE = ' MSE)
+
+>> MSE = 7803.89332739
+\end{minted}
+
+
+\subsubsection{Determinatiecoëfficiënt}
+
+\begin{theorem}[De determinatiecoëfficiënt $R^2$]
+De determinatiecoëfficiënt ($R^2$) is de variabiliteit van het model
+
+\begin{equation}
+R^2 = 1 - \frac{\sum_{i=1}^n (y_i - \hat{y}_i)^2 }{\sum_{i=1}^n (y_i - \bar{y})^2}
+\end{equation}
+
+Bij perfecte voorspellingen is $R^2 = 1$
+
+Een negatieve waarde voor $R^2$ betekent dat het model slechter scoort dan een horizontale lijn ($y_i = \bar{y}$, $\bar{y}$ is het gemiddelde van y)
+\end{theorem}
+
+\begin{minted}{python}
+from sklearn.metrics import r2_score
+
+y_predicted = lregmodel.predict(X_test)
+r2 = r2_score(y_test, y_predicted)
+
+print('r2_score = ', r2)
+
+# alternatieve manier voor het bepalen van de r2 score:
+r2 = lregmodel.score(X_test, y_test)
+
+>> r2 score = 0.754254234917
+\end{minted}
+
+\section{Feature engineering}
+
 
 
 \end{document}
