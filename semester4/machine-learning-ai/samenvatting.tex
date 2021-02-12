@@ -533,7 +533,13 @@ Price = - 3.56 × CRIM + 0.41 × ZN + 0.81 × INDUS - 270.51 × NOX + 89.65 × R
 house = np.array([0.11, 0, 12.03, 0.57, 6.80, 89.30, 2.39, 1, 
 273, 21.00, 393.45, 6.48])
 
-price = lregmodel.predict(house.reshape(1, -1))
+house = house.reshape(1, -1)
+
+# met reshape wordt house:
+# house = np.array([[0.11, 0, 12.03, 0.57, 6.80, 89.30, 2.39, 1, 
+# 273, 21.00, 393.45, 6.48]])
+
+price = lregmodel.predict(house)
 
 print('De prijs van het huis bedraagt: ', price)
 
@@ -551,7 +557,7 @@ print('De prijs van het huis bedraagt: ', price)
 
 \begin{theorem}[MAE]
 De Mean Absolute Error (MAE) is \textbf{het gemiddelde van de absolute waarden} van het verschil
-tussen de werkelijke waarden $y_i$ en de voorspelde waarden $\hat{y}_i$.
+tussen de \textbf{werkelijke waarden} $y_i$ en de \textbf{voorspelde waarden} $\hat{y}_i$.
 
 \begin{equation}
 \text{MAE} = \frac{1}{n} \cdot \sum_{i=1}^n | y_i - \hat{y}_i |
@@ -604,7 +610,7 @@ R^2 = 1 - \frac{\sum_{i=1}^n (y_i - \hat{y}_i)^2 }{\sum_{i=1}^n (y_i - \bar{y})^
 
 Bij perfecte voorspellingen is $R^2 = 1$
 
-Een negatieve waarde voor $R^2$ betekent dat het model slechter scoort dan een horizontale lijn ($y_i = \bar{y}$, $\bar{y}$ is het gemiddelde van y)
+Een negatieve waarde voor $R^2$ betekent dat het model slechter scoort dan een horizontale lijn (= slechter dan het gemiddelde te nemen) ($y_i = \bar{y}$, $\bar{y}$ is het gemiddelde van y)
 \end{theorem}
 
 \begin{minted}{python}
@@ -622,6 +628,225 @@ r2 = lregmodel.score(X_test, y_test)
 \end{minted}
 
 \section{Feature engineering}
+
+Om een beter model te verkrijgen (en zo een betere $R^2$ score), kunnen we verschillende dingen doen:
+
+\begin{itemize}
+    \item Meer data toevoegen
+    \item Ander model kiezen, hyperparameter tuning
+    \item Feature engineering 
+\end{itemize}
+
+\subsection{Normalisatie / Scaling}
+
+\begin{theorem}[Normalisatie / Scaling]
+Normalisatie of Scaling zorgt ervoor dat de features op dezelfde schaalverdeling staan
+\end{theorem}
+
+In ons voorbeeld van de huurprijs:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{normalisatie.png}
+    \caption{NOX: min = 0.385, max = 0.871; TAX: min = 188, max = 711}
+\end{figure}
+
+\subsubsection{Voordelen}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{scaling.png}
+    \caption{Gradient Descent convergeert minder snel als features op een verschillende schaalgrootte staan. Normalisatie zorgt er dus voor dat het model sneller zal trainen.}
+\end{figure}
+
+\subsubsection{MIN-MAX-scaling}
+
+\begin{equation}
+x_{s_i} = \frac{x_i - Min(x)}{Max(x) - Min(x)}
+\end{equation}
+
+\begin{itemize}
+    \item Schaalt alle features tussen 0 en 1
+    \item Werkt goed bij niet-Gaussiaanse distributies en bij kleine variantie
+    \item De scheefheid (skew) blijft bewaard
+    \item Gevoelig voor uitschieters
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{min-max-scaling.png}
+    \caption{Voor en na scaling}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{min-max-houses.png}
+    \caption{Bij het voorbeeld van de huizenprijzen}
+\end{figure}
+
+\begin{minted}{python}
+from sklean.preprocessing import MinMaxScaler
+
+scaler = MinMaxScaler.fit(X_train)
+X_train = scaler.transform(X_train)
+X_test = scaler.transform(X_test)
+
+# alternatief
+scaler = MinMaxScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+\end{minted}
+
+\subsubsection{Standard scaling (normalisatie)}
+
+\begin{equation}
+x_{s_i} = \frac{x_i - mean(x)}{stdev(x)}
+\end{equation}
+
+\begin{itemize}
+    \item Geschaalde features;
+    \begin{itemize}
+        \item Gemiddelde = 0
+        \item Standaardafwijking = 1
+    \end{itemize}
+    \item Geschaalde features schommelen rond 0 (soms nodig bij deep learning)
+    \item Vervormt geen relatieve afstanden tussen de feature waarden
+    \item Kan beter overweg met uitschieters
+    \item Garandeert geen genormaliseerde data op exact dezelfde schaal
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{standard-scaling.png}
+    \caption{Voor en na standard scaling}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{standard-scaling-houses.png}
+    \caption{Bij het voorbeeld van de huizenprijzen}
+\end{figure}
+
+
+\begin{minted}{python}
+from sklean.preprocessing import StandardScaler
+
+scaler = StandardScaler.fit(X_train)
+X_train = scaler.transform(X_train)
+X_test = scaler.transform(X_test)
+
+# alternatief
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+\end{minted}
+
+\subsubsection{Robust scaling}
+
+\begin{equation}
+x_{s_i} = \frac{x_i - Q_2(x)}{Q_3(x) - Q_1(x)}
+\end{equation}
+
+\begin{itemize}
+    \item Lijkt op MIN-MAX scaler maar gebruikt de interkwartielafstand ipv range
+    \item Houdt geen rekening met uitschieters
+    \item Gebruikt minder data bij het bepalen van de schaal
+    \item Range van de genormaliseerde data is groter dan bij MIN-MAX scaling
+    \item Garandeert geen genormaliseerde data op exact dezelfde schaal
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{robust-scaling.png}
+    \includegraphics[width=0.45\textwidth]{robust-scaling2.png}
+    \caption{Voor en na robust scaling}
+\end{figure}
+
+\begin{minted}{python}
+from sklean.preprocessing import RobustScaler
+
+scaler = RobustScaler.fit(X_train)
+X_train = scaler.transform(X_train)
+X_test = scaler.transform(X_test)
+
+# alternatief
+scaler = RobustScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+\end{minted}
+
+\subsection{Feature expansion}
+
+\subsubsection{Nieuwe features}
+
+Bedenken van nieuwe features
+
+\textbf{Voorbeelden:}
+
+\begin{itemize}
+    \item Uit de lengte en breedte van een huis de oppervlakte halen als nieuwe feature.
+    \item Uit een start en eindpunt de afstand halen als nieuwe feature.
+    \item Uit een datum afleiden welke dag van de week het is.
+    \item Veranderingen in de features.
+    \item Nieuwe opgemeten parameters.
+\end{itemize}
+
+\subsubsection{Hogere-orde features}
+
+= Het verband tussen features en de target(s) is niet altijd lineair.
+
+\textbf{Voorbeeld:} samenhang tussen LSTAT $(x_1)$ en de huizenprijs $(P)$
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{hogere-orde-features.png}
+    \caption{$P = \theta_0 + \theta_1x_1$}
+\end{figure}
+
+Toevoegen van een extra hogere-orde feature $x_2 = x^2_1$:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{hogere-orde-features2.png}
+    \caption{$P = \theta_0 + \theta_1x_1 + \theta_2x_2$ }
+\end{figure}
+
+Toevoegen van een extra hogere-orde features $x_3 = x^3_1$ en $x_4 = x^4_1$:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{hogere-orde-features3.png}
+    \caption{$P = \theta_0 + \theta_1x_1 + \theta_2x_2 + \theta_3x_3$ }
+    \includegraphics[width=0.3\textwidth]{hogere-orde-features4.png}
+    \caption{$P = \theta_0 + \theta_1x_1 + \theta_2x_2 + \theta_3x_3 + \theta_4x_4$}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+\end{figure}
+
+\begin{minted}{python}
+# toevoegen van een extra feature: LSTAT^2 LSTAT^3
+dataset.insert(dataset.columns.size - 1, 'LSTAT^2', dataset.LSTAT**2)
+dataset.insert(dataset.columns.size - 1, 'LSTAT^3', dataset.LSTAT**3)
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{hogere-orde-features5.png}
+    \caption{Resultaat toevoegen hogere-orde features}
+\end{figure}
+
+\begin{itemize}
+    \item Nu model met extra features trainen en nadien testen op de test set.
+    \item \textbf{Opgepast:} bij de test set moet je ook dezelfde features toevoegen.
+\end{itemize}
+
+\subsection{One-hot encoding}
+
+= Omzetten van categorische variabelen naar meerdere aparte features
+
+(TODO: slide 94)
 
 
 
