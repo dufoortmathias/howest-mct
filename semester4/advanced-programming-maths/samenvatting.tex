@@ -611,10 +611,35 @@ Regressieanalyse:
     \caption{Lineaire vs niet-lineaire samenhang}
 \end{figure}
 
-\subsubsection{Regressiemodel}
+
+\subsubsection{Lineair regressiemodel}
+
+Enkelvoudige vorm: 
+
+\begin{itemize}
+    \item 1 inputwaarde x
+    \item via lineaire functie $h_{\theta}(x) = \theta_0 + \theta_1x$
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{lineair-regressiemodel.png}
+    \caption{}
+\end{figure}
+
+\begin{itemize}
+    \item Aan de hand van de opgestelde functie doe je een voorspelling
+    \item \textbf{Doel:} een zo goed mogelijke lineaire functie opstellen
+    \item $\Rightarrow$ zoektocht naar de beste $\theta_0$ en $\theta_1$
+\end{itemize}
+
+
+\subsubsection{Logistisch regressiemodel}
+
+Logistische regressie = \textbf{Classificatie-algoritme}
 
 Zoeken naar een model dat uitkomst (2 mogelijkheden) voorspelt mbv inputwaardes.
-Elke inputwaarde heeft een zeker belang (gewicht)
+Elke inputwaarde heeft een zeker belang (gewicht).
 
 \begin{figure}[H]
     \centering
@@ -622,6 +647,190 @@ Elke inputwaarde heeft een zeker belang (gewicht)
     \caption{3 inputs met elk een bepaald gewicht, die een uitkomst zoekt (2 mogelijkheden)}
 \end{figure}
 
-(TODO slide 12)
+Vereenvoudiging:  
+
+\begin{itemize}
+    \item 1 inputwaarde x
+    \item Logistische functie $p = \frac{1}{1 + e^{-(b_0+b_1x)}}$
+\end{itemize}
+
+Uitkomst:
+
+\begin{itemize}
+    \item de persoon slaagt als $h_{\theta}(x) \geq 0.5$
+    \item de persoon slaagt niet als $h_{\theta}(x) < 0.5$
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{logistisch-regressiemodel.png}
+    \caption{1 inputwaarde x, met twee  uitkomsten}
+\end{figure}
+
+\subsubsection{Lineair vs logistisch regressiemodel}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{lineair-vs-logistisch-regression-model.png}
+    \caption{Hoe dichter p tegen 1, hoe zekerder het model is}
+\end{figure}
+
+Welk model gaat het snelst naar 0 en 1? 
+
+\begin{itemize}
+    \item Het logistische model
+    \item Daarom is het logistische model beter voor classificate: je splitst de groep op in 2
+\end{itemize}
+
+\subsubsection{Meerdere inputfactoren}
+
+Zelfde redenering:
+
+\begin{itemize}
+    \item Meerdere inputwaardes $x_1, x_2, \dots$
+    \item Gebruik $\theta_0 + \theta_1x_1 + \theta_2x_2 + \dots$
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{logistische-regressie-meerdere-inputfactoren.png}
+    \caption{Regressiemodel met meerdere inputfactoren}
+\end{figure}
+
+
+\subsection{Softmax functie}
+
+Doelstelling:
+
+\begin{itemize}
+    \item Model dat in staat is om data te gaan categoriseren
+    \item Hoe?
+    \begin{itemize}
+        \item $\Rightarrow$ Met behulp van verschillende inputvariabelen en bijhorende parameters 
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{softmax.png}
+    \includegraphics[width=0.4\textwidth]{softmax2.png}
+    \caption{Categoriseren met de softmax functie}
+\end{figure}
+
+\subsubsection{Kansen}
+
+Kans dat de toestand tot groep A behoort:
+
+\begin{itemize}
+    \item $\theta_{A,0} + \theta_{A,1}x_1 + \theta_{A,2}x_2$
+    \item Voorbeeld: $0.01 + 0.1x_1 + 0.1x_2$
+\end{itemize}
+
+Kans dat de toestand tot groep B behoort:
+
+\begin{itemize}
+    \item $\theta_{B,0} + \theta_{B,1}x_1 + \theta_{B,2}x_2$
+    \item Voorbeeld: $0.1 + 0.2x_1 + 0.2x_2$
+\end{itemize}
+
+Kans dat de toestand tot groep C behoort:
+
+\begin{itemize}
+    \item $\theta_{C,0} + \theta_{C,1}x_1 + \theta_{C,2}x_2$
+    \item Voorbeeld: $0.1 + 0.3x_1 + 0.3x_2$
+\end{itemize}
+
+\subsubsection{Model}
+
+Het softmax-model berekent de mate van zekerheid dat een toestand tot een bepaalde categorie behoort.
+
+vb: volgende quotiënt drukt uit hoe zeker hij is dat (z1, z2) tot categorie A behoort:
+
+$\frac{e^{\theta_{A,0} + \theta_{A,1}z_1 + \theta_{A,2}z_2}}{e^{\theta_{A,0} + \theta_{A,1}z_1 + \theta_{A,2}z_2} + e^{\theta_{B,0} + \theta_{B,1}z_1 + \theta_{B,2}z_2} + e^{\theta_{C,0} + \theta_{C,1}z_1 + \theta_{C,2}z_2} }$
+
+(analoog voor categorie B en C: vervang de teller)
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{softmax-voorbeeld.png}
+    \caption{Betekenis: het model is 29\% zeker dat (0.1, 0.5) tot categorie A behoort. Bereken zelf als oefening voor B en C}
+\end{figure}
+
+\subsubsection{Wiskundig}
+
+Het gebruikte model wordt via volgende wiskundige formule algemeen beschreven:
+
+\begin{equation}
+\frac{e^{x_k}}{\sum_{i=1}^n e^{x_i}}
+\end{equation}
+
+waarbij:
+
+\begin{itemize}
+    \item $x_k = \theta_{k,0} + \theta_{k,1}x_1 + \theta_{k,2}x_2 + \dots + \theta_{k,m}x_m$
+    \item n = aantal groepen
+    \item m = het aantal meetcriteria
+\end{itemize}
+
+\subsection{Logistic regression cost function}
+
+Het model:
+
+\begin{equation}
+h_{\theta}(x) = \frac{1}{1 + e^{-\theta^{\tau}x}}
+\end{equation}
+
+waarbij:
+
+\begin{itemize}
+    \item $\theta^{\tau}x = \theta_0 + \theta_1x_1 + \theta_2x_2$
+    \item $h_{\theta}$ drukt uit wat de kans is dat voor opgegeven $x_1$ en $x_2$ de waarneming tot 1 groep behoort
+    \item $x_1$ en $x_2$ zijn de inputwaardes
+    \item $\theta_1$ en $\theta_2$ zijn gewichten (hoe belangrijk is de input)
+    \item \textbf{Doel: } vinden van de beste gewichten zodat de voorspelling == de werkelijkheid
+\end{itemize}
+
+\subsubsection{Success meten}
+
+\textbf{Stel:} je maakt een logistisch regressiemodel die bepaalt of een object een groene appel of een tennisbal is. 
+
+\begin{itemize}
+    \item Bepalen van de kostenfunctie $J(\theta)$ met als doel deze zo laag mogelijk te brengen
+    \item kost = afwijking tegenover de werkelijke situatie
+    \item werkelijkheid kan 2 situaties zijn:
+    \begin{itemize}
+        \item Indien de werkelijkheid een groene appel is $\Rightarrow y = 1$ 
+        \item Indien de werkelijkheid géén groene appel is $\Rightarrow y = 0$ 
+    \end{itemize}
+\end{itemize}
+
+Hoe ziet zo'n kostfunctie er dan uit?
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{logistische-regressie-kost.png}
+    \caption{Als $y = 1$ en $y = 0$}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{logistische-regressie-kost2.png}
+    \caption{}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{logistische-regressie-kost3.png}
+    \caption{}
+\end{figure}
+
+Hoe brengen we 2 mogelijke situaties in 1 functie samen?
+
+
+(TODO: slide 24)
+
+
+
+
 
 \end{document}
