@@ -827,10 +827,346 @@ Hoe ziet zo'n kostfunctie er dan uit?
 Hoe brengen we 2 mogelijke situaties in 1 functie samen?
 
 
-(TODO: slide 24)
+(TODO: slide 24 - 32)
 
 
+\section{Pandas library}
 
+\subsection{Inleiding}
+
+\begin{itemize}
+    \item Doelstelling:
+    \begin{itemize}
+        \item Nut van de pandas library kunnen situeren
+        \item Data-analyse: basisbewerkingen
+    \end{itemize}
+    \item Pandas = `Python Data Analysis Library'
+    \item Pandas bouwt op de NumPy library
+    \item Officiële website: \url{https://pandas.pydata.org/}
+    \item Goede start: \url{http://pandas.pydata.org/pandas-docs/stable/10min.html} 
+\end{itemize}
+
+\subsubsection{Welke data verwerken?}
+
+\begin{itemize}
+    \item csv-files
+    \item txt-files
+    \item Excel-files
+    \item Databases
+\end{itemize}
+
+\subsection{Pandas.core}
+
+Beschikbare datastructuren:
+
+\begin{itemize}
+    \item Series (1D)
+    \item DataFrame (2D)
+    \item Panel (3D)
+\end{itemize}
+
+\subsection{Series}
+
+Bestemd voor 1-dimensionale data: 
+
+`a one-dimension labeled array capable of holding any data'
+
+
+\begin{itemize}
+    \item Subklasse van numpy-ndarray
+    \item Data: elk soort datatype
+    \item Geordende index
+    \item Duplicaten mag (maar niet optimaal)
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.2\textwidth]{panda-series.png}
+    \caption{Elk element heeft een index}
+\end{figure}
+
+\subsection{DataFrame}
+
+Bestemd voor meer-dimensionale data
+
+\begin{itemize}
+    \item Subklasse van numpy-ndarray
+    \item Elke kolom kan ander datatype hebben
+    \item Rij en kolom index
+    \item Grootte wijzigbaar (invoegen/verwijderen van rijen en kolommen)
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{panda-dataframe0.png}
+    \caption{DataFrames maken uit Python lists en dictionaries}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.25\textwidth]{panda-dataframe.png}
+    \includegraphics[width=0.35\textwidth]{panda-dataframe2.png}
+    \caption{Elk element heeft een rij en kolom}
+\end{figure}
+
+
+\subsubsection{Select data from DataFrame}
+
+\textbf{Via operator [] selecteer je een kolom:}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{panda-dataframe-data.png}
+    \caption{Voorbeeld DataFrame}
+\end{figure}
+
+
+\begin{minted}{python}
+# selecteer de kolom Jan uit dataframe
+df['Jan']
+
+# analoog: elke kolom is dus een attribuut van dataframe
+df.Jan
+
+# returnwaarde: Series-object
+0   150
+1   200
+2   50
+Name: Jan, dtype: int64
+\end{minted}
+
+\textbf{Via operator [[]] selecteer je een kolom \& krijg je een dataframe terug:}
+
+\begin{minted}{python}
+>> df[['Jan']]
+# returns:
+    Jan
+0   150
+1   200
+2   50
+
+>> df[['Jan', 'Mar']]
+# returns:
+    Jan     Mar
+0   150     140
+1   200     215
+2   50      95
+\end{minted}
+
+\textbf{Via de operator [] en met een conditie:}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{panda-dataframe-data2.png}
+    \caption{Voorbeeld DataFrame}
+\end{figure}
+
+\begin{minted}{python}
+>> df[df.Jan > 60]
+# returns:
+    Feb     Jan     Mar     account
+0   200     150     140     Jones LLC
+1   210     200     215     Alpha Co
+
+>> df[np.logical_and(df.Jan > 100, df.Feb <= 200)]
+# returns:
+    Feb     Jan     Mar     account
+0   200     150     140     Jones LLC
+
+>> df[df.account.str.startswith(‘Alpha’)]
+# test deze eens zelf uit als oefening :)
+\end{minted}
+
+\subsubsection{Veelgebruikte commandos bij dataframes}
+
+\begin{minted}{python}
+df.shape            # geeft de dimensie als een tuple terug
+df.info()           # oplijsting van de aanwezige kolommen
+df.head([aantal])   # eerste vijf/aantal rijen
+df.tail([aantal])   # laatste vijf/aantal rijen
+df.index            # geef de index-kolom weer
+df.colums           # geef de kolomnamen weer
+df.describe()       # geef snel overzicht van statistische data
+df.T                # transponeer data (rij -> kol, kol -> rij)
+df.sort_index()     # sorteer op basis van index
+df.sort_values()    # sorteren op één of meerdere kolommen
+\end{minted}
+
+
+\subsection{Loc vs iloc}
+
+\subsubsection{iloc}
+
+= Integer-location based indexing / selection by position
+
+\begin{itemize}
+    \item Nut: selecteren van rijen en kolommen via rij/kolomnummer
+    \item Syntax: data.iloc[<row>, <column>]
+    \item Returnwaarde:
+    \begin{itemize}
+        \item Indien 1 \textbf{rij} $\Rightarrow$ series-object
+        \item Indien meerdere \textbf{rijen}: $\Rightarrow$ dataframe-object
+        \item 1 of meerdere \textbf{kolommen}: $\Rightarrow$ dataframe-object 
+    \end{itemize}
+\end{itemize}
+
+\textbf{iloc-voorbeelden:}
+
+\begin{minted}{python}
+# Rows:
+data.iloc[0] # first row of data frame
+data.iloc[1] # second row of data frame
+data.iloc[-1] # last row of data frame
+
+# Columns:
+data.iloc[:,0] # first column of data frame
+data.iloc[:,1] # second column of data frame
+data.iloc[:,-1] # last column of data frame
+
+data.iloc[0:5] # first five rows of dataframe
+
+# first two columns of data frame with all rows
+data.iloc[:, 0:2] 
+
+# 1st, 4th, 7th, 25th row + 1st 6th 7th columns.
+data.iloc[[0,3,6,24], [0,5,6]]  
+
+# first 5 rows and 5th, 6th, 7th columns of data frame
+data.iloc[0:5, 5:8]
+
+\end{minted}
+
+\subsubsection{loc}
+
+= label based indexing / selection
+
+\begin{itemize}
+    \item Nut: selecteren van rijen en kolommen via label / via conditionele look-up
+    \item Syntax: data.loc[<row>, <column>]
+    \item Returnwaarde:
+    \begin{itemize}
+        \item Indien 1 \textbf{rij/kol} $\Rightarrow$ series-object
+        \item Indien meerdere \textbf{rijen}: $\Rightarrow$ dataframe-object
+        \item 1 of meerdere \textbf{kolommen}: $\Rightarrow$ dataframe-object 
+    \end{itemize}
+\end{itemize}
+
+
+\textbf{loc-voorbeelden:}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{pandas-loc-voorbeeld.png}
+    \caption{Voorbeeld dataframe}
+\end{figure}
+
+
+\begin{minted}{python}
+reviews.loc[:2, "score"] # return type = 
+
+reviews.loc[:2, ["score", "title"]] # return type = 
+
+# select column "score" where value of index <= 5
+reviews.loc[:5, "score"]
+
+# select columns "country" and "cars_per_cap" where rowindex is "US" or "RU"
+cars.loc[ ["US","RU"] , ["country","cars_per_cap"]]
+
+# select columns "country" and "cars_per_cap" where rowindex is from "US" to "RU"
+cars.loc[ "US " : "RU " , ["country","cars_per_cap"]]
+
+# selectie rijen hoeft niet altijd op basis van row-index te zijn
+# select columns "country" and "drives_right", voor de landen 'Japan' en 'India'
+cars.loc[ cars.country.isin( ['Japan', 'India'] ) , ['country','drives_right']]
+\end{minted}
+
+\subsection{Plotten met pandas}
+
+\subsubsection{Dataframe plotten}
+
+\begin{minted}{python}
+# print(cars[['country', 'cars_per_cap']])
+# werkwijze 1:
+cars[['country', 'cars_per_cap']].plot(kind='bar', legend=True)
+# werkwijze 2:
+cars.plot(x='country', y='cars_per_cap', kind='bar', legend=True)
+
+plt.show()
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{pandas-plotting.png}
+    \caption{Resultaat}
+\end{figure}
+
+\subsubsection{Series plotten}
+
+\begin{minted}{python}
+# werkwijze 1:
+plt.plot(cars['cars_per_cap'])
+# werkwijze 2:
+plt.plot(cars['cars_per_cap'].plot(color='r', legend=True))
+
+plt.show()
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{pandas-plotting2.png}
+    \caption{Resultaat}
+\end{figure}
+
+\subsection{Demo: Iris Dataset}
+
+(Zie DemoPandas.zip op Leho voor de code)
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pandas-demo.png}
+    \caption{Een iris bestaat uit petals \& sepals, met elk hun breedte en lengte}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pandas-demo2.png}
+    \caption{Plotten van de beschikbare data (demo5.py)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{pandas-demo3.png}
+    \caption{Vergelijken van de lengtes en breedtes adhv box-plots (demo6.py)}
+\end{figure}
+
+\begin{minted}{python}
+# filteren van data
+result_check = iris['Species'] == 'Iris-setosa'
+# print(type(result_check)) == TODO
+filtered_setosa = iris.loc[result_check, :]
+# of in 1 lijn:
+filtered_setosa = iris.loc[iris['Species'] == 'Iris-setosa', :]
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{pandas-demo4.png}
+    \includegraphics[width=0.4\textwidth]{pandas-demo5.png}
+    \caption{Frequentiediagram voor de Iris-setosa soort (demo7.py)}
+\end{figure}
+
+\subsection{Complexe bewerkingen}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{pandas-complexe-bewerkingen.png}
+    \caption{Reshaping data: change the layout of a data set}
+\end{figure}
+
+(komen we later nog op terug)
+
+\section{}
 
 
 \end{document}
