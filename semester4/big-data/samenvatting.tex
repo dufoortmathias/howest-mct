@@ -325,7 +325,7 @@ Response time = Network latency + processing
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{latency-vs-storage-space-pyramid.png}
+    \includegraphics[width=0.7\textwidth]{latency-vs-storage-space-pyramid.png}
     \caption{The higher the performance, the higher the cost per byte of storage}
 \end{figure}
 
@@ -354,10 +354,27 @@ Response time = Network latency + processing
 \end{figure}
 
 \begin{itemize}
+    \item SSD = Solid State Drive
     \item NAND = MOSFET + floating gate
     \item Voltage between control gate and N+ : electrons in floating gate
     \item This works very quickly
 \end{itemize}
+
+\textbf{Architecture}
+
+\begin{itemize}
+    \item Page = 4 KB, pages are in block
+    \item Block = 128 pages (4KB * 128 = 512 KB)
+    \item You can read or write page per page
+    \item Erasing has to erase the entire block
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{flash-architecture.png}
+    \caption{Diagram of a flash Block}
+\end{figure}
+
 
 \subsubsection{Big difference between read and writing}
 
@@ -396,6 +413,8 @@ Response time = Network latency + processing
     \caption{Storage options}
 \end{figure}
 
+\subsubsection{Performance Conditions}
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{performance-conditions.png}
@@ -403,9 +422,363 @@ Response time = Network latency + processing
 \end{figure}
 
 
+\subsection{RAID}
+
+\subsubsection{Definition}
+
+\textbf{Redundant Array of Inexpensive Disks} is a storage technology that combines multiple physical drives into one logical unit.
+
+Purpose:
+
+\begin{itemize}
+    \item Data redundancy
+    \item Performance improvement
+    \item Both
+\end{itemize}
+
+\subsubsection{Hardware <> chip}
+
+
+\subsubsection{Raid levels}
+
+\begin{itemize}
+    \item RAID 0
+    \item RAID 1
+    \item RAID 5
+    \item Combinations are possible (RAID 10, 01, 51, 15)
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{raid.png}
+    \caption{RAID level choices}
+\end{figure}
+
+\subsubsection{Caching \& BBU}
+
+\begin{itemize}
+    \item RAM caching: to allow more users to access your data at a time
+    \item RAID = lower latency by caching
+    \item Not always durable: backup solutions needed like Battery Backup Unit (BBU)
+    \item RAID = more bandwitdth, +- same latency
+    \begin{itemize}
+        \item Latency does not increase as fast when load increases (vs single disk)
+        \item More bandwidth \& capacity available
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{raid-caching.png}
+    \caption{RAID configuration}
+\end{figure}
+
+
 \subsection{Professional Storage Topology}
 
+\subsubsection{Components}
+
+\begin{itemize}
+    \item Enclosure
+    \item Controller
+    \item Disk Array
+    \item HotSpare (=backup disk if a disk fails)
+    \item LUN (logical unit number) / Volumes (= logical storage areas)
+\end{itemize}
+
+\subsubsection{DAS - Block storage}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{das.png}
+    \caption{}
+\end{figure}
+
+\begin{itemize}
+    \item Up to 122 disks per SAS controller
+    \item Similar to disks inside the server
+    \item No centralized back-up
+\end{itemize}
 
 
+\subsubsection{NAS - File storage}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{nas.png}
+    \caption{}
+\end{figure}
+
+\begin{itemize}
+    \item Common Internet File System (CIFS) for Windows
+    \item $\rightarrow$ SMB protocol
+    \item Network File System (NFS) for UNIX $\Rightarrow$ mounting via network
+    \item SMB also available in Linux
+\end{itemize}
+
+\subsubsection{SAN - Block storage on a network}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{san.png}
+    \caption{}
+\end{figure}
+
+\begin{itemize}
+    \item Seperate Block storage network
+    \item Centralized backup \& management
+    \item Good scaling, no load on LAN
+    \item But:
+    \begin{itemize}
+        \item No standards - proprietary
+        \item Expensive
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{iSCSI terminology}
+
+\begin{itemize}
+    \item iSCSI Target = the iSCSI 'server'
+    \begin{itemize}
+        \item IP + port = Portal
+        \item Portal: LUNs / Volumes
+        \item Volume = IQN 
+    \end{itemize}
+    \item iSCSI Initiator = the iSCSI 'client'
+    \begin{itemize}
+        \item Connects targets
+        \item Find LUNs/Volumes
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{iscsi - layers.jpg}
+    \caption{}
+\end{figure}
+
+\subsubsection{Object storage}
+
+\begin{itemize}
+    \item NAS hardware
+    \begin{itemize}
+        \item Distributed over multiple datacenters
+    \end{itemize}
+    \item Object Data
+    \begin{itemize}
+        \item Metadata
+    \end{itemize}
+    \item Globally Unique Identifier
+    \begin{itemize}
+        \item URL
+        \item RESTful API
+    \end{itemize}
+    \item Examples:
+    \begin{itemize}
+        \item AWS S3
+        \item Ceph - Lustre
+        \item Google Cloud storage
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{object-storage.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Link with Databases \& other data storage}
+
+
+
+
+
+\begin{itemize}
+    \item Transactional database: needs block storage
+    \begin{itemize}
+        \item Performance
+        \item Durability
+        \item Consistency
+    \end{itemize}
+    \item Block storage best for `raw data' (no meta data involved)
+    \item NAS = `file based' services like sharepoint
+    \item static objects on Object Cloud storage
+    \begin{itemize}
+        \item good match for OOP \& `unstructured data'
+        \item highly available
+        \item `Eventually' consistent
+    \end{itemize}
+\end{itemize}
+
+\section{Relational databases}
+
+Data intensive application: needs RAMS!
+
+\begin{itemize}
+    \item \textbf{Reliable}
+    \item Available
+    \item Maintainable
+    \item Scalable
+\end{itemize}
+
+\subsection{Components of a relational database}
+
+\begin{itemize}
+    \item \textbf{Tables} = Relations are saved in the format of tables
+    \item \textbf{Relationships} = a logical connection between different tables
+    \begin{itemize}
+        \item Join, key, foreign key
+        \item Relation schema
+    \end{itemize}
+    \item \textbf{Tuple} = A single row (record) of a table, which contains a single unordered record for that relation
+    \begin{itemize}
+        \item A dataset representing an object, an item (`person')
+        \item Columns represent the attributes
+        \item Tuples are unique
+        \item Tuples are similar to Python dictionaries or JavaScript objects
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{relational-database-tuples.png}
+    \caption{1 relation `student': 20 tuples, 8 attributes}
+\end{figure}
+
+\subsection{Reliability problems}
+
+\begin{itemize}
+    \item Applications crash
+    \item Client (website) - network - database
+    \begin{itemize}
+        \item $\Rightarrow$ network is very unreliable
+    \end{itemize}
+    \item Multi-threaded code: race conditions $\Rightarrow$ who gets access to 1 piece of data
+    \item Disks can fail
+\end{itemize}
+
+\subsection{Example}
+
+
+1 database: bank
+
+\begin{itemize}
+    \item Checking account = table 1
+    \item Savings account = table 2
+\end{itemize}
+
+\subsubsection{The problem}
+
+\begin{minted}{sql}
+SELECT saldo FROM checking WHERE customer_id = 10233276;
+UPDATE balance SET balance = balance - 200.00 WHERE customer_id = 10233276;
+
+# CRASH: -200 but not on savings account!
+    
+UPDATE Savings SET balance = balance + 200.00 WHERE customer_id = 10233276;
+
+# Crash: +200, and application might try again: +400
+\end{minted}
+
+\subsubsection{The solution: Transactions}
+
+= multiple operations are executed on multiple objects as one unit
+
+\begin{minted}{sql}
+START TRANSACTION;
+SELECT balance FROM checking WHERE customer_id = 10233276;
+UPDATE checking SET balance = balance - 200.00 WHERE customer_id = 10233276;
+UPDATE savings SET balance = balance + 200.00 WHERE customer_id = 10233276;
+COMMIT;
+\end{minted}
+
+
+\textcolor{red}{\textbf{VERY IMPORTANT! Every transaction is ACID}}
+
+\begin{itemize}
+    \item \textbf{Atomic}
+    \begin{itemize}
+        \item Each transaction is treated as a single `unit', which either succeeds completely, or fails completely.
+        \item If all succeed $\Rightarrow$ Commit transaction
+        \item If at least one fails $\Rightarrow$ Rollback transaction
+    \end{itemize}
+    \item \textbf{Constistent}
+    \begin{itemize}
+        \item Data cannot get `magically' deleted or added
+        \item 
+        \item Example: when sending money to another bank account, the money cannot exist on both accounts after a transaction
+    \end{itemize}
+    \item \textbf{Isolated}
+    \begin{itemize}
+        \item Transactions cannot interfere with each other
+    \end{itemize}
+    \item \textbf{Durable}
+    \begin{itemize}
+        \item Data is written in a reliable way 
+        \item Storage medium must be reliable
+    \end{itemize}
+\end{itemize}
+
+Commit / Rollback does not protect agains threads that overwrite each other!
+It only protects agains crashes from one thread.
+
+\subsection{Single object entry}
+
+Situation: 
+
+\begin{itemize}
+    \item Input = 1 record - row - object
+    \begin{itemize}
+        \item What if the network fails while sending the input
+    \end{itemize}
+    \item Single Object Atomicity \& isolation:
+    \begin{itemize}
+        \item Create log entry (WAL = Write Ahead Log)
+        \item Write lock when writing
+        \item Create log entry if successful
+        \item Restart if fail
+    \end{itemize}
+    \item (Almost) all database - storage engines support this
+    \item This is not a transaction!
+\end{itemize}
+
+\subsection{Isolation levels}
+
+= Choose between strong isolation or strong performance
+
+\begin{itemize}
+    \item Modern processing 8 - 100+ threads
+    \item Choose an isolation level:
+    \begin{itemize}
+        \item Read Uncommitted (weakest isolation, most performance)
+        \item Read Committed
+        \item Repeatable Read (=snapshot isolation)
+        \item Serial Execution (strongest isolation, least performance)
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{isolation-levels-dbs.png}
+    \caption{(default) isolation levels in current databases. (*) Wrong, not ANSI compliant}
+\end{figure}
+
+\subsubsection{Read Uncommited}
+
+TODO
+
+\subsubsection{Read Committed}
+
+= No dirty reads \& no dirty writes
+
+TODO
+
+
+\textbf{Solutions}
+
+\begin{enumerate}
+    \item Read locks (bad performance)
+    \item Remember the old value until `commit' (better performance)
+\end{enumerate}
 
 \end{document}
