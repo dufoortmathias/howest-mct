@@ -48,6 +48,7 @@ semester4/big-data/labo/
 semester4/advanced-programming-maths/labo/
 semester4/linux-os/labo/
 semester4/backend-development/labo/
+semester4/machine-learning-ai/labo/
 
 ## PDF compilation is now handled with a Github Action
 #samenvatting.pdf

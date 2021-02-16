@@ -330,7 +330,7 @@ $\mathbf{R^2}$\textbf{-waarde:} determinatiecoëfficiënt
 We moeten de kostenfunctie $J(\theta)$ via de \textbf{Least Mean Squared} methode (LMS). 
 
 \begin{equation}
-J(\theta) = \frac{1}{2\cdot m} \cdot \sum_{i=1}^m (h_{\theta}(x^{i}) - y^i)^2
+J(\theta) = \frac{1}{2\cdot m} \cdot \sum_{i=1}^m (h_{\theta}(x_i) - y_i)^2
 \end{equation}
 
 \begin{itemize}
@@ -346,7 +346,7 @@ J(\theta) = \frac{1}{2\cdot m} \cdot \sum_{i=1}^m (h_{\theta}(x^{i}) - y^i)^2
 \subsection{Gradient Descent (GDS)}
 
 \begin{equation}
-J(\theta_0, \theta_1) = \frac{1}{2\cdot m} \cdot \sum_{i=1}^m ((\theta_1\cdot x^i + \theta_0) - y^i)^2
+J(\theta_0, \theta_1) = \frac{1}{2\cdot m} \cdot \sum_{i=1}^m ((\theta_1\cdot x_i + \theta_0) - y_i)^2
 \end{equation}
 
 Stel de parameters $\theta_0$ en $\theta_1$ voortdurend bij in een iteratief proces 
@@ -354,7 +354,7 @@ tot je de waarden voor $\theta_0$ en $\theta_1$ hebt gevonden die de kleinst mog
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{gradient-descent-theta0.png}
+    \includegraphics[width=0.7\textwidth]{gradient-descent-theta0.png}
     \caption{De GDS als $\theta_0 = 0$}
 \end{figure}
 
@@ -844,10 +844,198 @@ dataset.insert(dataset.columns.size - 1, 'LSTAT^3', dataset.LSTAT**3)
 
 \subsection{One-hot encoding}
 
-= Omzetten van categorische variabelen naar meerdere aparte features
+\begin{itemize}
+    \item = Omzetten van categorische variabelen naar meerdere aparte features
+    \item categorische variabelen = variabelen zonder echte waarden, de waarden stellen een categorie voor (niet altijd een nummer)
+    \item $\Rightarrow$ voor elke categorie een nieuwe kolom
+    \item `Dummy Variable Trap'
+    \begin{itemize}
+        \item = als een rij maar tot 1 categorie kan behoren (zie onderstaand voorbeeld, een appel is geen kip), dan zou je in principe 1 kolom kunnen schrappen en dan kan je toch dezelfde informatie krijgen.
+        \item $x_1 + x_2 + x_3 = 1 \Leftrightarrow x_1 = 1 - x_2 - x_3$   
+        \item In de praktijk laat men dit gewoon staan.
+        \item (niet te kennen op examen)
+    \end{itemize}
+\end{itemize}
 
-(TODO: slide 94)
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{one-hot-encoding.png}
+    \caption{Voorbeeld One-hot encoding}
+\end{figure}
 
+\begin{minted}{python}
+# voeg de categorieen toe als kolommen
+dataset = pd.concat(
+    [dataset, pd.get_dummies(dataset['food_name'], prefix='food')], 
+    axis=1)
+# verwijder de food_name kolom
+dataset.drop(['food_name'], axis=1, inplace=True)
+# toon de eerste 5 rijen:
+dataset.head()
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{one-hot-encoding2.png}
+    \caption{Resultaat van dataset.head(), voor en na one-hot encoding}
+\end{figure}
+
+\section{Underfitting \& overfitting}
+
+\subsection{Underfitting}
+
+\begin{theorem}[Underfitting]
+Underfitting treedt op wanneer een model de training data niet kan modelleren 
+en ook niet kan generaliseren op nieuwe data.
+
+\begin{itemize}
+    \item Het model is te 'simpel'
+    \item Model met hoge bias
+\end{itemize}
+\end{theorem}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{underfitting.png}
+    \caption{Het model werkt voor sommige variabelen maar voor velen ook niet}
+\end{figure}
+
+\subsection{Overfitting}
+
+\begin{theorem}[Overfitting]
+Overfitting treedt op wanneer een model de training data te goed modelleert en niet kan
+    generaliseren op nieuwe data.  
+
+\begin{itemize}
+    \item Het model is te 'complex'
+    \item De ruis van willekeurige fluctuaties in data worden opgepikt
+    \item Model met een hoge variance
+\end{itemize}
+\end{theorem}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{overfitting.png}
+    \caption{Model met order $\approx 15$}
+\end{figure}
+
+\subsubsection{Impact van de grootte van de dataset}
+
+Afhankelijkheid van de grootte van de dataset (aantal observaties $m$):
+
+\begin{itemize}
+    \item Bij weinig observaties: snel overfitting bij complexer model
+    \item Bij veel observaties: minder snel overfitting bij complexer model
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{overfitting2.png}
+    \caption{Voorbeeld: 3de orde polynoom}
+\end{figure}
+
+\subsection{Regularisatie (regularisation)}
+
+\begin{theorem}[Regularisatie]
+Methode om de mate van bias van een hypothese te regelen en een 
+goed evenwicht te vinden tussen underfitting en overfitting.
+
+\begin{equation}
+J(\theta) = \frac{1}{2\cdot m} \sum_{i=1}^m (h_{\theta}(x_i) - y_i)^2 + R(\theta)
+\end{equation}
+
+
+\end{theorem}
+
+\begin{theorem}[$R(\theta)$]
+$R(\theta)$ is de regularisatie-term. 
+
+Dit is een extra kostenterm die het gebruik van hogere orde features afstraft
+tenzij ze de globale kostenfunctie doen dalen.
+\end{theorem}
+
+\subsubsection{Voorbeeld regularisatie}
+
+\begin{center}
+    $J(\theta) = \frac{1}{2\cdot m} \sum_{i=1}^m (h_{\theta}(x_i) - y_i)^2 + \lambda \theta \theta^{\tau}$
+\end{center}
+
+\begin{itemize}
+    \item $\theta = \{\theta_1, \dots, \theta_n\}$
+    \begin{itemize}
+        \item intercept $\theta_0$ wordt meestal niet geregulariseerd
+    \end{itemize}
+    \item $\lambda$ is een tuning parameter (hyper parameter), we moeten die zelf vinden
+    \begin{itemize}
+        \item $\lambda = 0 \Rightarrow$ geen regularisatie
+        \item $\lambda = \inf \Rightarrow \theta = 0$ 
+        \item $\lambda$ tussenin regelt de mate van regularisatie.
+    \end{itemize}
+\end{itemize}
+
+De tuningparameter $\lambda$ regelt de complexiteit van de hypothese:
+
+\begin{itemize}
+    \item Kleine waarde voor $\lambda$: lage bias, hoge variantie (overfitting)
+    \item Grote waarde voor $\lambda$: hoge bias, lage variantie (underfitting)
+\end{itemize}
+
+Afhankelijk van hoe $R$ gedefinieerd wordt is er een andere benaming voor de regularisatie:
+
+\begin{itemize}
+    \item Ridge regression (L2 regularisatie)
+    \item Lasso regression (L1 regularisatie)
+\end{itemize}
+
+\subsubsection{Regularisatie met L2 norm}
+
+\begin{center}
+$J_{L2} = J + \lambda_2 \sum_{j=1}^m \theta_j^2$
+
+$J_{L2} = \sum_{i=1}^n (\text{target}_i - \text{output}_i) + \lambda_2 \sum_{j=1}^m \theta_j^2$
+\end{center}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{regularisatie-l2.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Regularisatie met L1 norm}
+
+\begin{center}
+$J_{L1} = J + \lambda_1 \sum_{j=1}^m |\theta_j|$
+
+$J_{L1} = \sum_{i=1}^n (\text{target}_i - \text{output}_i) + \lambda_1 \sum_{j=1}^m |\theta_j|$
+\end{center}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{regularisatie-l1.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Voorbeeld regularisatie op huizenprijzen}
+
+Via Ridge of Lasso regressie met regularisatieparameter $\alpha$
+
+\begin{itemize}
+    \item Hoe groter $\alpha$, hoe sterker de regularisatie en dus hoe simpler het model
+    \item Hoe kleiner $\alpha$, hoe zwakker de regularisatie en dus hoe complexer het model
+\end{itemize}
+
+\begin{minted}{python}
+regmodel = Ridge(alpha=0.14, tol=0.0001, fit_intercept=True)
+regmodel.fit(X_train, y_train)
+regmodel.score(X_test, y_test)
+>> 0.79834480089914472
+
+lregmodel = Lasso(alpha=0.5, tol=0.0001, fit_intercept=True)
+lregomdel.fit(X_train, y_train)
+lregmodel.score(X_test, y_test)
+>> 0.8437113338085345
+\end{minted}
 
 
 \end{document}
