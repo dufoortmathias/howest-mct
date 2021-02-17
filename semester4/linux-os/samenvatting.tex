@@ -31,6 +31,7 @@
 
 % code
 \usepackage{minted}
+\setminted{frame=single,framesep=3pt,linenos}
 \usepackage{upquote}
 \usepackage{color}
 
@@ -586,6 +587,334 @@ Install multiple pacakges in one command: apt install vim sudo tcpdump ntp
         \item n: no name-resolving
     \end{itemize} 
 \end{itemize}
+
+\subsection{Wooclap Questions}
+
+\begin{itemize}
+    \item Why do we talk about GNU/Linux?
+    \item What is a kernel?
+    \item What is the difference between Open Source and free?
+    \item How is the Administrator user called? What is its uid?
+    \item What is MBR?
+    \item What are the limitations of MBR? (Solution?)
+    \item What is swap? What is swappiness?
+    \item What is a package?
+    \item What is a repository?
+    \item What is a dependency?
+    \item What is a package manager?
+    \item What is the difference between 'apt update' and 'apt upgrade'
+    \item Which protocol makes the link between MAC address \& IP address?
+    \item Which command gives you the current ARP-table?
+    \item What are the 5 layers of the TCP/IP network model?
+    \item How do you find the MAC-address of a network interface?
+    \item Put Linux boot process in correct order (6 levels)
+    \item What is a linux distribution?
+\end{itemize}
+
+\section{File structure}
+
+\begin{itemize}
+    \item Tree structure
+    \begin{itemize}
+        \item Leaves = files
+        \item Branches = directories
+        \item The tree is inverted, root = /
+    \end{itemize}
+    \item Everything is a file (even devices, random numbers, and RAM) under 1 root
+    \item This is in contrast to Windows, where every volume is a root.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{linux-filestructure.png}
+    \caption{}
+\end{figure}
+
+
+
+\subsection{Intermezzo: single user mode}
+
+\begin{itemize}
+    \item Linux (the kernel) is built up as a multi-user system from the beginning
+    \item Standard behaviour = multi-user
+    \item But: also possible to boot in single-user mode
+    \begin{itemize}
+        \item No daemons, no multiple logins
+        \item Sometimes called \textbf{Maintenance mode}
+    \end{itemize}
+    \item Examples of usage
+    \begin{itemize}
+        \item Filesystem repairs
+        \item Upgrade of distribution
+        \item Password recovery
+        \item Adjustments to the root filesystem
+        \item Forensics after security incident
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Runlevels}
+
+= predefined operating system status
+
+\begin{itemize}
+    \item Is presented with a number
+    \item Linux has 7 runlevels:
+    \begin{itemize}
+        \item 0 = system halt (= VM shutdown)
+        \item 1 = single user
+        \item 2 = multi-user, no NFS (no network services, not often used)
+        \item 3 = multi-user, CLI (Command Line Interface)
+        \item 4 = self-definable
+        \item 5 = multi-user, GUI (Graphical User Interface, if installed)
+        \item 6 = reboot
+    \end{itemize}
+\end{itemize}
+
+\subsection{Intermezzo: Add disk}
+
+\textbf{Add a new disk without shutting down the system}
+
+\begin{enumerate}
+    \item Adjust VM: add disk
+    \item Detect added disk
+    \item Partition disk
+    \begin{itemize}
+        \item fdisk (for MBR)
+        \item parted (for GPT)
+    \end{itemize}
+    \item Create filesystem
+    \begin{itemize}
+        \item Partition = collection of blocks (sectors)
+        \item Not usable for the OS $\Rightarrow$ create filesystem
+        \item mkfs.ext4 /dev/sdb1
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.7\textwidth]{create-filesystem.png}
+            \caption{}
+        \end{figure}
+    \end{itemize}
+    \item Mount filesystem
+    \begin{itemize}
+        \item mkdir /mnt/datadisk
+        \item mount /dev/sdb1 /mnt/datadisk
+        \item see if it worked: df -h
+    \end{itemize}
+\end{enumerate}
+
+\textbf{For detailed steps: see labs!}
+
+
+\subsubsection{What after a reboot?}
+
+Use /etc/fstab = a file that contains what needs to be mounted at boot
+
+\begin{itemize}
+    \item Device (/dev/sdXY or UUID) 
+    \item Mountpoint (/mnt/folder)
+    \item Type of filesystem (ext4, ntfs, \dots)
+    \item Options
+\end{itemize}
+
+
+\subsection{Navigate through the tree}
+
+\begin{itemize}
+    \item pwd
+    \begin{itemize}
+        \item Print working directory
+        \item Shows where in the tree you are
+    \end{itemize}
+    \item ls
+    \begin{itemize}
+        \item Show a list of files in the working directory
+        \item ls -la : 10 characters at the beginning of each line. The d == directory (see later)
+    \end{itemize}
+    \item When you login, you are in your home directory
+    \item / (= the filesystem root) is not the same as /root (the home directory of the root user)
+    \item . = current directory
+    \item .. = the directory one higher
+\end{itemize}
+
+\subsubsection{Relative vs absolute path}
+
+Relative paths:
+
+\begin{itemize}
+    \item cd .. = go to the directory above the current directory
+    \item cat ../etc/issue = go to the etc directory, one directory above the current directory. Open the issue file
+\end{itemize}
+
+Absolute paths:
+
+\begin{itemize}
+    \item cd / = go to the root directory
+    \item cat /etc/issue = go to the etc/ directory under / (root)
+\end{itemize}
+
+\subsection{Filesystem Hierarchy Standard (FHS)}
+
+\begin{itemize}
+    \item Describes how the filesystem in Linux is build up
+    \item Maintained by the Linux Foundation
+    \item Most recent version: v3.0 (2015)
+\end{itemize}
+
+
+
+\subsubsection{Rules in the standard}
+
+\begin{itemize}
+    \item / is the root of the tree structure
+    \item /bin 
+    \begin{itemize}
+        \item essential binaries (executable files), required for single user mode
+    \end{itemize}
+    \item /boot
+    \begin{itemize}
+        \item the place on the filesystem where the boot files reside
+        \item configuration files for GRUB
+        \item kernels
+        \item initrd
+        \begin{itemize}
+            \item initial RamDisk
+            \item During boot a temporary root-filesystem is being created in RAM
+            \item This is used so the kernel can load important modules, so it can then switch to the real root filesystem
+            \item part of step 3 of the linux boot process (BIOS - MBR - GRUB - kernel - init - runlevel)
+        \end{itemize}
+    \end{itemize}
+    \item /dev
+    \begin{itemize}
+        \item Devices get a place in the filesystem
+        \begin{itemize}
+            \item sda
+            \item rtc
+            \item random
+            \item cpu
+            \item urandom
+            \item null
+        \end{itemize}
+        \item ls -lah /dev/
+    \end{itemize}
+    \item /etc
+    \begin{itemize}
+        \item Host-specific sytem-wide configuration files
+        \item Configuration for this host, readable for the whole system
+    \end{itemize}
+    \item /home
+    \begin{itemize}
+        \item Each (non-system) user has a home directory
+        \item except for root $\Rightarrow$ /root
+    \end{itemize}
+    \item /mnt
+    \begin{itemize}
+        \item (temporarily) `mounted' filesystems
+        \begin{itemize}
+            \item Network shares
+            \item USB-disk
+            \item DVD-ROM
+            \item Extra disks
+        \end{itemize}
+        \item Some distributions use /media for this
+    \end{itemize}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.3\textwidth]{linux-filestructure2.png}
+        \caption{}
+    \end{figure}
+    
+    \item /opt
+    \begin{itemize}
+        \item Optional application software packages
+        \item Our installation $\Rightarrow$ no applications installed yet = empty (for now)
+    \end{itemize}
+    \item /proc
+    \begin{itemize}
+        \item Virtual filesystem
+        \item Provides information about processes and the linux kernel
+        \item cat /proc/cpuinfo
+        \item cat /proc/sys/net/ipv4/ip\_forward
+        \item cat /proc/partitions
+    \end{itemize}
+    \item /sbin
+    \begin{itemize}
+        \item Essential system binaries
+        \item Only executable by root user
+        \item fsck, init, route
+    \end{itemize}
+    \item /tmp
+    \begin{itemize}
+        \item Directory for temporary files
+        \item Emptied at reboot (with most distributions)
+    \end{itemize}
+    \item /usr
+    \begin{itemize}
+        \item Read-only user data
+        \item Constains most user (non-root) utilities and applications
+    \end{itemize}
+    \item /var
+    \begin{itemize}
+        \item Variable files
+        \item Files that are expected to change continuously during normal system use
+        \item Logs, spool files, temporary e-mail files, \dots
+    \end{itemize}
+\end{itemize}
+
+\subsection{Some useful tips}
+
+\subsubsection{History}
+
+\begin{minted}{bash}
+~# history
+
+# shows a list of former commands executed by this user
+# spans log-in sessions
+# in reality, it shows the contents of the ~/.bash_history file
+# if you use another shell like zsh, it's the ~/.zsh_history file
+\end{minted}
+
+CTRL + r:
+
+\begin{itemize}
+    \item Search the command history
+    \item Show commands that match what you're typing
+    \item repeatedly press ctrl+r to scroll through results
+\end{itemize}
+
+
+\subsubsection{Bind mount}
+
+\textbf{Situation}
+
+\begin{itemize}
+    \item /mnt/storage is the normal mountpoint for other filesystems (e.g. SAN)
+    \item Filesystem could not be mounted, but a process already started writing data
+    \item $\Rightarrow$ this data arrives on the / filesystem under the directory /mnt/storage
+    \item Problem fixed and filesystem can be mounted again $\Rightarrow$ mounted under /mnt/storage
+    \item $\Rightarrow$ the already written data is now hidden
+\end{itemize}
+
+\textbf{The solution}
+
+\begin{itemize}
+    \item Create /mnt/storage and put some data in it
+    \item Create a 1GB disk, ext4 formatted, mount under /mnt/storage $\Rightarrow$ data is now hidden
+    \item Use mount -o bind to get data back without unmounting
+\end{itemize}
+
+\subsubsection{dd}
+
+= Command to read or write bytes
+
+\begin{minted}{bash}
+# Example: overwrite first 2048 bytes of a disk with zeros
+~# dd if=/dev/zero of=/dev/sdb count=4 bs=512
+# Example: overwrite disk with random data when taking out of service
+~# dd if=/dev/random of=/dev/sdb bs=1M
+\end{minted}
+
+
+\section{}
+
 
 
 \end{document}
