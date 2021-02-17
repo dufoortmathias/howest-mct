@@ -29,6 +29,7 @@
  {\end{enumerate}}
 
 \usepackage{minted}
+\setminted{frame=single,framesep=3pt,linenos}
 \usepackage{upquote}
 \usepackage{color}
 
@@ -636,5 +637,467 @@ In VSCode:
     \item Manieren van modelbinding
     \item Hoe configureer je uw omgeving met profielen
 \end{itemize}
+
+\section{Web API DTO, Validation, Versioning}
+
+\subsection{Validation}
+
+
+
+
+\begin{itemize}
+    \item Altijd valideren:
+    \begin{itemize}
+        \item In client applicatie (Xamarin, React, Vue, Angular)
+        \item In de backend
+    \end{itemize}
+    \item We gaan er altijd vanuit dat de binnenkomende data foutief of ongeldig kan zijn
+    \item Vertrouw niemand
+    \item WebAPI bevat ingebouwd systeem om validatie te doen
+\end{itemize}
+
+\subsubsection{Attributen}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{validation-attributes.png}
+    \caption{Validation attributes bij de properties}
+\end{figure}
+
+
+\begin{itemize}
+    \item Attributen op de properties van het model
+    \item Optioneel foutmelding meegeven aan attribuut, anders default waarde
+    \item \textbf{[ApiController]} attribuut zorgt voor automatische validatie en HTTP Statuscode 400 indien niet OK
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{validation-attributes2.png}
+    \caption{ApiController boven de Controller-klasse}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{validation-attributes-json.png}
+    \caption{Je kan de error name veranderen: [Required(ErrorMessage="Sorry verplicht")]}
+\end{figure}
+
+\subsubsection{Ingebouwde attributen:}
+
+\begin{itemize}
+    \item {[CreditCard]} = creditcard formaat
+    \item {[Compare]} = 2 properties moeten gelijk zijn in een model 
+    \item {[EmailAddress]} = emailadres
+    \item {[Phone]} = telefoonnummer
+    \item {[Range]} = property value moet in een bepaald bereik zitten
+    \item {[RegularExpression]}
+    \item {[Required]} = vereist, niet leeg
+    \item {[StringLength]} = maximum lengte
+    \item {[Url]} = moet in URL-formaat zijn
+\end{itemize}
+
+\subsubsection{Custom Validation Attributes}
+
+\begin{itemize}
+    \item Zelf een Attribute maken: klasse erft van ValidationAttribute
+    \item Override van methode ValidationResult
+    \item In deze methode schrijven we de controle code
+    \item Gebruiken in model [CustomerTypeAttribute]
+\end{itemize}
+
+\url{https://docs.microsoft.com/en-us/aspnet/core/mvc/models/validation?view=aspnetcore-5.0}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{validation-custom.png}
+    \caption{}
+\end{figure}
+
+\subsection{QueryString}
+
+= parameter in de url
+
+\begin{itemize}
+    \item Handig als we op verschillende manieren data wensen terug te keren zonder meerdere endpoints te maken
+    \item \textcolor{red}{QueryString mogen \textbf{nooit} verplicht zijn}
+    \item Gebruiken we vooral bij:
+    \begin{itemize}
+        \item Meegeven hoe we wensen te sorteren ?sort=asc
+        \item Iets zoeken vb: ?q=zoekterm
+        \item Iets in bepaalde taal opvragen vb: ?language=nl-BE
+        \item Iets al dan niet includen of excluden
+        \item Filters
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Werking}
+
+\begin{itemize}
+    \item Waarde als parameter van de functie maar met default waarde vb: includeAddress
+    \item IncludeAddress zit niet in de URL enkel CustomerId
+    \item Geven we querystring niet mee dan zal includeAddress gelijk zijn aan false
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{querystring.png}
+    \caption{}
+\end{figure}
+
+\subsection{DTO}
+
+= Data Transfer Object
+
+\begin{itemize}
+    \item We kennen reeds models:
+    \begin{itemize}
+        \item POST = Omzetten van JSON naar C\# object 
+        \item GET = Omzetten van C\# naar JSON object
+    \end{itemize}
+    \item Soms willen we niet alle data terugkeren: alleen terugsturen wat echt nodig is
+    \item We voegen DTO klasse toe $\Rightarrow$ Alleen die properties sturen we terug
+    \item Veel werk: alles manueel overzetten, bij nieuwe properties code aanpassen op verschillende plaatsen
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{dto.png}
+    \caption{DTO moeten we manueel aanmaken en properties kopiëren}
+\end{figure}
+
+Oplossing:
+
+\begin{itemize}
+    \item een \textbf{mapper} gebruiken
+    \item Nuget package die automatisch properties zal kopiëren tussen objecten
+    \item Meest gebruikte in .NET wereld is \textbf{Automapper}
+    \item \url{https://github.com/AutoMapper/AutoMapper}
+\end{itemize}
+
+\subsubsection{Werking}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dto-startup.png}
+    \caption{In StartUp.cs: registreren van de AutoMapper service in WebAPI}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dto-klasse.png}
+    \caption{Klasse toevoegen in DTO-map, bv: CustomerDTO}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dto-profile.png}
+    \caption{DTO profile toevoegen, bv: AutoMapping.cs}
+\end{figure}
+
+In de AutoMapping klasse definieren we de mapping tussen Customer en CustomerDTO
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dto-inject.png}
+    \caption{We voeren de mapping uit door de automapper te injecteren in de controller (=dependency Injection)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dto-route.png}
+    \caption{We passen de return value aan de controller en keren lijst van CustomerDTO terug. Via de Map-functie van de mapper zetten we deze om.}
+\end{figure}
+
+
+\subsection{Versioning}
+
+\begin{itemize}
+    \item Software veranderingen zijn er altijd, ook als software in productie is
+    \item We moeten verschillende versies kunnen bouwen van onze API
+    \item We moeten er rekening meehouden dat niet iedere client direct de nieuwe versie zal gebruiken $\Rightarrow$ oude versie blijven ondersteunen
+    \item Hoe pakken we dit aan ?
+    \item \textbf{Microsoft.AspNetCore.Mvc.Versioning} is de extra nuget package die we toevoegen
+\end{itemize}
+
+\subsubsection{Registreren bij services}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{versioning-services.png}
+    \caption{Eerst registreren bij de services: \textbf{AddApiVersioning()}}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{versioning-browser.png}
+    \caption{Alse we nu naar de endpoint surfen krijgen we een foutmelding dat we geen versie hebben meegegeven}
+\end{figure}
+
+\subsubsection{Configuratie}
+
+\begin{itemize}
+    \item We kunnen een default API versie instellen: \textbf{DefaultApiVersion}
+    \item \textbf{AssumeDefaultVersionWhenUnspecified}: als er geen versie werd meegegeven, we veronderstellen dat dit default is
+    \item We stellen ook in dat WebAPI de versie moet melden: \textbf{ReportApiVersion}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{versioning-addapiversioning.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Controller attributes}
+
+\begin{itemize}
+    \item We stellen versies in op Controller niveau [ApiVersion]
+    \item Verschillende versies zijn mogelijk
+    \item Via [Deprecated] kunnen we melden dat een API zal verdwijnen op termijn
+    \item Response header zal api-deprecated-versions terugkeren
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{versioning-deprecated.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Endpoints mappen aan een specifieke versie}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{versioning-maptoapiversion.png}
+    \caption{[MapToApiVersion]}
+\end{figure}
+
+\subsubsection{Testen}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{versioning-httpheader.png}
+    \caption{Via de HTTP header geven we de versie door}
+\end{figure}
+
+\subsection{Binary bestanden}
+
+\begin{itemize}
+    \item Naast JSON data moeten we soms ook met binary data werken
+    \item Word, PDF, afbeeldingen, CSV \dots
+    \item We moeten deze kunnen opladen naar een Web API
+    \item We slaan deze dan op
+    \begin{itemize}
+        \item File system van de server (niet ok voor productie, wel om te testen)
+        \item Blob Storage system op Azure (ok voor productie)
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Werking}
+
+\begin{itemize}
+    \item We gebruiken HTTP Post
+    \item List<IFromFile> bevat de bestanden
+    \item Via for lus overlopen en wegschrijven naar C:\textbackslash Temp\textbackslash test.csv
+    \item System.IO.File zorgt voor aanmaken file en wegschrijven data
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{binary-files.png}
+    \caption{Werken met binary files}
+\end{figure}
+
+\subsubsection{Testen}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{binary-files-testing.png}
+    \includegraphics[width=0.6\textwidth]{binary-files-testing2.png}
+    \caption{Testen via postman}
+\end{figure}
+
+\subsubsection{Bestanden downloaden}
+
+\begin{itemize}
+    \item We keren een FileResult terug
+    \item Deze bevat:
+    \begin{itemize}
+        \item Stream met data
+        \item mimeType = beschrijving file
+        \item De naam van de file
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{binary-files-download.png}
+    \caption{Downloading files}
+\end{figure}
+
+\subsection{CSV files}
+
+= Comma-Seperated Values
+
+\begin{itemize}
+    \item Veel gebruikt formaat zowel in wereld van AI, Administratieve apps,…
+    \item Veel software kan overweg met dit formaat bv.: Excel (import/export)
+    \item Is flat tekst formaat met een separator (komma, puntkomma, dubbelpunt, \dots)
+    \item Seperator zal de data scheiden van elkaar
+    \item Bevat meestal header, eerste rij in file
+    \item In de wereld van AI veel gebruikt als formaat voor datasets
+    \item Handig als we files kunnen genereren via Web API
+\end{itemize}
+
+\subsubsection{CSV Helper}
+
+\begin{itemize}
+    \item = Gratis en open source Nuget package voor lezen en schrijven van CSV files
+    \item Goede documentatie en voorbeelden aanwezig
+    \item \url{https://joshclose.github.io/CsvHelper/}
+\end{itemize}
+
+\subsubsection{Werking}
+
+\begin{itemize}
+    \item StreamWriter zal file wegschrijven
+    \item CsvWriter zal CSV inhoud genereren
+    \item Daarna zelfde procedure voor downloaden als andere file
+    \item We slaan dus file eerst lokaal op, op de server
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{csv-werking.png}
+    \caption{Voorbeeld CsvWriter}
+\end{figure}
+
+\subsection{Caching}
+
+\begin{itemize}
+    \item Applicatie sneller en schaalbaar maken
+    \item We lezen niet altijd alle data uit de database
+    \begin{itemize}
+        \item Response is sneller $\Rightarrow$ database access (I/O in het algemeen is traag)
+        \item Bv: lijst van landen: deze lijst zal niet veel wijzigen
+    \end{itemize}
+    \item 2 manieren in WebAPI:
+    \begin{enumerate}
+        \item Response caching
+        \item Output caching
+    \end{enumerate}
+\end{itemize}
+
+\subsubsection{Response Caching (HTTP Caching)}
+
+\begin{itemize}
+    \item HTTP Standaard RFC 7234: \url{https://tools.ietf.org/html/rfc7234}
+    \item Hier gaan we de server zo weinig mogelijk inspannig vragen om een resultaat terug te keren
+    \item We sturen de caching via de HTTP Headers
+    \item Response caching zal niks opslaan op de server
+    \begin{itemize}
+        \item We slaan op bij de client of op proxy servers in het netwerk
+        \item Server zal \textbf{Cache-Control} header toevoegen in response
+        \item Private: client
+        \item Public: op een proxy server
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{caching-response-caching.png}
+    \caption{Cache-Control in HTTP headers}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{caching-response-werking.png}
+    \caption{In StartUp.cs moeten we een paar services registreren: services.AddResponseCaching()}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{caching-response-werking2.png}
+    \caption{\textbf{app.UseResponseCaching()} toevoegen op de juiste plaats!}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{caching-response-werking3.png}
+    \caption{Attribute [ResponseCache] toevoegen}
+\end{figure}
+
+ResponseCache attribuut
+
+\begin{itemize}
+    \item Duration in seconden
+    \item Location: waar slaan we de cache op
+    \begin{itemize}
+        \item Any = public
+        \item Client = private, geen caching op proxy
+        \item None = geen cache
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{caching-response-attribute.png}
+    \caption{}
+\end{figure}
+
+
+\begin{itemize}
+    \item \url{https://www.codeproject.com/Articles/1111260/Response-Caching-and-In-Memory-Caching-in-ASP-NET}
+    \item \url{https://www.keycdn.com/blog/http-cache-headers}
+\end{itemize}
+
+\subsubsection{Output Caching}
+
+\begin{itemize}
+    \item We gaan resultaat bijhouden in een cache aan de server kant
+    \item Memory intensief
+    \item Schaalt niet altijd goed, zeker bij meerdere servers
+    \item Oplossingen
+    \begin{itemize}
+        \item IMemoryCache, standaard in .NET core, eenvoudige maar geen scaling
+        \item Redis
+        \begin{itemize}
+            \item Schaalt wel, maar duurder
+            \item Extra service op Azure
+            \item Zelf hosten als Docker container
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{caching-imemorycache.png}
+    \includegraphics[width=0.7\textwidth]{caching-imemorycache2.png}
+    \caption{IMemoryCache via services activeren in ConfigureServices}
+\end{figure}
+
+\begin{itemize}
+    \item In de methode controleren via TryGetValue of de waarde aanwezig is
+    \item Indien niet aanwezig: toevoegen via Set met als laatste parameter hoelang de waarde in de cache moet blijven
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{caching-output-trygetvalue.png}
+    \caption{}
+\end{figure}
+
+\subsection{Wat moet je kennen?}
+
+\begin{itemize}
+    \item Wat is AutoMapper en hoe kan je dit gebruiken?
+    \item Hoe werkt versioning in API's?
+    \item Hoe kan je model validation doen?
+    \item Wat is caching, waarom gebruiken we dit?
+    \item Wat zijn de verschillende soorten caching in Web API?
+    \item Hoe kan je best CSV bestanden verwerken?
+    \item Hoe kan je binare bestanden opladen?
+    \item Wanneer gebruiken we best querystrings en hoe?
+\end{itemize}
+
 
 \end{document}
