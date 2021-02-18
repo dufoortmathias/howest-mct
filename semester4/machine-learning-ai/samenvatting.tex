@@ -1037,5 +1037,433 @@ lregmodel.score(X_test, y_test)
 >> 0.8437113338085345
 \end{minted}
 
+\section{Classificatie}
+
+\subsection{Wat is classificatie?}
+
+\begin{theorem}[Classificatie]
+Classificatie is een supervised learning techniek waarbij een getraind model
+niet geziene inputs toewijst aan één of meerdere gelabelde categorieën (classes)
+\end{theorem}
+
+\subsubsection{Voorbeelden}
+
+\begin{itemize}
+    \item Gezichtsherkenning
+    \item Nummerplaatherkenning
+    \item Spam detectie
+    \item Medische diagnoses
+    \item Voorspelling of een klant op een advertentie zal klikken
+    \item Kwaliteitscontrole
+    \item \dots
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{classificatie-gezichtsherkenning.png}
+    \caption{Geslachtsherkenning + leeftijdsclassificatie}
+\end{figure}
+
+
+\subsection{Types van classifiers}
+
+\subsubsection{Binary (binomial) classifier}
+
+= verdeel de samples in \textbf{twee verschillende klasses}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{binary-class.png}
+    \caption{Voorbeeld: bepaal of een kanker goedaardig of kwaadaardig is}
+\end{figure}
+
+\subsubsection{Multiclass classifier}
+
+Verdeel de samples in drie of meerdere verschillende klasses
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{multiclass-classifier.png}
+    \caption{Voorbeelden: gezichtsherkenning, sentiment analyse}
+\end{figure}
+
+\subsubsection{Multilabel classifier}
+
+Er kunnen meerdere labels aan een sample toegewezen worden. 
+Een sample kan tot meerdere klasses behoren
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{multilabel-classifier.png}
+    \caption{Image content analysis, een film kan tot meerdere genres behoren}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.2\textwidth]{multilabel-classifier2.png}
+    \caption{Voorspel of een stuk fruit een appel is op basis van vorm en kleur}
+\end{figure}
+
+\begin{itemize}
+    \item features: rondheid en groenheid
+    \item target: appel: ja/nee
+    \item trainingset: 15 training samples
+\end{itemize}
+
+Bij classificatie is de output/target een \textbf{(discrete) variabele/klasse}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{multilabel-classifier3.png}
+    \caption{}
+\end{figure}
+
+\subsection{Waarom regressie geen goede optie is}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{classificatie-regressie.png}
+    \caption{Voorbeeld: rondheid bepaalt of het een appel is of niet}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{classificatie-regressie2.png}
+    \caption{}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{classificatie-regressie3.png}
+    \caption{}
+\end{figure}
+
+TODO: meer uitleg
+
+\section{Logistische regressie}
+
+\subsection{Het model}
+
+We willen dat het model $h_{\theta}(x)$ voldoet aan:
+
+\begin{center}
+$0 \leq h_{\theta}(x) \leq 1$
+\end{center}
+
+\begin{itemize}
+    \item $h_{\theta}(x)$ = de geschatte kans dat $y=1$ bij input $x$
+    \item Voorbeeld: $h_{\theta}(x) = 0.80$
+    \begin{itemize}
+        \item Het model is voor 80\% zeker dat het om een appel gaat.
+    \end{itemize}
+\end{itemize}
+
+\begin{equation}
+h_{\theta}(x) = \frac{1}{1 + e^{-\theta^{\tau}x}}
+\end{equation}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{logistic-regression.png}
+    \caption{}
+\end{figure}
+
+\begin{itemize}
+    \item $y=1$ als $h_{\theta}(x) \geq 0.5 \Rightarrow \theta^{\tau}x \geq 0$
+    \item $y=0$ als $h_{\theta}(x) < 0.5 \Rightarrow \theta^{\tau}x < 0$
+\end{itemize}
+
+\subsubsection{Interpretatie via voorbeeld appels}
+
+Het model is van de vorm:
+
+\begin{center}
+    $h_{\theta}(x) = g(\theta_0 + \theta_1x_1 + \theta_2x_2)$
+
+    met $x_1=$ rondheid en $x_2=$ groenheid
+\end{center}
+
+Veronderstel na training: $\theta_0=-40, \theta_1=4, \theta_2=4$
+
+\begin{itemize}
+    \item Voorspel $y=1$ als $-40 + 4x_1 + 4x_2 \geq 0$
+    \item Voorspel $y=0$ als $-40 + 4x_1 + 4x_2 < 0$
+\end{itemize}
+
+Gegeven een rondheid van 8 en een groenheid van 6:
+
+\begin{center}
+    $-40 + 4 \cdot 8 + 4 \cdot 6 = 16 \Rightarrow $ Appel
+
+    $h_{\theta}(x) = \frac{1}{1 + e^{-16}} = 0.999999887$
+\end{center}
+
+Gegeven een rondheid van 5 en een groenheid van 4.5:
+
+\begin{center}
+    $-40 + 4 \cdot 5 + 4 \cdot 4.5 = -2 \Rightarrow $ Geen appel
+
+    $h_{\theta}(x) = \frac{1}{1 + e^{-2}} = 0.12$
+\end{center}
+
+\begin{itemize}
+    \item Het model is maar voor 12\% zeker dat het om een appel gaat
+    \item $\Rightarrow$ Met 88\% zekerheid gaat het volgens het model niet om een appel
+\end{itemize}
+
+\subsubsection{Grafische interpretatie via voorbeeld appels}
+
+\begin{itemize}
+    \item Op de scheidingslijn: $\theta_0 + \theta_1x_1 + \theta_2x_2 = 0$
+    \item In het voorbeeld: $-40 + 4x_1 + 4_x2 = 0$
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{logistic-grafische.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Wat als het model niet lineair is?}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{logistic-circle.png}
+    \caption{Het model is niet lineair}
+\end{figure}
+
+
+Extra features: $h_{\theta}(x) = g(\theta_0 + \theta_1x_1 + \theta_2x_2 + \theta_3x_1^2 + \theta_4x_4^2)$
+
+\begin{itemize}
+    \item Veronderstel: $\theta_0 = -2, \theta_1 = 0, \theta_2 = 0, \theta_3 = 1, \theta_4 = 1$
+    \item Voorspel $y=1$ als $-2 + x_1^2 + x_2^2 \geq 0$
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{logistic-circle2.png}
+    \caption{$x_1^2 + x_2^2 \geq 2$ (vergelijking van een cirkel met straal $\sqrt{2}$)}
+\end{figure}
+
+\subsection{De kostenfunctie}
+
+De kostenfunctie wordt:
+
+\begin{equation}
+J(\theta) = \left\{
+    \begin{array}{ll}
+        -ln(h_\theta(x))\ \text{als}\ y = 1\\
+        -ln(1 - h_\theta(x))\ \text{als}\ y = 0\\
+    \end{array}
+\right.
+\end{equation}
+
+\begin{equation}
+J(\theta) = -\frac{1}{m} \cdot \Bigg[ \sum_{i=1}^m y_i ln(h_{\theta}(x_i)) + (1 - y_i) \cdot ln(1 - h_{\theta}(x_i)) \Bigg]
+\end{equation}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{logistic-kostenfunctie.png}
+    \caption{Zoek de waarden voor $\theta$ die de kostenfunctie $J(\theta)$ minimaliseert via Gradient Descent (GDS)}
+\end{figure}
+
+\subsection{Voorbeeld logistic regression met Sklearn (lineair model)}
+
+\subsubsection{Preprocessing van de data}
+
+Analoog aan preprocessing bij lineaire regressie:
+
+\begin{itemize}
+    \item Data inlezen
+    \item Check op inconsistenties
+    \item Check uitschieters
+    \item Plot de data
+    \item Splits op in features en targets
+    \item Verdeel in een training en test set
+\end{itemize}
+
+\begin{minted}{python}
+# importeer de dataset
+dataset = pd.read_csv('appels.csv')
+# definieer de features
+features = list(dataset.columns[:dataset.columns.size-1])
+X = dataset[features].values
+y = dataset['appel'].values
+# lettergrootte voor de axis labels
+sns.set(font_scale=2) 
+# definieer kleuren
+colors = ['blue', 'red', 'greyish', 'faded_green', 'dusty_purple']
+# plot
+sns.lmplot(x='rondheid', y='groenheid', data=dataset, 
+    fit_reg=False,  hue='appel', palette=sns.xkcd_palette(colors), 
+    scatter_kws={'s': 500}, size=7, aspect=1.5)
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{logistic-sklearn-preprocessing.png}
+    \caption{Plot van de dataset}
+\end{figure}
+
+
+\subsubsection{Trainen van het logistic regression model}
+
+\begin{minted}{python}
+# train een logistic regression classifier
+logreg = linear_model.LogisticRegression(C=1e5)
+# C = inverse of regularisation strength
+# must be a positive float
+# like in support vector machines: smaller values => stronger regularisation
+logreg.fit(X, y)
+
+print('coefficienten: ', logref.coef_)
+print('intercept: ', logreg.intercept_)
+
+\end{minted}
+
+\begin{itemize}
+    \item Coefficienten: $\theta_1 = 4.287$ en $\theta_2 = 4.062$
+    \item Intercept: $\theta_0 = -43.941$
+\end{itemize}
+
+\subsubsection{Classificeren van een nieuwe sample}
+
+\begin{minted}{python}
+# voorspel de klasse met rondheid = 8 en groenheid = 6
+print(logreg.predict(np.array([8,6]).reshape(1, -1)))
+
+kans = logreg.predict_proba(np.array([8,6]).reshape(1, -1))
+print("Kans op appel/geen appel = ", kans)
+
+# voorspel de klasse met rondheid = 4 en groenheid = 4
+print(logreg.predict(np.array([4,4]).reshape(1, -1)))
+
+kans = logreg.predict_proba(np.array([4,4]).reshape(1, -1))
+print("Kans op appel/geen appel = ", kans)
+\end{minted}
+
+Output:
+
+\begin{itemize}
+    \item kans op een appel/geen appel: 3.99395302e-07 | 9.99999601e-01
+    \item kans op een appel/geen appel: 9.99973583e-01 | 2.64168196e-05
+\end{itemize}
+
+\subsubsection{Visualiseer de decision boundary}
+
+\begin{minted}{python}
+h = 0.01
+rond_min = X[:,0].min()-2
+rond_max = X[:,0].max()+2
+groen_min = X[:,1].min()-2
+groen_max = X[:,1].max()+2
+xx, yy = np.meshgrid(np.arange(rond_min, rond_max, h),np.arange(groen_min, groen_max, h))
+Z = logreg.predict(np.c_[xx.ravel(), yy.ravel()])
+Z = Z.reshape(xx.shape)
+# font settings
+sns.set(font_scale = 2)
+# colors
+colors = ["blue", "red", "greyish", "faded green", "dusty purple"]
+sns.lmplot(x='rondheid',y='groenheid',data=dataset,
+    fit_reg=False,hue='appel',palette=sns.xkcd_palette(colors),
+    scatter_kws={'s':200}, height=8, aspect=1.5)
+plt.ylim(0, 11)
+plt.xlim(0, 11)
+plt.contour(xx, yy, Z, colors='green')
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{logistic-sklearn-decision-boundary.png}
+    \caption{Visualisatie van de decision boundary}
+\end{figure}
+
+\subsection{Voorbeeld logistic regression met Sklearn - niet-lineair}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{logistic-non-linear.png}
+    \caption{Niet-lineair scheidbare dataset}
+\end{figure}
+
+\subsubsection{Feature engineering: toevoegen van hogere orde features}
+
+\begin{minted}{python}
+# Aanmaken van de hogere orde features
+graad = 3
+
+poly = PolynomialFeatures(graad)
+Xp = poly.fit_transform(X)
+
+# Train model op hogere orde features en visualiseer de decision boundary
+logreg_poly = linear_model.LogisticRegression(C=1)
+logreg_poly.fit(Xp, y)
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{logistic-non-linear2.png}
+    \caption{Resultaat: overfitting}
+\end{figure}
+
+
+\subsubsection{Oplossing: regularisatie}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{logistic-fitting.png}
+    \caption{Regelen tussen underfitting en overfitting via regularisatie}
+\end{figure}
+
+\begin{itemize}
+    \item Via regularisatie een goed evenwicht zoeken tussen underfitting en overfitting
+    \item In Scikit Learn linear\_model.LogisticRegression:
+    \begin{itemize}
+        \item C = inverse regularisatie sterkte
+        \item kleine waarden voor C $\Rightarrow$ sterke regularisatie (overfitting)
+        \item grote waarden voor C $\Rightarrow$ zwakke regularisatie (underfitting)
+    \end{itemize}
+\end{itemize}
+
+\begin{minted}{python}
+logreg = linear_model.LogisticRegression(C=100)
+logreg.fit(Xf, y)
+\end{minted}
+
+\subsection{Multi-class classification}
+
+\subsubsection{One-vs-all}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{multi-class-classification.png}
+    \caption{One-vs-All}
+\end{figure}
+
+
+\begin{itemize}
+    \item Je hebt 1 classifier per klasse
+    \item Totaal aantal classifiers: N
+    \item Gevoeliger voor niet-gebalanceerde data
+\end{itemize}
+
+\subsubsection{One-vs-One}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{multi-class-classification2.png}
+    \caption{One-vs-One}
+\end{figure}
+
+\begin{itemize}
+    \item Je hebt $\frac{N\cdot(N-1)}{2}$ classifiers (met N aantal klasses) $\Rightarrow$ rekenintensief
+    \item Minder gevoelig voor niet-gebalanceerde data
+\end{itemize}
+
+\section{Evaluatie van een classifier}
+
+\subsection{Accuracy}
 
 \end{document}
