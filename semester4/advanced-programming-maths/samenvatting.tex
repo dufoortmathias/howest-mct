@@ -1166,7 +1166,418 @@ filtered_setosa = iris.loc[iris['Species'] == 'Iris-setosa', :]
 
 (komen we later nog op terug)
 
-\section{}
+\section{Normaaldistributie}
+
+\subsection{Doelstellling}
+
+\begin{itemize}
+    \item Het herkennen van van de eigenschappen van de normaalverdeling
+    \item Verband standaard normaalverdeling en Z-waarden
+    \item Z-index, Z-score tabel
+\end{itemize}
+
+\subsection{Inleiding}
+
+Wanneer komt een normaalverdeling voor?
+
+\begin{itemize}
+    \item Grote aantallen onafhankelijke waarnemingen uit een willekeurige populatie
+    \begin{itemize}
+        \item De lengte van personen
+        \item Productieprocessen die een bepaalde tijdsduur hebben
+        \item \dots
+    \end{itemize}
+\end{itemize}
+
+\subsection{Basisbegrippen}
+
+\begin{theorem}[Normaalverdeling]
+    Een intervalwaarde dat afhankelijk is van oneindig aantal onafhankelijke factoren (die los van elkaar in werken)
+    zal in de populatie een normaalverdeling vertonen (Gauss-curve)
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.3\textwidth]{gauss.png}
+        \caption{Gauss-curve}
+    \end{figure}
+\end{theorem}
+
+\subsubsection{Kenmerken}
+
+\begin{itemize}
+    \item Klokvormig verloop
+    \item 1 maximum = gemiddelde = mediaan ($\mu$)
+    \item Uitslagen vooral geconcentreerd rond gemiddelde
+    \item Frequentie daalt naarmate scores afwijken
+    \item Twee buigpunten
+    \item Symmetrie
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{gauss-kenmerken.png}
+    \caption{Kenmerken Gauss-curve}
+\end{figure}
+
+\begin{itemize}
+    \item Standaarddeviatie (standaardafwijking) $\sigma$ weerspiegelt mate van spreiding
+    \item Wordt gemeten in de buigpunten
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{gauss-buigpunt.png}
+    \caption{}
+\end{figure}
+
+\begin{itemize}
+    \item Functie is volledig te beschrijven met het gemiddelde $\mu$ en de Standaarddeviatie $\sigma$
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{gauss-notatiewijze.png}
+    \caption{Notatiewijze}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{gauss-verschillend.png}
+    \caption{Impact $\mu$ en $\sigma$}
+\end{figure}
+
+\subsubsection{Verdeling}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{gauss-verdeling.png}
+    \caption{}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{gauss-verdeling2.png}
+    \caption{}
+\end{figure}
+
+
+\begin{itemize}
+    \item Tussen beide buigpunten ($\mu - \sigma$, $\mu + \sigma$): $\approx68\%$ van de populatie
+    \item Tussen ($\mu - 2\cdot\sigma$, $\mu + 2\cdot\sigma$): $\approx95\%$ van de populatie
+    \item Tussen ($\mu - 3\cdot\sigma$, $\mu + 3\cdot\sigma$): $\approx99\%$ van de populatie
+\end{itemize}
+
+\subsubsection{Gevolg: Kansberekening}
+
+\begin{itemize}
+    \item Oppervlakte onder de grafiek = 100\%
+    \item Hiermee kunnen we nu uitdrukken wat de kans van een specifiek bereik kan zijn. Bv:
+    \begin{itemize}
+        \item Met $\mu = 78, \sigma = 9 \Rightarrow $ Kans dat $x < 65$? 
+        \item $\Rightarrow$ bereken oppervlakte links van 65
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Wiskundig}
+
+\begin{equation}
+f(x) = \frac{1}{\sqrt{2\cdot\pi}\cdot \sigma}\cdot e^{-\frac{(x - \mu)^2}{2\cdot\sigma^2}}
+\end{equation}
+
+Standaardafwijking berekenen:
+
+\begin{equation}
+    \sigma = \sqrt{\frac{\sum_{i=1}^n (x_i - \mu)^2}{n - 1}}
+\end{equation}
+
+\begin{itemize}
+    \item $\sigma =$ Standaarddeviatie van getallenreeks $x$
+    \item $x_i =$ de waarde van getal $i$ in de getallenreeks
+    \item $\mu =$ het gemiddelde van de getallenreeks
+    \item $n =$ het aantal getallen in de proef
+\end{itemize}
+
+\subsection{Standaard normaalverdeling}
+
+\begin{theorem}[Standaard normaalverdeling]
+    De standaardnormaalverdeling is een normaalverdeling waarbij:
+    
+    \begin{itemize}
+        \item $\mu = 0$
+        \item $\sigma$ = 1
+    \end{itemize}
+\end{theorem}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{standaardnormaalverdeling.png}
+    \caption{Oppervlakte onder grafiek $=1$}
+\end{figure}
+
+\subsubsection{Standardizeren van een normaalverdeling}
+
+\textbf{Doel:} een normaalverdeling omzetten in een standaardnormaalverdeling waarbij $\mu = 0$ en $\sigma = 1$
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{standardizeren.png}
+    \caption{Standardizeren}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{gauss-notatiewijze.png}
+    \caption{Uitgangspunt: willekeurige normaalverdeling}
+\end{figure}
+
+\begin{itemize}
+    \item Verschuiven naar $0$: $X - \mu$
+    \item samendrukken/uitrekken tot $\sigma = 1$: $\frac{X - \mu}{\sigma}$
+\end{itemize}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{gestandardizeerd.png}
+    \caption{Gestandardizeerd: alle eigenschappen blijven bewaard, enkel de hoogte blijft hetzelfde}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{standardizering-voorbeeld.png}
+    \caption{Standardizeren: voorbeeld}
+\end{figure}
+
+\subsection{Kansberekening}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{normaalverdeling-kansen.png}
+    \caption{$Z ~ N(0, 1) \rightarrow \mu = 0$ en standaardafwijking $\sigma = 1$}
+\end{figure}
+
+\begin{itemize}
+    \item Grafiek beschrijft hoe waarschijnlijk uitkomsten zijn
+    \item Uitkomsten dicht bij 0 waarschijnlijker dan in de staarten
+    \item Kans = oppervlakte onder de grafiek, totale kans = 100\% = 1
+\end{itemize}
+
+\subsubsection{Via tabellen}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{normaalverdeling-tabel.png}
+    \includegraphics[width=0.3\textwidth]{normaalverdeling-tabel2.png}
+    \caption{Kansberekening via tabellen: rijen = 1 getal na de komma, kolommen = 2de getal na de komma. $P(Z < 1.25) = 0.1056$}
+\end{figure}
+
+\begin{itemize}
+    \item Symmetrie: $P(Z < -1.25) = P(Z > 1.25) = 0.1056$
+    \item Complement: $P(Z < -1.25) = 1- P(Z < 1.25)$
+\end{itemize}
+
+\subsection{Z-score}
+
+\begin{theorem}[Z-score]
+    Een Z-score geeft aan hoeveel standaardafwijkingen een observatie van het gemiddelde verwijderd is.
+
+    Je krijgt dus je plek ten opzichte van het gemiddelde, uitgedrukt in een
+    standaard maat.
+
+    \textbf{Voordeel:} je weet direct hoe goed iemand scoort ten opzichte van de
+    rest.
+\end{theorem}
+
+\subsubsection{Wiskundig}
+
+\begin{equation}
+    z = \frac{x - \mu}{\sigma}
+\end{equation}
+
+\subsubsection{Voorbeeld}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{z-score.png}
+    \caption{Hoeveel standaarddeviaties ($\sigma$) zit een score van het gemiddelde $\mu$}
+\end{figure}
+
+\textbf{Voorbeeld:} 20 studenten leggen een examen af.
+
+\begin{itemize}
+    \item Gemiddelde $\mu = 7/10$
+    \item Standaardafwijking $\sigma = 0.5$ ($68\%$ heeft score tussen $[6.5, 7.5]$)
+    \item Iemand heeft $6/10 \Rightarrow$ z-score $= -2 \Rightarrow 2\cdot 0.5$ onder gemiddelde 
+\end{itemize}
+
+\subsubsection{Nut}
+
+Z-score is eveneens een uitdrukking van de kans:
+
+\begin{itemize}
+    \item Hoe (on)gebruikelijk is een score
+    \item Bij vorig voorbeeld: $2.275\%$ heeft een score $\leq 6/10$
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.25\textwidth]{z-score-nut.png}
+    \caption{}
+\end{figure}
+
+\subsection{Scheefheid}
+
+Veel frequentieverdelingen hebben niet de vorm van de normaalverdeling. Ze zijn `scheef'
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{scheefheid.png}
+    \caption{Scheefheid}
+\end{figure}
+
+\begin{itemize}
+    \item Linksscheef = gemiddelde is lager dan de mediaan
+    \item Rechtscheef = gemiddelde is hoger dan de mediaan
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{scheefheid2.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Berekening}
+
+De maat voor scheefheid kan berekend worden:
+
+\begin{itemize}
+    \item Linksscheef: negatieve waarde
+    \item Rechtsscheef: positieve waarde
+\end{itemize}
+
+\begin{equation}
+    Scheefheid = \Bigg(\frac{(\frac{\sum(x - \bar{x})^3}{n})}{(\frac{\sum(x - \bar{x})^2}{n})^{3/2}}\Bigg)
+\end{equation}
+
+Interpretatie:
+
+\begin{itemize}
+    \item Waarde tussen [-0.5, 0.5]: zeer goede normaalverdeling
+    \item Waarde tussen [-1, 1]: redelijk goede normaalverdeling
+    \item Waarde daarbuiten: geen goede normaalverdeling
+\end{itemize}
+
+\subsection{Kurtosis}
+
+\begin{theorem}[Kurtosis]
+    Kurtosis is de maat van de gepiektheid. 
+
+    Je gaat na of de verdeling een scherpe top heeft of een nogal vlakke top.
+\end{theorem}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{kurtosis.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Wiskundig}
+
+\begin{equation}
+    TODO    
+\end{equation}
+
+
+
+Interpretatie:
+
+\begin{itemize}
+    \item $0$ = normaalverdeling
+    \item Minimum is $-3$: volledig plat
+    \item Maximum is $+\inf$
+\end{itemize}
+
+
+\subsection{Anomaly detection}
+
+Voorbeeld: suikerfabriek produceert 1kg suikerzakken
+
+\begin{itemize}
+    \item In werkelijkheid: nooit exact 1kg
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{anomaly-detection.png}
+    \caption{Verdeling 1kg suikerzak}
+\end{figure}
+
+\begin{theorem}[Anomalie]
+    Een anomalie in een normaalverdeling is een onregelmatigheid of afwijking
+
+    Soms verdacht, soms niet
+
+    "Anomaly detection (also outlier detection) is the identification of items,
+    events or observations which do not conform to an expected pattern or
+    other items in a dataset."
+\end{theorem}
+
+\subsubsection{Detectiemethode 1}
+
+= Minimum- en maximumgrens vastleggen
+
+Bv:
+
+\begin{itemize}
+    \item wanneer een waarde kleiner is dan $\mu - 4\sigma$ (920 gram)
+    \item wanneer een waarde groter is dan $\mu + 4\sigma$ (1080 gram)
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{anomaly-detection2.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Detectiemethode 2}
+
+= detecteren van een zeldzame verdeling die afwijkt van de normaalverdeling
+
+Bv:
+
+\begin{itemize}
+    \item 4 opeenvolgende waarden die vallen in de buitengrenzen $\mu - 3\sigma$ en $\mu + 3\sigma$
+    \item Kans voor 1 waarde: $0.3\%$
+    \item Kans voor 4 opeenvolgende waardes: $(0.3\%)^4 = (0.003)^4 = 0.000000000081$
+\end{itemize}
+
+Bv: 
+
+\begin{itemize}
+    \item 50 opeenvolgende waarden die vallen in de buitengrenzen $\mu - \sigma$ en $\mu + \sigma$
+    \item Kans voor 1 waarde: $68\%$
+    \item Kans 50 opeenvolgende waardes: $(0.68)^{50} = 4.221 \cdot 10^{-9}$
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{anomaly-detection3.png}
+    \caption{}
+\end{figure}
+
+
+\subsubsection{Detectiemethode 3}
+
+Volledige verschuiving van de normaalverdeling
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{anomaly-detection4.png}
+    \caption{Oplossing: gebruik van window}
+\end{figure}
 
 
 \end{document}
