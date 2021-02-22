@@ -20,6 +20,7 @@
 \newcommand{\bold}[1]{\textbf{#1}}
 
 \usepackage{minted}
+\setminted{frame=single,framesep=3pt,linenos}
 \usepackage{upquote}
 \usepackage{color}
 
@@ -343,7 +344,66 @@ Docker is `nothing more' than an ecosystem about creating \& running containers
 
 \subsection{Using Docker}
 
-(see slides 40-55 in \underline{02\_big\_data\_01\_containers.pdf})
+(see slides 40-55 in \underline{02\_big\_data\_01\_containers.pdf} for basic commands)
+
+\subsubsection{Layers bekijken}
+
+With the command `docker history <image | container id>' you'll get an overview of the layers of an image.
+
+\begin{itemize}
+    \item Every RUN, COPY, ADD adds a new read-only \underline{layer}
+    \item Make Dockerfile more efficient $\Rightarrow$ create less layers
+\end{itemize}
+
+\subsubsection{Make Dockerfile more efficient}
+
+Our Dockerfile, before optimalisation:
+
+\begin{minted}{docker}
+FROM python:3.9.1-alpine3.13
+WORKDIR '/app'
+RUN apk add --no-cache linux-headers g++
+RUN pip install Flask # we can replace these two lines by:
+RUN pip install uwsgi # RUN pip install -r requirements.txt
+COPY ./ ./
+RUN addgroup -S uwsgi && adduser -S uwsgi -G uwsgi
+USER uwsgi
+CMD ["uwsgi", "--ini", "app.ini"]
+\end{minted}
+
+After optimalisation:
+
+\begin{minted}{docker}
+FROM python:3.9.1-alpine3.13
+WORKDIR '/app'
+RUN apk add --no-cache linux-headers g++
+# the addgroup and adduser commands can be higher up
+RUN addgroup -S uwsgi && adduser -S uwsgi -G uwsgi
+# first, we copy the requirements.txt file
+COPY ./requirements.txt ./
+# then we install ALL packages
+RUN pip install -r requirements.txt
+# then we copy the remaining files
+COPY ./ ./
+USER uwsgi
+CMD ["uwsgi", "--ini", "app.ini"]
+\end{minted}
+
+\subsubsection{Connecting to a database in a different container}
+
+Use `ip a' to find the correct ip to use in this command:
+
+\begin{minted}{bash}
+docker run -p 8080:8080 
+    -e POSTGRES_PASSWORD=student_password 
+    -e POSTGRES_USER=student_user 
+    -e POSTGRES_DATABASE=labo 
+    -e POSTGRES_PORT=5432 
+    -e POSTGRES_HOST=ip-van-je-vm  # change this ip
+    -e PORT=8080 
+    jouw-naam/api                  # change this
+\end{minted}
+
 
 
 
