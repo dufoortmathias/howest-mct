@@ -1579,5 +1579,388 @@ Volledige verschuiving van de normaalverdeling
     \caption{Oplossing: gebruik van window}
 \end{figure}
 
+\section{Kansrekening}
+
+Doelstelling: 
+
+\begin{itemize}
+    \item Basiskennis kansrekening
+    \item Definitie van Laplace
+    \item Somregel kunnen toepassen
+    \item Wet van de grote getallen
+    \item Wat is een empirische kans?
+\end{itemize}
+
+\subsection{Basiskennis}
+
+Kansrekenen = waarschijnlijkheidsrekenen
+
+\begin{itemize}
+    \item Vrij jonge tak in de wiskunde
+    \item `Rekenen over wat er nog niet is'
+\end{itemize}
+
+\subsubsection{Voorbeeld}
+
+Wat is de kans dat je 6 ogen gooit met een dobbelsteen?
+
+\begin{itemize}
+    \item Kans op gooien van 1 = 1/6
+    \item Kans op gooien van 2 = 1/6
+    \item \dots
+    \item Kans op gooien van x = 1/6 = 16.7\%
+\end{itemize}
+
+1 = aantal gunstige uitkomsten
+
+6 = aantal mogelijke uitkomsten
+
+\subsection{Kansdefinitie van Laplace}
+
+\begin{theorem}[Kansdefinitie van Laplace]
+Bij een kansexperiment is de kans op een gebeurtenis $G$ gelijk aan:
+
+$P(G) = \frac{\text{aantal gunstige uitkomsten}}{\text{aantal mogelijke uitkomsten}}$
+
+
+
+\end{theorem}
+
+\subsubsection{Wiskundige notatie}
+
+\begin{equation}
+    P(A) = \frac{\#A}{\#\Omega}
+\end{equation}
+    
+\begin{itemize}
+    \item Met $A$: een gebeurtenis
+    \item Met $\Omega$: alle mogelijkheden (`het universum') ($\Omega = \{w_1, w_2, \dots, w_n\}$)
+    \item Met $\#A$: aantal elementen (uitkomsten) die voldoen aan deze gebeurtenis
+    \item Met $\#\Omega$: aantal elementen uit universum
+    \item Voorwaarde: alle mogelijke uitkomsten zijn even waarschijnlijk
+\end{itemize}
+
+\subsubsection{Gecombineerd experiment}
+
+\textbf{Bv: je gooit 2 dobbelstenen}
+
+Wat is de kans op de gebeurtenis `de som is 6 ogen'?
+
+\begin{itemize}
+    \item $P(\text{som} == 2) = \frac{1}{36}$
+    \item $P(\text{som} == 6) = \frac{5}{36}$
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{gecombineerd-experiment.png}
+    \caption{Kans dat de som 6 ogen is}
+\end{figure}
+
+Wat is de kans op de gebeurtenis `de som is minstens 9 ogen'?
+
+\begin{itemize}
+    \item \item $P(\text{som} >= 9) = \frac{10}{36} = \frac{5}{18}$
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{gecombineerd-experiment2.png}
+    \caption{Kans dat de som minstens 9 ogen is}
+\end{figure}
+
+\textbf{Oefening}: je gooit met een gewone dobbelsteen en een viervlaksdobbelsteen
+
+\begin{itemize}
+    \item Wat is de kans op de gebeurtenis met beide dobbelstenen evenveel gooien?
+    \begin{itemize}
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.4\textwidth]{gecombineerd-experiment-oef1.png}
+            \caption{Kansentabel opstellen}
+        \end{figure}
+        \item $P(\text{beide dobbelstenen evenveel}) = \frac{4}{24} = \frac{1}{6}$
+    \end{itemize}
+    \item Wat is de kans dat de som van de ogen minstens 8 is?
+    \begin{itemize}
+        \item Opnieuw kansentabel opstellen $\Rightarrow \frac{15}{36}$ 
+    \end{itemize}
+\end{itemize}
+
+\subsection{Somregel}
+
+Bv: Je gooit met 2 dobbelstenen
+
+\begin{itemize}
+    \item Wat is de kans op `som is 3 \textcolor{red}{of} som is 5'
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.4\textwidth]{somregel.png}
+        \caption{Geen overlap: }
+    \end{figure}
+    
+    \item Wat is de kans op `verschil is 1 \textcolor{red}{of} product is 12'
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.4\textwidth]{somregel2.png}
+        \caption{Er is overlap: gevaar voor dubbeltelling $\Rightarrow$ verschil aftrekken}
+    \end{figure}
+\end{itemize}
+
+\subsubsection{Wiskundig}
+
+\begin{itemize}
+    \item De gebeurtenis dat A of B beide optreden = $A \cup B$ `vereniging'
+    \item De gebeurtenis dat A of B tegelijkerteid optreden = $A \cap B$ `doorsnede'
+\end{itemize}
+
+\begin{theorem}[Somregel]
+De kans dat de vereniging zich voordoet `som-regel':
+
+\begin{equation}
+    P(A \cup B) = P(A) + P(B) - P(A \cap B)
+\end{equation}
+
+Als $P(A \cap B)$ leeg is, dan geldt:
+
+\begin{equation}
+    P(A \cup B) = P(A) + P(B)
+\end{equation}
+\end{theorem}
+
+\subsubsection{Algemene somregel}
+
+Voor 3 gebeurtenissen A,B,C
+
+\begin{equation}
+    P(A \cup B \cup C) = P(A) + P(B) + P(C) - P(A \cap B) - P(A \cap C) - P(B \cap C) \mathbf{+} P(A \cap B \cap C)
+\end{equation}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{algemene-somregel.png}
+    \caption{$A \cap B \cap C$ moet terug opgeteld worden want hij werd te veel afgetrokken}
+\end{figure}
+
+\subsection{Complementregel}
+
+1 dobbelsteen:
+
+\begin{itemize}
+    \item Je gooit een 6
+    \item Alle andere mogelijke gebeuretissen = complement
+\end{itemize}
+
+\begin{theorem}[Complementregel]
+    Een gebeurtenis $G$ en de complement-gebeurtenis $G_{\text{complement}}$ vormen samen alle mogelijkheden
+
+    \begin{equation}
+        \begin{aligned}
+            P(G) + P(G_{\text{complement}}) = 1\\
+            P(G) = 1 - P(G_{\text{complement}})
+        \end{aligned}
+    \end{equation}
+\end{theorem}
+
+\subsection{Samengesteld experiment (stochastisch exp)}
+
+Een samengesteld kansexperiment: hetzelfde experiment wordt een aantal keer herhaald
+
+Verschillende oplossingsmethodes mogelijk:
+
+\begin{itemize}
+    \item Kansboom
+    \item Combinaties
+\end{itemize}
+
+\textbf{Voorbeeld}: in een vaas liggen 5 briefjes waarop telkens 1 letter staat: 3 briefjes met de letter A en twee briefjes met de letter B
+
+2 mogelijkheden: 
+
+\begin{itemize}
+    \item trekking met teruglegging
+    \item trekking zonder teruglegging
+\end{itemize}
+
+\subsubsection{Trekking met teruglegging}
+
+Uit de vaas wordt lukraak een letter getrokken. Deze wordt genoteerd
+en teruggelegd. Vervolgens trekken we opnieuw een letter.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{trekking-met-teruglegging-kansboom.png}
+    \caption{Verloop voorgesteld via een kansboom}
+\end{figure}
+
+\begin{itemize}
+    \item Uitkomstenverzameling: $U = \{AA, AB, BA, BB\}$
+    \item Elke tak = bijhorende deelkans
+\end{itemize}
+
+\begin{theorem}[Onafhankelijke deelexperimenten]
+    Kansen bij de tweede trekking zijn onafhankelijk van het resultaat van de eerste trekking
+\end{theorem}
+
+Wat is $P(AB)$?
+
+\begin{itemize}
+    \item N = groot aantal herhalingen
+    \item $\frac{3}{5}N$ keer leveren een A op
+    \item $\frac{2}{5}N$ keer leveren een B op
+    \item \textbf{Gevolg:} $\frac35 \frac25 N$ keer volgen de weg AB
+    \item $\Rightarrow$ $P(AB) = \frac{6}{25}$
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{trekking-met-teruglegging-tabel.png}
+    \caption{}
+\end{figure}
+
+
+\textbf{Productregel voor kansen:} De kans op een weg is gelijk aan het product van de kansen langs die weg
+    
+
+\subsubsection{Trekking zonder teruglegging}
+
+Uit de vaas wordt lukraak een letter genomen. Deze wordt genoteerd en \textcolor{red}{niet} teruggelegd.
+Vervolgens trekken we een nieuwe letter
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{trekking-zonder-teruglegging-kansboom.png}
+    \includegraphics[width=0.4\textwidth]{trekking-zonder-teruglegging-tabel.png}
+    \caption{We vermenigvuldigen opnieuw de kansen}
+\end{figure}
+
+
+\begin{theorem}[Afhankelijke deelexperimenten]
+    Kansen bij de tweede trekking zijn afhankelijk zijn van het resultaat van de eerste trekking
+\end{theorem}
+
+\subsection{Permutaties}
+
+\begin{theorem}[Permutatie]
+    Een permutatie van een verzameling elementen is een herschikking/herordening ervan.
+
+    $\Rightarrow$ volgorde is van belang! 
+\end{theorem}
+
+\subsubsection{Voorbeeld:} 
+
+Je organiseert een wedstrijd voor 10 hardlopers. 
+Op hoeveel manieren kan ik de gouden/zilveren/bronzen medaille gaan verdelen?
+
+\begin{itemize}
+    \item Volgorde van belang!
+    \item Aantal permutaties van 3 uit 10: $10 \cdot 9 \cdot 8 = 720$
+\end{itemize}
+
+\subsubsection{Oefening}
+
+Een reclameblok bestaat uit 9 items: 2 over eten, 3 over reizen, 4 over auto's
+
+\begin{enumerate}
+    \item Op hoeveel manieren kunnen deze items gerangschikt worden?
+    \item Op hoeveel manieren kunnen deze items gerangschikt worden als de items over reizen direct na elkaar komen?
+\end{enumerate}
+
+TODO: oplossing oefeningen
+
+\subsection{Combinaties}
+
+\begin{theorem}[Combinaties]
+    Een combinatie is een aantal manieren om $k$ dingen uit $n$ dingen te kiezen \textbf{zonder} dat de volgorde van belang is.
+\end{theorem}
+
+\subsubsection{Wiskundig}
+
+`n boven k' of `uit n kies ik er k'
+
+\begin{equation}
+    \binom{n}{k} = \frac{n!}{(n-k)! \cdot k!}
+\end{equation}
+
+\subsubsection{Voorbeeld}
+
+Uit 63 studenten worden er 8 gekozen om deel te nemen aan de studentenparticipatie
+
+$\binom{63}{8} = \frac{63!}{(63-8)! \cdot 8!} = 3 872 894 697$
+
+
+\subsubsection{Oefening}
+
+We gooien met 5 identieke munstukken. Wat is de kans dat we 3 of 4 keer kop gooien?
+
+\begin{itemize}
+    \item Gevraagd: $P(3\ \text{keer kop of}\ 4\ \text{keer kop})$
+    \item Totaal = $2 \cdot 2 \cdot 2 \cdot 2 \cdot 2 = 2^5 = 32$
+    \item Aantal gunstige:
+    \begin{itemize}
+        \item 3x kop: $\binom{5}{3} = 10$
+        \item 4x kop: $\binom{5}{4} = 5$
+    \end{itemize}
+    \item Resultaat: somregel = $P(3\ \text{keer kop of}\ 4\ \text{keer kop}) = \frac{10}{32} + \frac{5}{32}$
+    \item TODO
+\end{itemize}
+
+\subsection{Theoretische en empirische kansen}
+
+\subsubsection{Theoretische kansen:}
+
+\begin{itemize}
+    \item Eenvoudige kansberekeningen: gooien van een dobbelsteen, kans dat je 5 gooit
+    \item Dit is een `theoretische' of `a priori' kans:
+    \begin{itemize}
+        \item De kans op een gebeurtenis is vooraf berekenbaar
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Empirische kansen}
+
+\begin{itemize}
+    \item Complexere kansberekening
+    \item Uitkomst niet eenvoudig berekenbaar
+\end{itemize}
+
+
+\subsubsection{Voorbeeld}
+We gooien 60 keer met een dobbelsteen, hoeveel vijven verwacht je hierbij?
+
+\begin{itemize}
+    \item Verwachting: 10x 1, 10x 2, 10x 3, \dots
+    \item Maar is de werkelijkheid = verwachting?
+    \item Relatieve frequentie: $frac{\text{frequentie}}{\text{aantal worpen}} = \frac{10}{60} = \frac16$
+\end{itemize}
+
+\begin{theorem}[De wet van de grote getallen]
+    Wanneer we een experiment heel vaak herhalen komt de relatieve frequentie steeds dichter in de buurt van de kans op de gebeurtenis.
+\end{theorem}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{wet-grote-getallen.png}
+    \caption{De wet van grote getallen}
+\end{figure}
+
+\begin{itemize}
+    \item Nuttig wanneer we kans niet vooraf kunnen berekenen.
+    \item Door het experiment heel vaak te herhalen, kunnen we de kans afleiden.
+    \item Hierdoor mogelijkheid tot uitspraak over experiment in toekomst
+    \item Dit heet \textbf{de empirische kans}: de kans gebaseerd op waarneming
+\end{itemize}
+
+\subsubsection{Voorbeeld 2}
+
+Experiment met duimspijker: op hoeveel manieren kan hij bij een worp op de grond komen?
+
+\begin{itemize}
+    \item We bekijken de kans P(punt omlaag) en P(punt omhoog)
+    \item Is dat wel 50/50?
+    \item Theoretische kans niet te bepalen\dots
+    \item Door experiment uit te voeren: de empirische kans $P(\text{punt omhoog}) \approx 0.58$
+\end{itemize}
 
 \end{document}
