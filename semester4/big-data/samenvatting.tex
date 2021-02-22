@@ -26,6 +26,7 @@
  {\end{enumerate}}
 
 \usepackage{minted}
+\setminted{frame=single,framesep=3pt,linenos}
 \usepackage{upquote}
 \usepackage{color}
 
@@ -758,130 +759,175 @@ to read data that has been modified by another running transaction,
 and not yet committed.
 \end{theorem}
 
-Solutions:
+\textbf{Example: } 
+
+\begin{minted}{sql}
+-- 1: start the transaction
+START TRANSACTION;
+-- 2: check the current balance
+SELECT balance FROM checking WHERE customer_id = 10233276;
+-- 3: money is taken from the balance account
+UPDATE checking SET balance = balance - 200.00 WHERE customer_id = 10233276;
+-- 4: money is put on the savings account
+UPDATE savings SET balance = balance + 200.00 WHERE customer_id = 10233276;
+-- 5: Commit the transaction
+COMMIT;
+\end{minted}
+
+If someone reads the data after command \#3 happens, the savings and total values will be wrong
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.25\textwidth]{dirty-reads.png}
+    \caption{Dirty read example: every command Tx is a row}
+\end{figure}
+
+ 
+
+\textbf{Solutions:}
 
 \begin{itemize}
-    \item Read locks (=very bad performacance)
+    \item Read locks (=very bad performance)
     \item Remember the old value until commit
+    \begin{itemize}
+        \item Until the commit happens, every value will be what it was at Tx = 1
+    \end{itemize}
 \end{itemize}
 
 \subsubsection{Dirty Writes}
 
-TODO
+\begin{theorem}[Dirty Write]
+A dirty write happens when a transaction writes data that has been changed on disk by another transaction. 
+The last transaction will overwrite what the first transaction wrote.
+\end{theorem}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{dirty-reads-lock.png}
+    \caption{Dirty write example}
+\end{figure}
+
+\begin{enumerate}
+    \item Alice buys a car from a dealership
+    \item Bob buys the same car from the dealership
+    \item Bob gets an invoice before Alice because his internet is faster
+    \item Alice gets an invoice after Bob. Two people now own the same car?
+\end{enumerate}
+
+\textbf{Solution: Write lock:}
+
+\begin{itemize}
+    \item If a row is claimed by a transaction, that row should be locked until commit
+    \item Bob cannot write to the invoices, because it has been locked by Alice.
+\end{itemize}
 
 \subsubsection{Read skew}
 
-\begin{itemize}
-    \item TODO
-\end{itemize}
+\begin{theorem}[Read skew]
+Read skew happens when a commit reads the same data twice, 
+with different results because another transaction updated the data.
+\end{theorem}
+
+\begin{enumerate}
+    \item Alice checks the balance of the first account
+    \item Bob updates the balance of the first account
+    \item Bob updates the balance of the second account
+    \item Alice checks the balance of the second account
+\end{enumerate}
+
+Result: Alice `loses' \$100 in one commit, because another transaction changed data.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{read-skew.png}
-    \caption{Read skew}
+    \includegraphics[width=0.6\textwidth]{read-skew.png}
+    \caption{Read skew example}
 \end{figure}
 
-\subsubsection{Repeatable Read or Snapshot Isolation}
+\textbf{Solution:}
 
 \begin{itemize}
-    \item Which transaction changes what?
-    \begin{itemize}
-        \item TODO
-    \end{itemize}
-    \item "Multi Version Concurrency Control (MVCC)"
-    \item Readers do not block writes, writers do not block reads
+    \item Reading the values again solves the problem
+    \item Except for backups: If a backup saves data while another transaction changes it, you will come across problems.
 \end{itemize}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{repeatable-read-of-snapshot-isolation.png}
-    \caption{}
-\end{figure}
-
-\subsubsection{Multi Version Concurrency Control (MVCC)}
-
-TODO
 
 \subsubsection{Lost updates \& Atomic updates}
-
-\begin{itemize}
-    \item Two read - modify - write transactions
-    \begin{itemize}
-        \item Problem: Bob reads `quantity' while transaction is committing
-    \end{itemize}
-    \item Solutions: `atomic updates' or manual lock
-    \begin{itemize}
-        \item No reads or update object until commit
-        \item Update `X' SET value = "X2"
-        \item (Read - modify - write in one operation)
-    \end{itemize}
-\end{itemize}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{lost-updates-atomic-updates.png}
-    \caption{}
+    \caption{Lost updates: example}
 \end{figure}
 
-\subsubsection{Write Skew and others\dots}
+\begin{enumerate}
+    \item Alice checks the quantity of the product (quantity = 7)
+    \item Bob checks the quantity of the product (quantity = 7)
+    \item Alice buys the product (quantity = 6)
+    \item Bob thinks the quantity is 7 and he wants to add 3: he sets the quantity to 10 (7+3)
+    \item Alice commits her changes. According to her, the quantity should be 6
+    \item Bob commits his changes. The quantity is 10, overwriting Alice's changes. The actual quantity should be 9 (7-1+3)
+\end{enumerate}
+
+\textbf{Solution: Atomic updates}
+
+\begin{itemize}
+    \item Problem: Two read - modify - write transactions with different outcomes
+    \item Repeatable read does not fix this
+    \item Solutions: `atomic updates' or manual lock
+    \begin{itemize}
+        \item = Exclusive read lock on the data
+        \item = No reads or update object until commit
+        \item Update `X' SET value = "X2" $\Rightarrow$ (Read - modify - write in one operation)
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Write Skew}
+
+Atomic Updates don't protect against everything:
 
 \begin{itemize}
     \item Multi object updates \& lost updates
-    \item TODO
 \end{itemize}
 
-\begin{minted}{sql}
-BEGIN TRANSACTION
-SELECT COUNT(*) FROM bookings WHERE seat = 'front row'
-INSERT INTO bookings ...       -- count > 0
-COMMIT;
-\end{minted}
+Pattern:
 
-\subsubsection{Single Threaded - Serial Execution}
-
-\begin{itemize}
-    \item Serial instances for reads
-    \begin{itemize}
-        \item One fast write thread in RAM
-        \item Select on seperate snapshot
-    \end{itemize} 
-    \item Examples:
-    \begin{itemize}
-        \item Redis
-        \item VoltDB
-    \end{itemize} 
-    \item Complete transaction in one serial stored procedure
-    \begin{itemize}
-        \item = piece of code in the DB, already compiled, that is ready to be executed
-        \item Upsides: TODO
-        \item Downsides: TODO
-    \end{itemize}
-    \item Partition data
-    \begin{itemize}
-        \item Multiple threads, one thread per partition
-        \item Cross partition transaction? Hard!
-    \end{itemize}
-\end{itemize}
+\begin{enumerate}
+    \item Read something
+    \item Make decision
+    \item Write new data
+    \item By the time the write is committed, the premise of the decision (step 2) is no longer true.
+\end{enumerate}
 
 \subsubsection{2-phase lock - Serial execution}
 
+With weak isolation levels:
+
 \begin{itemize}
-    \item Weak isolation levels:
-    \begin{itemize}
-        \item = Readers never block writers, and you can read the old value while it is written
-    \end{itemize}
-    \item 2PL = exclusive lock on read data, then exclusive lock for writing
-    \begin{itemize}
-        \item Deadlocks are possible! (= transactions keep waiting for each other's locks)
-    \end{itemize}
-    \begin{itemize}
-        \item Examples:
-        \begin{itemize}
-            \item MySQL InnoDB
-            \item SQL server
-            \item DB2 ("Repeatable read")
-        \end{itemize}
-    \end{itemize}
+    \item Readers never block writers
+    \item Writers never block readers (you can read the old value while it is being overwritten)
+\end{itemize}
+
+With 2-phase lock, there are two fases (duh):
+
+\begin{enumerate}
+    \item Exclusive read-lock on data
+    \item Exclusive write-lock on data
+\end{enumerate}
+
+Problem: Deadlocks
+
+\begin{itemize}
+    \item Transactions keep waiting on other transactions' locks
+    \item Result: the whole database can crash because of this
+\end{itemize}
+
+Examples that support 2-phase locking:
+
+\begin{itemize}
+    \item MySQL InnoDB
+    \item SQL server
+    \item DB2 (but DB2 mistakenly calls this "Repeatable read")
 \end{itemize}
 
 \subsection{Isolation levels}
@@ -911,36 +957,24 @@ COMMIT;
     \caption{(default) isolation levels in current databases. (*) Wrong, Oracle does not comply with ANSI}
 \end{figure}
 
-\subsubsection{Conclusion}
-
-\begin{itemize}
-    \item TODO
-\end{itemize}
-
 
 \subsubsection{Isolation level 1: Read Uncommited}
 
 \begin{itemize}
-    \item Read Uncommitted offers no protection agains dirty writes \& dirty reads
+    \item Read Uncommitted offers no protection against concurrency threats
     \item Fastest performance, lowest isolation
+    \item One transaction may see not-yet-committed changes made by other transactions
 \end{itemize}
 
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{dirty-reads-lock.png}
-    \caption{Dirty read \& dirty write example}
-\end{figure}
 
 \subsubsection{Isolation level 2: Read Committed}
 
+Offers protection against:
+
 \begin{itemize}
-    \item No dirty reads
-    \item No dirty writes
+    \item Dirty reads
+    \item Dirty writes
 \end{itemize}
-
-TODO
-
 
 \textbf{Solutions}
 
@@ -949,21 +983,105 @@ TODO
     \item Remember the old value until `commit' (better performance)
 \end{enumerate}
 
+\subsubsection{Isolation level 3: Repeatable read or Snapshot Isolation}
+
+\begin{itemize}
+    \item Also called "Multi Version Concurrency Control (MVCC)"
+    \item Solves dirty reads, dirty writes and read skew
+    \item If a commit happens before everything is fully backed up, every commit started after the start of the backup will be ignored.
+    \item To accomplish this, every transaction gets a number
+    \item `Readers do not block writes, writers do not block reads'
+\end{itemize}
+
+
+\subsubsection{Isolation level 4: Serial execution }
+
+\begin{itemize}
+    \item One single fast thread (in RAM) for writing
+    \item Multiple threads for reading
+    \item Not very fast, definitely not very scalable
+    \item Only use if your database is not too complex
+    \begin{itemize}
+        \item Redis
+        \item VoltDB
+        \item Other databases that can be kept in memory\dots
+    \end{itemize}
+    \item No write locks necessary, no overhead from thread synchronisation, \dots
+    \item Limited by a single thread on your CPU
+    \item How to use multiple threads?
+    \begin{itemize}
+        \item Partition data
+        \item Multiple threads, one thread per partition
+        \item Speed will be much slower if a transaction accesses multiple partitions
+    \end{itemize}
+    \item Complete transaction in one serial stored procedure (=piece of code, already compiled and ready to execute)
+\end{itemize}
+
+\subsubsection{Conclusion}
+
+\begin{itemize}
+    \item Isolation levels are a complex trade-off between\dots:
+    \begin{itemize}
+        \item Consistency
+        \item Scalability
+    \end{itemize}
+    \item Check your application: which level is the best for your usecase?
+    \item 
+\end{itemize}
+
+
 \subsection{ACID: Durable}
 
 = A database should be durable: every write transaction has to be written to disk, and should be stored safely and reliably.
 
-\subsubsection{Caching \& BBU}
+But durability is also a trade-off: 
 
 \begin{itemize}
-    \item Write through / back TODO
-    \item Battery Backup Unit
-    \item RAM caches in SSDs have to be Non-Volatile (NV)!
+    \item Higher durability $\Leftrightarrow$ lower performance
+    \item Higher performance $\Rightarrow$ more risks
 \end{itemize}
 
-\subsubsection{The transaction chain: innodb\_flush\_log\_at\_try\_commit}
+
+\subsubsection{Caching \& BBU}
 
 
+\begin{itemize}
+    \item If we choose the highest isolation on sofware, the hardware can still fail.
+    \item For a RAID configuration:
+    \begin{itemize}
+        \item Most RAID configurations use a RAM cache before writing changes to disks
+        \item RAM cache should have a Battery Backup Unit (BBU) in case the power goes out
+        \item This is because RAM is by definition not durable, but volatile
+    \end{itemize}
+    \item Disks also have RAM caches
+    \begin{itemize}
+        \item This is mostly to sort the data before it gets written
+        \item Use professional storage: disks with capacitors!
+        \item RAM caches in SSDs have to be Non-Volatile (NV)!
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{The Transaction chain}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{transaction-chain.png}
+    \caption{The transaction chain when writing to disk}
+\end{figure}
+
+Steps a transaction takes to write to disk:
+
+\begin{enumerate}
+    \item The transaction gets buffered in the buffer pool
+    \item The data gets written to the log buffer
+    \item Using multiple I/O threads, the log buffer gets flushed to the OS
+    \item The OS chooses how the data is written (cache first, or write immediately)
+    \item The OS writes the data to the disks
+\end{enumerate}
+
+\subsubsection{The transaction chain: innodb\_flush\_log\_at\_trx\_commit}
+
+= a setting in MySQL InnoDB with three options:
 
 \begin{itemize}
     \item 0: Write the log buffer to the log file and flush the log file \textbf{every second}, but do nothing at transaction commits (fastest)
@@ -973,13 +1091,14 @@ TODO
     \item 1: Write the log buffer to the log file and flush it to durable storage \textbf{at transaction commits}
     \begin{itemize}
         \item This is the only option that is fully ACID compliant
+        \item It is also the slowest
     \end{itemize}
     \item 2: Write the log buffer to the log file \textbf{at every commit}, but flush it every second
 \end{itemize}
 
-Flushing = writing to disk
-
 \subsubsection{innodb\_flush\_method}
+
+= a setting that tells the OS how the data has to be written
 
 \begin{itemize}
     \item fdatasync
@@ -994,19 +1113,15 @@ Flushing = writing to disk
     \begin{itemize}
         \item Default value on Windows
         \item Causes InnoDB to use unbuffered I/O for most writes
-        \item The exception: it uses buffered I/O to the log files when innodb\_flush\_log\_at\_try\_commit = 2
+        \item Exception: it uses buffered I/O to the log files when innodb\_flush\_log\_at\_try\_commit = 2
     \end{itemize}
 \end{itemize}
 
-\subsubsection{The Transaction chain}
-
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{transaction-chain.png}
-    \caption{The transaction chain when writing to disk}
+    \includegraphics[width=0.5\textwidth]{transaction-chain2.png}
+    \caption{The full transaction chain, with RAID}
 \end{figure}
-
-TODO
 
 
 
