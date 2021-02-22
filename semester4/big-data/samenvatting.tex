@@ -16,8 +16,14 @@
 \renewcommand{\familydefault}{\sfdefault}
 
 \graphicspath{{img/}}
- 
-\newcommand{\bold}[1]{\textbf{#1}}
+
+\newtheorem{theorem}{Definitie}[section]
+
+\usepackage{enumitem}
+
+\newenvironment{thmenum}
+ {\begin{enumerate}[label=\upshape\bfseries(\roman*)]}
+ {\end{enumerate}}
 
 \usepackage{minted}
 \usepackage{upquote}
@@ -64,17 +70,17 @@
 \subsection{Data Intensive Application: RAMS!}
 
 \begin{itemize}
-    \item \bold{Reliable}
+    \item \textbf{Reliable}
     \begin{itemize}
         \item tolerating human mistakes
     \end{itemize}
-    \item \bold{Available}
-    \item \bold{Maintainable}
+    \item \textbf{Available}
+    \item \textbf{Maintainable}
     \begin{itemize}
         \item Easy to adapt (evolvability)
         \item Easy to deploy \& operate (operations/sys admins)
     \end{itemize}
-    \item \bold{Scalable}
+    \item \textbf{Scalable}
     \begin{itemize}
         \item User growth while maintaining low response times
     \end{itemize}
@@ -164,10 +170,10 @@ data intensive application.
 
 
 \begin{itemize}
-    \item \bold{Reverse proxy / Load balancer:} improves scalability
-    \item \bold{Opcode/app/Webserver:} webservice + API
-    \item \bold{Key-value store:} `caching layer'
-    \item \bold{Database server:} distributed storage system + relational database
+    \item \textbf{Reverse proxy / Load balancer:} improves scalability
+    \item \textbf{Opcode/app/Webserver:} webservice + API
+    \item \textbf{Key-value store:} `caching layer'
+    \item \textbf{Database server:} distributed storage system + relational database
 \end{itemize}
 
 \subsubsection{Time series Distributed database (OpenTSDB, InfluxDB)}
@@ -199,9 +205,9 @@ Response times and percentiles rule the web
 \subsubsection{Response times for websites}
 
 \begin{itemize}
-    \item \bold{Ideal:} "blink of an eye" is 300-400 ms
-    \item \bold{Excellent:} 500ms to 1.5 seconds at most
-    \item \bold{Barely acceptable:} 3 seconds
+    \item \textbf{Ideal:} "blink of an eye" is 300-400 ms
+    \item \textbf{Excellent:} 500ms to 1.5 seconds at most
+    \item \textbf{Barely acceptable:} 3 seconds
 \end{itemize}
 
 Response time = Network latency + processing
@@ -271,7 +277,7 @@ Response time = Network latency + processing
         \item Only one 3-way handshake for many requests
         \item Lower network \& CPU load
         \item Lower response times
-        \item \bold{Downside}: more connections open $\Rightarrow$ more memory, more connection failures, app crashing, \dots
+        \item \textbf{Downside}: more connections open $\Rightarrow$ more memory, more connection failures, app crashing, \dots
     \end{itemize}
 \end{itemize}
 
@@ -742,6 +748,142 @@ Situation:
     \item This is not a transaction!
 \end{itemize}
 
+\subsection{Concurrency Control}
+
+\subsubsection{Dirty Reads}
+
+\begin{theorem}[Dirty Reads]
+Dirty reads (aka uncommitted dependency) occur when a transaction is allowed 
+to read data that has been modified by another running transaction, 
+and not yet committed.
+\end{theorem}
+
+Solutions:
+
+\begin{itemize}
+    \item Read locks (=very bad performacance)
+    \item Remember the old value until commit
+\end{itemize}
+
+\subsubsection{Dirty Writes}
+
+TODO
+
+\subsubsection{Read skew}
+
+\begin{itemize}
+    \item TODO
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{read-skew.png}
+    \caption{Read skew}
+\end{figure}
+
+\subsubsection{Repeatable Read or Snapshot Isolation}
+
+\begin{itemize}
+    \item Which transaction changes what?
+    \begin{itemize}
+        \item TODO
+    \end{itemize}
+    \item "Multi Version Concurrency Control (MVCC)"
+    \item Readers do not block writes, writers do not block reads
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{repeatable-read-of-snapshot-isolation.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Multi Version Concurrency Control (MVCC)}
+
+TODO
+
+\subsubsection{Lost updates \& Atomic updates}
+
+\begin{itemize}
+    \item Two read - modify - write transactions
+    \begin{itemize}
+        \item Problem: Bob reads `quantity' while transaction is committing
+    \end{itemize}
+    \item Solutions: `atomic updates' or manual lock
+    \begin{itemize}
+        \item No reads or update object until commit
+        \item Update `X' SET value = "X2"
+        \item (Read - modify - write in one operation)
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{lost-updates-atomic-updates.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Write Skew and others\dots}
+
+\begin{itemize}
+    \item Multi object updates \& lost updates
+    \item TODO
+\end{itemize}
+
+\begin{minted}{sql}
+BEGIN TRANSACTION
+SELECT COUNT(*) FROM bookings WHERE seat = 'front row'
+INSERT INTO bookings ...       -- count > 0
+COMMIT;
+\end{minted}
+
+\subsubsection{Single Threaded - Serial Execution}
+
+\begin{itemize}
+    \item Serial instances for reads
+    \begin{itemize}
+        \item One fast write thread in RAM
+        \item Select on seperate snapshot
+    \end{itemize} 
+    \item Examples:
+    \begin{itemize}
+        \item Redis
+        \item VoltDB
+    \end{itemize} 
+    \item Complete transaction in one serial stored procedure
+    \begin{itemize}
+        \item = piece of code in the DB, already compiled, that is ready to be executed
+        \item Upsides: TODO
+        \item Downsides: TODO
+    \end{itemize}
+    \item Partition data
+    \begin{itemize}
+        \item Multiple threads, one thread per partition
+        \item Cross partition transaction? Hard!
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{2-phase lock - Serial execution}
+
+\begin{itemize}
+    \item Weak isolation levels:
+    \begin{itemize}
+        \item = Readers never block writers, and you can read the old value while it is written
+    \end{itemize}
+    \item 2PL = exclusive lock on read data, then exclusive lock for writing
+    \begin{itemize}
+        \item Deadlocks are possible! (= transactions keep waiting for each other's locks)
+    \end{itemize}
+    \begin{itemize}
+        \item Examples:
+        \begin{itemize}
+            \item MySQL InnoDB
+            \item SQL server
+            \item DB2 ("Repeatable read")
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
 \subsection{Isolation levels}
 
 = Choose between strong isolation or strong performance
@@ -755,21 +897,47 @@ Situation:
         \item Repeatable Read (=snapshot isolation)
         \item Serial Execution (strongest isolation, least performance)
     \end{itemize}
+    \item Isolation problems are hard to debug:
+    \begin{itemize}
+        \item It's a timing problem
+        \item Very hard to reproduce
+        \item No errors are logged
+    \end{itemize}
 \end{itemize}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{isolation-levels-dbs.png}
-    \caption{(default) isolation levels in current databases. (*) Wrong, not ANSI compliant}
+    \includegraphics[width=0.7\textwidth]{isolation-levels-dbs.png}
+    \caption{(default) isolation levels in current databases. (*) Wrong, Oracle does not comply with ANSI}
 \end{figure}
 
-\subsubsection{Read Uncommited}
+\subsubsection{Conclusion}
 
-TODO
+\begin{itemize}
+    \item TODO
+\end{itemize}
 
-\subsubsection{Read Committed}
 
-= No dirty reads \& no dirty writes
+\subsubsection{Isolation level 1: Read Uncommited}
+
+\begin{itemize}
+    \item Read Uncommitted offers no protection agains dirty writes \& dirty reads
+    \item Fastest performance, lowest isolation
+\end{itemize}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dirty-reads-lock.png}
+    \caption{Dirty read \& dirty write example}
+\end{figure}
+
+\subsubsection{Isolation level 2: Read Committed}
+
+\begin{itemize}
+    \item No dirty reads
+    \item No dirty writes
+\end{itemize}
 
 TODO
 
@@ -780,5 +948,66 @@ TODO
     \item Read locks (bad performance)
     \item Remember the old value until `commit' (better performance)
 \end{enumerate}
+
+\subsection{ACID: Durable}
+
+= A database should be durable: every write transaction has to be written to disk, and should be stored safely and reliably.
+
+\subsubsection{Caching \& BBU}
+
+\begin{itemize}
+    \item Write through / back TODO
+    \item Battery Backup Unit
+    \item RAM caches in SSDs have to be Non-Volatile (NV)!
+\end{itemize}
+
+\subsubsection{The transaction chain: innodb\_flush\_log\_at\_try\_commit}
+
+
+
+\begin{itemize}
+    \item 0: Write the log buffer to the log file and flush the log file \textbf{every second}, but do nothing at transaction commits (fastest)
+    \begin{itemize}
+        \item Fastest
+    \end{itemize}
+    \item 1: Write the log buffer to the log file and flush it to durable storage \textbf{at transaction commits}
+    \begin{itemize}
+        \item This is the only option that is fully ACID compliant
+    \end{itemize}
+    \item 2: Write the log buffer to the log file \textbf{at every commit}, but flush it every second
+\end{itemize}
+
+Flushing = writing to disk
+
+\subsubsection{innodb\_flush\_method}
+
+\begin{itemize}
+    \item fdatasync
+    \begin{itemize}
+        \item InnoDB uses fsync() to flush both data and log files (unix)
+    \end{itemize}
+    \item O\_DIRECT
+    \begin{itemize}
+        \item This setting still uses fsync() to flush the files to disk, but it instructs the operating system not to cache the data and not to use read-ahead. Avoids double buffering
+    \end{itemize}
+    \item async\_unbuffered
+    \begin{itemize}
+        \item Default value on Windows
+        \item Causes InnoDB to use unbuffered I/O for most writes
+        \item The exception: it uses buffered I/O to the log files when innodb\_flush\_log\_at\_try\_commit = 2
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{The Transaction chain}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{transaction-chain.png}
+    \caption{The transaction chain when writing to disk}
+\end{figure}
+
+TODO
+
+
 
 \end{document}
