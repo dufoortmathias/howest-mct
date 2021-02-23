@@ -1434,19 +1434,25 @@ logreg.fit(Xf, y)
 
 \subsection{Multi-class classification}
 
+Data kan tot meerdere klasses behoren.
+We kunnen met zo'n data dus geen binaire classificatie doen.
+
+
 \subsubsection{One-vs-all}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{multi-class-classification.png}
-    \caption{One-vs-All}
+    \caption{One-vs-All: 3 binaire classifiers}
 \end{figure}
 
 
 \begin{itemize}
-    \item Je hebt 1 classifier per klasse
+    \item "One-vs-Rest"
+    \item Je classificeert 1 klasse tegen de rest
+    \item Je hebt dus 1 classifier per klasse
     \item Totaal aantal classifiers: N
-    \item Gevoeliger voor niet-gebalanceerde data
+    \item Gevoeliger voor niet-gebalanceerde data (als er in een bepaalde klasse weinig datasamples zijn)
 \end{itemize}
 
 \subsubsection{One-vs-One}
@@ -1464,6 +1470,155 @@ logreg.fit(Xf, y)
 
 \section{Evaluatie van een classifier}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{truth-table.png}
+    \caption{Confusion matrix}
+\end{figure}
+
+Stel: we hebben een binaire classifier die klasse 0 of 1 als output heeft.
+We vergelijken de verwachte waarden uit de classifier met de werkelijke waardes uit de testset.
+
+\begin{itemize}
+    \item True Positive = de verwachte waarde en werkelijke waarde zijn beide 1
+    \item False Positive = de verwachte waarde is 1, terwijl de werkelijke waarde 0 is
+    \item False Negative = de verwachte waarde is 0, terwijl de werkelijke waarde 1 is
+    \item True Negative = de verwachte waarde en werkelijke waarde zijn beide 0
+\end{itemize}
+
+We tellen het aantal TP, FP, FN, TN om te gebruiken in de volgende formules. 
+Deze formules kunnen we gebruiken om een classifier te evalueren.
+
 \subsection{Accuracy}
+
+\begin{equation}
+    \text{Accuracy} = \frac{TP + TN}{TP + FP + FN + TN}
+\end{equation}
+
+\begin{itemize}
+    \item Probleem: stel dat TN = 990, FN = 10, TP = 0, FP = 0
+    \item Dan heb je een accuracy van 99\%, terwijl je eigenlijk geen enkele positieve predictie
+    \item Accuracy is dus niet altijd veelzeggend $\Rightarrow$ nood aan andere termen
+\end{itemize}
+
+\subsection{True Positive Rate (TPR)}
+
+= Recall = Sensitivity = Hit rate
+
+\begin{equation}
+    \text{Recall} = \frac{TP}{TP + FN}
+\end{equation}
+
+\begin{itemize}
+    \item Wordt vaak in combinatie gebruikt met Precision (PPV)
+\end{itemize}
+
+TODO
+
+\subsection{Positive Predictive Value (PPV)}
+
+= Precision
+
+\begin{equation}
+    \text{Precision} = \frac{TP}{TP + FP}
+\end{equation}
+
+\subsection{F1 Score}
+
+\begin{equation}
+    \text{F1 score} = \frac{2\cdot(\text{Recall} \cdot \text{Precision})}{(\text{Recall} + \text{Precision})}
+\end{equation}
+
+\begin{itemize}
+    \item Is een harmonisch gewogen gemiddelde van de recall en de precision
+\end{itemize}
+
+\subsection{Receiver Operating Characteristic (ROC)}
+
+\begin{itemize}
+    \item Wordt gebruikt bij binaire classifiers (2 klasses)
+    \item Wordt gebruikt om beter modellen te selecteren en minder goede te verwerpen
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{roc.png}
+    \includegraphics[width=0.3\textwidth]{roc2.png}
+    \caption{ROC Curve (x-as = FPR, y-as = TPR)}
+\end{figure}
+
+We gebruiken voor de assen de TPR en FPR
+
+\begin{itemize}
+    \item True Postitive Rate = Sensitivity = Recall (zie hierboven)
+    \item False Positive Rate = $1 - \text{Specificity} = \frac{FP}{FP + TN}$
+    \item Specificity = $\frac{TN}{FP + TN}$
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{roc3.png}
+    \caption{Classifier C' is een betere classifier dan classifier A}
+\end{figure}
+
+\begin{itemize}
+    \item Bij classifier C' hebben we het omgekeerde van C genomen
+    \item We noemen linksboven `ROC heaven' en rechtsbeneden `ROC Hell'.
+    \item De rode stippelijn is een classifier die gewoon gokt.
+    \item B is een classifier die even goed is als een gewone gok.
+\end{itemize}
+
+
+\subsubsection{ROC curve en AUC (Area Under ROC Curve)}
+
+ROC bij verschillende treshold settings: 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.15\textwidth]{roc-treshold.png}
+    \includegraphics[width=0.25\textwidth]{roc-treshold2.png}
+    \caption{$p(y=1 | x) - \text{threshold} = 0.5$ }
+\end{figure}
+
+\begin{itemize}
+    \item Testset met 10 samples
+    \item $TPR = \frac{TP}{TP + FN} = \frac{4}{4 + 1} = 0.8$
+    \item $FPR = \frac{FP}{FP + TN} = \frac{3}{3 + 2} = 0.6$
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.15\textwidth]{roc-treshold3.png}
+    \includegraphics[width=0.25\textwidth]{roc-treshold4.png}
+    \caption{$p(y=1 | x) - \text{threshold} = 0.6$ }
+\end{figure}
+
+\begin{itemize}
+    \item Met $p(y=1 | x) - \text{threshold} = 0.6$ krijgen we dezelfde TRP, maar een betere FPR
+    \item $TPR = \frac{TP}{TP + FN} = \frac{4}{4 + 1} = 0.8$
+    \item $FPR = \frac{FP}{FP + TN} = \frac{0}{0 + 5} = 0$
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{AuROC.png}
+    \caption{AOC of AuROC = Area under ROC}
+\end{figure}
+
+\begin{itemize}
+    \item Stel dat de treshold 0 is:
+    \begin{itemize}
+        \item Dan is TPR = 100\%
+        \item Maar FPR is ook 100\%
+    \end{itemize}
+    \item Stel dat de treshold dichter bij 1 komt (bv: 0.95):
+    \begin{itemize}
+        \item Dan is TPR dichter bij 0\%
+        \item En FPR ook dichter bij 0\%
+    \end{itemize}
+    \item Je kiest de beste ROC $\Rightarrow$ ROC met grootste AOC
+\end{itemize}
+
+
 
 \end{document}
