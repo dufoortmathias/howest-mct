@@ -318,6 +318,7 @@ Limitations:
     \item 32-bit for number of logical sectors
     \item Common sector size: 512 bytes
     \item $2^{32} \cdot 512\ \text{bytes} = 4294967296 \cdot 512\ \text{bytes} \approx 2\text{TB}$
+    \item Maximum amount of primary partitions = 4
 \end{itemize}
 
 BIOS can boot from a disk with MBR partitioning
@@ -912,9 +913,479 @@ CTRL + r:
 ~# dd if=/dev/random of=/dev/sdb bs=1M
 \end{minted}
 
+\subsection{Wooclap Questions}
 
-\section{}
+\begin{itemize}
+    \item How do you ask the shell in which folder you are currently in?
+    \item What is meant with the term 'runlevel' in Linux
+    \item Describe single user mode with 1 word when you think of its primary use
+    \item What is / are the most common runlevel(s) under linux? (So not all of them!)
+    \item Where can you find the devices under Linux?
+    \item What is the home directory of the root user?
+    \item What command do we use to create a filesystem in a partition?
+    \item What file do you need to edit to have a mounted filesystem available even after reboot?
+    \item Where can you put temporary files in a linux system?
+    \item How can you quickly search through your previously used commands?
+    \item How do you quickly search through previously typed commands?
+    \item What is swap?
+    \item What are the limitations of MBR?
+    \item What can you use a bind mount for?
+\end{itemize}
+
+\section{Filesystems}
+
+\subsection{Introduction}
+
+Books:
+
+\begin{itemize}
+    \item A group of letters together = a word
+    \item A group of words together = a sentence
+    \item A group of sentences together = a book
+    \item A collection of books together = a library
+    \item Books are ordered/sorted according to a certain system
+    \begin{itemize}
+        \item Best known: Dewey Decimal System
+    \end{itemize}
+\end{itemize}
+
+Computers: 
+
+\begin{itemize}
+    \item Work with 0's and 1's
+    \item 1 character in ASCII or ISO-8859-1 = 8bits (1 byte)
+    \item 1 Unicode character in UTF-8: between 8 and 32 bits (4 bytes)
+    \item Gets stored on block devices
+    \begin{itemize}
+        \item Hard devices, SSDs, RAMdisk, USB-stick
+        \item The opposite of block devices = character devices 
+    \end{itemize}
+    \item System needs to organize this
+\end{itemize}
+
+\subsection{Blocks}
+
+\begin{itemize}
+    \item Disk = blocks
+    \item Collection of blocks = sector (mostly 512 bytes)
+    \item Collection of sectors = partition
+    \item Partition not usable for an OS $\Rightarrow$ filesystem needed
+\end{itemize}
+
+\begin{theorem}[Filesystem]
+    A filesystem is the methods and data structures that an operating system uses to keep track of files on a disk or partition; that is, the way the files are organized on the disk.
+\end{theorem}
+
+Several choices:
+
+\begin{itemize}
+    \item Ext2/3/4
+    \item BrtFS
+    \item ZFS
+    \item \dots
+\end{itemize}
+
+\subsection{ext2/3/4}
+
+Ext3 and Ext4 have journaling:
+
+\subsubsection{Journaling}
+
+\begin{itemize}
+    \item Keeping track of changes that have not been committed to disk in a sort of 'diary'
+    \item A kind of logbook of previous actions
+    \item Why?
+    \begin{itemize}
+        \item Bring filesystem online faster after system crash or power failure
+    \end{itemize}
+\end{itemize}
+
+\subsection{RAID}
+
+\begin{theorem}[RAID]
+    Redundant Array of Independant Disks (RAID) is a data storage virtualisation technology that combines multiple physical disk drive into one ore more logical units.
+
+    Many purposes:
+
+    \begin{itemize}
+        \item Data redundancy
+        \item Performance Improvement
+        \item Both
+    \end{itemize}
+\end{theorem}
+
+\subsubsection{RAID Controller}
+
+\begin{itemize}
+    \item Disks are connected to the controller
+    \item The RAID controller displays the disks as 1 disk to the OS
+    \item Nowadays, we call the RAID Controller the Host Bus Adapter (HBA)
+    \item 
+\end{itemize}
+
+\subsubsection{RAID 0}
+
+RAID level 0 uses striping:
+
+\begin{theorem}[Striping]
+    Data striping is the technique of segmenting logically sequential data (files) so that segments are stored on different physical storage devices
+
+    Purpose:
+
+    \begin{itemize}
+        \item Increasing data throughput
+        \item Balancing I/O load accross an array of disks
+    \end{itemize}
+\end{theorem}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{raid-striping.png}
+    \caption{Example: files A and B (4 blocks each) are spread over disks D1-D3}
+\end{figure}
 
 
+\subsubsection{RAID 1}
+
+RAID level 1 uses mirroring:
+
+\begin{theorem}[Mirroring]
+    Disk mirroring is the replication of logical disk volumes onto seperate physical disks.
+
+    Purpose:
+
+    \begin{itemize}
+        \item Continuous availability: in case of hardware failure, you always have a backup of your data
+        \item Increasing read speeds
+    \end{itemize}
+\end{theorem}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{raid-mirroring.png}
+    \caption{RAID 1}
+\end{figure}
+
+
+\subsubsection{RAID 4}
+
+\begin{itemize}
+    \item If we have at least 3 disks
+    \item For every block of data:
+    \begin{itemize}
+        \item Divide the block in 2 halves: A and B
+        \item Write A to disk 1
+        \item Write B to disk 2
+        \item Write A+B to disk 3
+    \end{itemize}
+    \item $\Rightarrow$ RAID 4 is striping (disk 1 \& 2) with parity (disk 3)
+    \item Capacity x2
+    \item Read speed x2
+    \item Write speed is limited, because of the need to write all parity data to a single disk
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{raid-4.png}
+    \caption{A RAID-4 setup with 4 disks. Disk 3 is the parity disk}
+\end{figure}
+
+
+\subsubsection{RAID 5}
+
+RAID level 5 like RAID 4, but the parity is distributed.
+
+\begin{itemize}
+    \item This evens out the stress of a dedicated parity disk (RAID 4)
+    \item Write performance is increased
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{raid-5.png}
+    \caption{RAID-5: distributed parity with 4 disks}
+\end{figure}
+
+
+\subsubsection{RAID 6}
+
+RAID level 6 like RAID 5, but with a second parity block.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{raid-6.png}
+    \caption{}
+\end{figure}
+
+
+
+\subsubsection{Disk failure}
+
+For every RAID level, a certain amount of disks can fail without it becoming a problem:
+
+\begin{itemize}
+    \item RAID 0: no disks can fail: if any disk fails, you lose data
+    \item RAID 1: Every disk except for one can fail
+    \item RAID 5: 1 disk can fail
+    \item RAID 6: 2 disks can fail
+\end{itemize}
+
+\subsubsection{Compound RAID levels}
+
+Combining RAID levels is possible:
+
+\begin{itemize}
+    \item RAID 10 = RAID 1 + RAID 0
+    \item RAID 01 = RAID 0 + RAID 1
+    \item RAID 50 = RAID 5 + RAID 0
+\end{itemize}
+
+\subsection{OpenFS}
+
+\subsubsection{ZFS}
+
+\begin{itemize}
+    \item Zettabyte File System
+    \item Developed by Sun (2011) $\Rightarrow$ Open source
+    \item Now Oracle (2010) $\Rightarrow$ Not free and closed source
+\end{itemize}
+
+\subsubsection{Open ZFS}
+
+\begin{itemize}
+    \item Fork van ZFS
+    \item 2013
+    \item Option in Ubuntu-installer
+\end{itemize}
+
+Features:
+
+\begin{itemize}
+    \item Long term storage
+    \item Checksum of all data and metadata
+    \item Native RAID levels (0, 1, 5, 6, \dots)
+    \item All data gets written through Copy-On-Write
+    \item Snapshots (read-only and mountable)
+    \item Transparent compression
+    \item Huge storage possibilities
+    \item 128 bits system
+    \item up to 256 quadrillion zettabytes
+\end{itemize}
+
+\subsection{Intermezzo: Kernel modules}
+
+\begin{itemize}
+    \item Linux = kernel
+    \item Kernel = modular
+    \item /boot/config-4.9.0-13-amd64: config for this kernel
+    \begin{itemize}
+        \item Describes what is inside this kernel
+    \end{itemize}
+    \item Not all modules are loaded all the time
+\end{itemize}
+
+\subsubsection{Commands}
+
+\begin{minted}{bash}
+# Request current list of modules:
+~# lsmod
+
+# Load module:
+~# modprobe brtfs
+
+# Remove module ("unload"):
+~# rmmode brtfs
+
+\end{minted}
+
+\subsection{Intermezzo: Snapshots}
+
+\begin{itemize}
+    \item Literally: a photograph of your filesystem
+    \item Captures a the state of the filesystem at a certain point in time
+    \item "The possibility to return in time"
+\end{itemize}
+
+\subsubsection{Do we still need backups if we have snapshots?}
+
+YES!
+
+\begin{itemize}
+    \item RAID 1 (mirroring) only protects against disk failure, nothing else
+    \item If someone deletes all data from one disk, the RAID controller will delete all data from the other disk.
+    \item Snapshots can get lost: what if your server fails?
+    \item $\Rightarrow$ backups can be stored safely, on other disks
+\end{itemize}
+
+\section{File manipulation}
+
+\subsection{Basics}
+
+\begin{minted}{bash}
+# create an empty file called 'test'
+~$ touch test
+
+# edit a file
+~$ vim test
+
+# remove file
+~$ rm rabbot
+
+# move the file to /tmp
+~$ mv test /tmp/
+
+# rename the file
+~$ mv test rabbit
+
+# Linux doesn't really look at file extensions
+# check the file extension:
+~$ file <filename>
+~$ file /boot/inird.img-4.9.0-13-amdb64
+~$ file /etc/init.d/networking
+\end{minted}
+
+\subsection{Bundle files}
+
+\begin{itemize}
+    \item Tape ARchiver: TAR
+    \begin{itemize}
+        \item Created originally to bundle files/directories for storage on tapes
+    \end{itemize}
+    \item You can combine tar with gzip: .tar.gz
+    \begin{itemize}
+        \item tar cfv bundle.tar *.txt $\Rightarrow$ not compressed
+        \item tar czfv bundle.tar.gz $\Rightarrow$ compressed
+    \end{itemize}
+\end{itemize}
+
+\begin{minted}{bash}
+~$ mkdir bundle
+~$ cd bundle
+~$ touch 1.txt 2.txt 3.txt
+~$ tar cfv bundle.tar *.txt
+# c = create a new archive
+# f = specify a filename (bundle.tar)
+# v = verbose: show what happens
+~$ tar --list -f bundle.tar
+~$ file bundle.tar
+
+# extracting
+~$ tar zxvf bundle.tar.gz
+# z = zipped (compressed)
+# x = eXtract
+# v = verbose
+# f = the argument (a file) 
+\end{minted}
+
+\subsection{Links and inodes}
+
+\begin{itemize}
+    \item Modern filesytems support links
+    \item This is different from shortcuts in Windows:
+    \item Windows shortcuts are text files that refer to other files
+\end{itemize}
+
+\subsubsection{Inodes}
+
+\begin{theorem}[Inode]
+    An inode is a data structure on a filesystem on Unix-like operating systems that 
+    stores all the information about a file except its name and its actual data
+
+    Metadata: data about the file
+    \begin{itemize}
+        \item Creation date
+        \item Creation author
+        \item Access rights
+        \item \dots
+    \end{itemize}
+\end{theorem}
+
+\subsubsection{Symbolic links}
+
+\begin{theorem}
+    A symbolic link (also symlink or soft link) is a term for any file that contains a reference to another file or directory in the form of an absolute or relative path
+
+    Also called 'softlinks'
+\end{theorem}
+
+\begin{minted}{bash}
+~$ ln -s <target> <link-name>
+~$ ln -s /etc/issue test-link
+# try out the following commands after creating a link:
+~$ cat test-link
+~$ file test-link
+~$ cat /etc/issue
+\end{minted}
+
+
+\subsubsection{Hardlinks}
+
+\begin{itemize}
+    \item Same file, different name
+    \item A hardlink refers to an inode, while a softlink refers to a file (which refers to an inode)
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{soft-vs-hard-links.png}
+    \caption{Symlink vs Hardlink}
+\end{figure}
+
+
+\subsection{File permissions}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{file-permissions.png}
+    \caption{The output of `ls -l' creates this type of output}
+\end{figure}
+
+\begin{enumerate}
+    \item first character: type of file (directory, symbolic link, block device, character device)
+    \item next 9 characters: owner rights, group rights, other rights
+    \item next number: number of references to the inode
+    \item owner user
+    \item owner group
+    \item size of file
+    \item last modified
+    \item name of file
+\end{enumerate}
+
+\begin{minted}{bash}
+    # change the owner and group of a file or directory
+    ~# chown <user>:<group> <file>
+    ~# chown root:staff file.txt
+    
+    # change the rights for a file
+    # chmod: change mode
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{octal-notation.png}
+    \caption{Octal notation}
+\end{figure}
+
+
+\subsection{Overview of basic commands}
+
+Usage and details for these commands: see labs
+
+\begin{itemize}
+    \item cat: print contents of file to terminal
+    \item cut: cut (structured) input on a specific place: show a certain column, etc\dots
+    \item grep: display lines for which the pattern matches
+    \item egrep: extended grep, better handling of regular expressions
+    \item find: search for files in a hierarchy of files and directories
+    \item head: show first lines of file
+    \item tail: show last lines of file
+    \item less: show the contents of a text file, interactively
+    \item man: show manual page for specific command
+    \item wc: word count (but also character count, byte counts, newline counts, \dots) for a file
+    \item date: show or configure system date and time
+    \item cal: show a textual calendar
+    \item sort: sort a file
+    \item uniq: in a sorted output: count double lines or only show unique lines
+\end{itemize}
 
 \end{document}
