@@ -1100,4 +1100,382 @@ ResponseCache attribuut
 \end{itemize}
 
 
+\section{Docker \& Docker-compose}
+
+\subsection{Waarom?}
+
+\begin{itemize}
+    \item Docker wil het mogelijk maken om software op ieder systeem te krijgen
+    \item "If it runs on my computer, it will run on your computer"
+    \item Microservices
+    \item DevOps
+    \item Resource usage
+\end{itemize}
+
+\subsection{What?}
+
+\begin{itemize}
+    \item Docker != container
+    \item Docker = ecosysteem voor het creëren en draaien van containers
+    \begin{itemize}
+        \item Docker CLI
+        \item Docker Engine
+        \item Docker Image
+        \item Docker Container
+        \item Docker Hub
+        \item Docker Compose
+        \item Docker Swarm
+    \end{itemize}
+\end{itemize}
+
+\subsection{Docker images}
+
+
+\begin{itemize}
+    \item = een snapshot van een filesystem
+    \item Heeft een startup commando: executable die iets zal uitvoeren
+    \item Heeft een gelaagde structuur (`layered structure')
+\end{itemize}
+
+Instantie van een image = container
+
+\subsubsection{Image layers}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{docker-image-layers.png}
+    \caption{Image layers}
+\end{figure}
+
+\begin{itemize}
+    \item De RUN, COPY, ADD commandos zullen allemaal een nieuwe read-only layer maken
+    \item Top layer = container layer = de `writeable' layer
+    \item Als je een container delete, zal alleen de container layer gedeletet worden
+    \begin{itemize}
+        \item Image zal blijven bestaan
+        \item Om de data te behouden: gebruik persistente volumes (zie later)
+    \end{itemize}
+\end{itemize}
+
+\subsection{Lightweight}
+
+Docker images zijn heel klein in disk size, omdat:
+
+\begin{itemize}
+    \item De kernel van de host wordt gedeeld met Docker
+    \item De container heeft geen OS nodig
+    \item Om nog minder disk space te gebruiken $\Rightarrow$ layers delen
+    \item Er zijn kleine community images:
+    \begin{itemize}
+        \item Alpine Linux
+    \end{itemize}
+\end{itemize}
+
+\subsection{Microservices en Docker}
+
+\begin{theorem}
+    Microservices zijn een software development techniek die ervoor zorgen dat de 
+    structuur van onze applicatie losgekoppeld wordt in verschillende kleine services
+    die gekoppeld zijn aan elkaar
+\end{theorem}
+
+\begin{itemize}
+    \item Lightweight
+    \item Omgekeerde = monolithic architecture
+    \begin{itemize}
+        \item 1 server
+        \item UI, Backend, Data Access Layer zit samen
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{monolithic-vs-microservices.png}
+    \caption{Bij microservices: elke service heeft zijn eigen server}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{monolithic-vs-microservices2.png}
+    \caption{Links: containerized, monolithische applicatie. Rechts: Containerized microservices}
+\end{figure}
+
+Microservices != containerization (maar het is wel een logische stap)
+
+\subsubsection{Demo}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{microservices-demo.png}
+    \caption{Een voorbeeld van een app die gebruik maakt van microservices en containers}
+\end{figure}
+
+\subsection{Docker basiscommando's}
+
+\subsubsection{Images ophalen}
+
+\begin{itemize}
+    \item \textbf{Docker Hub}
+    \item GCP Container Registry
+    \item AWS Elastic Container Registry (ECR)
+    \item Azure Container Registry (ACR)
+    \item `Bring Your Own Registry' (binnekort bij Howest!)
+    \item Er zijn ook private registries en repositories, waar je inloggegevens voor nodig hebt
+    \item Standaard = Docker Hub
+\end{itemize}
+
+\textbf{Zoeken naar images}
+
+\begin{itemize}
+    \item hub.docker.com
+    \item GitHub
+    \item \dots
+    \item docker search <keyword>
+\end{itemize}
+
+\textbf{Downloaden van images}
+
+\begin{minted}{bash}
+docker pull <image-naam>
+
+# voorbeelden:
+docker pull elasticsearch
+docker pull nathansegers/some-custom-image
+docker pull python:3.7-alpine
+\end{minted}
+
+\begin{itemize}
+    \item Image tagging: een specifieke versie
+    \item default = latest
+    \item Belangrijk voor versioning (APIs)!
+\end{itemize}
+
+\subsubsection{Containers runnen}
+
+\begin{minted}{bash}
+# run een docker image
+docker run <image-name> <alternative command>
+
+docker create <image-name>
+docker start <container-id>
+
+# stop een container
+docker stop (graceful) / docker kill (immediate)
+# toon de huidige containers (--all toont ook de gestopte containers)
+docker ps (--all)
+\end{minted}
+
+\subsubsection{Interactie \& logs}
+
+$\Rightarrow$ geen GUI!
+
+\begin{minted}{bash}
+# interactieve terminal:
+docker exec -it <container-id> <command>
+
+# toon logs van een container
+docker logs <container-id>
+
+# verwijder alle gestopte containers, networken, images, build cache:
+docker system prune
+\end{minted}
+
+\subsubsection{Containers builden}
+
+\begin{minted}{bash}
+# vergeet het puntje niet! dit betekent: onze huidige map
+docker build .
+
+# maak een image uit een bestaande container
+docker commit -c <startup-command>
+\end{minted}
+
+\subsection{Dockerfile}
+
+= Een bestand met commando's om een image te bouwen.
+
+\begin{itemize}
+    \item Volgorde is belangrijk!
+    \item Gebruikt cache wanneer mogelijk (snellere builds)
+    \item 
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dockerfile.png}
+    \caption{Voorbeeld Dockerfile}
+\end{figure}
+
+\begin{itemize}
+    \item FROM: build image
+    \item COPY: bestanden die we nodig hebben kopiëren
+    \item RUN: commando's uitvoeren, programma's installeren
+    \item WORKDIR: verander de huidige map
+    \item ENTRYPOINT: startupcommando, met argumenten
+\end{itemize}
+
+\subsubsection{Dockerfile optimalisatie}
+
+\begin{itemize}
+    \item Herinner u: RUN, COPY, ADD voegt een nieuwe layer toe
+    \item Wanneer we images builden, zullen de layers cache gebruikt worden
+    \item We hebben in het vorig voorbeeld slechts 1 COPY commando gebruikt
+    \item Stel dat we enkel de broncode van 1 bestand veranderd hebben:
+    \begin{itemize}
+        \item Dependencies zijn onveranderd
+        \item Dependencies zullen toch opnieuw geinstalleerd worden, omdat de laag veranderd is
+    \end{itemize}
+\end{itemize}
+
+Beter:
+
+\begin{minted}{docker}
+# packages installeren: als deze laag niet veranderd is, zal hij cache gebruiken
+COPY *.csproj .
+RUN dotnet restore
+
+# pas daarna gaan we alle andere files kopiëren naar onze source map
+COPY . .
+# dan publiceren
+RUN dotnet publish -c release -o /app
+\end{minted}
+
+
+\subsection{Docker Compose}
+
+= meerdere containers runnen
+
+\begin{itemize}
+    \item In plaats van een dockercommando met enorm veel parameters:
+    \begin{itemize}
+        \item docker build .
+        \item docker run -p 3000:3000 -v /app/node\_modules -v \$(pwd)\:\/app ca6cc440a6ef
+    \end{itemize}
+    \item Gebruiken we een .yaml bestand:
+    \begin{itemize}
+        \item docker-compose up --build
+    \end{itemize}
+\end{itemize}
+
+\begin{minted}{yaml}
+version: "3"
+    services:
+        web:
+            build: .
+            ports:
+                - "3000:3000"
+            volumes:
+                - /app/node_modules
+                - .:/app
+\end{minted}
+
+\begin{itemize}
+    \item docker-compose.yml maakt het makkelijker om meerdere containers te draaien
+    \item docker-compose.yml maakt het mogelijk om relaties tussen containers te leggen
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{docker-compose.png}
+    \caption{Voorbeeld docker-compose.yml}
+\end{figure}
+
+\begin{minted}{bash}
+# docker compose opstarten (of eerst builden en dan opstarten):
+docker-compose up (--build)
+
+# stoppen
+docker-compose down
+\end{minted}
+
+\subsubsection{Docker Compose terminologie}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{docker-compose2.png}
+    \caption{Voorbeeld}
+\end{figure}
+
+
+In een docker-compose.yml bestand vind je volgende termen:
+
+\begin{itemize}
+    \item naam van de service
+    \begin{itemize}
+        \item In bovenstaand voorbeeld: `api'
+    \end{itemize}
+    \item image
+    \begin{itemize}
+        \item de image die we gebruiken voor deze service:
+        \item nathansegers/custom-api:latest
+    \end{itemize}
+    \item build
+    \begin{itemize}
+        \item In welke map we gaan builden
+        \item Relatief pad, ten opzichte van de context van het docker-compose.yml bestand
+    \end{itemize}
+    \item expose vs ports
+    \begin{itemize}
+        \item expose: 
+        \begin{itemize}
+            \item Opent een poort \textbf{binnen} het Docker netwerk
+            \item Niet beschikbaar buiten docker
+            \item Een applicatie die intern op poort 3306 draait, zal niet beschikbaar zijn op localhost:3306
+            \item Geeft wel toegang aan andere services in hetzelfde netwerk
+        \end{itemize}
+        \item ports
+        \begin{itemize}
+            \item = interne port mapping
+            \item Een applicatie die op poort 80 draait, zal beschikbaar zijn via localhost:5000
+        \end{itemize}
+    \end{itemize}
+    \item networks
+    \begin{itemize}
+        \item We kunnen docker containers een netwerk geven zodat ze met elkaar kunnen communiceren
+        \item Alle services zitten standaard in 1 netwerk
+    \end{itemize}
+    \item volumes
+    \begin{itemize}
+        \item Om bestanden te injecteren in een docker container
+        \item Persistente storage
+        \item Kan gedeeld worden met meerdere containers
+        \item 2 manieren:
+        \begin{enumerate}
+            \item Named volumes
+            \item Relatieve of absolute paden
+        \end{enumerate}
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.3\textwidth]{docker-volumes.png}
+            \caption{Relatieve/absolute paden (boven) vs named volume (beneden)}
+        \end{figure}
+    \end{itemize}
+    \item environments (.env)
+    \begin{itemize}
+        \item environment variables komen in dit bestand:
+        \item connectionstrings
+        \item ports
+        \item databasenamen
+        \item \dots
+    \end{itemize}
+    \item depends\_on
+    \begin{itemize}
+        \item Start de service na deze service(s)
+        \item Hier: start de api nadat de db service is opgestart
+        \item Dit is nodig als een service iets nodig heeft die een andere service eerst moet opstarten
+    \end{itemize}
+\end{itemize}
+
+
+
+\subsection{Wat moet je kennen?}
+
+\begin{itemize}
+    \item Wat is docker? Waarom is het relevant voor ons?
+    \item Wat zijn microservices?
+    \item Hoe Dockerfiles schrijven
+    \item De verschillende docker-compose termen
+    \item Hoe communiceren tussen services in een Docker Network
+\end{itemize}
+
 \end{document}
