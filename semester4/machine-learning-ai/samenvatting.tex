@@ -1619,6 +1619,293 @@ ROC bij verschillende treshold settings:
     \item Je kiest de beste ROC $\Rightarrow$ ROC met grootste AOC
 \end{itemize}
 
+\section{Support Vector Machines (SVM)}
+
+\subsection{Wat is een SVM?}
+
+\begin{theorem}[SVM]
+Een SVM is een supervised ML algoritme dat zowel voor classificatie als regressie
+gebruikt kan worden. Classificatie gebeurt door het vinden van een hyper-plane die
+een optimale scheiding maakt tussen twee verschillende klasses.
+\end{theorem}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{svm.png}
+    \caption{Grafiek: hyper-plane die een optimale scheiding maakt}
+\end{figure}
+
+\subsubsection{Welke classifier zou je verkiezen?}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{svm-classifiers.png}
+    \caption{}
+\end{figure}
+
+\begin{itemize}
+    \item Beide scheiden de data perfect
+    \item Het gaat er niet om welke er best presteert op de training data, maar wel op de test data
+    \item De rechtse classifier is meer robuust: de meeste punten liggen verder van de lijn in vergelijking met de linkse
+\end{itemize}
+
+\subsection{Hoe een SVM classificeert}
+
+\begin{itemize}
+    \item Zoek scheidingslijn die de trainingset zo goed mogelijk scheiden
+    \item Kies de scheidingslijn die de grootste afstand (margin) heeft tot de punten die er het dichtst bij gelegen zijn
+    \item De dichtsbij gelegen punten noemen we de \textbf{support vectors}
+    \item SVM = Large margin classifier
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{svm-hoe.png}
+    \caption{Scheidingslijn kiezen}
+\end{figure}
+
+\subsubsection{Wat als een perfecte lineaire scheiding niet mogelijk is?}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{svm-perfect-onmogelijk.png}
+    \caption{}
+\end{figure}
+
+Antwoord: werken met een regularisatieparameter $C$
+
+\begin{itemize}
+    \item Afweging tussen correcte classificatie op de training set en een grote marge tussen de klasses (large margin)
+    \item Grote $C$-waarde: constraints zijn moeilijk te negeren $\Rightarrow$ smalle marge
+    \item Kleine $C$-waarde: constraints kunnen makkelijker genegeerd worden $\Rightarrow$ brede marge
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{svm-regularisatie.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Wat bij niet-lineair scheidbare gegevens}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{svm-niet-lineair.png}
+    \includegraphics[width=0.3\textwidth]{svm-niet-lineair2.png}
+    \caption{Niet-lineair scheidbare gegevens}
+\end{figure}
+
+Oplossing: transformeer de data naar een hogere dimensie gevolgd door lineaire scheiding
+
+Bv:
+
+\begin{itemize}
+    \item $X_1 = x_1^2$
+    \item $X_2 = x_2^2$
+    \item $X_3= \sqrt{2}\cdot x_1 \cdot x_2$
+\end{itemize}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{svm-niet-lineair3.png}
+    \caption{Resultaat na transformatie naar hogere ordes}
+\end{figure}
+
+\subsection{Kernels}
+
+Projecteer de data in een hogere dimensie en probeer lineair te scheiden met behulp van een kernel:
+
+\subsubsection{Meest gebruikte kernels}
+
+\begin{itemize}
+    \item \textbf{RBF - Radial Basis Function (Gaussiaanse kernel)}
+    \item Polynomial kernel
+    \item Histogram kernel
+    \item \textbf{Lineaire kernel = SVM zonder kernel}
+\end{itemize}
+
+\subsubsection{Voorbeeld}
+
+Hoe kan je onderstaande klasses scheiden?
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{svm-kernels.png}
+    \caption{Voorbeeld}
+\end{figure}
+
+\textbf{Oplossing:} Gebruik een Gaussisaanse (RBF) kernel
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{svm-kernels2.png}
+    \caption{Voorbeeld ("Donut problem")}
+\end{figure}
+
+\begin{itemize}
+    \item Visualisatie: \url{https://www.youtube.com/watch?v=3liCbRZPrZA}
+\end{itemize}
+
+\subsubsection{Parameter gamma}
+
+De parameter gamma regelt de breedte van de RBF kernel
+
+\begin{itemize}
+    \item Kleine gamma $\Rightarrow$ brede RBF kernels
+    \begin{itemize}
+        \item Te kleine gamma leidt ertoe dat het het model de complexiteit van het model niet kan capteren (\textbf{underfitting})
+    \end{itemize}
+    \item Grote gamma $\Rightarrow$ smalle RBF kernels
+    \begin{itemize}
+        \item Te grote gamma leidt tot \textbf{overfitting}
+    \end{itemize}
+    \item Bij gebruik van een RBF kernel: \textbf{feature scaling} (=normalisatie) toepassen
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{svm-kernel-gamma.png}
+    \caption{De parameter gamma regelt de breedte van de RBF kernels}
+\end{figure}
+
+\subsubsection{Hyperparameters}
+
+Implementeren van een SVM:
+
+\begin{itemize}
+    \item Test lineaire kernel (=geen kernel) en RBF kernel
+    \item Tune de parameter $C$
+    \item Bij gebruik van RBF kernel: tune zowel de parameters $C$ als gamma
+\end{itemize}
+
+\subsection{Motivatie voor het gebruik van een SVM}
+
+\begin{itemize}
+    \item Kan zowel gebruikt worden voor regressie als classificatie (en zelfs clustering).
+    \item Werkt goed op kleine datasets (in tegenstelling tot neurale netwerken en deep learning).
+    \item Is nog altijd effectief wanneer het aantal features groter is dan het aantal training samples.
+    \item Het werkt goed bij een groot aantal features (high dimensional space).
+    \item Gebruikt niet alle training examples tijdens training $\Rightarrow$ geheugenefficiënt.
+    \item Geen lokale minima/optima, maar globaal optimum.
+\end{itemize}
+
+\subsection{Logistische regressie vs SVM}
+
+\subsubsection{Wanneer welke classifier kiezen?}
+
+\begin{itemize}
+    \item Wanneer het aantal features groot is ten opzichte van het aantal training samples:
+    \begin{itemize}
+        \item $\Rightarrow$ Gebruik logistische regressie of SVM zonder kernel (=lineaire kernel)
+    \end{itemize}
+    \item Wanneer het aantal features klein is en het aantal training samples behoorlijk
+    \begin{itemize}
+        \item $\Rightarrow$ Gebruik SVM met RBF kernel
+    \end{itemize} 
+    \item Bij een klein aantal features met een groot aantal training samples
+    \begin{itemize}
+        \item $\Rightarrow$ Creëer meer features
+        \item $\Rightarrow$ Gebruik logistic regression of SVM zonder kernel (=lineaire kernel)
+    \end{itemize} 
+\end{itemize}
+
+\section{Cross-validatie}
+
+Cross-validatie gaat ons toelaten om automatisch goede parameters te vinden voor ons model
+
+\subsection{Verschillende types cross-validatie}
+
+\begin{itemize}
+    \item Hold Out cross-validation
+    \item K-fold cross-validation
+    \item Leave One Out cross-validation
+    \item Bootstrap cross-validation
+\end{itemize}
+
+\subsubsection{Hold out cross-validation}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{cross-validation-holdout.png}
+    \caption{}
+\end{figure}
+
+\begin{itemize}
+    \item Training data: om model mee te trainen
+    \item Validation data: tuning van hyper parameters en model selection
+    \item Test data: uiteindelijke test van het best gevalideerde model op nog nooit geziene data
+\end{itemize}
+
+\subsubsection{K-fold cross-validation}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{cross-validation-kfold.png}
+    \caption{Voorbeeld: 10-fold cross validation. De validation set is 1/10 van de trainingset}
+\end{figure}
+
+\begin{itemize}
+    \item We berekenen de validation accuracy K keer
+    \item Met telkens een andere keuze trainingset en validation set
+    \item De validation set is 1/K van de trainingset, de rest wordt gebruikt om te trainen
+    \item We nemen van alle K validation accuracies het gemiddelde om zo een final accuracy te bekomen
+\end{itemize}
+
+\subsubsection{Leave one out cross-validation}
+
+\begin{itemize}
+    \item K = N (aantal examples in de training set)
+    \item Evenveel rondes als aantal examples
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{cross-validation-leaveoneout.png}
+    \caption{Leave one out cross-validation}
+\end{figure}
+
+\subsubsection{Bootstrap cross-validation}
+
+\begin{itemize}
+    \item Sampling met teruglegging
+    \item Validatie op niet-geselecteerde examples
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{cross-validation-bootstrap.png}
+    \caption{Bootstrap cross-validation}
+\end{figure}
+
+\subsection{Hyperparameter tuning via cross-validatie}
+
+\subsubsection{Grid search}
+
+\begin{itemize}
+    \item We zetten de parameters op een grid
+    \item We testen ons model met elke combinatie van parameters in de grid, bv:
+    \begin{itemize}
+        \item x-waarden = regularisatieparameter $C$
+        \item y-waarden = gamma
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{grid-search.png}
+    \caption{}
+\end{figure}
+
+
+\subsubsection{Random search}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{random-search.png}
+    \caption{Hetzelfde als grid search, maar met random punten}
+\end{figure}
+
 
 
 \end{document}
