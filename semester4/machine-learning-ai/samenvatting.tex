@@ -687,7 +687,7 @@ x_{s_i} = \frac{x_i - Min(x)}{Max(x) - Min(x)}
 \begin{minted}{python}
 from sklean.preprocessing import MinMaxScaler
 
-scaler = MinMaxScaler.fit(X_train)
+scaler = MinMaxScaler().fit(X_train)
 X_train = scaler.transform(X_train)
 X_test = scaler.transform(X_test)
 
@@ -731,7 +731,7 @@ x_{s_i} = \frac{x_i - mean(x)}{stdev(x)}
 \begin{minted}{python}
 from sklean.preprocessing import StandardScaler
 
-scaler = StandardScaler.fit(X_train)
+scaler = StandardScaler().fit(X_train)
 X_train = scaler.transform(X_train)
 X_test = scaler.transform(X_test)
 
@@ -765,7 +765,7 @@ x_{s_i} = \frac{x_i - Q_2(x)}{Q_3(x) - Q_1(x)}
 \begin{minted}{python}
 from sklean.preprocessing import RobustScaler
 
-scaler = RobustScaler.fit(X_train)
+scaler = RobustScaler().fit(X_train)
 X_train = scaler.transform(X_train)
 X_test = scaler.transform(X_test)
 
