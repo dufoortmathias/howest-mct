@@ -1963,4 +1963,380 @@ Experiment met duimspijker: op hoeveel manieren kan hij bij een worp op de grond
     \item Door experiment uit te voeren: de empirische kans $P(\text{punt omhoog}) \approx 0.58$
 \end{itemize}
 
+\section{Voorwaardelijke kans}
+
+\subsection{Doelstelling}
+
+\begin{itemize}
+    \item Voorwaardelijke kansen berekenen
+    \item Onafhankelijke gebeurtenissen herkennen
+    \item Regel van Bayes kennen en  toepassen
+\end{itemize}
+
+\subsection{Situering}
+
+Een patiënt heeft mogelijk last van griep, verkoudheid, of beide.
+
+\begin{itemize}
+    \item Een verkouden patiënt heeft met 60\% kans last van hoestbuien, met 10\% kans op hoofdpijnklachten
+    \item Een patiënt met griep heeft kans 20\% op hoestbuien, met 70\% kans op hoofdpijn
+\end{itemize}
+
+Vragen
+
+\begin{enumerate}
+    \item De patient vertelt dat hij last heeft van hoestbuien. Hoe groot is de kans dat hij griep heeft?
+    \item Hij zegt dat hij ook last heeft van hoofdpijn. Hoe groot is de kans nu dat hij griep heeft?
+\end{enumerate}
+
+\subsection{Voorbeeld}
+
+Voorwaardelijke kans: kans die aan een voorwaarde voldoet
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{voorwaardelijke-kans-sport.png}
+    \caption{}
+\end{figure}
+
+Bereken exact de kans dat een willekeurig gekozen\dots
+
+\begin{enumerate}
+    \item \dots leerling 1 sport beoefend?
+    \begin{itemize}
+        \item P(leerling 1 sport) = 39/71
+    \end{itemize}
+    \item \dots leerling een jongen is en niet sport?
+    \begin{itemize}
+        \item P(jongen 1 sport) = 5/71
+    \end{itemize}
+    \item \dots meisje meer dan 1 sport beoefend
+    \begin{itemize}
+        \item P(meisje >1 sport) = 7/\textcolor{red}{32}
+    \end{itemize}
+    \item \dots niet-sportende leerling een jongen is?
+    \begin{itemize}
+        \item P(niet sportende jongen) = 5/\textcolor{red}{12}
+    \end{itemize}
+    \item \dots meisje aan sport beoefend?
+    \begin{itemize}
+        \item P(meisje doet sport) = $\frac{17 + 7}{32} = \frac34$
+    \end{itemize}
+\end{enumerate}
+
+Bij voorwaardelijke kansen bekijk je slechts een deel van de groep.
+Het aantal mogelijke uitkomsten waar je door deelt is dus een deelgroep
+
+\subsection{Wiskundig}
+
+De kans dat B onder de voorwaarde van A gebeurt:
+\begin{equation}
+    P(B | A) = \frac{P(A \cap B)}{P(A)} = \frac{P(Ab)}{P(A)}
+\end{equation}
+
+Indien alle elementen in A en B evenwaardig zijn:
+
+\begin{equation}
+    P(B | A) = \frac{P(A \cap B)}{P(A)} = \frac{\#(A \cap B)}{\#(A)}
+\end{equation}
+
+\subsubsection{Gevolg: productregel}
+
+We weten:
+
+$P(B|A) = \frac{P(AB)}{P(A)}$
+
+$P(A|B) = \frac{P(AB)}{P(B)}$
+
+Daaruit volgt:
+
+\begin{equation}
+    P(A \cap B) = P(AB) = P (B|A) P(A) = P (A|B) P(B)
+\end{equation}
+
+De kans dat A en B samen voorkomen:
+
+\begin{itemize}
+    \item = kans op B onder voorwaarde van A * kans op A
+    \item = kans op A onder voorwaarde van B * kans op B
+\end{itemize}
+
+\subsubsection{Algemene productregel}
+
+Met 3 verzamelingen:
+
+\begin{equation}
+    \begin{split}
+        P(A \cap B \cap C) & = P(ABC)\\
+        & = P(C | AB) \cdot P(AB)\\
+        & = P(C | AB) \cdot P (B|A) \cdot P(A) 
+    \end{split}
+\end{equation}
+
+\textbf{Algemeen:}
+
+\begin{equation}
+    P(ABC\dots Z) = P(Z|ABC\dots Y) \cdot \dots \cdot P (C| A B ) P (B|A) P(A)
+\end{equation}
+
+\subsection{Oefening 1}
+
+\subsubsection{Opgave}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{voorwaardelijke-kans-oef1.png}
+    \caption{Opgave}
+\end{figure}
+
+\subsubsection{Oplossing}
+
+Je vermenigvuldigt voor elke machine het productiepercentage met het defect percentage voor die machine. 
+Die kansen tel je op:
+
+\begin{center}
+    \begin{align}
+        & P(D | M_1) \cdot P(M_1) + P(D | M_2) \cdot P(M_2) + P(D | M_3) \cdot P(M_3)\\
+        & = 0.01 \cdot 0.02 + 0.02 \cdot 0.3 + 0.03 \cdot 0.5 \\
+        & = 0.023
+    \end{align}
+\end{center}
+
+\subsection{Oefening 2}
+
+\subsubsection{Opgave}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{voorwaardelijke-kans-oef2.png}
+    \caption{Opgave}
+\end{figure}
+
+\subsubsection{Oplossing}
+
+\begin{center}
+    \begin{align}
+        & P(M_2 | D) = \frac{P(M_2 \cap D)}{P(D)} & = \frac{P(D | M_2) \cdot P(M_2)}{P(D)}\\
+        & = \frac{0.02 \cdot 0.3}{TODO}\\
+        & = 
+    \end{align}
+\end{center}
+
+\subsection{Onafhankelijke gebeurtenissen}
+
+\subsubsection{Voorbeeld}
+
+In een groep van 65 jongeren is er onderzoek gedaan of ze wel of niet sporten
+
+3 gebeurtenissen:
+
+\begin{itemize}
+    \item A: een leerling sport
+    \item B: een leerling is een jongen
+    \item C: een leerling is een meisje
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{voorwaardelijke-kans-sport2.png}
+    \caption{}
+\end{figure}
+
+\begin{itemize}
+    \item Kans dat een leerling sport: $P(A) = \frac{55}{65} = \frac{11}{13}$
+    \item Kans dat een leerling sport onder voowaarde dat het een jongen is: $P(A | B) = \frac{11}{13}$
+    \item \textbf{Vaststelling:} of een leerling sport beoefend is onafhankelijk of het een jongen is
+\end{itemize}
+
+Wanneer gebeurtenis A en B onafhankelijk zijn geldt P(A onder voorwaarde B) = P(A)
+
+\begin{itemize}
+    \item Kans dat leerling een jongen is: $P(B) = \frac{13}{65}= \frac15$
+    \item Kans dat leerling een jongen is onder de voorwaarde dat hij sport: $P(B|A) = \frac{11}{55}= \frac15$
+\end{itemize}
+
+Wanneer gebeurtenis A en B onafhankelijk zijn geldt P(A onder voorwaarde B) = P(A) en dus ook P(B voorwaarde A) = P(B)
+
+\subsubsection{Gevolg: Productregel voor onafhankelijke gebeurtenissen}
+
+Indien A en B onafhankelijk zijn, dan is de kans dat B onder voorwaarde van A gebeurt:
+
+\begin{itemize}
+    \item $P(B | A) = P(B)$
+    \item $P(A | B) = P(A)$
+\end{itemize}
+
+Productregel wordt dan: 
+
+\begin{equation}
+    P(A \cap B) = P(B) \cdot P(A) = P(A) \cdot P(B)
+\end{equation}
+
+\subsection{Productregel algemeen}
+
+Voor een n-tal willekeurige gebeurtenissen $A_1, A_2, \dots, A_n$ geldt:
+
+\begin{equation}
+    P(A_1 \cap A_2 \cap \dots \cap A_n) = P(A_1) \cdot P(A_2 | A_1) \dots P(A_n | A_1 \cap A_2 \cap \dots \cap A_{n-1})
+\end{equation}
+
+Men schrijft dit kort als:
+
+\begin{equation}
+    P(A_1 A_2 \dots A_n) = P(A_1) \cdot P(A_2 | A_1) \dots P(A_n | A_1 A_2 \dots A_{n-1})
+\end{equation}
+
+\subsubsection{Oefening 1}
+
+\textbf{Opgave:} controleer of het hebben van blauwe ogen al dan niet afhankelijk is van het geslacht
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{vkans-productregel-oef.png}
+    \caption{Opgave}
+\end{figure}
+
+\textbf{Oplossing:}
+
+
+
+\subsubsection{Oefening 2}
+
+\textbf{Opgave:} controleer of kans op bloedgroep AB al dan niet onafhankelijk is van de waarde Rh+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{vkans-productregel-oef2.png}
+    \caption{Opgave}
+\end{figure}
+
+\subsection{Regel van Bayes}
+
+\subsubsection{Toepassingsdomein}
+
+\begin{itemize}
+    \item Belangrijkste deel uit kansrekening
+    \item Toepassing in medische en genetische diagnostiek, AI, organisatie van dataverkeer, wetenschappelijk onderzoek
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{bayes-voorbeeld1.png}
+    \caption{Voorbeeld 1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{bayes-voorbeeld1.png}
+    \caption{Voorbeeld 2}
+\end{figure}
+
+\subsubsection{Formule van Bayes (eenvoudige vorm)}
+
+Uit:
+
+$P(A | B) = \frac{P(A \cap B)}{P(B)}$ en $P(B | A) = \frac{P(A \cap B)}{P(A)}$
+
+volgt:
+
+\begin{center}
+    $P(A \cap B) = P(A | B) \cdot P(B) = P(B | A) \cdot P(A)$
+\end{center}
+
+dus:
+
+\begin{equation}
+    P(A | B) = \frac{P(A \cap B)}{P(B)} = \frac{P(B | A) \cdot P(A)}{P(B)}
+\end{equation}
+
+\subsubsection{Voorbeeld}
+
+De kans dat een zekere kerncentrale oververhit raakt (O) is $1\cdot 10^{-7}$,
+de kans dat een lek (L) ontstaat is $1\cdot 10^{-8}$, maar als er eenmaal
+een lek is, is de kans groot dat de centrale oververhit raakt: $0.1$
+
+Wat is de kans dat de centrale gaat lekken als hij oververhit raakt?
+
+$P(L|O) = \frac{P(L\cap O)}{P(O)} = \frac{P(O|L)\cdot P(L)}{P(0=O)}$
+
+Dus:
+
+$P(L|O) = \frac{0.1 \cdot 1 \cdot 10^{-8}}{1\cdot 10^{-7}} = 0.01$
+
+
+\subsection{Regel van Bayes (variant 1)}
+
+We beschouwen van een gebeurtenis $H$ ook zijn complement $\bar{H}$.
+
+Ter herinnering:
+
+\begin{itemize}
+    \item $P(B) + P(\bar{B}) = 1$
+    \item $P(B|A) = \frac{P(B \cap A)}{P(A)}$
+    \item $P(B|\bar{A}) = \frac{P(B \cap \bar{A})}{P(\bar{A})}$
+\end{itemize}
+
+Daaruit volgt:
+
+\begin{center}
+    \begin{align}
+        P(B) & = P(B \cap A) + P(B \cap \bar{A})\\
+        & = P(B | A) \cdot P(A) + P(B | \bar{A}) \cdot P(\bar{A})
+    \end{align}
+\end{center}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{bayes-variant-voorbeeld1.png}
+    \includegraphics[width=0.6\textwidth]{bayes-variant-voorbeeld1-opl.png}
+    \caption{Voorbeeld 1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{bayes-variant-voorbeeld1.png}
+    \includegraphics[width=0.6\textwidth]{bayes-variant-voorbeeld1-opl.png}
+    \caption{Voorbeeld 2}
+\end{figure}
+
+\subsection{Regel van Bayes (variant 2)}
+
+We beschouwen van een gebeurtenis $H$ ook zijn complement $\bar{H}$, 
+waarbij nu geldt dat $P(H) = P(\bar{H})$
+
+
+\begin{center}
+    \begin{align}
+        P(H | E) & = \frac{P(E | H) \cdot P(H)}{P(E | H) \cdot P(H) + P(E | \bar{H}) \cdot P(\bar{H})}\\
+        & = \frac{P(E | H)}{P(E | H) + P(E | \bar{H})}
+    \end{align}
+\end{center}
+
+\subsection{Regel van Bayes (algemeen)}
+
+Verzameling B in verschillende gevallen onderverdeeld $(B_1, B_2, \dots, B_n)$ die elkaar
+uitsluiten: $B_i \cap B_j = \phi$ als $i \neq j$
+
+\begin{equation}
+    P(B_j | A) = \frac{P(A | B_j) \cdot P(B_j)}{\sum_{i=1}^n P(A|B_i) \cdot P(B_i)}
+\end{equation}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{bayes-algemeen-voorbeeld1.png}
+    \includegraphics[width=0.5\textwidth]{bayes-algemeen-voorbeeld1-opl.png}
+    \caption{Voorbeeld algemene regel van Bayes}
+\end{figure}
+
+\subsection{Bayesiaans leren: toepassing in machine learning}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{bayesiaans-leren.png}
+    \includegraphics[width=0.5\textwidth]{bayesiaans-leren2.png}
+    \includegraphics[width=0.5\textwidth]{bayesiaans-leren3.png}
+    \caption{}
+\end{figure}
+
+
 \end{document}
