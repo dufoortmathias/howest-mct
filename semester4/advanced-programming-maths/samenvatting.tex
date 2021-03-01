@@ -260,7 +260,6 @@ Met grondtal $a \in \mathbb{R}_0^+ \backslash \{1\}$
     \centering
     \includegraphics[width=0.3\textwidth]{functie-exponentieel.png}
     \includegraphics[width=0.3\textwidth]{functie-exponentieel2.png}
-    \caption{}
 \end{figure}
 
 
@@ -588,7 +587,6 @@ c drukt uit wat de maximumwaarde kan zijn
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{logistische-functie-wiskundig.png}
-    \caption{}
 \end{figure}
 
 \subsection{Regression analysis}
@@ -625,7 +623,6 @@ Enkelvoudige vorm:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.3\textwidth]{lineair-regressiemodel.png}
-    \caption{}
 \end{figure}
 
 \begin{itemize}
@@ -816,13 +813,11 @@ Hoe ziet zo'n kostfunctie er dan uit?
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.3\textwidth]{logistische-regressie-kost2.png}
-    \caption{}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth]{logistische-regressie-kost3.png}
-    \caption{}
 \end{figure}
 
 Hoe brengen we 2 mogelijke situaties in 1 functie samen?
@@ -1228,7 +1223,6 @@ Wanneer komt een normaalverdeling voor?
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth]{gauss-buigpunt.png}
-    \caption{}
 \end{figure}
 
 \begin{itemize}
@@ -1252,13 +1246,11 @@ Wanneer komt een normaalverdeling voor?
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth]{gauss-verdeling.png}
-    \caption{}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth]{gauss-verdeling2.png}
-    \caption{}
 \end{figure}
 
 
@@ -1425,7 +1417,6 @@ Z-score is eveneens een uitdrukking van de kans:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.25\textwidth]{z-score-nut.png}
-    \caption{}
 \end{figure}
 
 \subsection{Scheefheid}
@@ -1446,7 +1437,6 @@ Veel frequentieverdelingen hebben niet de vorm van de normaalverdeling. Ze zijn 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.3\textwidth]{scheefheid2.png}
-    \caption{}
 \end{figure}
 
 \subsubsection{Berekening}
@@ -1481,7 +1471,6 @@ Interpretatie:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{kurtosis.png}
-    \caption{}
 \end{figure}
 
 \subsubsection{Wiskundig}
@@ -1539,7 +1528,6 @@ Bv:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth]{anomaly-detection2.png}
-    \caption{}
 \end{figure}
 
 \subsubsection{Detectiemethode 2}
@@ -1565,7 +1553,6 @@ Bv:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth]{anomaly-detection3.png}
-    \caption{}
 \end{figure}
 
 
@@ -1817,7 +1804,6 @@ Wat is $P(AB)$?
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth]{trekking-met-teruglegging-tabel.png}
-    \caption{}
 \end{figure}
 
 
@@ -1997,7 +1983,6 @@ Voorwaardelijke kans: kans die aan een voorwaarde voldoet
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{voorwaardelijke-kans-sport.png}
-    \caption{}
 \end{figure}
 
 Bereken exact de kans dat een willekeurig gekozen\dots
@@ -2140,7 +2125,6 @@ In een groep van 65 jongeren is er onderzoek gedaan of ze wel of niet sporten
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth]{voorwaardelijke-kans-sport2.png}
-    \caption{}
 \end{figure}
 
 \begin{itemize}
@@ -2367,7 +2351,6 @@ uitsluiten: $B_i \cap B_j = \phi$ als $i \neq j$
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{logging-levels.png}
-    \caption{}
 \end{figure}
 
 \subsection{Basis logging}
@@ -2572,15 +2555,6 @@ Mogelijke parameters:
 
 \subsubsection{Andere methods}
 
-\begin{itemize}
-    \item : 
-    \item 
-    \begin{itemize}
-        \item 
-    \end{itemize}
-    \item 
-\end{itemize}
-
 \begin{minted}{python}
 # huidige thread wordt in slaaptoestand gebracht (voor x seconden)
 time.sleep(x)
@@ -2648,7 +2622,6 @@ Elke thread dient een GIL-lock te verkrijgen:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{python-gil2.png}
-    \caption{}
 \end{figure}
 
 \subsection{Thread toestanden}
@@ -2727,7 +2700,7 @@ Laat toe op een bepaalde thread te wachten
 \begin{minted}{python}
 # create threads
 thread1 = MyThread(1, "Thread-1", 10, 1)
-thread2 = MyThread(1, "Thread-1", 20, 2)
+thread2 = MyThread(1, "Thread-2", 20, 2)
 
 # start new threads
 thread1.start()
@@ -2850,13 +2823,12 @@ Een queue en threads kunnen heel nauw samenwerken met elkaar
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{queue2.png}
-    \caption{}
 \end{figure}
 
 
 
 \begin{minted}{python}
-from Queue import Qeueu
+from Queue import Queue
 
 q = Queue([maxsize])        # create a queue
 q.put(item)                 # put an item on the queue
