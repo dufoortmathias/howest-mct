@@ -31,6 +31,7 @@
 
 % code
 \usepackage{minted}
+\setminted{frame=single,framesep=3pt,linenos}
 \usepackage{upquote}
 \usepackage{color}
 
@@ -2332,11 +2333,584 @@ uitsluiten: $B_i \cap B_j = \phi$ als $i \neq j$
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{bayesiaans-leren.png}
-    \includegraphics[width=0.5\textwidth]{bayesiaans-leren2.png}
-    \includegraphics[width=0.5\textwidth]{bayesiaans-leren3.png}
+    \includegraphics[width=0.75\textwidth]{bayesiaans-leren.png}
+    \includegraphics[width=0.75\textwidth]{bayesiaans-leren2.png}
+    \includegraphics[width=0.75\textwidth]{bayesiaans-leren3.png}
+    \caption{TODO: tekst ipv images}
+\end{figure}
+
+
+\section{Logging}
+
+\subsection{Inleiding}
+
+\subsubsection{Waarom?}
+
+\begin{itemize}
+    \item Diagnose van een specifiek probleem
+    \item Normale flow van een applicatie controleren
+    \item Gebeurtenissen registreren
+    \item Werken met verschillende niveau's: niet elk logbericht is even belangrijk
+    \item Flexibere manier nodig dan enkel maar print-statements
+\end{itemize}
+
+\subsubsection{Opzet}
+
+\begin{itemize}
+    \item Je wenst zelf niveau van loggen bepalen
+    \item Formaat van logbericht vooraf definieren
+    \item Locatie (scherm/bestand/\dots) vooraf vastleggen
+\end{itemize}
+
+\subsubsection{Logging levels}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{logging-levels.png}
     \caption{}
 \end{figure}
+
+\subsection{Basis logging}
+
+\begin{minted}{python}
+# stap 1: niveau instellen (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+logging.basicConfig(level=logging.CRITICAL)
+
+# stap 2: voorzie code van log-methodes op gewenste plaatsen
+logging.debug("dit is een debug log")
+logging.info("dit is een inf log")
+...
+logging.critical("dit is een critical log")
+\end{minted}
+
+\subsubsection{Spelregels}
+
+\begin{itemize}
+    \item Er wordt pas gelogd als het niveau van de logmethode gelijk of groter is dan het ingesteld logniveau
+\end{itemize}
+
+\begin{minted}{python}
+logging.basicConfig(level=logging.ERROR) # stel loggingniveau in
+logging.debug("...")        # Niet gelogd
+logging.info("...")         # Niet gelogd
+logging.warning("...")      # Niet gelogd
+logging.error("...")        # Wel gelogd
+logging.critical("...")     # Wel gelogd
+\end{minted}
+
+\subsubsection{Format logbericht}
+
+\begin{minted}{python}
+# Voorbeeld 1
+logging.basicConfig(level=logging.ERROR, format="*** %(message)s ****")
+# Voorbeeld 2
+logging.basicConfig(level=logging.DEBUG,
+    format="%(asctime)s\t%(levelname)s -- %(processName)s%(filename)s:%(lineno)s -- %(message)s")
+\end{minted}
+
+\subsubsection{Naar een file loggen}
+
+\begin{minted}{python}
+logging.basicConfig(
+    filename='logging.txt',
+    level=logging.DEBUG,
+    format="%(asctime)s - %(message)s"
+)
+\end{minted}
+
+\subsubsection{Toegepast}
+
+(zie ook demos)
+
+\begin{minted}{python}
+@studentennummer.setter
+def studentennummer(self, value):
+    if isinstance(value, int):
+        self.__studentennummer = value
+    else:
+        logging.error("Geen geldig studentennummer: %s" % value)
+        raise ValueError("Geen geldig studentenummer!")
+\end{minted}
+
+\begin{minted}{python}
+@staticmethod
+def inlezen_studenten(bestandsnaam):
+    studenten = []
+    try:
+        logging.info("Bestand %s inlezen" % bestandsnaam)
+        fo = open(bestandsnaam)
+        lijn = fo.readline() # eerste lijn = niets mee doen
+        lijn = fo.readline()
+        while (lijn != ""):
+            lijn = lijn.rstrip('\n')
+            delen = lijn.split(';')
+            try:
+                student = Student(delen[0], delen[1], delen[2], delen[3], int(delen[4]))
+                studenten.append(student)
+            except:
+                logging.debug("Ongeldig lijn bij inlezen file: %s" % lijn)
+            lijn = fo.readline() # lees volgende lijn in
+        logging.info("Bestand volledig ingelezen")
+        fo.close()
+    except FileNotFoundError as ex:
+        logging.error("Bestand niet gevonden")
+        raise ex
+    return studenten
+\end{minted}
+
+\begin{minted}{python}
+@staticmethod
+def opslaan_studenten(bestandsnaam, studenten):
+    try:
+        logging.info("Start opslaan studenten naar bestand: %s" % bestandsnaam)
+        fo = open(bestandsnaam, "w")
+        fo.write("Naam;Voornaam;StudentenNummer;Opleiding;Geboortejaar\n")
+        for student in studenten:
+            fo.write(student.naam + ";" + student.voornaam + ";" + str(student.studentenummer) + ";" + student.opleiding + ";" + str(student.geboortejaar) + "\n")
+        fo.close()
+        logging.info("Opslaan studenten voltooid")
+    except FileNotFoundError as ex:
+        logging.error("Bestand niet gevonden")
+        raise ex
+    except Exception as ex:
+        logging.error("Onverwachte fout: %s" % ex)
+\end{minted}
+
+
+Meer info: \url{https://docs.python.org/3.9/howto/logging.html#logging-basic-tutorial}
+
+\section{Threading}
+
+\subsection{Doelstelling}
+
+\begin{itemize}
+    \item In python een thread-klasse kunnen programmeren
+    \item Threads op elkaar kunnen afstemmen
+\end{itemize}
+
+\subsection{Wat zijn threads?}
+
+Thread: `flow of control through a program'
+\begin{itemize}
+    \item Heeft geen gescheiden geheugengebruik
+    \item Deelt deze met andere threads gecreëerd door hetzelfde programma
+    \item Kan wel nog lokale variabelen hebben: elke thread heeft zijn eigen stack met lokale variabelen
+\end{itemize}
+
+\subsection{Process vs Thread}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{threads-processes.png}
+    \caption{Overzicht}
+\end{figure}
+
+
+\subsubsection{Process}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.25\textwidth]{process-vs-thread.png}
+    \caption{Twee processen}
+\end{figure}
+
+Twee processen:
+
+\begin{itemize}
+    \item Elk eigen geheugenruimte (virtual address space)
+    \item Gescheiden code
+    \item Data gescheiden
+    \item CPU beslist welk proces uitgevoerd wordt
+\end{itemize}
+
+\subsubsection{Thread}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.25\textwidth]{process-vs-thread2.png}
+    \caption{3 threads in 1 proces}
+\end{figure}
+
+\begin{itemize}
+    \item Zelfde geheugenruimte (virtual address space)
+    \item Zelfde code wordt gedeeld
+    \item Data kan gedeeld worden
+    \item Voor elke thread: soort virtual CPU
+\end{itemize}
+
+2 types threads in python:
+
+\begin{itemize}
+    \item User-level threads: eigen ontwikkelde threads
+    \item Kernel-level threads: low-level threads veroorzaakt door operating system
+\end{itemize}
+
+\subsection{De threading library}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{threading-demo.png}
+    \caption{De threading library}
+\end{figure}
+
+\subsubsection{Thread aanmaken}
+
+\begin{minted}{python}
+# Via de constructor van de thread klasse
+th = Thread(target=sleepMe, args=(i, ))
+\end{minted}
+
+Mogelijke parameters:
+
+\begin{itemize}
+    \item group: a special parameter which is reserved for future extension
+    \item target: the callable object to be invoked by the run method(), if None: nothing will be started
+    \item name: our threads name
+    \item args: arguments tuple for target invocation, defaults to ()
+    \item kwargs: dictionary keyword argument to invoke the base class constructor
+\end{itemize}
+
+\subsubsection{Andere methods}
+
+\begin{itemize}
+    \item : 
+    \item 
+    \begin{itemize}
+        \item 
+    \end{itemize}
+    \item 
+\end{itemize}
+
+\begin{minted}{python}
+# huidige thread wordt in slaaptoestand gebracht (voor x seconden)
+time.sleep(x)
+# geeft het aantal active threads weer
+# Vergeet ook de main-thread niet mee te tellen
+threading.active_count() 
+# Main-thread opvragen: 
+threading.main_thread()
+# Overlopen van huidige threads:
+print("Active threads:")
+for thread in threading.enumerate():
+    print(f">Thread name is {thread.getName()}")
+\end{minted}
+
+\subsubsection{Timer}
+
+Uitvoeren van een thread na een specifieke tijd laten opstarten
+
+\begin{minted}{python}
+import threading
+
+def delayed():
+    print("I am printed after 5 seconds")
+
+print("Demo timer")
+thread = threading.Timer(5, delayed)
+thread.start()
+print("thread is opgestart")
+
+# output:
+> "Demo timer"
+> "thread is opgestart"
+> "I am printed after 5 seconds!"
+\end{minted}
+
+\subsection{Multithreading}
+
+Veronderstelling dat meerdere threads `gelijktijdig' uitgevoerd worden:
+
+\begin{itemize}
+    \item Processing core switcht heel snel tussen de verschillende threads en geeft zo de impressie dat ze dat ze gelijktijdig plaatsvinden
+    \item De keuze tussen de threads wordt bepaald door de context
+\end{itemize}
+
+\subsubsection{Python Thread Management}
+
+\begin{itemize}
+    \item Memory management is not thread-safe!
+    \item Global Interpreter Lock (GIL):
+    \begin{itemize}
+        \item Slechts 1 thread kan van de python interpreter gebruikmaken
+        \item Hierdoor kunnen python threads niet helemaal gelijktijdig uitgevoerd worden
+        \item GIL gaat dus de verschillende threads serialiseren naar de interpreter
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{python-gil.png}
+    \caption{GIL}
+\end{figure}
+
+Elke thread dient een GIL-lock te verkrijgen:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{python-gil2.png}
+    \caption{}
+\end{figure}
+
+\subsection{Thread toestanden}
+
+Een thread kan in verschillende toestanden bevinden:
+
+\begin{itemize}
+    \item Runnable state: thread is aangemaakt
+    \item Running state: thread is gestart
+    \item Blocked: sleeping, wachten tot een andere thread klaar is, wachten op data, \dots
+\end{itemize}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{thread-toestanden.png}
+    \caption{Schema thread toestanden}
+\end{figure}
+
+
+\subsection{Opgelet met threads!}
+
+\begin{itemize}
+    \item Een thread dat ten einde is, kan niet nogmaals uitgevoerd worden
+    \item Python VM heeft geen thread management: het is niet mogelijk aan threads prioriteiten te hangen
+\end{itemize}
+
+\subsection{Wanneer threads gebruiken?}
+
+\begin{itemize}
+    \item Bij I/O bound processing
+    \item Beperkte CPU-intensieve operaties
+\end{itemize}
+
+\subsection{Thread-class}
+
+\subsubsection{Maken van een nieuwe thread-klasse}
+
+Werkwijze:
+
+\begin{enumerate}
+    \item maak een klasse die erft van de \textcolor{blue}{Thread} class
+    \item overschrijf de \_\_init\_\_ methode: geef eventueel parameters langs deze weg door
+    \item overschrijf de \_\_run\_\_ methode
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{thread-class.png}
+    \caption{Voorbeeld MyThread-klasse}
+\end{figure}
+
+\subsubsection{Opstarten van een thread}
+
+\begin{enumerate}
+    \item Maak een object van de thread-klasse
+    \item Voer de methode \textcolor{blue}{start()} uit 
+\end{enumerate}
+
+\begin{minted}{python}
+# create threads
+thread1 = MyThread(1, "Thread-1", 10, 1)
+thread2 = MyThread(1, "Thread-1", 20, 2)
+
+# start new threads
+thread1.start()
+thread2.start()
+\end{minted}
+
+\subsection{Threading-synchronisation}
+
+\subsubsection{Join-methode}
+
+Laat toe op een bepaalde thread te wachten
+
+\begin{minted}{python}
+# create threads
+thread1 = MyThread(1, "Thread-1", 10, 1)
+thread2 = MyThread(1, "Thread-1", 20, 2)
+
+# start new threads
+thread1.start()
+thread2.start()
+
+thread1.join()
+thread2.join()
+print("Exiting Main thread")
+\end{minted}
+
+\subsubsection{Thread locking}
+
+Locking mechanisme: lock-objecten controleren de toegang tot een gemeenschappelijk data-object
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{thread-locking.png}
+    \caption{Schema 2 threads met locking}
+\end{figure}
+
+
+\begin{minted}{python}
+# Vooraf: thread-lock-object aanmaken
+myThreadLock = threading.Lock()
+
+# in de run-methode:
+# - lock aanvragen
+# - lock vrijgeven
+
+def run(self):
+    print(f"Starting {self.name}")
+    while MyThread.global_counter >= 0:
+        myThreadLock.acquire()
+        print(f"{self.name}: {time.ctime(time.time())} -> counter: {MyThread.global_counter}")
+        MyThread.global_counter -= 1
+        myThreadLock.release()
+        time.sleep(self.delay)
+    print(f"Exiting {self.name}")
+\end{minted}
+
+\subsubsection{Condition}
+
+Condition mechanisme:
+
+\begin{itemize}
+    \item Analoog als lock, maar nu verwittigen we ook andere threads
+    \item Gebruikt in pattern: Producer/Consumer pattern
+\end{itemize}
+
+
+\begin{minted}{python}
+# condition object
+condition = threading.Condition()
+
+# gebruik op de juiste plaats:
+def consumer(cond):
+    """ Wait for the condition and use the resource """
+    logging.debug("Starting consumer thread")
+    with cond:
+        cond.wait()
+        logging.debug("Resource is available to consumer")
+    
+def producer(cond):
+    """ Set up the resource to be used by the consumer """
+    logging.debug("Starting producer thread")
+    with cond:
+        logging.debug("Making resources available")
+        cond.notifyAll()
+\end{minted}
+
+\textbf{Uitvoering:}
+
+\begin{minted}{python}
+condition = threading.Condition()
+
+c1 = threading.Thread(name='c1', target=consumer, args=(condition, ))
+c2 = threading.Thread(name='c2', target=consumer, args=(condition, ))
+p = threading.Thread(name='p', target=producer, args=(condition, ))
+
+c1.start()
+time.sleep(0.2)
+c2.start()
+time.sleep(0.2)
+p.start()
+\end{minted}
+
+\textbf{Output:}
+
+\begin{minted}{console}
+2018-03-13 09:32:16,235 (c1) Starting consumer thread
+2018-03-13 09:32:16,435 (c2) Starting consumer thread
+2018-03-13 09:32:16,635 (p ) Starting producer thread
+2018-03-13 09:32:16,643 (p ) Making resources available
+2018-03-13 09:32:16,644 (c1) Resource is available to consumer
+2018-03-13 09:32:16,644 (c2) Resource is available to consumer
+
+\end{minted}
+
+\subsection{Daemon vs not-daemon threads}
+
+Tot nu toe: elke thread heeft dezelfde priorieit
+
+\begin{itemize}
+    \item Dit is niet steeds nodig: sommige threads mogen/kunnen onderbroken worden (zonder gevaar op verlies van data)
+    \item Werkwijze: via methode set\_daemon() op true plaatsen
+\end{itemize}
+
+\subsection{Multithreaded queue}
+
+Een queue en threads kunnen heel nauw samenwerken met elkaar
+
+\subsubsection{Queue}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{queue.png}
+    \caption{Queue}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{queue2.png}
+    \caption{}
+\end{figure}
+
+
+
+\begin{minted}{python}
+from Queue import Qeueu
+
+q = Queue([maxsize])        # create a queue
+q.put(item)                 # put an item on the queue
+q.get()                     # get an item from the queue
+q.empty()                   # check if empty
+q.full()                   # check if full
+\end{minted}
+
+\subsubsection{Threading + queue}
+
+Threading is soms eenvoudiger indien ze in een producer/consumer model geplaatst worden.
+Ze geven data via een queue door aan elkaar.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{queue-threading.png}
+\end{figure}
+
+\begin{itemize}
+    \item Voordeel: een queue heeft geen locks nodig. 
+    \item Heeft bovendien zijn eigen signalisatiemechanisme:
+\end{itemize}
+
+\begin{minted}{python}
+q.task_done()           # signal that work is done
+q.join()                # wait for all work to be done
+
+# in producer thread:
+for item in produce_items():
+    q.put(item)
+q.join()            # wait for consumer
+
+
+# in consumer thread:
+while True:
+    item = q.get()
+    consume_item(item)
+    q.task_done()
+\end{minted}
+
+
+\subsubsection{Queue programming}
+
+Er zijn heel veel verschillende werkwijzes om een queue te integreren.
+Geen beperking in het aantal producers/consumers:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{queue-producers-consumers.png}
+    \caption{Meerdere producers/consumers met een queue}
+\end{figure}
+
+
+
 
 
 \end{document}
