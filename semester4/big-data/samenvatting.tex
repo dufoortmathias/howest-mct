@@ -1123,6 +1123,466 @@ Steps a transaction takes to write to disk:
     \caption{The full transaction chain, with RAID}
 \end{figure}
 
+\section{NoSQL}
+
+\subsection{SQL}
+
+\subsubsection{Possibilities:}
+
+\begin{itemize}
+    \item Relationeel
+    \item Column store 
+    \item Document store
+    \item Graph
+    \item Key-value
+    \item Specialisten:
+    \begin{itemize}
+        \item Time series
+        \item Text search
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{sql-piechart.png}
+    \includegraphics[width=0.5\textwidth]{sql-piechart2.png}
+    \caption{Popularity: Relational DBs are the most popular}
+\end{figure}
+
+\subsubsection{Imperative languages vs Declarative languages}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{imperative-vs-declarative.png}
+    \caption{Imperative (left) vs Declarative languages (right)}
+\end{figure}
+
+\begin{itemize}
+    \item Imperative: tell the system how to retrieve/handle/mutate the data, in what order
+    \begin{itemize}
+        \item C\#, python, \dots
+    \end{itemize}
+    \item Tell the system the structure of the data you're looking for. Don't tell the system how it has to happen, the query optimizer.
+    \begin{itemize}
+        \item SQL, HTML + CSS
+    \end{itemize}
+\end{itemize}
+
+\subsection{Index}
+
+Index of a book:
+
+\begin{itemize}
+    \item Summary/copy that allows to search faster in the main structure (book/database)
+    \item Redundant (copy), needs disk space (needs "pages")
+\end{itemize}
+
+Index of a database:
+
+\begin{theorem}[Index]
+    A copy of some columns from a table, sorted, that improves the speed of data retrievel operations at the cost of additional writes and storage space to 
+
+    TODO
+\end{theorem}
+
+\url{https://use-the-index-luke.com/sql/anatomy}
+
+\subsubsection{B-tree index}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{b-tree-index.png}
+    \caption{}
+\end{figure}
+
+\begin{itemize}
+    \item Leaf nodes = a double linked list
+    \begin{itemize}
+        \item Index + Row ID
+        \item or index + value (in `key value' DBs)
+        \item Every block refers to other blocks: the next and previous block
+        \item insert = add new links to the list
+    \end{itemize}
+    \item This index is stored in RAM:
+    \begin{itemize}
+        \item every block refers to another block
+        \item If you have to jump to another block, sequential disks are too slow for random access
+        \item random read/writes are much faster with RAM
+        \item If you have 10 million records: serial search is way too slow!
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Tree architecture}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{tree-architecture.png}
+    \caption{A balanced tree}
+\end{figure}
+
+\begin{itemize}
+    \item A = root
+    \item B \& C = child (pages)
+    \item AC = edge
+    \item Depth A to K = 3 (=amount of edges)
+    \begin{itemize}
+        \item From root to leaf
+    \end{itemize}
+    \item I, J, K = leaf nodes (point to data)
+\end{itemize}
+
+\subsubsection{Searching for an index}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{balanced-tree-index.png}
+    \caption{Balanced tree example}
+\end{figure}
+
+Find 38:
+
+\begin{enumerate}
+    \item Search from node 30
+    \item Find subnode 40
+    \item Search from node 35 (depth 3), now read serially
+    \item Find row id in index 38
+\end{enumerate}
+
+\subsubsection{Size}
+
+\begin{itemize}
+    \item Block size = 16KB
+    \item Branching factor = 100 (=amount of nodes in a page)
+    \item Depth = 3
+    \item $100 \cdot 100 \cdot 100 \cdot 16\text{KB} = 16\text{GB}$
+    \begin{itemize}
+        \item Typical depth: 4
+        \item Typical branches = 100s
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{B-trees: getting faster \& more reliable}
+
+\begin{itemize}
+    \item WAL (Write Ahead Log) or REDO log = sequential database
+    \begin{itemize}
+        \item append only
+        \item update are critical moments
+    \end{itemize}
+    \item 1 update = two writes
+    \begin{itemize}
+        \item WAL
+        \item Page update
+    \end{itemize}
+    \item Less levels vs more branches:
+    \begin{itemize}
+        \item Each level can be a disk seek
+        \item Using  means less disk seeks
+    \end{itemize}
+\end{itemize}
+
+TODO
+
+\subsubsection{Python + Postgres}
+
+Python + Postgres can handle almost any analytics challenge
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{python-postgres.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{When is SQL not the answer}
+
+\begin{itemize}
+    \item Volume = When you have petabytes of data (rare)
+    \item Velocity = Too many writes per second
+    \item Scalability
+    \begin{itemize}
+        \item Want to avoid expensive servers
+        \item Want to avoid expensive SANs (Storage Area Network)
+    \end{itemize}
+    \item Variety = When you don't want to turn an object (with unstructured data) into a relational row
+    \begin{itemize}
+        \item = Object - relational database mismatch
+        \item \url{https://en.wikipedia.org/wiki/Object%E2%80%93relational_impedance_mismatch}
+    \end{itemize}
+\end{itemize}
+
+\subsection{Key-Value}
+
+TODO: betere image
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{key-value.png}
+    \caption{Log structure + hash index}
+\end{figure}
+
+\begin{itemize}
+    \item TODO
+    \item 
+\end{itemize}
+
+\subsubsection{Compacting}
+
+TODO: betere image
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{key-value-compacting.png}
+    \caption{Compaction/merge of 2 segments}
+\end{figure}
+
+\begin{itemize}
+    \item TODO
+    \item Segment 2 is newer: we ignore the first segment's A and B
+\end{itemize}
+
+\subsubsection{Principles}
+
+\begin{itemize}
+    \item Very fast writes (append only: you can write sequentially because disks don't need to change tracks)
+    \item When crash: no corruption because of wrong update
+    \item very fast reads if hash index is in RAM
+    \begin{itemize}
+        \item if not: very slow
+        \item SELECT * FROM A TO ZZZ (ordered full scan == slooow)
+    \end{itemize}
+    \item Example Riak Bitcask (\url{https://en.wikipedia.org/wiki/Riak})
+\end{itemize}
+
+\subsection{LSM: Log Structured Merge Tree}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{lsm.png}
+    \caption{}
+\end{figure}
+
+TODO: betere image
+
+\begin{itemize}
+    \item Sort in RAM (memtable)
+    \begin{itemize}
+        \item Log segment file as backup
+    \end{itemize}
+    \item Write to disk after several MB
+    \begin{itemize}
+        \item To sorted string table file
+    \end{itemize}
+    \item Merge, compact and sort
+    \item TODO
+\end{itemize}
+
+\subsubsection{Log Structure Merge + Sparse tree index}
+
+\begin{itemize}
+    \item We can simplify the LSM
+    \item Sparse tree index = remember where some milestones are
+    \begin{itemize}
+        \item If you need F, and you know where D and G are
+        \item Start reading from D (byte-offset 10800)
+        \item Read sequentially until G (byte-offset 11000)
+        \item This sequential read is very quick, because 
+    \end{itemize}
+    \item Merge, compact \& sort every time = string sorted table
+    \item Every delete: create new segment and merge. `Tombstone the old segment'
+\end{itemize}
+
+\subsubsection{Applications of Sorted String \& LSM-tree}
+
+\begin{itemize}
+    \item First application: Google Big Table (\url{https://en.wikipedia.org/wiki/Bigtable})
+    \item LevelDB, Rocks-DB
+    \item Hbase, Cassandra (Facebook)
+    \item ElasticSearch: Lucene text search (key = text, value = document) or inverted index
+\end{itemize}
+
+\subsubsection{Advantages LSM}
+
+\begin{itemize}
+    \item Very fast writes
+    \item Quite fast reads (sparse index)
+    \item Easily scaled over nodes (segments)
+\end{itemize}
+
+\subsubsection{Disadvantages LSM}
+
+\begin{itemize}
+    \item Write (merge \& delete) in background can influence speeds
+    \item Deletes are costly!
+    \item You have to specify the rate between compaction \& write/read (ongoing action) yourself
+\end{itemize}
+
+\subsubsection{Summary: B-Trees vs LSM trees}
+
+\begin{itemize}
+    \item TODO
+\end{itemize}
+
+\subsection{Time Series}
+
+= LSM with a twist
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{time-series-lsm.png}
+    \caption{Popularity}
+\end{figure}
+
+\subsubsection{Properties}
+
+\begin{itemize}
+    \item Lots of individual data points: `a row is not important'
+    \item High write throughput
+    \item High read throughput (aggregation per hour/day)
+    \item Large deletes (data expiration)
+    \item Mostly an insert/append workload, very few updates
+\end{itemize}
+
+\subsubsection{Use case: windmill sensors}
+
+Situation: a windmill has many sensors that produce data that needs to be logged
+
+\begin{itemize}
+    \item Turbine sensor data needs to be stored every second
+    \begin{itemize}
+        \item 30 sensor readings per second
+        \item > 300GB per windmill per year
+    \end{itemize}
+    \item Both aggreation as realtime
+    \item Issue: MySQL database read locks during queries, INSERT failed, causing data loss
+\end{itemize}
+
+\subsubsection{Case study: influx DB}
+
+\url{https://docs.influxdata.com/influxdb/v1.4/concepts/storage_engine/}
+
+TODO: `read the entire page and understand everything, and answer these questions:'
+
+\begin{itemize}
+    \item Why important for MCT?
+    \item How can you scale?
+    \item TSM?
+    \item WAL? How durable? What is it?
+    \item What is a compactor? Compaction planning?
+    \item Give one example of unique functionality typical for a time series environment
+    \begin{itemize}
+        \item Tip: say you need to aggregate every hour
+    \end{itemize}
+\end{itemize}
+
+\subsection{Object - relational mismatch}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{billgates.png}
+    \caption{Representing an object in relational rows}
+\end{figure}
+
+\begin{itemize}
+    \item TODO
+    \item Better match for objects with unstructured data: JSON documents
+\end{itemize}
+
+\subsubsection{PostgreSQL}
+
+\begin{itemize}
+    \item Mid 2014: PostgreSQL 9.4 natively supports JSON
+    \item The speed to ingest documents as quickly as MongoDB, but ACID!
+    \item Fully indexable
+\end{itemize}
+
+\subsection{ElasticSearch}
+
+\begin{itemize}
+    \item Document Store
+    \begin{itemize}
+        \item So naturally suited for describing objects
+        \item JSON serialized
+    \end{itemize}
+    \item Easy access to an advanced fulltext search-engine library
+    \item Lucene is very complex but very advanced
+    \item Automatized sharding (and thus scalable) in containers
+    \item RESTful API
+    \item Slower data ingest (`index')
+\end{itemize}
+
+\subsubsection{Elastic Search architecture}
+
+\begin{itemize}
+    \item Document = JSON data
+    \item Index = a collection of documents
+    \item Shards = scalable pieces of index
+    \item Segments = sequential pieces of a shard
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{elasticsearch-architecture.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Elastic Search Cluster}
+
+\begin{itemize}
+    \item Index is split over shards - nodes: scalability
+    \item Shards can be replicated over nodes: availability
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{elasticsearch-searchcluster.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Inverted index}
+
+\begin{itemize}
+    \item TODO
+    \item = `Lucene Index'
+\end{itemize}
+
+\subsubsection{GeoHashes: Representing Geospatial data in ElasticSearch}
+
+\begin{itemize}
+    \item Since ElasticSearch 0.90
+    \item Base32 encoded strings, interleaving the latitude and longitude
+    \item Max resolution: 40mm * 20mm
+    \item Each extra symbol divides the grid in 26 cells
+    \item Use ElasticSearch's text search capabilities
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{geohashes.jpg}
+    \caption{}
+\end{figure}
+
+\subsubsection{ElasticSearch scaling}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{elasticsearch-scaling.png}
+    \caption{}
+\end{figure}
+
+\subsection{Which storage engine is the best and the worst}
+
+Which storage engine is the best/worst for the following situations:
+
+\begin{itemize}
+    \item High amount of writes every second (sensor data)
+    \item Hoog aantal updates iedere seconde 
+    \begin{itemize}
+        \item Web analyse data (Marketing campagne)
+    \end{itemize} 
+    \item Constante updates en reads van persoonlijke data? 
+    \item Full scans op gestructureerde data?
+    \item ACID compliant OLTP?
+\end{itemize}
 
 
 \end{document}
