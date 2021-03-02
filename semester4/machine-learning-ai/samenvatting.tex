@@ -1828,7 +1828,7 @@ Cross-validatie gaat ons toelaten om automatisch goede parameters te vinden voor
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.35\textwidth]{cross-validation-holdout.png}
-    \caption{}
+    \caption{Je splitst de data in training data en test data. Daarna splits je de training data nog eens op in validiation data}
 \end{figure}
 
 \begin{itemize}
@@ -1855,8 +1855,11 @@ Cross-validatie gaat ons toelaten om automatisch goede parameters te vinden voor
 \subsubsection{Leave one out cross-validation}
 
 \begin{itemize}
-    \item K = N (aantal examples in de training set)
+    \item Extreme vorm van K-fold cross-validation waarbij K = N (aantal examples in de training set)
+    \item We trainen op alle data behalve 1 sample
+    \item De sample wordt elke ronde veranderd
     \item Evenveel rondes als aantal examples
+    \item Heel veel rekenkracht nodig, maar vaak goede models
 \end{itemize}
 
 \begin{figure}[H]
@@ -1868,8 +1871,18 @@ Cross-validatie gaat ons toelaten om automatisch goede parameters te vinden voor
 \subsubsection{Bootstrap cross-validation}
 
 \begin{itemize}
-    \item Sampling met teruglegging
+    \item Sampling met teruglegging (zie Bagging)
     \item Validatie op niet-geselecteerde examples
+    \item We vertrekken vanaf een bestaande trainingset
+    \item We maken een nieuwe `resampled' trainingset:
+    \begin{itemize}
+        \item Willekeurig samples uit de eerste trainingset kiezen
+        \item Sommige samples kunnen we dubbel kiezen (zie groene sample in afbeelding)
+    \end{itemize}
+    \item Ongeveer 2/3 van de bestaande trainingset kopieren we naar de resampled trainingset
+    \item Ongeveer 1/3 wordt niet gekozen
+    \item We maken meerdere van zo'n resampled trainingsets
+    \item Belangrijke manier om overfitting tegen te gaan
 \end{itemize}
 
 \begin{figure}[H]
@@ -1894,17 +1907,133 @@ Cross-validatie gaat ons toelaten om automatisch goede parameters te vinden voor
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.3\textwidth]{grid-search.png}
-    \caption{}
+    \caption{Grid Search}
 \end{figure}
+
+\begin{itemize}
+    \item Stel: x-as = C, y-as = gamma
+    \item Bij Grid Search ben je beperkt tot de combinaties die je zelf op voorhand kiest: je hangt vast aan een grid
+    \item Het kan ook zijn dat je combinaties maakt van parameters die er eigenlijk niet toe doen
+    \item In bovenstaande afbeelding is er weinig verschil tussen een hoge of een lage y-waarde
+    \item Er zit wel een hoge piek bij de x-waarde (zie groene grafiek)
+    \item Die piek wordt nooit gevonden omdat we vasthangen aan het grid.
+    \item Oplossing: Random search
+\end{itemize}
 
 
 \subsubsection{Random search}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{random-search.png}
+    \includegraphics[width=0.3\textwidth]{random-search.png}
     \caption{Hetzelfde als grid search, maar met random punten}
 \end{figure}
+
+\begin{itemize}
+    \item Nu worden de punten willekeurig gekozen
+    \item De piek wordt wel gevonden
+\end{itemize}
+
+\subsubsection{Bayes optimization}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{bayes-optimization.png}
+    \caption{}
+\end{figure}
+
+TODO
+
+\section{Niet-gebalanceerde data}
+
+\subsection{Problematiek}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{niet-gebalanceerde-data-problematiek.png}
+    \includegraphics[width=0.5\textwidth]{niet-gebalanceerde-data-problematiek2.png}
+    \caption{De ene klasse (0, blauw) komt veel meer voor dan de andere klasse (1, oranje)}
+\end{figure}
+
+
+\subsection{Omgaan met niet-gebalanceerde data}
+
+\begin{itemize}
+    \item Meer data verzamelen van de minderheidsklasse
+    \item Meer features verzamelen
+\end{itemize}
+
+\subsubsection{Undersampling \& Oversampling}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{niet-gebalanceerde-data-sampling.png}
+    \caption{Undersampling \& oversampling}
+\end{figure}
+
+\begin{itemize}
+    \item We nemen enkel een deel van de samples tot we er evenveel hebben als de minderheidsklasse (undersampling)
+    \begin{itemize}
+        \item Kies de samples waar de classifier het meeste fouten op maakt
+    \end{itemize}
+    \item We nemen kopieën van de minderheidsklasse tot we er evenveel hebben als de meerderheidsklasse
+\end{itemize}
+
+\subsubsection{Andere scoring parameter/metric kiezen}
+
+In plaats van het model te kiezen dat de hoogste accuracy oplevert, kies bijvoorbeeld het model dat de hoogste f1-score oplevert.
+
+\begin{itemize}
+    \item \url{https://scikit-learn.org/stable/modules/model_evaluation.html#the-scoring-parameter-defining-model-evaluation-rules}
+\end{itemize}
+
+\subsubsection{Class-weight balancing}
+
+Misclassificatie van samples uit de minderheidsklasse leiden tijdens training tot een hogere loss.
+
+\begin{itemize}
+    \item Je geeft meer `gewicht' aan een bepaalde klasse
+    \item TODO
+\end{itemize}
+
+\begin{minted}{python}
+model = LogisticRegression(C=1, solver='liblinear', class_weight='balanced')
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{class-weight-balancing.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Data augmentation - SMOTE (Synthetic Minority Over-sampling Technique)}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{smote.png}
+\end{figure}
+
+\begin{itemize}
+    \item Men neemt een willekeurige sample van de minderheidsklasse
+    \item Men kijkt naar een aantal buren ervan
+    \item Tussen de sample en zijn buren maak je nieuwe samples aan
+    \item Beter dan willekeurig nieuwe data aanmaken
+\end{itemize}
+
+\subsubsection{Data augmentation - image augmentation}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{image-augmentation.png}
+    \caption{Image augmentation}
+\end{figure}
+
+\begin{itemize}
+    \item We maken nieuwe images aan
+    \item We bewerken de nieuwe images: roteren, scalen, filters op toepassen
+    \item De nieuwe images voegen we toe aan onze dataset
+\end{itemize}
+
 
 
 
