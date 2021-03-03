@@ -1140,7 +1140,7 @@ Combining RAID levels is possible:
     \item RAID 50 = RAID 5 + RAID 0
 \end{itemize}
 
-\subsection{OpenFS}
+\subsection{OpenZFS}
 
 \subsubsection{ZFS}
 
@@ -1387,5 +1387,413 @@ Usage and details for these commands: see labs
     \item sort: sort a file
     \item uniq: in a sorted output: count double lines or only show unique lines
 \end{itemize}
+
+\subsection{Wooclap}
+
+\begin{itemize}
+    \item What is meant by the term journaling for filesystems?
+    \item Why is journaling used with filesystems?
+    \item Give 2 examples of filesystems under linux that use journaling.
+    \item How can you find out which kernel modules are currently loaded?
+    \item Which command can you use to load a kernel module? 
+    \item And which to 'unload' a kernel module?
+    \item How many disks do you need at least to build a RAID10 system? Why?
+    \item What is meant by a 'Copy On Write' filesystem?
+    \item What are the advantages of a CoW filesystem?
+    \item What are snapshots (in the context of storage systems)?
+    \item What are the disadvantages of a CoW filesystem?
+    \item Why do you still need backup when you have RAID1 and have snapshots?
+    \item How can you find out which 'type' is a file? There are no extensions.
+    \item What is an inode?
+    \item What is the difference between a softlink and a hard link?
+    \item At the output of the command ls -la: Which values can the first character of the line have and what do they mean?
+    \item At the output of the command ls -la: Which possible values can the 3 groups of 3 characters have to describe the rights?
+    \item With what command can you 'change' the 'owner' of a file or directory?
+    \item With which command can you 'change' the rights of a file or directory?
+    \item What does number 5 mean when you use it to determine file system permissions?
+    \item What does number 7 mean when you use that to determine file system rights? Explain why.
+    \item Which command do you use to cut structured input at a specific location?
+    \item Which command do you use to display the first 16 lines of a text file?
+    \item Which command can you use to find out all the modified files from the last 24 hours?
+    \item Which command do you use to display the last 12 lines of a text file?
+    \item How can you find out how long it has been since a linux system was rebooted?
+    \item Which command can you use to get an overview of all daemons that are currently active in your system?
+\end{itemize}
+
+\section{Text editors, Piping, Redirection \& Jobs}
+
+\subsection{Text editors}
+
+\begin{itemize}
+    \item Emacs (productivity, extensibility)
+    \item Nano (simplicity)
+    \item Vi / Vim (=VI iMproved) (productivity)
+    \item Ne
+\end{itemize}
+
+Our choice: Vim
+
+\subsubsection{vi vs vi-improved}
+
+\begin{itemize}
+    \item Navigating in vi: HJKL (left, down, up, right)
+    \item Navigating in vim: HJKL or arrow keys
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{vi-vim.png}
+    \caption{Everything you can do in vi, you can do in vim, and more!}
+\end{figure}
+
+\subsubsection{First steps in vim}
+
+\begin{minted}{bash}
+# start vim:
+$~ vim
+
+# start vim tutorial:
+$~ vimtutor
+\end{minted}
+
+\begin{itemize}
+    \item bottom left of window: the current mode
+    \item INSERT = the mode that lets you enter text
+    \item Enter INSERT mode: i
+    \item Leave INSERT mode and go to normal mode: ESC
+    \item Once in normal mode, you can enter commands using `:'
+    \item ESC : q $\Rightarrow$ quit
+    \item ESC : w $\Rightarrow$ quit
+    \item ESC : wq $\Rightarrow$ write and quit
+\end{itemize}
+
+\begin{minted}{bash}
+# copy a line of text
+ESC
+# put cursor on the line you want to copy
+yy # yank yank: copy a line of text
+p # put: paste the copied line
+
+# copy 2 lines of text and paste it 8 times:
+ESC 2yy # 2 yank yank: yank 2 lines
+8p      # 8 put: paste the copied lines 8 times
+\end{minted}
+
+\subsubsection{Search and replace}
+
+You can easily search and replace in a text file, even with regex:
+
+\begin{minted}{bash}
+# search and replace the next instance:
+:s/old/new
+
+# all instances: TODO: difference between :s and :%s
+:s/old/new/g
+
+# all instances between line x and y:
+:x,ys/old/new/g
+
+# all instances in a complete file:
+:%s/old/new/g
+
+# all instances in whole file, with confirmation:
+:%s/old/new/gc
+
+#undo:
+(ESC) u
+\end{minted}
+
+\subsubsection{Basic editing tricks}
+
+\begin{minted}{bash}
+# starting from line 4, indent the next 7 lines:
+(ESC) 7>>
+
+# remove indentation on line 10
+(ESC) 10gg
+<<
+
+# delete line 3
+(ESC) 3gg
+dd
+
+# delete the next 4 lines
+(ESC) 4dd
+
+# enable and disable syntax highlighting in vim
+(ESC) : syntax on
+(ESC) : syntax off
+\end{minted}
+
+For more tricks: see labs
+
+\subsection{Piping}
+
+= Use the output from one command as input for the next command
+
+\begin{minted}{bash}
+# sort the music file alphabetically and count the number of occurences of each unique line
+sort music.txt | uniq -c
+
+# count the number of unique lines in music.txt
+sort music.txt | uniq | wc -l
+
+# count the number of lines in /etc/locale.gen where nl or NL occurs
+grep -i nl /etc/locale.gen | wc -l
+
+# count the number of lines in /var/log/syslog where kernel occurs
+cat /var/log/syslog | grep kernel | wc –l
+
+# count the number of lines in /var/log/syslog where kernel does NOT occur
+cat /var/log/syslog | grep -v kernel | wc –l
+
+# Show of what days there are logs in /var/log/syslog
+# the sixth field is the day field:
+cat /var/log/syslog | cut -c 6 | uniq
+
+# show the different sources of log entries in /var/log/syslog
+# kernel, client, systemd, ...
+cat /var/log/syslog | cut -d' ' -f5 | cut -d'[' -f1 | sort | uniq -c
+\end{minted}
+
+\subsection{Redirection}
+
+Do not send the output of a command to stdout, but to another location, like a textfile
+
+\begin{minted}{bash}
+# to overwrite a file (or create if it doesn't exist)
+ls -la > listing.txt
+
+# to append to a file (or create if it doesn't exist)
+ls -la >> listing.txt
+
+# these two commands have the same result
+cat > textfile.txt
+touch textfile.txt
+
+# redirect the output of 'ls -la' to a file with a custom name:
+# example: output_2021-03-03
+ls -la > output_$(date  +"%F")
+\end{minted}
+
+\subsubsection{stdout and stderr}
+
+= 2 important output streams
+
+\begin{itemize}
+    \item Normal situation: stdout and stderr appear on the terminal
+    \item Redirection: stdout to a file
+    \item stderr still prints to the terminal
+    \item Redirect stderr: 2> errorfile.txt
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{redirection-std.png}
+    \caption{}
+\end{figure}
+
+\begin{minted}{bash}
+# redirect the output of a command to out.txt 
+# and redirect the error of the command to error.txt:
+ls -la > out.txt 2> error.txt
+
+# redirect stderr to stdout (&1), and then redirect stdout to a file out.txt:
+ls -la > out.txt 2>&1
+
+# redirect both to a file:
+ls -la &> out
+\end{minted}
+
+\subsubsection{stdin}
+
+\begin{minted}{bash}
+# this command prints the amount of lines in a file
+wc -l music.txt
+
+# this command does the same
+wc -l < music.txt
+
+# this command does the same, but prints the output of wc to out.txt
+wc -l < music.txt > out.txt
+\end{minted}
+
+\subsection{Jobs and process Management}
+
+When you execute a command: a process is started
+
+\begin{itemize}
+    \item Every process gets a process ID (PID)
+    \item The init process has PID 0. It starts other processes.
+    \item Every process has a parent
+    \begin{itemize}
+        \item $\Rightarrow$ tree structure of processes
+        \item Get insights into this structure with `pstree' (part of the `psmisc' package)
+        \item Process stops: exit code is passed to the parent
+    \end{itemize}
+\end{itemize}
+
+\begin{minted}{bash}
+# report a snapshot of current processes
+ps
+
+# display a tree of processes
+pstree -p
+\end{minted}
+
+
+\subsubsection{Exit codes}
+
+\begin{minted}{bash}
+# when a process stops:
+# if bash was parent => exit code is passed to bash
+# exit code is available in the $? variable:
+# read contents of a variable with echo:
+echo $?
+0
+
+# 0 = ended successfully without errors
+
+# 1 = not ended successfully, there were errors
+\end{minted}
+
+\begin{minted}{bash}
+# test = verify if you have rights on a file (with -r = read rights)
+~$ test -r music.txt
+
+~$ echo $?
+0
+
+~$ test -r doesnotexist
+
+# the file doesn't exist, so it exited with code 1:
+~$ echo $?
+1
+\end{minted}
+
+\subsubsection{Combining commands}
+
+= not the same as piping!
+
+\begin{minted}{bash}
+# note the difference between & (run in background) and && (combine command)
+
+# one ampersand: run something in the background
+test -r test.txt & echo "MCT rocks"
+
+# two ampersands: combine commands
+# if the first command exits 0, the second command will work
+~# test -r test.txt && echo "MCT rocks"
+
+~# test -r doesnotexist & echo "MCT rocks"
+
+# the first command will exit with code 1
+# so the second command will not execute
+~# test -r doesnotexist && echo "MCT rocks"
+\end{minted}
+
+\subsubsection{Jobs}
+
+A job is a new process originating from the same parent
+
+\begin{minted}{bash}
+# start a command as job
+tail -f /var/log/syslog &
+# output appears on stdout, but process runs as a job in the background
+
+# bring a job to the foreground
+fg <index>
+
+# stop the job, but do not terminate:
+CTRL-Z
+\end{minted}
+
+
+\subsubsection{Inter-process Communication}
+
+A signal is an asynchronous notification sent to a process or thread within that process
+to notify that there has been an event
+
+Signal sent to process $\Rightarrow$ OS interrupts normal execution of that process to deliver the signal
+
+Sending a signal to a process: with the `kill' command:
+
+\begin{minted}{bash}
+# not only to kill a process, also to send other signals
+kill -s <signal>
+\end{minted}
+
+\textbf{Signals}
+
+\begin{itemize}
+    \item SIGHUP - 1 - terminate (hang up)
+    \item SIGINT - 2 - terminal interrupt signal
+    \item SIGKILL - 9 - kill (cannot be caught or ignored)
+    \item SIGTERM - 15 - termination signal
+\end{itemize}
+
+\begin{minted}{bash}
+# send signal 15 to a process with the entered PID
+kill -s 15 <pid>
+
+# send signal 15 to the PID of the tail process
+kill -s 15 'pidof tail'
+
+# send signal 9 to a process with the entered PID
+kill -s 9 <pid>
+
+# kill the process with name 'tail'
+pkill tail
+\end{minted}
+
+
+\subsection{Intermezzo: System Load}
+
+= a number which represents the load on a computer system
+
+\begin{itemize}
+    \item Completely idle system: system load 0
+    \item Each process which uses a resource or is waiting for a resource: system load + 1
+    \item Gives an indication of how heavy a computer system is loaded
+    \item System load is a snapshot, doesn't say anything
+    \begin{itemize}
+        \item System load of 17: is that a problem? No.
+        \item More interesting: the evolution of the systemload over time
+    \end{itemize} 
+\end{itemize}
+
+\begin{minted}{bash}
+# show the system load of the last minute, last 5 minutes and last 15 minutes:
+uptime
+
+# show who is logged on and what they are doing
+w
+
+# display linux processes
+top
+# or better:
+htop
+\end{minted}
+
+\subsection{Some useful tips}
+
+\subsubsection{With which unique IP-addresses are there open sockets and how many?}
+
+\begin{minted}{bash}
+netstat -anpt | awk '{print $5}' | sort | uniq -c
+\end{minted}
+
+\subsubsection{TTY}
+
+= Tele TYpewriter
+= a terminal which is connected with stdin
+
+\begin{minted}{bash}
+# print the filename of the terminal currently connected to standard input:
+~$ tty
+
+
+\end{minted}
+
 
 \end{document}
