@@ -2324,6 +2324,95 @@ uitsluiten: $B_i \cap B_j = \phi$ als $i \neq j$
 \end{figure}
 
 
+\subsection{Na"ive Bayes Spam Filter}
+
+\textbf{Doelstelling:} Regel van Bayes kennen en toepassen om een eenvoudige spam-filter te programmeren.
+
+\begin{itemize}
+    \item Gegeven een bepaalde spamfilter
+    \item Email komt in spamfolder: hoe groot is de kans dat het effectief spam is?
+    \begin{itemize}
+        \item $P(\text{spam} | \text{message}) = \frac{P(\text{message}|\text{spam}) \cdot P(\text{spam})}{P(\text{message})}$
+        \item Waarbij: $P(\text{spam} | \text{message})=$ de kans dat een email uit spamfolder effectief spam is
+        \item En: $P(\text{message}|\text{spam})=$ de kans op klassificatie spam door deze filter
+    \end{itemize}
+    \item Email komt in inbox: hoe groot is de kans dat het geen spam is?
+    \begin{itemize}
+        \item $P(\neg \text{spam} | \text{message}) = \frac{P(\text{message}|\neg \text{spam}) \cdot P(\neg \text{spam})}{P(\text{message})}$
+        \item Waarbij: $P(\neg \text{spam} | \text{message})=$ de kans dat een email uit inbox effectief geen spam is
+        \item En: $P(\text{message}| \neg \text{spam})=$ de kans op klassificatie geen spam door deze filter
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{bayes-spam.png}
+    \caption{Als links $>$ rechts $\Rightarrow$ email naar spamfolder, anders email naar inbox}
+\end{figure}
+
+Een gegeven e-mail (message) wordt dus herkend als spam als:
+
+\begin{itemize}
+    \item $P(\text{spam} | \text{message}) > P(\neg \text{spam} | \text{message})$
+    \item Merk op dat $P(\text{message})$ geen invloed heeft op de beslissing
+    \item Dus: $P(\text{message}|\text{spam}) \cdot P(\text{spam}) > P(\text{message}|\neg \text{spam}) \cdot P(\neg \text{spam})$
+\end{itemize}
+
+\subsubsection{Herkennen van een spam bericht}
+
+Doel:
+
+\begin{itemize}
+    \item Berekenen van P(message|spam) P(spam)
+    \item Berekenen van P(message|not spam) P(not spam)
+\end{itemize}
+
+Message:
+
+\begin{itemize}
+    \item opeenvolging van woorden ($w_1, w_2, \dots, w_n$)
+    \item volgorde niet belangrijk
+    \item elk woord is onafhankelijk van het andere woord
+\end{itemize}
+
+Berekenen van $P(\text{message}|\text{spam}) P(\text{spam})$:
+
+\begin{align*}
+    P(message|spam) & = P(w_1, w_2, \dots, w_n | \text{spam})\\
+    & = P(w_1 | \text{spam}) \cdot P(w_1 | \text{spam}) \cdot \dots \cdot P(w_n | \text{spam})\\
+    & = \prod_{i=1}^n P(w_i | \text{spam})
+\end{align*}
+
+Berekenen van $P(\text{message}|\neg \text{spam}) P(\neg \text{spam})$:
+
+\begin{align*}
+    P(message|spam) & = P(w_1, w_2, \dots, w_n |\neg \text{spam})\\
+    & = \prod_{i=1}^n P(w_i | \neg \text{spam})
+\end{align*}
+
+Onze filter classificeert een message als spam als:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{bayes-spam2.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Parameters}
+
+\begin{itemize}
+    \item $P(\text{spam})$
+    \item $P(\neg \text{spam})$
+    \item $P(\text{woord}|\text{spam})$
+    \begin{itemize}
+        \item = woord aantal keer gevonden in spam messages, gedeeld door aantal spam messages
+    \end{itemize}
+    \item $P(\text{woord}|\neg \text{spam})$
+\end{itemize}
+
+Meer info: zie labo-oefening week3B
+
+
 \section{Logging}
 
 \subsection{Inleiding}
