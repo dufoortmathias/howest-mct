@@ -795,7 +795,7 @@ Oplossing:
     \caption{DTO profile toevoegen, bv: AutoMapping.cs}
 \end{figure}
 
-In de AutoMapping klasse definieren we de mapping tussen Customer en CustomerDTO
+In de AutoMapping klasse definiëren we de mapping tussen Customer en CustomerDTO
 
 \begin{figure}[H]
     \centering
@@ -1476,6 +1476,570 @@ In een docker-compose.yml bestand vind je volgende termen:
     \item Hoe Dockerfiles schrijven
     \item De verschillende docker-compose termen
     \item Hoe communiceren tussen services in een Docker Network
+\end{itemize}
+
+\section{EF Core}
+
+\subsection{Probleemstelling}
+
+\begin{itemize}
+    \item We gebruiken databases voor opslag van data
+    \item Relationele databases is de standaard, meest gebruikt
+    \item We gebruiken SQL in relationele databases voor INSERT, UPDATE, DELETE, \dots
+    \item NoSQL databases wordenm meer en meer gebruikt:
+    \begin{itemize}
+        \item MongoDB
+        \item CosmosDB
+        \item ElasticSearch
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{\textcolor{red}{Niets fout} met SQL en relationele databases!}
+
+\begin{itemize}
+    \item Voordelen:
+    \begin{itemize}
+        \item SQL statements werken zeer snel
+        \item Weinig nieuwe kennis nodig
+    \end{itemize}
+    \item Nadelen:
+    \begin{itemize}
+        \item Soms lastig om te onderhouden
+        \item We schrijven SQL code \textbf{in} de C\# code
+        \item Fouten zien we pas tijdens uitvoeren applicatie
+    \end{itemize}
+    \item Wanneer we SQL en NoSQL gebruiken binnen 1 applicatie $\Rightarrow$ meerdere APIs nodig
+\end{itemize}
+
+\subsubsection{Toch gebruiken we nog plain SQL}
+
+\begin{itemize}
+    \item Snelheid is nog altijd de beste, zeker als we stored procedures gebruiken die in de database draaien
+    \item Super complexe queries en joins beter via SQL of Stored Procedure
+    \item Bestaande toepassingen migreren naar EF Core is niet eenvoudig, deels migreren ook niet altijd
+\end{itemize}
+
+\subsection{EF Core}
+
+= \textbf{Entity Framework Core}
+
+\begin{itemize}
+    \item Object Relationele Mapper (ORM)
+    \item We mappen models (klassen) met tabellen in de database
+    \item Via \textbf{LINQ} statements kunnen we operaties uitvoeren op de data
+    \item We praten met de database via de \textbf{EF Context} $\Rightarrow$ speciale klasse die zorgt voor communicatie met de database
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{efcore-mapping.png}
+    \caption{Database-tabel mappen naar een klasse}
+\end{figure}
+
+2 manieren van werken:
+
+\begin{itemize}
+    \item Database First
+    \item Code first
+\end{itemize}
+
+\subsubsection{Database First}
+
+\begin{itemize}
+    \item We vertrekken van een bestaande database
+    \item EF Core zal onze klassen genereren
+    \item Vooral om bestaande toepassingen te moderniseren
+\end{itemize}
+
+\subsubsection{Code First}
+
+\begin{itemize}
+    \item Wij maken klassen (modellen)
+    \item EF Core zal de database maken
+\end{itemize}
+
+Wij zien enkel Code First
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{database-code-first.png}
+    \caption{Database-First vs Code-First}
+\end{figure}
+
+\subsection{EF Core installatie}
+
+We moeten een \textbf{EF Core Provider} toevoegen aan het project:
+
+\begin{itemize}
+    \item Zorgt voor een onderliggende communicatie met de database
+    \item Per database is er een provider
+    \begin{itemize}
+        \item Microsoft.EntityFrameworkCore.SqlServer (Azure)
+        \item Microsoft.EntityFrameworkCore.Sqlite (Lokaal SQL Lite)
+        \item Pomelo.EntityFrameworkCore.MySql (MySQL)
+        \item CosmosDB $\Rightarrow$ NoSQL Support
+        \item \url{https://docs.microsoft.com/en-us/ef/core/providers/?tabs=dotnet-core-cli}
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{efcore-installatie-provider.png}
+    \caption{}
+\end{figure}
+
+Toevoegen kan op 2 manieren:
+
+\begin{itemize}
+    \item VSCode > Command Palette > nu command > <provider naam>
+    \item Via commandline in de map van je project
+    \begin{itemize}
+        \item dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+    \end{itemize}
+\end{itemize}
+
+Daarnaast moeten ook de EF tools op je systeem staan: dotnet tool install --global dotnet-ef
+
+\subsection{Models}
+
+Dit zijn klasses die onze database tables voorstellen. Een ID bepalen we door:
+
+\begin{itemize}
+    \item Het veld Id te noemen
+    \item Naam van de klasse + Id $\Rightarrow$ BlogId
+    \item Attribuut [Key]
+    \item Dit zal autonummer worden in de database
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{efcore-model-id.png}
+    \caption{3 manieren om een uniek ID aan te duiden}
+\end{figure}
+
+\subsubsection{Eén-op-veel-relaties}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{efcore-model-eenopveel.png}
+    \caption{Eén-op-veel-relaties}
+\end{figure}
+
+
+\begin{itemize}
+    \item Blog bevat één of meerdere posts $\Rightarrow$ List<Post>
+    \item Post kan slechts in één Blog voorkomen
+    \item In de Post moeten we BlogId definiëren en kunnen we ook het Blog object zelf definiëren
+    \item Dit noemen we een Navigation Property
+\end{itemize}
+
+\subsubsection{Enkele attributen}
+
+\begin{minted}{csharp}
+// Kolom zal in de database blog_id noemen en niet BlogId
+[Column("blog_id")] 
+
+// verplicht veld ook op database niveau
+[Required]
+
+// Provider zal dit meenemen bij database generatie, 
+// veld in database zal ook max 500 karakters (nvarchar(500) zijn. 
+// Anders is het nvarchar(max)
+[MaxLength]  
+
+// Provider zal dit instellen in databaseals decimal (5,2)
+[Column(TypeName = "decimal(5,2)")]  
+
+//
+[Comment("database commentaar")]  
+\end{minted}
+
+\subsubsection{Fluent API}
+
+\begin{itemize}
+    \item We kunnen alle attributen ook via de Fluent API instellen
+    \item Fluent API zijn functies die we kunnen aanroepen binnen OnModelCreating   
+    \item Veel gebruikt voor configuratieinstallingen
+    \item Ook enige optie als we \textbf{geen toegang} hebben tot de source code van de modellen:
+    \begin{itemize}
+        \item Dan kan je \textbf{geen attributen} plaatsen
+        \item Enkel Fluent API mogelijk
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{efcore-fluentapi.png}
+    \caption{Fluent API}
+\end{figure}
+
+\subsection{EF Context}
+
+(of DBContext)
+
+\begin{itemize}
+    \item Erft altijd van DBContext
+    \item Klasse is verantwoordelijk voor de communicatie met de database via een sessie die deze opzet met de database
+    \item We bepalen de tabellen, via DbSet
+    \item We bepalen ook welke database we gebruiken via OnConfiguring waar we ConnectionString opgeven
+    \item DbContext zal ook de relaties aanmaken en beheren
+    \item Ook queries uitvoeren tov de database is een taak
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{efcore-dbcontext.png}
+    \caption{BloggingContext erft van DBContext}
+\end{figure}
+
+\subsubsection{Aanmaken van de database en/of tabellen}
+
+\begin{itemize}
+    \item \textbf{Migrations} beschrijven in C\# code de aanmaak van de tabellen
+    \item Bij iedere update moeten we een nieuw migratie aanmaken
+    \item Er zal een map \textbf{Migrations} aangemaakt worden waarin alle veranderingen opgeslagen worden
+\end{itemize}
+
+\begin{minted}{bash}
+# toevoegen van het ef tool om migraties te maken
+dotnet add package MicrosoftEntityFrameworkCore.Design
+
+# aanmaken van een migratie
+dotnet ef migrations add <naam migratie>
+
+# de aanpassingen uitvoeren:
+dotnet ef database update
+\end{minted}
+
+\begin{itemize}
+    \item Migratiebestanden bevatten C\# code die tabellen zal genereren in de database
+    \item Wijzigt zelf \textbf{niks} in deze bestanden
+    \item Bij iedere verandering in C\# code (nieuwe tabel, wijziging veld) moeten we een nieuwe migratie toevoegen: dotnet ef migrations add <naam migratie>
+    \item Daarna moeten we de database updaten: dotnet ef database update
+\end{itemize}
+
+\subsection{Seeding}
+
+= Opvullen van tabellen met \textbf{default} data (landen, postcodes, \dots)
+
+\begin{itemize}
+    \item Handig bij testen van software (unit en functional test)
+    \item Seeding is onderdeel van migrations
+    \begin{itemize}
+        \item Eerst migrations uitvoeren
+        \item Dan eventueel data seeding
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{In C\# code}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{efcore-seeding.png}
+    \caption{Seeding in C\#}
+\end{figure}
+
+
+\begin{itemize}
+    \item Override de methode OnModelCreating
+    \item Via modelBuilder $\Rightarrow$ hasData()
+    \begin{itemize}
+        \item Toevoegen entities
+        \item Let op: autonummer moet je \textbf{WEL} invullen
+    \end{itemize}
+    \item Daarna zal deze code via migraties uitgevoerd worden
+\end{itemize}
+
+\subsection{Relations}
+
+\subsubsection{One to Many}
+
+Eén Blog heeft één of meerdere posts
+
+\begin{itemize}
+    \item Blog.BlogId = primary key
+    \item Post.BlogId = foreign key
+    \item Post.Blog = reference navigation property
+    \item Blog.Post = collection navigation property
+    \item Post.Blog = inverse navigation property
+\end{itemize}
+
+Relaties zullen default aangemaakt worden wanneer er navigation properties aanwezig zijn. 
+EF Core zal dit detecteren en default zien als navigation properties
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{efcore-relations-onetomany.png}
+    \caption{One to many}
+\end{figure}
+
+\subsubsection{One to One}
+
+\begin{itemize}
+    \item Automatische detectie van de navigation properties
+    \item We kunnen dit ook configureren via de Fluent API
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{efcore-relations-onetoone1.png}
+    \includegraphics[width=0.5\textwidth]{efcore-relations-onetoone2.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Many to Many}
+
+\begin{itemize}
+    \item In beide modellen Collection navigation properties
+    \item Automatische generatie van tussentabel
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{efcore-relations-manytomany.png}
+    \caption{Many to Many}
+\end{figure}
+
+\subsection{SELECT, INSERT, UPDATE, DELETE}
+
+\subsubsection{Hoe halen we records op (SELECT)?}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{efcore-select.png}
+    \caption{Records ophalen (HttpGet)}
+\end{figure}
+
+\begin{enumerate}
+    \item BloggingContext aanmaken via \textbf{using} statement
+    \item Via context.Blogs table aanspreken
+    \item \textbf{ToListAsync} zal de query uitvoeren
+\end{enumerate}
+
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{efcore-select2.png}
+    \caption{SQL generatie door EF Core Context}
+\end{figure}
+
+
+
+\subsubsection{Hoe voegen we een record toe (INSERT)?}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{efcore-insert.png}
+    \caption{Records toevoegen (HttpPost)}
+\end{figure}
+
+\begin{enumerate}
+    \item BloggingContext aanmaken via \textbf{using} statement
+    \item Object toevoegen aan context.Blogs
+    \item \textbf{SaveChangesAsync} aanroepen om weg te schrijven (asynchroon)
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{efcore-insert2.png}
+    \caption{SQL generatie door EF Core Context}
+\end{figure}
+
+
+\subsubsection{Hoe verwijderen we records (DELETE)?}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{efcore-delete.png}
+    \caption{Records deleten (HttpDelete)}
+\end{figure}
+
+
+\subsubsection{Hoe halen we records op (SELECT)?}
+
+\begin{enumerate}
+    \item BloggingContext aanmaken via \textbf{using} statement
+    \item Eerst blog ophalen via de Linq Where clause
+    \item We verwijderen de juiste blog uit de Context
+    \item \textbf{SaveChangesAsync} zodat de database op de hoogte is
+\end{enumerate}
+
+\subsubsection{Toevoegen gerelateerde data (één op veel)}
+
+Bv: hoe post toevoegen aan bestaande blog?
+
+\begin{enumerate}
+    \item Eerst blog opzoeken met zijn Posts
+    \item Via Add methode voegen we een nieuwe Post toe en roepen we \textbf{SaveChangesAsync}
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{efcore-insert-related.png}
+    \caption{Gerelateerde data toevoegen (HttpPost met blogId parameter)}
+\end{figure}
+
+
+\begin{itemize}
+    \item Via de using statement maken we de context aan
+    \item Binnen de \{\} kunnen we objecten:
+    \begin{itemize}
+        \item manipuleren en wijzigen, 
+        \item toevoegen
+        \item verwijderen
+    \end{itemize}
+    \item De context zal deze veranderingen tracken
+    \item Pas als we \textbf{SaveChangesAsync()} aanroepen zullen de veranderingen plaatsvinden in de database
+\end{itemize}
+
+\subsubsection{Hoe gerelateerde records ophalen}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{efcore-select-related.png}
+    \caption{Gerelateerde data ophalen (HttpGet blogs + de posts bij elke blog)}
+\end{figure}
+
+
+\begin{itemize}
+    \item Via \textbf{Include} doen we een Join met een andere table
+    \item Er zal \textbf{Exception} ontstaan bij serialisatie
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\textwidth]{efcore-select-related2.png}
+        \caption{}
+    \end{figure}
+    
+    \item Oplossing: [JsonIgnore] toevoegen zodat serialisatie dit zal negeren
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\textwidth]{efcore-select-related-jsonignore.png}
+        \caption{}
+    \end{figure}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{efcore-select-related-result.png}
+    \caption{Resultaat: JSON met voor elke blog alle posts van die blog}
+\end{figure}
+
+
+\subsection{Querying van data}
+
+\begin{itemize}
+    \item EF Core gebruikt \textbf{LINQ} (Language Integrated Query) om data op te halen uit de database
+    \item We sturen LINQ query via Context naar de onderliggende database provider
+    \item Deze database provider zal zorgen voor de vertaling naar SQL
+    \item Je kan de SQL zien: toevoegen van Logger
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{efcore-querying-logger.png}
+    \caption{Toevoegen van een Logger: in OnConfiguring}
+\end{figure}
+
+\subsubsection{Ophalen van alle Blogs \textit{zonder} Posts}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{querying-select-zonder.png}
+    \caption{}
+\end{figure}
+
+
+\begin{itemize}
+    \item Context aanmaken
+    \item Via Tabel Blogs methode ToListAsync() aanroepen
+    \item ToListAsync() zal de query effectief uitvoeren, dit is het moment dat we naar de database gaan
+\end{itemize}
+
+\subsubsection{Ophalen van alle Blogs \textit{met} Posts}
+
+\begin{itemize}
+    \item Context aanmaken
+    \item Via Tabel Blogs methode Include() aanroepen waar we meegeven welke gerelateerde tabel we willen mee ophalen
+    \item b => b.Posts $\Rightarrow$ lambda expressie
+    \item Op einde roepen we terug ToListAsync() om alles op te halen
+    \item ToListAsync() zal de query effectief uitvoeren
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{querying-select-met.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Ophalen van 1 specifiek item}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{querying-select-1.png}
+    \caption{Ophalen van 1 specifiek item}
+\end{figure}
+
+\begin{itemize}
+    \item Via Where clause lambda meegeven: b => b.BlogId == blogId
+    \textbf{\item SingleOrDefaultAsync()}
+    \begin{itemize}
+        \item query uitvoeren
+        \item Single $\Rightarrow$ 1 resultaat
+        \item OrDefault $\Rightarrow$ indien niks gevonden null terugkeren
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Voorbeeld: comments van Post ophalen (3 tabellen diep)}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{querying-voorbeeld.png}
+    \caption{De comments van Post ophalen}
+\end{figure}
+
+
+\begin{itemize}
+    \item Include zal eerst de Post ophalen
+    \item ThenInclude zal voor iedere Post de comments ophalen
+    \item ToListAsync() zal terug de query uitvoeren
+\end{itemize}
+
+\subsection{Generated Values}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{efcore-generatedvalues.png}
+    \caption{}
+\end{figure}
+
+
+\begin{itemize}
+    \item Bij relationele databases hebben we de mogelijkheid om default waardes op te geven
+    \item Handig voor bv Timestamps
+    \item OnModelCreating override:
+    \begin{itemize}
+        \item Bij toevoegen Post, Blog of Comment
+        \item Autmoatische DateTime.Now() in veld `Created'
+    \end{itemize}
+\end{itemize}
+
+\subsection{Extra info}
+
+\begin{itemize}
+    \item \url{https://www.entityframeworktutorial.net/efcore/entity-framework-core.aspx}
+    \item \url{https://docs.microsoft.com/en-us/ef/core/}
+\end{itemize}
+
+\subsubsection{Wat moet je zeker kennen?}
+
+\begin{itemize}
+    \item Wat en waarom EF Core?
+    \item Opbouw $\Rightarrow$ model, migrations
+    \item Welke attributen zijn er?
+    \item De commands om migraties te maken en updates te doen
+    \item Hoe kan je data opvragen?
+    \item Hoe zitten de relaties in elkaar?
 \end{itemize}
 
 \end{document}
