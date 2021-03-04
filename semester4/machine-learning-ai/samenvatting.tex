@@ -1984,12 +1984,23 @@ TODO
 In plaats van het model te kiezen dat de hoogste accuracy oplevert, kies bijvoorbeeld het model dat de hoogste f1-score oplevert.
 
 \begin{itemize}
-    \item \url{https://scikit-learn.org/stable/modules/model_evaluation.html#the-scoring-parameter-defining-model-evaluation-rules}
+    \item \url{https://scikit-learn.org/stable/modules/model_evaluation.html}
+    \item Om een globaal idee te krijgen van hoe goed het model scoort, kan je de verschillende gemiddeldes van f1 berekenen:
+    \begin{itemize}
+        \item f1, f1\_micro, f1\_macro, f1\_weighted, f1\_samples
+    \end{itemize}
 \end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{how-to-choose-performance-metric.png}
+    \caption{Overzicht: Hoe een performance metric kiezen}
+\end{figure}
+
 
 \subsubsection{Class-weight balancing}
 
-Misclassificatie van samples uit de minderheidsklasse leiden tijdens training tot een hogere loss.
+Misclassificatie van samples uit de minderheidsklasse leiden tijdens de training tot een hogere loss.
 
 \begin{itemize}
     \item Je geeft meer `gewicht' aan een bepaalde klasse
@@ -2033,6 +2044,13 @@ model = LogisticRegression(C=1, solver='liblinear', class_weight='balanced')
     \item We bewerken de nieuwe images: roteren, scalen, filters op toepassen
     \item De nieuwe images voegen we toe aan onze dataset
 \end{itemize}
+
+\section{Naive Bayes \& Natural Language Processing}
+\subsection{Discriminative vs generative classification}
+\subsection{Bayes rule}
+\subsection{Naive Bayes - tekstclassificatie}
+\subsection{Tekstclassificatie in de praktijk}
+
 
 
 
