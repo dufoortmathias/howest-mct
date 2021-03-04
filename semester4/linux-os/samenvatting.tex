@@ -1164,12 +1164,15 @@ Features:
     \item Long term storage
     \item Checksum of all data and metadata
     \item Native RAID levels (0, 1, 5, 6, \dots)
-    \item All data gets written through Copy-On-Write
+    \item All data gets written through Copy-On-Write:
+    \begin{itemize}
+        \item COW = when a write request is made, the data is copied into a new storage area, and then the original data is modified.
+        \item Redirect-on-write or ROW: the original storage is never modified. When a write request is made, it is redirected away from the original data into a new storage area.
+    \end{itemize}
     \item Snapshots (read-only and mountable)
     \item Transparent compression
-    \item Huge storage possibilities
+    \item Huge storage possibilities: up to 256 quadrillion zettabytes
     \item 128 bits system
-    \item up to 256 quadrillion zettabytes
 \end{itemize}
 
 \subsection{Intermezzo: Kernel modules}
