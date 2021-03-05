@@ -2970,7 +2970,405 @@ Geen beperking in het aantal producers/consumers:
     \caption{Meerdere producers/consumers met een queue}
 \end{figure}
 
+\section{Network Programming}
 
+\subsection{Doelstelling}
+
+\begin{itemize}
+    \item Basisbegrippen in network programming kunnen definiëren
+    \item Gebruik van sockets
+    \item Networking - Socket Programming kunnen situeren \& programmeren in Python
+\end{itemize}
+
+\subsection{Basisbegrippen}
+
+\subsubsection{Client-server programming}
+
+\begin{itemize}
+    \item Client-server is het omgekeerde van peer-to-peer
+    \item Host machine = machine waarop de server draait
+    \item Client connecteert naar server's host machine
+    \item Server levert bepaalde services   
+    \item Client \& server kunnen ook op 1 machine draaien
+\end{itemize}
+
+\subsubsection{Poorten (ports)}
+
+\begin{itemize}
+    \item Eerder abstract concept: geen hardware
+    \item Poort = een logische connectie naar een computer
+    \item Identificeert zich met een nummer tussen 1 en 65535
+    \item Netwerkprogrammeur zal expliciet een poort van een machine refereren als er een server programma op draait
+    \item Poortnrs tussen 1 en 1023: standard services
+    \item Achter elke gebruikte poort schuilt dus een server programma, wachtend voor een request (aanvraag) als client connectie wil maken dan heeft het het overeenkomstig poortnummer van de service nodig
+\end{itemize}
+
+\subsubsection{Sockets}
+
+= representeert een connectie tussen 2 applicaties
+
+\begin{itemize}
+    \item Ook hier logisch abstract concept: geen hardware
+    \item Wijst op één van de twee eindpunten van een communicatielink tss twee processen
+    \item client wil connectie $\Rightarrow$ creeërt hiervoor socket
+    \item idem langs serverzijde: socket verzorgt communicatie met de client
+    \item zo kan 1 poort geassocieerd worden met vele sockets
+\end{itemize}
+
+\subsubsection{Client-server communicatie}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{client-server-communicatie.png}
+    \caption{}
+\end{figure}
+
+Een communicatielink gecreëerd via TCP-sockets is een connectie-georiënteerde link: 
+de connectie tussen client \& server blijft open gedurende de dialoog
+
+Twee types processen:
+
+\begin{itemize}
+    \item Server
+    \item Client
+\end{itemize}
+
+
+Stappen:
+
+\begin{enumerate}
+    \item aanmaken van een server socket
+    \item aanmaken van een socket door de client
+\end{enumerate}
+
+\subsection{Network programming in Python}
+
+\subsubsection{Socket Module}
+
+Creatie van een socket:
+
+\begin{minted}{python}
+s = socket.socket (socket_family , socket_type , protocol = 0)
+\end{minted}
+
+\begin{itemize}
+    \item socket\_family = representeert the transport mechanism.
+    \begin{itemize}
+        \item Vb: AF\_INET: AF\_INET gebruikt (host, port) waarbij host een string of IP-adres is, en port een integer is
+    \end{itemize}
+    \item socket\_type = dit is SOCK\_STREAM (connection-oriented protocols) or SOCK\_DGRAM (connectionless protocols)
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\textwidth]{socket-type.png}
+    \end{figure}
+    \item protocol = meestal niet gespecifieerd, standaard = 0    
+\end{itemize}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{socket-module.png}
+    \caption{Socket types}
+\end{figure}
+
+
+\subsubsection{Serversocket opzetten}
+
+\begin{minted}{python}
+# create a socket object
+serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# get local machine name
+host = socket.gethostname()
+port = 9999
+
+# bind to the port
+serversocket.bind((host, port))
+
+# queue up to 5 requests
+serversocket.listen(5)
+\end{minted}
+
+
+\subsubsection{Serversocket laten wachten op connecties}
+
+We wachten tot we verbinding hebben met de client:
+
+\begin{minted}{python}
+while True:
+    logging.info("Waiting for a client")
+    
+    # establish a connection
+    socket_to_client, addr = serversocket.accept()
+    logging.info("Got a connection from %s" % str(addr))
+\end{minted}
+
+\subsubsection{Clientsocket opzetten}
+
+\begin{minted}{python}
+logging.info("Making connection to server")
+
+# create a socket object
+socket_to_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# get local machine name
+host = socket.gethostname()
+port = 9999
+
+# connection to hostname on the port
+socket_to_server.connect((host, port))
+\end{minted}
+
+\subsubsection{Communicatie tussen server \& client}
+
+Bv: server communiceert 1 bericht terug naar de client
+
+\textbf{Server}
+
+\begin{minted}{python}
+while True:
+    logging.info("Waiting for a client")
+
+    # establish a connection 
+    socket_to_client, addr = serversocket.accept()
+    logging.info("Got a connection from %s" % str(addr))
+    
+    # send a message to the client
+    msg = 'Thank you for connecting' + "\r\n"
+    socket_to_client.send(msg.encode('ascii'))
+
+    logging.info("Connection closed with client")
+    socket_to_client.close()
+\end{minted}
+
+\textbf{Client}
+
+\begin{minted}{python}
+# receive no more than 1024 bytes:
+msg = socket_to_server.recv(1024)
+print(msg.decode('ascii'))
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{server-client-comm-result.png}
+    \caption{Resultaat}
+\end{figure}
+
+\subsubsection{Communicatie tussen server en client: lezen en schrijven naar een bestand}
+
+\textbf{Server}
+
+\begin{minted}{python}
+while True:
+    logging.info("Waiting for a client")
+    # establish a connection 
+    socket_to_client, addr = serversocket.accept()
+    logging.info("Got a connection from %s" % str(addr))
+    
+    # opzetten van input en outputstreams
+    io_stream_client = socket_to_client.makefile(mode='rw')
+    io_stream_client.write("Thank you for connecting!\n")
+    io_stream_client.flush()
+
+    # connectie sluiten
+    logging.info("Connection closed with client")
+    socket_to_client.close()
+\end{minted}
+
+\textbf{Client}
+
+\begin{minted}{python}
+# connection to hostname on the port
+socket_to_server.connect((host, port))
+
+# opzetten van input en outputStreams
+io_stream_server = socket_to_server.makefile(mode='rw')
+
+# receive message from server
+msg = io_stream_server.readline
+print(msg)
+
+logging.info("Close connection with server")
+socket_to_server.close()
+\end{minted}
+
+
+\section{Tkinter}
+
+\subsection{Doelstelling}
+
+\begin{itemize}
+    \item Eenvoudige GUI opbouwen via de Tkinter library
+\end{itemize}
+
+\subsection{GUI in Python?}
+
+\begin{itemize}
+    \item PyQT5
+    \item Tkinter: provides a powerful object-oriented interface to the Tk GUI toolkit
+    \item wxPython: an open source Python interface for wxWindows \url{http://wxpython.org/}
+\end{itemize}
+
+\subsubsection{Tkinter: een goede start}
+
+\begin{itemize}
+    \item \url{https://realpython.com/python-gui-tkinter/}
+    \item \url{https://www.python-course.eu/python_tkinter.php}
+    \item \url{https://pythonprogramming.net/python-3-tkinter-basics-tutorial/}
+\end{itemize}
+
+\subsection{Tkinter: basisbegrippen}
+
+\subsubsection{Start}
+
+\begin{itemize}
+    \item Importeer de Tkinter module
+    \item Maak een GUI application main window
+    \item Voeg 1 van de geschikte widgets toe aan de GUI applicatie
+    \item Gebruik de main-event loop om weer te geven
+\end{itemize}
+
+\begin{minted}{python}
+import tkinter
+
+top = tkinter.Tk()
+# << code to add widgets will go here ... >>
+top.mainloop()
+\end{minted}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{tkinter-start.png}
+    \caption{Basisvenster}
+\end{figure}
+
+\subsubsection{Frame}
+
+The frame widget is used as a container widget to organize other widgets
+
+\begin{minted}{python}
+class Window(Frame):
+    def __init__(self, master=None):
+        pass # code here
+
+    # creation of init window
+    def init_window(self):
+        pass # code here
+
+    def client_exit(self):
+        pass # code here
+
+    def showImg(self):
+        pass # code here
+
+    def showText(self):
+        pass # code here
+
+root = Tk()
+root.geometry("400x300")
+app = Window(root)
+root.mainLoop()
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{tkinter-frame.png}
+    \caption{Resultaat}
+\end{figure}
+
+\subsubsection{Geometry management}
+
+\begin{itemize}
+    \item place = positions widgets at absolute locations
+    \item grid = arranges widgets in a grid
+    \item pack = pack widgets into a cavity
+\end{itemize}
+
+\subsubsection{Beschikbare widgets}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{tkinter-widgets.png}
+    \caption{Widgets}
+\end{figure}
+
+\subsubsection{Top level windows}
+
+\begin{itemize}
+    \item tk\_chooseColor - pops up a dialog box for the user to select a color.
+    \item tk\_chooseDirectory - pops up a dialog box for the user to select a directory.
+    \item tk\_dialog - creates a modal dialog and waits for a response.
+    \item tk\_getOpenFile - pops up a dialog box for the user to select a file to open.
+    \item tk\_getSaveFile - pops up a dialog box for the user to select a file to save.
+    \item tk\_messageBox - pops up a message window and waits for a user response.
+    \item tk\_popup - posts a popup menu.
+    \item toplevel - creates and manipulates toplevel widgets.
+\end{itemize}
+
+\subsection{Demo}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{tkinter-demo.png}
+    \caption{Resultaat van de demo}
+\end{figure}
+
+\begin{minted}{python}
+class Window(Frame):
+
+def __init__(self, master=None):
+    Frame.__init__(self, master)
+    self.master = master
+    self.init_window()
+
+#Creation of init_window
+def init_window(self):
+    # changing the title of our master widget
+    self.master.title("BMI")
+    # self.master.geometry("400x300")
+
+    # allowing the widget to take the full space of the root window
+    self.pack(fill=BOTH, expand=1)
+
+    Label(self, text="Length:").grid(row=0)
+    Label(self, text="Weight:", pady=10).grid(row=1)
+
+    self.entry_length = Entry(self, width = 40)
+    self.entry_weight = Entry(self, width = 40)
+    self.entry_length.grid(row=0, column=1,  sticky=E+W, pady=(5, 5))
+    self.entry_weight.grid(row=1, column=1,  sticky=E+W)
+
+    Label(self, text="m").grid(row=0,column=2)
+    Label(self, text="kg", pady=10).grid(row=1,column=2)
+
+    self.buttonCalculate = Button(self, text="Calculate BMI" , 
+        command=self.calculateBmi)
+    self.buttonCalculate.grid(row=2, column=0, columnspan=3, 
+        pady=(0, 5), padx=(5, 5), sticky=N+S+E+W)
+
+    Grid.rowconfigure(self, 2, weight=1)
+    Grid.columnconfigure(self, 1, weight=1)
+
+
+def calculateBmi(self):
+    try:
+        length = float(self.entry_length.get())
+        weight = float(self.entry_weight.get())
+        bmi = weight / (length * length)
+        messagebox.showinfo("BMI", "Your body mask index is %.2f" % bmi)
+    except:
+        messagebox.showinfo("BMI", "Something has gone wrong...")
+
+
+root = Tk()
+# root.geometry("400x300")
+app = Window(root)
+root.mainloop()
+\end{minted}
+
+Zie andere demos op leho.
 
 
 
