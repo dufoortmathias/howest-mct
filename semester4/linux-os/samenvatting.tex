@@ -1679,9 +1679,10 @@ echo $?
 = not the same as piping!
 
 \begin{minted}{bash}
-# note the difference between:
+# note the difference between one and two ampersands:
 # & = execute command 1, then execute command 2
-# && = execute command 1, and only execute command 2 if command 1 was successful (exit code = 0)
+# && = execute command 1, and only execute command 2 
+#   if command 1 was successful (exit code = 0)
 
 # one ampersand
 test -r test.txt & echo "MCT rocks"
