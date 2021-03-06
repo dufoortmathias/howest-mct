@@ -1683,11 +1683,10 @@ echo $?
 # & = execute command 1, then execute command 2
 # && = execute command 1, and only execute command 2 if command 1 was successful (exit code = 0)
 
-# one ampersand: run something in the background
+# one ampersand
 test -r test.txt & echo "MCT rocks"
 
-# two ampersands: combine commands
-# if the first command exits 0, the second command will work
+# two ampersands
 ~# test -r test.txt && echo "MCT rocks"
 
 ~# test -r doesnotexist & echo "MCT rocks"
