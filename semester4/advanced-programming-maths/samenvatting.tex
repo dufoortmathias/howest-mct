@@ -822,8 +822,51 @@ Hoe ziet zo'n kostfunctie er dan uit?
 
 Hoe brengen we 2 mogelijke situaties in 1 functie samen?
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{logistische-regressie-2situaties.png}
+    \caption{}
+\end{figure}
 
-(TODO: slide 24 - 32)
+\subsubsection{Kostenfunctie $J(\theta)$}
+
+\begin{equation}
+    J(\theta) = \frac{1}{m} \cdot \sum_{i=1}^m Cost(h_{\theta}(x_i), y_i)
+\end{equation}
+
+Kostenfunctie beschouwt alle gevallen:
+
+\begin{itemize}
+    \item Telkens kost berekenen
+    \item Som bepalen
+    \item Op einde gemiddelde berekenen
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{logistische-regressie-kost-overzicht.png}
+    \caption{Overzicht kostenfunctie}
+\end{figure}
+
+\subsubsection{Oefening}
+
+Bereken zelf even de kost uit het voorbeeld uit de cursus Machine Learning. 
+Het model is van de vorm: $h_{\theta}(x) = g(\theta_0 + \theta_1\cdot x_1 + \theta_2\cdot x_2)$
+
+Met $x_1 =$ rondheid en $x_2 =$ groenheid.
+
+Veronderstel na training: $\theta_0 = -40, \theta_1 = 4, \theta_2 = 4$
+
+Met volgende waarnemingen: 
+
+\begin{itemize}
+    \item appel = meting rondheid 8, groenheid 6
+    \item geen appel = meting rondheid 5, groenheid 4.5
+\end{itemize}
+
+\subsubsection{Extra}
+
+Mooie blogpost: \url{https://adit.io/posts/2016-03-13-Logistic-Regression.html}
 
 
 \section{Pandas library}
