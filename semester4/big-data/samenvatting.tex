@@ -1180,12 +1180,14 @@ Index of a book:
 Index of a database:
 
 \begin{theorem}[Index]
-    A copy of some columns from a table, sorted, that improves the speed of data retrievel operations at the cost of additional writes and storage space to 
-
-    TODO
+    A copy of some columns from a table, sorted, that improves the speed of data retrievel operations at the cost of additional writes and storage space.
+    Indexes are used to quickly locate data without having to search every row in the database.
 \end{theorem}
 
-\url{https://use-the-index-luke.com/sql/anatomy}
+\begin{itemize}
+    \item \url{https://en.wikipedia.org/wiki/Database_index}
+    \item \url{https://use-the-index-luke.com/sql/anatomy}
+\end{itemize}
 
 \subsubsection{B-tree index}
 
@@ -1264,16 +1266,18 @@ Find 38:
 \subsubsection{B-trees: getting faster \& more reliable}
 
 \begin{itemize}
-    \item WAL (Write Ahead Log) or REDO log = sequential database
+    \item WAL (Write Ahead Log) or REDO log
     \begin{itemize}
+        \item = a type of file, you can also call it some type of sequential database
         \item append only
         \item update are critical moments
     \end{itemize}
-    \item 1 update = two writes
+    \item 1 Update = 2 writes: when data gets updated, the index also needs to get updated
     \begin{itemize}
-        \item WAL
+        \item Update the WAL or REDO log
         \item Page update
     \end{itemize}
+    \item If something fails when it's updating the page, the DB will try again using the data in the WAL/REDO log
     \item Less levels vs more branches:
     \begin{itemize}
         \item Each level can be a disk seek
@@ -1281,29 +1285,30 @@ Find 38:
     \end{itemize}
 \end{itemize}
 
-TODO
 
-\subsubsection{Python + Postgres}
+\subsubsection{Dataminded: Python + Postgres}
 
-Python + Postgres can handle almost any analytics challenge
+Dataminded = consultent in big data technology, they have lots of experience with big data tools.
+
+But: Python + Postgres can handle almost any analytics challenge
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{python-postgres.png}
-    \caption{}
+    \caption{Use python libraries + a relational database for most analytics}
 \end{figure}
 
 \subsubsection{When is SQL not the answer}
 
 \begin{itemize}
-    \item Volume = When you have petabytes of data (rare)
-    \item Velocity = Too many writes per second
-    \item Scalability
+    \item \textbf{Volume} = When you have petabytes of data (rare)
+    \item \textbf{Velocity} = Too many writes per second (less rare)
+    \item \textbf{Scalability}
     \begin{itemize}
         \item Want to avoid expensive servers
         \item Want to avoid expensive SANs (Storage Area Network)
     \end{itemize}
-    \item Variety = When you don't want to turn an object (with unstructured data) into a relational row
+    \item \textbf{Variety} = When you don't want to turn an object (with unstructured data) into a relational row
     \begin{itemize}
         \item = Object - relational database mismatch
         \item \url{https://en.wikipedia.org/wiki/Object%E2%80%93relational_impedance_mismatch}
@@ -1312,7 +1317,28 @@ Python + Postgres can handle almost any analytics challenge
 
 \subsection{Key-Value}
 
-TODO: betere image
+
+
+\begin{itemize}
+    \item Adding to the end of a file is the fastest way to write
+    \item Key-value DBs are relatively simple databases
+    \item Example: a list of videos with their watch time
+    \begin{itemize}
+        \item Video ID = key
+        \item Watch time = value, gets incremented often
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Hash index}
+
+= a hashed key that will be searched for
+
+\begin{itemize}
+    \item the hash (stored in RAM) will point to an offset on the disk
+    \item if you find the key, you'll find where on the disk the data is stored
+    \item if you want to update data, it will get appended to the end (=segment 2)
+    \item 
+\end{itemize}
 
 \begin{figure}[H]
     \centering
@@ -1320,14 +1346,7 @@ TODO: betere image
     \caption{Log structure + hash index}
 \end{figure}
 
-\begin{itemize}
-    \item TODO
-    \item 
-\end{itemize}
-
 \subsubsection{Compacting}
-
-TODO: betere image
 
 \begin{figure}[H]
     \centering
@@ -1336,8 +1355,11 @@ TODO: betere image
 \end{figure}
 
 \begin{itemize}
-    \item TODO
-    \item Segment 2 is newer: we ignore the first segment's A and B
+    \item In the above example: A = 1 in segment 1, but A = 4 in segment 2
+    \item Segment 2 is newer: we ignore the first segment's A
+    \item Same for C (C=1 >> C=2)
+    \item We compact/merge the segments until stored the data is correct
+    \item We do this often
 \end{itemize}
 
 \subsubsection{Principles}
@@ -1345,66 +1367,65 @@ TODO: betere image
 \begin{itemize}
     \item Very fast writes (append only: you can write sequentially because disks don't need to change tracks)
     \item When crash: no corruption because of wrong update
-    \item very fast reads if hash index is in RAM
+    \item very fast reads if (sorted) hash index is in RAM
     \begin{itemize}
         \item if not: very slow
-        \item SELECT * FROM A TO ZZZ (ordered full scan == slooow)
+        \item SELECT * FROM A TO ZZZ (=slow)
     \end{itemize}
-    \item Example Riak Bitcask (\url{https://en.wikipedia.org/wiki/Riak})
+    \item Example key-value hash index: Riak Bitcask (\url{https://en.wikipedia.org/wiki/Riak})
 \end{itemize}
 
 \subsection{LSM: Log Structured Merge Tree}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{lsm.png}
-    \caption{}
-\end{figure}
-
-TODO: betere image
+Apart from the hash index, there is another Log Structured data store: the Log Structured Merge Tree with Sorted String tables
 
 \begin{itemize}
-    \item Sort in RAM (memtable)
+    \item Unsorted data now gets sorted first in a memory buffer (RAM)
     \begin{itemize}
         \item Log segment file as backup
     \end{itemize}
-    \item Write to disk after several MB
-    \begin{itemize}
-        \item To sorted string table file
-    \end{itemize}
-    \item Merge, compact and sort
-    \item TODO
+    \item Then it gets written to a segment
+    \item Just like a hash index: values are not updated, but appended in a new segment
+    \item Write to disk after several MB (to sorted string table file)
 \end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{lsm.png}
+\end{figure}
+
 
 \subsubsection{Log Structure Merge + Sparse tree index}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{lsm-sparse-tree-index.png}
-    \caption{LSM + Sparse tree index}
+    \includegraphics[width=0.4\textwidth]{lsm-sparse-tree-index.png}
+    \caption{Sparse tree index}
 \end{figure}
 
 
 \begin{itemize}
     \item We can simplify the LSM
+    \item You don't need to keep every key in RAM
     \item Sparse tree index = remember where some milestones are
     \begin{itemize}
         \item If you need F, and you know where D and G are
         \item Start reading from D (byte-offset 10800)
         \item Read sequentially until G (byte-offset 11000)
-        \item This sequential read is very quick, because 
+        \item This sequential read is very quick, because it's a small amount of keys
     \end{itemize}
     \item Merge, compact \& sort every time = string sorted table
-    \item Every delete: create new segment and merge. `Tombstone the old segment' = marking key/value pairs for deletion
+    \item Every delete: create new segment and merge. 
+    \item `Tombstone the old segment' = marking key/value pairs for deletion
 \end{itemize}
 
 \subsubsection{Applications of Sorted String \& LSM-tree}
 
 \begin{itemize}
     \item First application: Google Big Table (\url{https://en.wikipedia.org/wiki/Bigtable})
-    \item LevelDB, Rocks-DB
+    \item LevelDB, Rocks-DB (=MySQL RocksDB)
     \item Hbase, Cassandra (Facebook)
-    \item ElasticSearch: Lucene text search (key = text, value = document) or inverted index
+    \item ElasticSearch: based on Lucene text search (key = text, value = document) or inverted index
 \end{itemize}
 
 \subsubsection{Advantages LSM}
@@ -1419,14 +1440,18 @@ TODO: betere image
 
 \begin{itemize}
     \item Write (merge \& delete) in background can influence speeds
-    \item Deletes are costly!
+    \item Deletes are costly because you don't actually delete: you tombstone a segment (=mark for deletion, it only gets deleted at the compaction step)
     \item You have to specify the rate between compaction \& write/read (ongoing action) yourself
 \end{itemize}
 
 \subsubsection{Summary: B-Trees vs LSM trees}
 
+Explain:
+
 \begin{itemize}
-    \item TODO
+    \item Why do Write-Ahead Logs (WAL) exist?
+    \item What is a compactor? Compaction planning?
+    \item Advantages \& disadvantages with much or little compacting?
 \end{itemize}
 
 \subsection{Time Series}
@@ -1436,13 +1461,24 @@ TODO: betere image
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{time-series-lsm.png}
-    \caption{Popularity}
+    \caption{Popularity time series}
 \end{figure}
+
+Why the sudden rise in popularity?
+
+\begin{itemize}
+    \item IoT devices use lots of sensors that need to be logged
+    \item That sensor data is time based
+\end{itemize}
 
 \subsubsection{Properties}
 
 \begin{itemize}
     \item Lots of individual data points: `a row is not important'
+    \begin{itemize}
+        \item If you lose a data point, that's not a problem
+        \item You can guess what the data point would be, based on the data around the same timeframe
+    \end{itemize}
     \item High write throughput
     \item High read throughput (aggregation per hour/day)
     \item Large deletes (data expiration)
@@ -1467,7 +1503,7 @@ Situation: a windmill has many sensors that produce data that needs to be logged
 
 \url{https://docs.influxdata.com/influxdb/v1.4/concepts/storage_engine/}
 
-TODO: `read the entire page and understand everything, and answer these questions:'
+Exercise: `read the entire page, understand everything, and answer these questions:'
 
 \begin{itemize}
     \item Why important for MCT?
@@ -1490,9 +1526,22 @@ TODO: `read the entire page and understand everything, and answer these question
 \end{figure}
 
 \begin{itemize}
-    \item TODO
-    \item Better match for objects with unstructured data: JSON documents
+    \item Example: a LinkedIn-like application
+    \item A person has multiple positions (= 1 to n relation)
+    \item A better match for objects with unstructured 1-n data: JSON documents
 \end{itemize}
+
+\begin{minted}{json}
+{
+    "user_id": 251,
+    "first_name": "Bill",
+    "last_name": "Gates",
+    "positions": [
+        {"job_title": "Co-chair", "organization": "Bill & Melinda Gates Foundation"},
+        {"job_title": "Co-founder, Chairman", "organization": "Microsoft"}
+    ]
+}
+\end{minted}
 
 \subsubsection{PostgreSQL}
 
@@ -1512,12 +1561,15 @@ TODO: `read the entire page and understand everything, and answer these question
     \end{itemize}
     \item Easy access to an advanced fulltext search-engine library
     \item Lucene is very complex but very advanced
+    \begin{itemize}
+        \item Lucine = LSM sorted string table that works with segments
+    \end{itemize}
     \item Automatized sharding (and thus scalable) in containers
-    \item RESTful API
+    \item RESTful API: you can use commands like curl, wget, \dots to interact with the database
     \item Slower data ingest (`index')
 \end{itemize}
 
-\subsubsection{Elastic Search architecture}
+\subsubsection{Elastic Search architecture, the basics}
 
 \begin{itemize}
     \item Document = JSON data
@@ -1541,32 +1593,41 @@ TODO: `read the entire page and understand everything, and answer these question
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{elasticsearch-searchcluster.png}
-    \caption{}
+    \includegraphics[width=0.4\textwidth]{elasticsearch-searchcluster.png}
 \end{figure}
 
 \subsubsection{Inverted index}
 
 \begin{itemize}
-    \item TODO
+    \item The power of ElasticSearch is text search using Lucine
     \item = `Lucene Index'
+    \item Inverted index = a document will be seen as important if it contains a relevant word many times
+    \item If a word is very common, Lucine will see it as a stopword (a, and, for, is, in, it, \dots)
+    \item Lucine can work with misspelled words, using a certain `distance' of characters (= amount of characters that can be wrong)
 \end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{inverted-index.png}
+\end{figure}
+
 
 \subsubsection{GeoHashes: Representing Geospatial data in ElasticSearch}
-
-\begin{itemize}
-    \item Since ElasticSearch 0.90
-    \item Base32 encoded strings, interleaving the latitude and longitude
-    \item Max resolution: 40mm * 20mm
-    \item Each extra symbol divides the grid in 26 cells
-    \item Use ElasticSearch's text search capabilities
-\end{itemize}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{geohashes.jpg}
     \caption{}
 \end{figure}
+
+How it works is less important for this module, just know that it exists and uses ElasticSearch's text search capabilities
+
+\begin{itemize}
+    \item Since ElasticSearch 0.90
+    \item Base32 encoded strings, interleaving the latitude and longitude
+    \item Max resolution: 40mm * 20mm
+    \item Each extra symbol divides the grid in 26 cells
+\end{itemize}
 
 \subsubsection{ElasticSearch scaling}
 
@@ -1575,6 +1636,11 @@ TODO: `read the entire page and understand everything, and answer these question
     \includegraphics[width=0.5\textwidth]{elasticsearch-scaling.png}
     \caption{}
 \end{figure}
+
+\begin{itemize}
+    \item ElasticSearch is very scalable
+    \item 1 node $\Rightarrow$ 2 nodes: almost double the performance
+\end{itemize}
 
 \subsection{Which storage engine is the best and the worst}
 
@@ -1591,7 +1657,49 @@ Which storage engine is the best/worst for the following situations:
     \item ACID compliant OLTP?
 \end{itemize}
 
-TODO: overzicht van slides 5 en 6 van H4
+\subsection{Summary}
+
+\subsubsection{Hash index vs LSM datastore}
+
+\textbf{Hash index}
+
+\begin{itemize}
+    \item Fast reads when index is in RAM
+    \item Very fast writes (appending)
+    \item Slow scans (select *, group by, \dots)
+\end{itemize}
+
+\textbf{Log Structured Merge Tree}
+
+\begin{itemize}
+    \item Fast read speed (offset + sequential scan), a bit slower than hash index
+    \item Very fast writes (append)
+    \begin{itemize}
+        \item But because of sorting in RAM, we need to first write to a read-ahead log
+        \item Or else data can be lost if the data is still being sorted in the memory buffer (for example due to power failure)
+    \end{itemize}
+    \item Fast scans because of sorted string tables
+\end{itemize}
+
+\subsubsection{B-tree vs LSM}
+
+\textbf{B-tree}
+
+\begin{itemize}
+    \item Very fast in random reads
+    \item Fast updates
+    \item Not useful for high volume writes
+    \item Very fast scans when index is on correct column
+\end{itemize}
+
+\textbf{LSM Tree}
+
+\begin{itemize}
+    \item Fast read speeds
+    \item Slower in updates because of tombstone: mark for delete + append
+    \item Very fast writes (append)
+    \item Very fast scan (sorted!)
+\end{itemize}
 
 \section{Distributed Stores}
 
@@ -1604,6 +1712,7 @@ TODO: overzicht van slides 5 en 6 van H4
 = A shard or partition is a small subset of the database that can be assigned to a node
 
 \begin{itemize}
+    \item The database is divided into nodes
     \item ElasticSearch, MongoDB, MySQL: "Shard"
     \item Hbase: "Region"
     \item Cassandra, Riak: "vnode"
@@ -1613,6 +1722,10 @@ TODO: overzicht van slides 5 en 6 van H4
 
 = A copy of a shard/database that is kept on a different machine
 
+\begin{itemize}
+    \item If a shard gets corrupted or lost, replicas serve as a backup solution
+    \item The replicas are kept on \textbf{different} nodes: never on the same node
+\end{itemize}
 
 \begin{figure}[H]
     \centering
@@ -1625,8 +1738,8 @@ TODO: overzicht van slides 5 en 6 van H4
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{elasticsearch-cluster.png}
+    \caption{Example cluster with 2 nodes, 1 replica shard for each node}
 \end{figure}
-
 
 \begin{itemize}
     \item Index is split over shards - nodes: \textbf{Scalability}
@@ -1637,14 +1750,25 @@ TODO: overzicht van slides 5 en 6 van H4
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{replication-master-slave.png}
+    \includegraphics[width=0.4\textwidth]{replication-master-slave.png}
     \caption{}
 \end{figure}
+
+\begin{itemize}
+    \item Multi-node or distributed data systems can be quite complex
+    \item The master (one server) does all read and write operations
+    \item The data gets copied to the slave
+    \item You can only read to the slave
+\end{itemize}
+
+\subsubsection{Communication between master \& slave}
 
 \textbf{Synchronously}
 
 \begin{itemize}
-    \item Acknowledgment of slave
+    \item The master writes new data to the slave
+    \item The slave must acknowledge the data
+    \item The master must wait for the confirmation by the slave
     \item Consistent data
     \item Slow \& unreliable with many slaves
 \end{itemize}
@@ -1663,19 +1787,14 @@ TODO: overzicht van slides 5 en 6 van H4
 
 \begin{itemize}
     \item At a certain point in time after a write, all replicas return the same update record/document (almost realtime)
-    \item consistent with order in which write operations are submitted by clients
+    \item Consistent with order in which write operations are submitted by clients
 \end{itemize}
 
-\textbf{Eventual Consistency}
+\textbf{Eventual Consistency + High availability}
 
 \begin{itemize}
     \item Faster, easier to be "available"
     \item Hard for devs: update a row - not sure when it will be updated in other nodes
-\end{itemize}
-
-\textbf{High availability}
-
-\begin{itemize}
     \item Every request received by a non-failing node must result in a "non-error" response
     \item Nodes can read/write - even if that means that not all replicas have the same content
 \end{itemize}
@@ -1685,85 +1804,125 @@ TODO: overzicht van slides 5 en 6 van H4
 \textbf{Single leader}
 
 \begin{itemize}
-    \item Only one node can write
+    \item Only one node (the leader) can write
+    \item The follower gets the updates as fast as possible, synchronously
+    \item Only for systems with few write operations and many read operations
     \item Strong consistency is possible
 \end{itemize}
 
 \textbf{Multi leader}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{replication-multi-leader.png}
+    \includegraphics[width=0.35\textwidth]{replication-multi-leader.png}
 \end{figure}
 
 \begin{itemize}
     \item More than one node can write
-    \item $\Rightarrow$ write conflicts are possible
+    \item $\Rightarrow$ write conflicts are possible, because the same data can be updated on different nodes
+    \item These conflicts must be solved $\Rightarrow$ system is much more complex
     \item Not consistent = replica may be out of sync
 \end{itemize}
 
 \subsubsection{Split brain or Network partition}
 
+\begin{itemize}
+    \item Split brain = the problem as a result of a network partition
+    \item Network partition = part of the nodes loses communication with other nodes
+\end{itemize}
+
 What if the network connection drops?
 
 \begin{itemize}
     \item Do we allow the follower to become the leader?
-    \item Do we block from writing to follower?
-    \item But leader might still be alive and serving\dots
+    \item Or do we block from writing to follower?
+    \item But leader might still be alive and serving
+    \item Result: if we allow data to be written to the follower, and the leader is still serving, both nodes might have different data
 \end{itemize}
 
-\subsection{CAP Theoreum}
+\subsection{CAP Theorem}
 
-3 mogelijke eigenschappen:
+To describe multi-node operations and to solve/explain the problem of network partitions, we can use the CAP theorem:
+
+There are 3 possible properties of a multi-node system:
 
 \begin{itemize}
     \item \textbf{Consistency}: every (later) read operation will always return the last version (*) of the data, or an error message (single object)
     \begin{itemize}
-        \item (*): last written by a write operation X older than this read operation Y
+        \item (*): last written by a write operation X older than this read operation
     \end{itemize}
-    \item Availability: there is always a server available, if necessary: with older data
-    \item PartitionTolerance: the system must keep working, even if de nodes can't communicate with each other ("network partitioning")
+    \item \textbf{Availability:} there is always a server available, if necessary: with older data
+    \item \textbf{PartitionTolerance:} the system must keep working, even if de nodes can't communicate with each other ("network partitioning")
 \end{itemize}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{cap-theoreum.png}
+    \includegraphics[width=0.6\textwidth]{cap-theoreum.png}
     \caption{Oversimplification of CAP theorem}
 \end{figure}
 
 \subsubsection{CAP: either consistent or available when partitioned}
 
 \begin{itemize}
-    \item When there are problems (partitiontolerance) with the network, we will have to choose:
+    \item When there are problems with the network, we will have to choose between 2 properties if we want to keep partition tolerance:
     \begin{itemize}
         \item Consistency
         \item Availability
     \end{itemize}
-    \item Both at the same time is NOT possible with Partition Tolerance
+    \item Both at the same time is NOT possible
     \begin{itemize}
         \item Network issues: (group of) nodes can't communicate
     \end{itemize}
     \item When there is no network partitioning, then both Consistency and Availability are satisfied
 \end{itemize}
 
+We will look at a couple possible situations, using a relational database as an example:
+
 \subsubsection{Relational DB: CA}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{cap-theorem-ca.png}
+\end{figure}
+
 \begin{itemize}
+    \item If we want to keep consistency, we will only allow reads to the slave
     \item Only consistent if perfectly synchronized
     \item In reality, only allows read to slave (so no "A" for writes)
+    \item So CAP theorem has no value here
 \end{itemize}
+
+
 
 \subsubsection{Relational DB: CA: single node (no P possible)}
 
-TODO
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{cap-theorem-ca-single.png}
+    \caption{}
+\end{figure}
 
-\subsubsection{AP}
+\begin{itemize}
+    \item = simpler system: single node: we only read / write to one node
+    \item Partition tolerance is not possible because there is no network between nodes
+    \item So CAP theorem also has no value here
+\end{itemize}
+
+\subsubsection{AP systems}
+
+= systems that ensure Availability when there is network partitioning
 
 Availability and PartitionTolerance (AP):
 
 \begin{itemize}
-    \item The system will always return data, but not always consistent (with network issues between nodes)
+    \item The system will always return data, but not always consistent (if network issues between nodes)
     \item If we read or write data and this fails, another node will take control, no error messages
     \item We choose AP in situations where reading data is more important than writing
+    \item But how available is this system in reality?
+    \begin{itemize}
+        \item It might take a while before replica's know they can't synchronize
+        \item There might be considerable lag when waiting for a response
+        \item $\Rightarrow$ not as much availability after all $\Rightarrow$ not so useful
+    \end{itemize}
 \end{itemize}
 
 \begin{figure}[H]
@@ -1775,49 +1934,58 @@ Availability and PartitionTolerance (AP):
 
 \subsubsection{CP}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{cap-theorem-cp.png}
+\end{figure}
+
 \begin{itemize}
     \item Consistency and PartitionTolerance: The system will always return the correct data
+    \item When network partitioning happens, consistency is kept: it will either not return data, or return the correct data
     \item We will not be able to read the data as long as these were not written to all nodes
     \item If we can't write data, we will see an error message $\Rightarrow$ no availability
     \item We can use CP if data consistency is very important
 \end{itemize}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{cap-theorem-cp.png}
-    \caption{}
-\end{figure}
 
 \subsubsection{Conclusion 1}
 
-CAP theorem is not a good architectural consideration
+CAP theorem is not clear way to make architectural choices. The creators even admitted this.
 
 \begin{itemize}
-    \item CA doesn't exist: > 1 node \& partitioning: no real availabilty anymore (only for read)
-    \item Consistency is single object! (so less transaction isolation)
-    \item No CP: with many replicas, you choose for asynchronous replication
+    \item CA doesn't exist: >1 node \& partitioning: no real availabilty anymore (only for read)
+    \item When CAP theorem describes consistency, it talks about a single object, but: 
+    \begin{itemize}
+        \item In many applications, consistency over many objects is important
+        \item $\Rightarrow$ consistency over many rows, in many tables
+    \end{itemize} 
+    \item No CP: with many replicas, you should choose for asynchronous replication
     \begin{itemize}
         \item So no strong consistency
-        \item No availability (no writes)
+        \item No availability (no writes possible)
     \end{itemize}
 \end{itemize}
 
 \subsubsection{Conclusion 2}
 
-CAP theorem only serves to clarify the difference between AP and Single node consistency
+CAP theorem only serves to clarify the difference between AP vs Single node consistency
 
 \begin{itemize}
     \item When you use multiple nodes, there is only "eventual consistency" and "Read availability" $\Rightarrow$ CP is impossible
     \item Multi node systems are always a little inconsistent
     \item AP is possible but only for partition problems
     \begin{itemize}
-        \item Is being available in 1 situation (network partition, quite rare) even that useful 
+        \item Is being available in 1 situation (network partition, rare) even that useful?
     \end{itemize}
 \end{itemize}
 
 \subsection{Distributed system: Elastic Search}
 
+To understand Distributed systems more, we'll zoom in on ElasicSearch (see basics of ElasticSearch architecture in previous chapter)
+
 \subsubsection{Consistency and Network partitioning}
+
+What does ElasticSearch do with network partitioning problems?
 
 \url{https://www.elastic.co/guide/en/elasticsearch/reference/2.4/docs-index\_.html#index-consistency}
 
@@ -1829,17 +1997,29 @@ CAP theorem only serves to clarify the difference between AP and Single node con
     \item Valid write consistency values are one, quorum, and all.
 \end{itemize}
 
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{elasticsearch-distributed.png}
-    \caption{TODO}
+    \caption{Example}
 \end{figure}
 
-\subsubsection{Architectural considerations}
+\begin{itemize}
+    \item In the above example: we have 5 replicas
+    \item If 3 out of 5 replicas respond, we will still be able to read and write, because the majority of the quorim is available
+\end{itemize}
 
-Do you need transactions? (Multi-object transactions?)
+\subsubsection{Architectural choices}
 
 \begin{itemize}
+    \item If you have to choose and configure a datastore for your application, let it be clear that CAP theorem is not a good way to categorize data stores 
+    \item The following questions are more useful:
+\end{itemize}
+
+\textbf{Do you need transactions? (Multi-object transactions?)}
+
+\begin{itemize}
+    \item = Do i need to keep multiple objects consistent?
     \item If very important: pursue high isolation (atomic)
     \item How important is availability: choose reliable (expensive) hardware
     \item How important is performance: very expensive hardware for high load (limited scalability)
@@ -1847,23 +2027,23 @@ Do you need transactions? (Multi-object transactions?)
     \item If availability very important: fast network (synchronized!) and expensive reliable hardware + few (1) replicas
 \end{itemize}
 
-How important is scalability and performance:
+\textbf{How important is scalability and performance:}
 
 \begin{itemize}
     \item Very high load = low consistency \& limited availability
     \item Rather choose for databases that are easily sharded (so no transactional DBs)
-    \item Availability: high amount of replicas + "normal hardware" $\Rightarrow$ lower consistency
+    \item Availability: high amount of replicas + "normal hardware" $\Rightarrow$ lower consistency!
 \end{itemize}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{overview-isolation.png}
+    \includegraphics[width=0.9\textwidth]{overview-isolation.png}
     \caption{Isolation overview}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.95\textwidth]{overview-datastores.png}
+    \includegraphics[width=\textwidth]{overview-datastores.png}
     \caption{Simplified overview data store choices}
 \end{figure}
 
