@@ -404,7 +404,161 @@ docker run -p 8080:8080
     jouw-naam/api                  # change this
 \end{minted}
 
+\section{Sharding}
 
+\begin{itemize}
+    \item Index = collection of documents
+    \item Document = data in JSON format
+    \item Shard = A piece of an index. Index is "sharded"\ in blocks, a block = shard
+    \item Primary shard = Document is primarily indexed (written) to a primary shard
+    \item Replica shard = an asynchronous copy of the primary shard
+\end{itemize}
 
+\subsection{Create index}
+
+\begin{minted}{json}
+{
+    "settings": {
+        "number_of_shards": 2,
+        "number_of_replicas": 1
+    }
+}
+\end{minted}
+
+How many shards in total: \textbf{4}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{number-of-shards.png}
+    \caption{4 shards: 2 primary shards with 1 replica each}
+\end{figure}
+
+\subsection{Health}
+
+Health exists at shard, index and cluster level!
+
+\subsubsection{Shard health}
+
+\begin{itemize}
+    \item Green = all shards are allocated
+    \item Yellow = all primaries are allocated but at least one replica is not
+    \item Red = at least one primary shard is not allocated in the cluster
+\end{itemize}
+
+\subsubsection{Index health}
+
+= status of the worst shard in that index
+
+\subsubsection{Cluster health}
+
+= status of the worst index in the cluster
+
+\subsection{Shard allocation}
+
+Shards states:
+
+\begin{itemize}
+    \item Unassigned = master did not assign the shard (yet)
+    \begin{itemize}
+        \item Or master is not able to assign the shard
+    \end{itemize}
+    \item Initializing = master did assign the shard, creating\dots
+    \item Started = shard is fully operational
+    \item Relocating = shard is moving
+    \begin{itemize}
+        \item Imbalance, new nodes, removed nodes, \dots
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Unassigned}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{shard-alloc-unassigned.png}
+    \caption{No shards assigned yet}
+\end{figure}
+
+\subsubsection{Initializing}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{shard-alloc-initializing.png}
+    \caption{Creating shards}
+\end{figure}
+
+\subsubsection{Started}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{shard-alloc-started.png}
+    \caption{The primary shards have been started, replica 1 is initializing. \textbf{Cluster status = yellow}}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{shard-alloc-started2.png}
+    \caption{\textbf{Cluster status = green}}
+\end{figure}
+
+\textbf{What if one of the node fails?}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{shard-alloc-started3.png}
+    \caption{Situation when one node fails}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{shard-alloc-started4.png}
+    \caption{After some time, R2 will become a primary shard. \textbf{Cluster status = yellow}}
+\end{figure}
+
+\subsubsection{Relocating}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{shard-alloc-relocating.png}
+    \caption{After es02 is restored, P2 gets relocated to its previous node}
+\end{figure}
+
+\subsection{Change number of replicas}
+
+\begin{minted}{json}
+    {
+        "index": {
+            "number_of_replicas": 0
+        }
+    }
+\end{minted}
+
+How many shards in total? \textbf{2}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{change-number-of-replicas.png}
+    \caption{2 shards total: 2 primary shards, 0 replicas each}
+\end{figure}
+
+\subsubsection{Health when one fails}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{change-number-of-replicas-red.png}
+    \caption{\textbf{Cluster status = Red}}
+\end{figure}
+
+\subsection{Caveat: single node cluster}
+
+TODO: meer info
+
+\begin{itemize}
+    \item Bootstrap checks = important settings are checked
+    \item discovery.type=single-node
+    \item If a node is already part of a cluster:
+    \begin{itemize}
+        \item Unique node ID
+        \item Unique cluster ID
+        \item Not easy to create a new cluster
+    \end{itemize}
+\end{itemize}
 
 \end{document}
