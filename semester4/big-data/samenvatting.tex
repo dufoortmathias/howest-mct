@@ -1378,6 +1378,13 @@ TODO: betere image
 
 \subsubsection{Log Structure Merge + Sparse tree index}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{lsm-sparse-tree-index.png}
+    \caption{LSM + Sparse tree index}
+\end{figure}
+
+
 \begin{itemize}
     \item We can simplify the LSM
     \item Sparse tree index = remember where some milestones are
@@ -1388,7 +1395,7 @@ TODO: betere image
         \item This sequential read is very quick, because 
     \end{itemize}
     \item Merge, compact \& sort every time = string sorted table
-    \item Every delete: create new segment and merge. `Tombstone the old segment'
+    \item Every delete: create new segment and merge. `Tombstone the old segment' = marking key/value pairs for deletion
 \end{itemize}
 
 \subsubsection{Applications of Sorted String \& LSM-tree}
@@ -1583,6 +1590,282 @@ Which storage engine is the best/worst for the following situations:
     \item Full scans op gestructureerde data?
     \item ACID compliant OLTP?
 \end{itemize}
+
+TODO: overzicht van slides 5 en 6 van H4
+
+\section{Distributed Stores}
+
+= perfect match for big data (Volume, Velocity, Variety)
+
+\subsection{Terminology}
+
+\subsubsection{Shard/partition}
+
+= A shard or partition is a small subset of the database that can be assigned to a node
+
+\begin{itemize}
+    \item ElasticSearch, MongoDB, MySQL: "Shard"
+    \item Hbase: "Region"
+    \item Cassandra, Riak: "vnode"
+\end{itemize}
+
+\subsubsection{Replica}
+
+= A copy of a shard/database that is kept on a different machine
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{partitions-replicas-nodes.png}
+    \caption{Partitions/Replicas/Nodes}
+\end{figure}
+
+\subsection{Elastic Search Cluster}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{elasticsearch-cluster.png}
+\end{figure}
+
+
+\begin{itemize}
+    \item Index is split over shards - nodes: \textbf{Scalability}
+    \item Shards can be replicated over nodes: \textbf{Availability}
+\end{itemize}
+
+\subsection{Replication: master/slave or leader/follower}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{replication-master-slave.png}
+    \caption{}
+\end{figure}
+
+\textbf{Synchronously}
+
+\begin{itemize}
+    \item Acknowledgment of slave
+    \item Consistent data
+    \item Slow \& unreliable with many slaves
+\end{itemize}
+
+\textbf{Asynchronously}
+
+\begin{itemize}
+    \item No acknowledgment of slave
+    \item Inconsistent data
+    \item Fast, even with many slaves
+\end{itemize}
+
+\subsubsection{Consistency choices}
+
+\textbf{Strong Consistency}
+
+\begin{itemize}
+    \item At a certain point in time after a write, all replicas return the same update record/document (almost realtime)
+    \item consistent with order in which write operations are submitted by clients
+\end{itemize}
+
+\textbf{Eventual Consistency}
+
+\begin{itemize}
+    \item Faster, easier to be "available"
+    \item Hard for devs: update a row - not sure when it will be updated in other nodes
+\end{itemize}
+
+\textbf{High availability}
+
+\begin{itemize}
+    \item Every request received by a non-failing node must result in a "non-error" response
+    \item Nodes can read/write - even if that means that not all replicas have the same content
+\end{itemize}
+
+\subsubsection{Amount of leaders}
+
+\textbf{Single leader}
+
+\begin{itemize}
+    \item Only one node can write
+    \item Strong consistency is possible
+\end{itemize}
+
+\textbf{Multi leader}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{replication-multi-leader.png}
+\end{figure}
+
+\begin{itemize}
+    \item More than one node can write
+    \item $\Rightarrow$ write conflicts are possible
+    \item Not consistent = replica may be out of sync
+\end{itemize}
+
+\subsubsection{Split brain or Network partition}
+
+What if the network connection drops?
+
+\begin{itemize}
+    \item Do we allow the follower to become the leader?
+    \item Do we block from writing to follower?
+    \item But leader might still be alive and serving\dots
+\end{itemize}
+
+\subsection{CAP Theoreum}
+
+3 mogelijke eigenschappen:
+
+\begin{itemize}
+    \item \textbf{Consistency}: every (later) read operation will always return the last version (*) of the data, or an error message (single object)
+    \begin{itemize}
+        \item (*): last written by a write operation X older than this read operation Y
+    \end{itemize}
+    \item Availability: there is always a server available, if necessary: with older data
+    \item PartitionTolerance: the system must keep working, even if de nodes can't communicate with each other ("network partitioning")
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{cap-theoreum.png}
+    \caption{Oversimplification of CAP theorem}
+\end{figure}
+
+\subsubsection{CAP: either consistent or available when partitioned}
+
+\begin{itemize}
+    \item When there are problems (partitiontolerance) with the network, we will have to choose:
+    \begin{itemize}
+        \item Consistency
+        \item Availability
+    \end{itemize}
+    \item Both at the same time is NOT possible with Partition Tolerance
+    \begin{itemize}
+        \item Network issues: (group of) nodes can't communicate
+    \end{itemize}
+    \item When there is no network partitioning, then both Consistency and Availability are satisfied
+\end{itemize}
+
+\subsubsection{Relational DB: CA}
+
+\begin{itemize}
+    \item Only consistent if perfectly synchronized
+    \item In reality, only allows read to slave (so no "A" for writes)
+\end{itemize}
+
+\subsubsection{Relational DB: CA: single node (no P possible)}
+
+TODO
+
+\subsubsection{AP}
+
+Availability and PartitionTolerance (AP):
+
+\begin{itemize}
+    \item The system will always return data, but not always consistent (with network issues between nodes)
+    \item If we read or write data and this fails, another node will take control, no error messages
+    \item We choose AP in situations where reading data is more important than writing
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{cap-theorem-ap.png}
+    \caption{AP: write once, read many times}
+\end{figure}
+
+
+\subsubsection{CP}
+
+\begin{itemize}
+    \item Consistency and PartitionTolerance: The system will always return the correct data
+    \item We will not be able to read the data as long as these were not written to all nodes
+    \item If we can't write data, we will see an error message $\Rightarrow$ no availability
+    \item We can use CP if data consistency is very important
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{cap-theorem-cp.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Conclusion 1}
+
+CAP theorem is not a good architectural consideration
+
+\begin{itemize}
+    \item CA doesn't exist: > 1 node \& partitioning: no real availabilty anymore (only for read)
+    \item Consistency is single object! (so less transaction isolation)
+    \item No CP: with many replicas, you choose for asynchronous replication
+    \begin{itemize}
+        \item So no strong consistency
+        \item No availability (no writes)
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Conclusion 2}
+
+CAP theorem only serves to clarify the difference between AP and Single node consistency
+
+\begin{itemize}
+    \item When you use multiple nodes, there is only "eventual consistency" and "Read availability" $\Rightarrow$ CP is impossible
+    \item Multi node systems are always a little inconsistent
+    \item AP is possible but only for partition problems
+    \begin{itemize}
+        \item Is being available in 1 situation (network partition, quite rare) even that useful 
+    \end{itemize}
+\end{itemize}
+
+\subsection{Distributed system: Elastic Search}
+
+\subsubsection{Consistency and Network partitioning}
+
+\url{https://www.elastic.co/guide/en/elasticsearch/reference/2.4/docs-index\_.html#index-consistency}
+
+\begin{itemize}
+    \item To prevent writes from taking place on the "wrong" side of a network partition
+    \item By default, index operations only succeed if a quorum(=voting procedure) (>replicas/2+1) of active shards are available. 
+    \item This default can be overridden on a node-by-node basis using the action.write\_consistency setting. 
+    \item To alter this behavior per-operation, the consistency request parameter can be used.
+    \item Valid write consistency values are one, quorum, and all.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{elasticsearch-distributed.png}
+    \caption{TODO}
+\end{figure}
+
+\subsubsection{Architectural considerations}
+
+Do you need transactions? (Multi-object transactions?)
+
+\begin{itemize}
+    \item If very important: pursue high isolation (atomic)
+    \item How important is availability: choose reliable (expensive) hardware
+    \item How important is performance: very expensive hardware for high load (limited scalability)
+    \item If not very important: Read committed + hardware dependant on load
+    \item If availability very important: fast network (synchronized!) and expensive reliable hardware + few (1) replicas
+\end{itemize}
+
+How important is scalability and performance:
+
+\begin{itemize}
+    \item Very high load = low consistency \& limited availability
+    \item Rather choose for databases that are easily sharded (so no transactional DBs)
+    \item Availability: high amount of replicas + "normal hardware" $\Rightarrow$ lower consistency
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{overview-isolation.png}
+    \caption{Isolation overview}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{overview-datastores.png}
+    \caption{Simplified overview data store choices}
+\end{figure}
 
 
 \end{document}
