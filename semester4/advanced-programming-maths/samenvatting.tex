@@ -3413,6 +3413,123 @@ root.mainloop()
 
 Zie andere demos op leho.
 
+\section{Network \& threading}
+
+\subsection{Doelstelling}
+
+\begin{itemize}
+    \item Basisbegrippen in network programming kunnen definiëren
+    \item Gebruik van sockets
+    \item Networking - Socket Programming kunnen situeren \& programmeren in Python
+\end{itemize}
+
+\subsection{Multithreaded server}
+
+Tot nu toe is er een fundamentele beperking met de server die we geprogrammeerd hebben:
+er is maar 1 connectie met 1 client. Uiteraard is dit niet van toepassing op real-life voorbeelden uit de praktijk
+
+\textbf{Oplossing:} Multithreaded server
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.25\textwidth]{multithreaded-server.png}
+    \caption{Multithreaded server}
+\end{figure}
+
+\subsubsection{Basistechniek}
+
+De basistechniek is gebaseerd op een \textbf{twee-stappen proces}:
+
+\begin{enumerate}
+    \item De main-thread alloceert individuele threads voor inkomende messages
+    \item De thread die instaat voor elke individuele thread, handelt elke interactie tss client en server
+\end{enumerate}
+
+\textbf{Gevolgen}
+
+\begin{itemize}
+    \item Main-thread mag "vergeten" dat een client ingelogd is, omdat een andere thread de communicatie verder afhandelt.
+    \item Main-thread mag weer wachten op nieuwe clients
+    \item Indien er een probleem met één client is, heeft dit geen effect op de andere clients of op algemene service!
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{multithreaded-server2.png}
+\end{figure}
+
+\subsubsection{Werking in Python}
+
+Per client word een object van de klasse ClientHandler aangemaakt. 
+Dit is een threadklasse: thread opstarten via start()
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{multithreaded-server-python.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{multithreaded-server-python2.png}
+    \caption{ClientHandler klasse}
+\end{figure}
+
+\begin{itemize}
+    \item In constructor: socket meegeven
+    \item Run-methode verzorgt alle communicatie met de client
+\end{itemize}
+
+
+\subsection{GUI server}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{multithreaded-server-gui.png}
+    \caption{Demo GUI server}
+\end{figure}
+
+
+\subsubsection{Communicatie vanuit workerthreads naar GUI}
+
+\begin{itemize}
+    \item Oproepen van een GUI-functie vanuit worker-threads is \textbf{NIET} aanbevolen.
+    \item Een GUI-functie is verantwoordelijkheid van de main-thread
+    \item Oplossing: gebruik van een queue
+\end{itemize}
+
+\textbf{Gebruik van een queue}
+
+\begin{itemize}
+    \item We laten de workerthreads een message-queue opvullen
+    \item Binnen GUI server wordt deze queue geobserveerd, en de geplaatste berichten verwerkt:
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\textwidth]{multithreaded-server-gui-queue.png}
+    \end{figure}
+    \item Bijkomend voordeel: geen GUI-methodes in worker threads
+\end{itemize}
+
+\subsubsection{Demo netwerken 5}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{multithreaded-server-gui-python.png}
+    \caption{De ServerWindow klasse}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{multithreaded-server-gui-python2.png}
+    \caption{De ClientHandler klasse}
+\end{figure}
+
+\subsubsection{To-do's}
+
+\begin{itemize}
+    \item Zorg ervoor dat alle threads correct kunnen afgesloten worden
+    \item Zorgt het sluiten van de serversocket ervoor dat geconnecteerde clients niet meer kunnen communiceren?
+    \item Event mbt sluiten van de GUI verzorgen zowel langs client/server.
+\end{itemize}
 
 
 \end{document}
