@@ -2047,9 +2047,310 @@ model = LogisticRegression(C=1, solver='liblinear', class_weight='balanced')
 
 \section{Naive Bayes \& Natural Language Processing}
 \subsection{Discriminative vs generative classification}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{discriminative-vs-generative.png}
+    \caption{Discriminative vs generative}
+\end{figure}
+
+\begin{itemize}
+    \item Discriminative classifiers leren de \textbf{grens tussen twee klasses}
+    \begin{itemize}
+        \item leert $p(y|x)$
+        \item $p$ = probability, kans
+        \item = kans dat een punt tot de klasse $y$ behoort, gegeven de eigenschappen van de features x
+    \end{itemize}
+    \item Generative classifiers leren de \textbf{distributie van de verschillende klasess}
+    \begin{itemize}
+        \item leert $p(x|y)$ 
+        \item = kans gegeven dat iets tot een bepaalde klasse $y$ behoort, hoe zien de features $x$ er uit?
+        \item leert ook $p(y)$ = de prior = de totale kans dat iets tot een bepaalde klasse $y$ behoort
+        \item Zoekt naar hoe features van een bepaalde klasse er uit zien
+        \item Wat hebben alle punten in een klasse gemeenschappelijk?
+    \end{itemize}
+\end{itemize}
+
 \subsection{Bayes rule}
+
+\subsubsection{Voorbeeld: kanker}
+
+De kans dat iemand kanker heeft bedraagt $1\% \Rightarrow P(\text{kanker}) = 0.01$
+
+Van een test is geweten dat:
+
+\begin{itemize}
+    \item In 90\% van de gevallen is de test positief als je effectief kanker hebt (sensitiviteit)
+    \item In 90\% van de gevallen is de test negatief als je geen kanker hebt (specificiteit)
+\end{itemize}
+
+\textbf{VRAAG:} Als de test positief blijkt, wat is de kans dat je kanker hebt?
+
+
+\subsubsection{Uitwerking via Bayes Rule}
+
+\begin{center}
+    $P(\text{kanker|}|\text{positief}) = \frac{P(\text{positief}|\text{kanker}) \cdot P(\text{kanker})}{P(\text{positief})}$
+
+    $P(\text{kanker|}|\text{positief}) = \frac{0.9 \cdot 0.1}{0.01 \cdot 0.90 + 0.1 \cdot 0.99} = 0.0833 \approx 8\%$
+\end{center}
+
+\begin{itemize}
+    \item \textbf{Prior:} $P(\text{kanker})$: Zonder de testresultaten te kennen, hoe waarschijnlijk is het dat iemand kanker heeft
+    \item \textbf{Likelihood:} $P(\text{positief}|\text{kanker})$: Hoe waarschijnlijk is het dat de test positief heeft, wanneer de persoon effectief kanker heeft?
+    \item \textbf{Marginal:} $P(\text{positief})$: Hoe waarschijnlijk is het dat de test positief is
+    \item \textbf{Posterior:} $P(\text{kanker})$: Wat is de kans dat iemand effectief kanker heeft als de test positief blijkt?
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{bayes.png}
+    \caption{}
+\end{figure}
+
+
 \subsection{Naive Bayes - tekstclassificatie}
+
+= een classificatietechniek
+
+\subsubsection{Spamdetectie}
+
+\begin{center}
+    $p(H|e) = \frac{p(e|H) \cdot p(H)}{p(e)}$
+\end{center}
+
+\begin{itemize}
+    \item $H$ = hypothese (het bericht is spam)
+    \item $e$ = evidence (de tekst in het bericht)
+    \item $p(H|e)$: de kans dat een bericht spam is gegeven de tekst van een bericht
+    \item $p(e|H)$: de kans dat we deze tekst vinden in een spam bericht
+    \item $p(H)$: de kans dat een willekeurig bericht spam is
+    \item $p(e)$: de kans dat we deze tekst tegenkomen/waarnemen. De tekst moet worden weergegeven als meerdere stukken evidence: de woorden $w_1, w_2, \dots, w_n$
+\end{itemize}
+
+
+\begin{align*}
+    p(Spam | w_1, \dots, w_n) & = \frac{p(w_1, \dots, w_n | spam) \cdot p(spam)}{p(w_1, \dots, w_2)}\\
+    & = \frac{p(w_1 | w_2, \dots, w_n, spam) \cdot p(w_2 | w_3, \dots, w_n, spam) \cdot p(spam)}{p(w_1, \dots, w_n)}
+\end{align*}
+
+\begin{itemize}
+    \item $p(w_1 | w_2, \dots, w_n, spam$ is de kans om het eerste woord te vinden, gegeven alle woorden en gegeven een bericht spam is
+    \item Lastig te berekenen $\Rightarrow$ Naive Bayes veronderstelling (Naive = vereenvoudigd)
+    \item \textbf{Naive Bayes} = beschouw elk woord onafhankelijk van de andere woorden
+\end{itemize}
+
+\subsubsection{Met Naive Bayes}
+
+\begin{center}
+    $p(spam | w_1, \dots, w_n) = \frac{p(w_1 | spam) \cdot p(w_2 | spam) \cdot \dots \cdot p(w_n | spam) \cdot p(spam)}{p(w_1, \dots, w_n)}$
+\end{center}
+
+$p(w_1 | spam)$ = de kans dat $w_1$ in een spambericht voorkomt
+
+\begin{center}
+    $p(spam | w_1, \dots, w_n) = \frac{p(spam) \cdot \prod_{i=1}^n p(w_i | spam)}{p(w_1, \dots, w_n)}$
+\end{center}
+
+\textbf{Vereenvoudigen}
+
+Kies spam of ham (=niet spam) op basis van welke deze klasses de grootste kans heeft.
+We hebben geen kansen nodig $\Rightarrow$ laat de noemer (=Marginal) vallen
+
+$p(spam | w_1, \dots, w_n) = p(spam) \cdot \prod_{i=1}^n p(w_i | spam)$
+
+\subsubsection{Voorbeeld}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{spamdetectie-voorbeeld.png}
+    \caption{Aantal spam = 280, aantal ham = 930}
+\end{figure}
+
+\begin{itemize}
+    \item $p(spam) = \frac{280}{280 + 930} = \frac{280}{1210} = 0.23 = 23\%$
+    \item $p(ham) = \frac{930}{280 + 930} = \frac{930}{1210} = 0.77 = 77\%$
+\end{itemize}
+
+Classificeer de zin: "Get free advice"
+
+Kans op spam:
+
+\begin{align*}
+    p(spam | \text{get free advice}) & = p(spam) \cdot p(get|spam) \cdot p(free|spam) \cdot p(advice | spam)\\
+    & = 0.23 \cdot 0.64 \cdot 0.32 \cdot 0.18 = 0.0085
+\end{align*}
+
+Kans op ham:
+
+\begin{align*}
+    p(ham | text{get free advice}) & = p(ham) \cdot p(get|ham) \cdot p(free|ham) \cdot p(advice | ham)\\
+    & = 0.77 \cdot 0.55 \cdot 0.21 \cdot 0.41 = 0.0365
+\end{align*}
+
+Conclusie: $0.0365 > 0.0085 \Rightarrow$ bericht is ham
+
+\subsection{Laplacian smoothing}
+
+Classificeer de zin: "Get free valium"
+
+\begin{itemize}
+    \item Valium behoort niet tot de trainingset $\Rightarrow p(valium | spam) = 0$ en $p(valium | ham) = 0$
+    \item Het probleem: $p(spam | \text{get free valium}) = 0$ en $p(ham | \text{get free valium})$
+\end{itemize}
+
+\textbf{Oplossing:} Laplacian smoothing (= add-one smoothing): kent niet geziene woorden en toch een zekere kans van voorkomen toe
+
+\begin{equation}
+    P(w_s) = \frac{C(w_s) + \alpha}{N + \alpha \cdot V}
+\end{equation}
+
+\begin{itemize}
+    \item $P(w) =$ de kans op het woord w
+    \item $C(w) =$ het aantal keer dat het woord w voorkomt
+    \item $N =$ het totaal aantal woorden
+    \item $V =$ het aantal verschillende woorden (=vocabulaire grootte)
+    \item $\alpha$ = een hyperparameter die dus getuned moet worden
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{laplacian-smoothing-1.png}
+    \caption{Laplacian smoothing met $\alpha = 1$}
+\end{figure}
+
+Kans op spam:
+
+\begin{align*}
+    p(spam | \text{get free valium}) & = p(spam) \cdot p(get|spam) \cdot p(free|spam) \cdot p(valium | spam)\\
+    & = 0.23 \cdot 0.633 \cdot 0.318 \cdot 0.003 = 0.0001389
+\end{align*}
+
+Kans op ham:
+
+\begin{align*}
+    p(ham | text{get free valium}) & = p(ham) \cdot p(get|ham) \cdot p(free|ham) \cdot p(valium | ham)\\
+    & = 0.77 \cdot 0.546 \cdot 0.215 \cdot 0.001 = 0.00009
+\end{align*}
+
+$0.0001389 > 0.00009 \Rightarrow$ bericht is spam
+
+\subsubsection{Invloed van de hyperparameter alpha}
+
+\begin{equation*}
+    P(w_s) = \frac{C(w_s) + \alpha}{N + \alpha \cdot V}
+\end{equation*}
+
+\begin{itemize}
+    \item Kleine $\alpha$: neiging tot overfitting, model wordt te complex
+    \item Grote $\alpha$: neiging tot underfitting, model wordt te simpel
+\end{itemize}
+
+\subsection{Log likelihood}
+
+Vermenigvuldigen van veel kansen kan resulteren in een floating-point underflow
+= de uitgekomen waarde is te klein, kleiner dan de computer in memory kan bewaren.
+
+\textbf{Oplossing:} gebruik van log likelihood:
+
+\begin{equation}
+    log(xy) = log(x) + log(y)
+\end{equation}
+
+$log(p(spam | w_1, \dots, w_n)) = log(p(spam)) + \sum_{i=1}^n log(p(w_i | spam))$
+
+Dit wordt meestal intern door de Python libraries gedaan
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{log-likelihood.png}
+    \caption{Log likelihood met tekstclassificatie}
+\end{figure}
+
+
 \subsection{Tekstclassificatie in de praktijk}
+
+\subsubsection{Preprocessing - opkuisen van de tekst}
+
+\begin{minted}{python}
+# verwijder html
+from bs4 import BeautifulSoup
+text_no_html = BeautifulSoup(str(text), "html.parser").get_text()
+
+# verwijder niet-letters
+import re # regular expressions
+text_alpha_chars = re.sub("[^a-zA-Z']", " ", str(text_no_html))
+
+# converteer naar lowercase
+text_lower = text_alpha_chars.lower()
+
+# verwijder stopwoorden
+from nltk.corpus import stopwords
+stops = set(stopwords.words(language))
+text_no_stop_words = " "
+for w in text_lower.split():
+    if w not in stops:
+        text_no_stop_words = text_no_stop_words + w + " "
+\end{minted}
+
+\subsubsection{Preprocessing - herleiden van woorden tot de stam}
+
+= Stemming
+
+\begin{minted}{python}
+from nltk.stem.snowball import SnowballStemmer
+
+text_stemmer = " "
+stemmer = SnowballStemmer(language)
+for w in text_no_stop_words.split():
+    text_stemmer = text_stemmer + stemmer.stem(w) + " "
+\end{minted}
+
+\subsubsection{Preprocessing - verwijder te korte woorden}
+
+\begin{minted}{python}
+text_no_short_words = " "
+for w in text_stemmer.split():
+    if len(w) >= minWordSize:
+        text_no_short_words = text_no_short_words + w + " "
+\end{minted}
+
+\subsubsection{Opbouwen van feature vectors - bag of words}
+
+\begin{itemize}
+    \item \textbf{Bag of words} = collectie van unieke woorden die voorkomen in de volledige trainingset. De uiteindelijke feature vector heeft dezelfde dimensie als de bag of words
+    \item \textbf{Multi-variate Bernoulli Naive Bayes}: er wordt een document bijgehouden of een woord in de bag of words al dan niet voorkomt in een document (0 of 1) en dus niet de frequentie van voorkomen
+    \item \textbf{Multinomial Naive Bayes} = de frequentie (aantal keer) waarmee een woord uit de bag of words voorkomt in het document wordt bijgehouden. 
+    \item In scikit-learn: CountVectorizer
+\end{itemize}
+
+
+\textbf{tf-idf transformer:} term frequency-inverse document frequency transformer
+
+Sommige woorden die veel voorkomen in documenten zijn minder belangrijk.
+Met tf-idf transforming gaan we het gewicht van die woorden verminderen.
+
+\begin{equation*}
+    tfidf_{i,j} = tf_{i,j} \cdot log \Big(\frac{N}{df_i}\Big)
+\end{equation*}
+
+\begin{itemize}
+    \item $tf_{i,j} =$ het aantal keer dat woord $i$ voorkomt in document $j$
+    \item $df_i =$ het aantal woorden waar woord $i$ in voorkomt
+    \item $N=$ totaal aantal documenten
+    \item In scikit-learn: TfidfTransformer
+\end{itemize}
+
+\begin{minted}{python}
+# je moet eerst de CountVectorizer toepassen voor je de TfidfTransformer kan gebruiken
+count_vect = CountVectorizer()
+X_train_bag_of_words = count_vect.fit(X_train)
+X_train_bag_of_words = count_vect.transform(X_train)
+
+tfidf_transformer = TfidfTransformer()
+tf_transformer = TfidfTransformer().fit(X_train)
+X_train_tf = tf_transformer.transform(X_train_bag_of_words)
+\end{minted}
 
 
 
