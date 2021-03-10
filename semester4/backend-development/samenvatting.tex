@@ -2042,4 +2042,341 @@ Bv: hoe post toevoegen aan bestaande blog?
     \item Hoe zitten de relaties in elkaar?
 \end{itemize}
 
+\section{Services \& Repositories}
+
+\subsection{Probleemstelling}
+
+\subsubsection{Wat hebben we reeds gezien?}
+
+\begin{itemize}
+    \item We kunnen API's maken
+    \item We kunnen deze hosten in Docker containers
+    \item We kunnen wegschrijven naar databases die ook in Docker draaien
+\end{itemize}
+
+\subsubsection{Probleemstelling}
+
+\begin{itemize}
+    \item Weinig structuur in onze code
+    \begin{itemize}
+        \item Controller bevat database code (EF Core)
+        \begin{itemize}
+            \item We halen data op in de controller
+            \item We voegen data in de database vanuit de controller
+            \item Weinig herbruikbaarheid van code mogelijk
+        \end{itemize}
+        \item Geen vaste structuur waar o.a. business logica komt, bv: prijsberekening
+        \begin{itemize}
+            \item Stel dat we de prijs meoten berekenen, dan gaan we dat tot nu doen in de controller zelf
+        \end{itemize}
+    \end{itemize}
+    \item Controllers moeten zo clean mogelijk zijn
+    \begin{itemize}
+        \item Geen logica in controller methode
+        \item Enkel validatie en doorverwijzing naar andere laag
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Oplossing: Design Patterns}
+
+We introduceren \textbf{Design Patterns}:
+
+\begin{itemize}
+    \item We gaan meer structuur geven aan onze applicatie
+    \item Zorgt voor meer betrouwbare code
+    \item Makkelijker voor onderhoud en aanpassingen
+    \item Nieuwe teamleden zullen sneller weg vinden in de code
+    \item Patterns zijn \textbf{niet} verbonden aan een taal (zowel in C\#, Python, \dots)
+\end{itemize}
+
+Opgepast:
+
+\begin{itemize}
+    \item Design Patterns lossen niet alles op
+    \item introduceren soms meer complexiteit en meer werk
+\end{itemize}
+
+\subsubsection{Repository \& Service pattern}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.25\textwidth]{repository-service-pattern.png}
+    \caption{}
+\end{figure}
+
+We introduceren Repository \& Service pattern
+
+\begin{itemize}
+    \item Controller zal praten met Service laag
+    \begin{itemize}
+        \item Service laag (Business layer0 bevat de Business logica)
+        \item Business logica is:
+        \begin{itemize}
+            \item Berekeningen, beslissingen
+            \item Ophalen van data uit de database om beslissingen te nemen
+        \end{itemize}
+    \end{itemize}
+    \item Service laag zal praten met Repository laag
+    \begin{itemize}
+        \item Repository bevat code om met database te spreken
+        \item Hier zullen we onze LINQ queries schrijven
+    \end{itemize}
+    \item Er zijn veel andere patterns, bv: Mediator pattern \url{https://www.dofactory.com/net/mediator-design-pattern}
+\end{itemize}
+
+\subsection{Repositories}
+
+\begin{itemize}
+    \item Bevat enkel de code om database operaties uit te voeren $\Rightarrow$ single responsibility principe
+    \item We proberen per tabel een repository te maken, maar je kan/mag hier van afwijken
+    \item Via de Context voeren we LINQ queries uit
+    \item Context zal via \textbf{Dependency Injection (DI)} aanspreekbaar zijn in de repository
+\end{itemize}
+
+\subsubsection{In de praktijk}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{repositories-1.png}
+\end{figure}
+
+\begin{itemize}
+    \item Map Repositories in project
+    \item We voegen VaccinTypeRepository.cs toe
+    \item In deze class gaan we onze methode schrijven, bv: GetVaccins()
+\end{itemize}
+
+\subsubsection{Probleem}
+
+\begin{itemize}
+    \item We maken context aan in de repository
+    \item We moeten null parameters doorgeven
+    \item Hierdoor is RegistrationContext \textbf{tightly coupled} met VaccinTypeRepository
+    \item Ze kunnen \textbf{niet} zonder elkaar bestaan
+    \item Dit is niet zo goed naar herbruikbaarheid
+    \item Zeer lastig om te testen
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{repositories-2.png}
+    \caption{}
+\end{figure}
+
+
+\subsubsection{Oplossing}
+
+\begin{itemize}
+    \item We moeten de context \textbf{loose coupled} maken
+    \item Ze moeten elkaar begrijpen, maar ze mogen niet afhankelijk zijn van elkaar
+    \item Nu gaan we er vanuit dat RegistrationContext zal verwijzen naar onze Docker SQL server
+    \item Bij testen willen we een andere database gebruiken $\Rightarrow$ in deze opstelling lastig
+    \item We wensen dus flexibiliteit
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{repositories-3.png}
+    \caption{Abstractie van de RegistrationContext: we maken een C\# interface}
+\end{figure}
+
+\begin{itemize}
+    \item We maken abstractie van de RegistrationContext
+    \item We gaan bepalen welke methodes er aanwezig zijn, maar niet wat ze moeten doen
+    \item We introduceren een C\# interface
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{repositories-4.png}
+    \caption{}
+\end{figure}
+
+\begin{itemize}
+    \item De interface zal specificeren welke methodes er aanwezig zijn
+    \item Iedere klasse die de interface gaat implementeren kan zijn eigen kan dan eigen context voorzien
+    \item We gaan dit ook doen voor Repositories \& Services. Altijd een interface voorzien
+\end{itemize}
+
+Hoe moeten we deze nu gebruiken?
+
+\begin{itemize}
+    \item Hoe moet de Repository de RegistrationContext gebruiken ?
+    \item Hoe moet de Controller de Repository gebruiken ?
+\end{itemize}
+
+$\Rightarrow$ Dependency Injection
+
+\subsection{Dependency Injection (DI)}
+
+\begin{itemize}
+    \item We gebruiken dit reeds enkele weken
+    \item Alles in ASP.NET WebAPI is DI based
+    \begin{itemize}
+        \item Swagger gebruikt DI
+        \item services.AddControllers() doet dit ook
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Wat is dat nu eigenlijk}
+
+\begin{itemize}
+    \item Dit is terug een Design pattern
+    \item Doelstelling is Inversion of Control (IoC) bekomen
+    \begin{itemize}
+        \item Het aanmaken van objecten gaan we uit handen geven aan een \textbf{IoC container}
+        \item We zijn gewoon om VaccinTypeRepository p = new VaccinTypeRepository() te schrijven
+        \item De IoC container zal dit voor ons doen achter de schermen
+        \item Via DI zal dit object beschikbaar zijn als we het nodig hebben
+        \item Indien je niet tevreden bent kan je de ASP.NET IoC Container uitpluggen en zelf maken
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Werking}
+
+\begin{itemize}
+    \item De objecten die we wensen te gebruiken via DI moeten we registreren in de IoC container
+    \item Dit zal gebeuren in Startup.cs in de methode ConfigureServices
+    \item Er zijn 3 manieren van registratie:
+    \begin{enumerate}
+        \item AddTransient
+        \begin{itemize}
+            \item Bij iedere HTTP request zal er een nieuwe instantie gemaakt worden van het object
+            \item Tijdens hetzelfde request ook een nieuw object indien nodig
+        \end{itemize}
+        \item AddScoped
+        \begin{itemize}
+            \item Bij iedere HTTP request een nieuw object
+            \item Maar tijdens hetzelfde request zal het object hergebruikt worden
+        \end{itemize}
+        \item AddSingleton
+        \begin{itemize}
+            \item Bij de eerste request zal er object gemaakt worden
+            \item Daarna zal hetzelfde object gebruikt worden als het nog eens nodig is
+            \item Ook over verschillende users $\Rightarrow$ oppassen
+        \end{itemize}
+    \end{enumerate}
+\end{itemize}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dependency-injection-registratie.png}
+    \caption{\url{https://www.c-sharpcorner.com/article/understanding-addtransient-vs-addscoped-vs-addsingleton-in-asp-net-core/}}
+\end{figure}
+
+\subsubsection{In de praktijk}
+
+We registreren in Startup.cs in de IoC Container de objecten RegistrationContext en VaccinTypeRepository
+
+Als er nu ergens in onze applicatie een IRegistrationContext of IVaccinTyperepository interface nodig is, 
+dan zal er een object gemaakt van hun respectievelijk type RegistrationContext en VaccinTypeRepository:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{dependency-injection-1.png}
+    \caption{}
+\end{figure}
+
+\begin{itemize}
+    \item In onze VaccinTypeRepository hebben we de RegistrationContext nodig want anders kunnen we niet praten met de database
+    \item We maken gebruik van constructor injection om een instantie van RegistrationContext binnen te brengen in onze VaccinTypeRepository
+    \item De IoC container van ASP.NET Core heeft voor IRegistrationContext een RegistrationContext object geregistreerd in Startup.cs
+    \item Bij het uitvoeren van het project ziet .NET dat er een IRegistrationContext nodig is bij VaccinTypeRepository. ASP.NET vraagt aan de IoC container een object waar de interface IRegistrationContext voor is geregistreerd en zal dit binnen brengen via de constructor.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dependency-injection-2.png}
+    \caption{}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{dependency-injection-3.png}
+    \caption{Stel dat we IRegistrationContext niet geregistreerd hebben in de Startup.cs: veel gemaakt error!}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dependency-injection-4.png}
+    \caption{We passen nu ook onze Controller aan en injecteren de repository in de Controller}
+\end{figure}
+
+\subsection{Services}
+
+De service layer bevat:
+
+\begin{itemize}
+    \item Business Logica
+    \begin{itemize}
+        \item Prijsberekening
+        \item Procedures
+        \item Andere services aanroepen, vb mail sturen
+    \end{itemize}
+    \item Aanroepen naar databas
+    \begin{itemize}
+        \item Soms is het gewoon doorgeven van method calls
+        \item Veel overhead code soms
+    \end{itemize}
+\end{itemize}
+
+We gaan niet voor iedere Repository een service maken, de service zal meer op functioneel niveau gaan groeperen, bijvoorbeeld:
+
+\begin{itemize}
+    \item PriceService
+    \begin{itemize}
+        \item ProductRepository
+        \item DiscountRepository
+        \item \dots
+    \end{itemize}
+    \item OrderService
+    \begin{itemize}
+        \item ProductRepository
+        \item DiscountRepository
+        \item EmailService $\Rightarrow$ service aanroepen vanuit andere services
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{In de praktijk}
+
+\begin{itemize}
+    \item Mapje Services in het project
+    \item Klasse VaccinationService
+    \item We injecteren de IVaccinTyperepository in de service
+    \item Daarna kunnen we de repository gebruiken
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{services-1.png}
+    \caption{}
+\end{figure}
+
+Nu moeten we de service registreren zodat we deze kunnen gebruiken:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{services-2.png}
+    \caption{Registratie VaccinationService}
+\end{figure}
+
+In de controller injecteren we nu de IVaccinationService en niet meer de Repository
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{services-3.png}
+    \caption{Injectie IVaccinationService}
+\end{figure}
+
+\subsection{Wat is belangrijk?}
+
+\begin{itemize}
+    \item Wat is doel van repository en services?
+    \item Wat is DI en IoC?
+    \item Waarom interfaces nodig?
+    \item Welke zijn de drie manieren om services te registeren in .NET Core?
+\end{itemize}
+
+
 \end{document}
