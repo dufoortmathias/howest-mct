@@ -1796,9 +1796,332 @@ netstat -anpt | awk '{print $5}' | sort | uniq -c
 \begin{minted}{bash}
 # print the filename of the terminal currently connected to standard input:
 ~$ tty
-
-
 \end{minted}
+
+\subsection{Answer these questions to test your knowledge}
+
+\begin{enumerate}
+    \item What does piping mean?
+    \item What is the prerequisite for using the command 'uniq'
+    \item What is the difference between $>$ and $>>$
+    \item Which are the 2 output streams in linux, and what do they contain?
+    \item What is 'exit code'
+    \item Why is the exit code useful
+    \item What different values can the exit code be?
+    \item What is the exit code for success?
+    \item How do you request the exit code?
+    \item How do you turn a command into a job?
+    \item How do you pause a job
+    \item What command shows the list of all running or paused jobs?
+    \item How do you re-activate a paused job?
+    \item What does the command screen do?
+    \item What is meant by the term `signal'?
+    \item How do you send a signal to a process
+    \item How do you specify which process?
+    \item Give 2 examples of signals
+    \item Is a systemload of 23 problematic
+    \item What process has PID 1?
+    \item Where do you know this process from?
+\end{enumerate}
+
+
+\section{Regex, users \& firewall}
+
+\subsection{Regex}
+
+\begin{itemize}
+    \item Make the webscaper assignment
+    \item Use \url{www.regexr.com} to test regex
+\end{itemize}
+
+\subsection{User management}
+
+\subsubsection{Add a user}
+
+\begin{itemize}
+    \item Root privilege required!
+    \item There are two common commands to add users:
+\end{itemize}
+
+\begin{minted}{bash}
+adduser testuser1
+# enter password
+# name, other details
+# /home/testures1
+# contents of this directory follows /etc/skel
+# group: testuser1
+# default shell = /bin/bash
+
+useradd testuser2
+# user is created , no password, no shell
+\end{minted}
+
+\subsubsection{Delete a user}
+
+Again with root privileges, and 2 possible commands:
+
+\begin{minted}{bash}
+deluser testuser1
+# user and corresponding group get deleted
+# home directory not deleted
+
+userdel testuser2
+# user and corresponding group get deleted
+# home directory also deleted
+\end{minted}
+
+\subsubsection{Change password of user}
+
+\begin{minted}{bash}
+# change your own password
+passwd
+# enter current password
+# enter new password x2
+
+# change password of other account (root privilege required)
+passwd <username>
+# current password not needed, only new password x2
+\end{minted}
+
+\subsubsection{Create a new group}
+
+Root privilege required!
+
+\begin{minted}{bash}
+addgroup testgroup1
+# GID = group ID
+
+groupadd testgroup2
+\end{minted}
+
+\subsubsection{Assign a user to a group}
+
+\begin{minted}{bash}
+usermod -aG testgroup1 testuser1
+# add to group, groupname, username
+
+# overview of groups and group members
+cat /etc/group
+
+# of which groups is the current user a member?
+~# groups
+~# su – testuser1
+~$ groups
+\end{minted}
+
+\subsubsection{Overview of users}
+
+/etc/passwd
+
+\begin{itemize}
+    \item Username
+    \item User ID
+    \item Home directory
+    \item Default shell
+    \item Full name
+    \item \dots
+\end{itemize}
+
+\subsubsection{Overview of groups}
+
+/etc/group
+
+\begin{itemize}
+    \item Groupname
+    \item Group ID
+    \item Group members
+\end{itemize}
+
+\subsubsection{/etc/shadow}
+
+\begin{itemize}
+    \item System-wide host-specific configuration file (because it's in /etc/)
+    \item Contains information about password length, expiration, password hash
+    \begin{itemize}
+        \item Mostly: sha512-hash
+    \end{itemize}
+    \item Assignment:
+    \begin{itemize}
+        \item write a one-liner
+        \item Get all usernames from /etc/shadow and save them in /tmp/usernames
+        \item Extract from /etc/shadow all usernames and hashes of passwords for the usernames where a hash of the password is known
+    \end{itemize} 
+\end{itemize}
+
+\subsubsection{/etc/gshadow}
+
+\begin{itemize}
+    \item Contains an encrypted password for each group, as well as group membership and administrator information
+    \item Group name: the name of the group
+    \item Hashed password: 
+    \begin{itemize}
+        \item If the value of this field is !, no user is allowed to access the group using the newgrp command. 
+        \item If the value of this field is !! : same things as !, but it also indicates that a password has never been set before
+        \item If the value is null, only group members can log into the group
+    \end{itemize}
+    \item Group administrators: users who can add or remove group members using the gpasswd command
+    \item Group members
+\end{itemize}
+
+\subsubsection{sudo}
+
+\begin{itemize}
+    \item Root privilege = superuser
+    \item sudo = superuser do
+    \item ~\$ sudo useradd jeff == ~\# useradd jeff
+\end{itemize}
+
+\begin{minted}{bash}
+# decide who gets sudo rights:
+
+# install the sudo package
+apt install sudo
+# change the rights
+visudo
+# view the changes
+cat /etc/sudoers
+\end{minted}
+
+There is a sudo group:
+
+\begin{itemize}
+    \item Called sudo, sudoers or sometimes 'real'
+    \item Members of sudo group have sudo rights
+    \item Add user: ~\# usermod -aG sudo <username>
+\end{itemize}
+
+\subsubsection{Temporarily become another user}
+
+\begin{minted}{bash}
+sudo su - <username>
+# this switches the user to <username> and use the environment of that user
+# eg. the $PATH
+
+# become root:
+~$ sudo su -
+# without username => root
+\end{minted}
+
+
+\subsection{SSH}
+
+\underline{S}ecure \underline{SH}ell
+
+\begin{itemize}
+    \item In the past: telnet (23/TCP)
+    \begin{itemize}
+        \item Plain text
+        \item Not feature-rich
+    \end{itemize}
+    \item Better: ssh (22/TCP)
+    \begin{itemize}
+        \item Encrypted with public-private key cryptography
+        \item Feature-rich
+        \item Connect through the network, login as a user and get access to the shell on the remote system as that user
+        \item You're sitting at the console of that system, but with 'a very long cable'
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{SSH features}
+
+\begin{itemize}
+    \item Log in and get remote shell. Which shell? See /etc/passwd
+    \item Invoke a command on the remote system
+    \item Create a secured, encrypted tunnel
+    \item Transfer files: with scp (secure copy)
+\end{itemize}
+
+\subsubsection{SCP - Secure Copy}
+
+\begin{itemize}
+    \item Transfer files over an encrypted connection (22/TCP)
+    \item scp <what to copy> <where to copy to>
+    \item Also specify the username, the remote system and the location on that system
+\end{itemize}
+
+\subsubsection{SSH tunnels}
+
+Tunnel a port to let traffic through a certain port
+
+\begin{minted}{bash}
+ssh -L <local-IP>:<local-port>:<remote-ip>:<remote-port> username@ssh-server
+
+# SOCKS-proxy functionality:
+ssh -D <local-port> username@ssh_server
+\end{minted}
+
+\subsection{Full-fledged environment}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{full-fledged-environment.jpg}
+    \caption{We will create this setup}
+\end{figure}
+
+\begin{itemize}
+    \item 7 VMs
+    \item Two networks: internal and DMZ network for public services
+    \item A firewall
+    \item NAT-ing
+\end{itemize}
+
+\subsection{Basic networking}
+
+To create the setup in the previous section, we need to recap some basic networking:
+
+\subsubsection{TCP/IP network model}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.25\textwidth]{tcp-ip.png}
+    \caption{The 5 layers of the TCP/IP model}
+\end{figure}
+
+\begin{enumerate}
+    \item Physical layer: our VMware virtual network
+    \item Datalink layer: ethernet \& MAC-address
+    \item Network layer: IPv4, IP-address
+    \item Transport layer:
+    \begin{itemize}
+        \item Transport Control Protocol (TCP)
+        \item User Datagram Protocol (UDP)
+    \end{itemize}
+    \item Application layer: SSH, HTTP, \dots
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.84\textwidth]{tcp-ip2.png}
+    \includegraphics[width=0.15\textwidth]{tcp-ip3.png}
+    \caption{An ethernet frame}
+\end{figure}
+
+\subsubsection{3 types of firewalls}
+
+\begin{enumerate}
+    \item Application Layer Gateway
+    \begin{itemize}
+        \item Can see layer 7
+        \item Can see the application payload
+    \end{itemize}
+    \item Stateful Packet Inspection Firewall
+    \begin{itemize}
+        \item Stateful = it can keep status, it has memory
+        \item Can't see the application payload
+    \end{itemize}
+    \item Packet Filtering Firewall
+    \begin{itemize}
+        \item Simplest type of firewall
+        \item Can only see information up to Layer 4 (Transport layer)
+        \begin{itemize}
+            \item Source \& Destination MAC-address
+            \item Source \& Destination IP-address
+            \item Source \& Destination Port number
+            \item The interface where the packet travels through
+        \end{itemize}
+        \item Can't see the application payload
+    \end{itemize}
+\end{enumerate}
 
 
 \end{document}
