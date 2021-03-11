@@ -2352,8 +2352,270 @@ tf_transformer = TfidfTransformer().fit(X_train)
 X_train_tf = tf_transformer.transform(X_train_bag_of_words)
 \end{minted}
 
+\section{Decision Trees}
+\subsection{Decision Trees voor classificatie}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{decision-tree.png}
+    \caption{Voorbeeld: een stuk fruit classificeren aan de hand van een decision tree}
+\end{figure}
+
+\subsubsection{Voorbeeld met rondheid \& groenheid van appels}
 
 
+Bij ons voorbeeld van het classificeren van appels verdelen we nu de dataset herhaaldelijk in stukken:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{decision-tree-1.png}
+    \caption{Is de groenheid > 4? We trekken een lijn bij groenheid == 4}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{decision-tree-2.png}
+    \caption{We voegen meerdere opsplitsingen toe}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{decision-tree-3.png}
+    \caption{Eindresultaat}
+\end{figure}
+
+\subsubsection{Entropy}
+
+Hoe bepalen waar de boom te splitsen?
+
+Een goede split is deze waarbij de wanorde afneemt en beide kanten `zuiverder (pure) worden'
+
+\begin{theorem}
+    De entropy (H) is de maat voor de wanorde (gemiddelde informatieinhoud)
+\end{theorem}
+
+\begin{equation}
+    H = \sum_{i=1}^N p_i \cdot \log_2 \Big(\frac{1}{p_i}\Big)
+\end{equation}
+
+\begin{equation}
+    H = \textcolor{red}{-} \sum_{i=1}^N p_i \cdot \log_2 (\textcolor{red}{p_i})
+\end{equation}
+
+\textbf{Voorbeeld}
+
+Als we terugkijken naar de plot van appels, zien we 15 datapunten, waarvan:
+
+\begin{itemize}
+    \item Kans op een appel: $\frac{8}{15} = 0.53$
+    \item Kans op een niet-appel: $\frac{7}{15} = 0.47$
+\end{itemize}
+
+$\Rightarrow H = - (0.53 \cdot \log_2 (0.53) + 0.47 \cdot \log_2(0.47)) = - (- 0.99740) = 0.9974$
+
+\subsubsection{Information Gain}
+
+\begin{theorem}
+    Information Gain = (entropy voor de split) $-$ (entropy na de split)
+\end{theorem}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{information-gain.png}
+    \caption{Splitsen boven \& onder}
+\end{figure}
+
+Information gain $= 0.9974 - (\frac{5}{15} \cdot 0.72 + \frac{10}{15} \cdot 0.88) = 0.17073$
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{information-gain2.png}
+    \caption{Splitsen links \& rechts}
+\end{figure}
+
+Information gain $= 0.9974 - (\frac{9}{15} \cdot 0.76 + \frac{6}{15} \cdot 0.66) = 0.27740$
+
+\subsubsection{Gini impurity}
+
+Alternatief voor het gebruik van de entropy.
+
+\begin{theorem}
+    De Gini Impurity is een maat voor hoe vaak een willekeurig
+    gekozen element van de set verkeerd gelabeld zou worden als het willekeurig werd gelabeld
+    volgens de distributie van de labels in de subset
+\end{theorem}
+
+\begin{equation}
+    G = 1 - \sum_{i=1}^N p_i^2
+\end{equation}
+
+\textbf{Voorbeeld}
+
+\begin{itemize}
+    \item Kans op een appel: $\frac{8}{15} = 0.53$
+    \item Kans op een niet-appel: $\frac{7}{15} = 0.47$
+\end{itemize}
+
+$\Rightarrow G = 1 - (0.53^2 + 0.47^2) = 0.4982$
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{gini-impurity-1.png}
+    \caption{Gini impurity links \& rechts}
+\end{figure}
+
+Gewogen Gini impurity $= \frac{5}{15} \cdot 0.32 + \frac{10}{15}\cdot 0.42 = 0.39$
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{gini-impurity-2.png}
+    \caption{Gini impurity boven \& onder}
+\end{figure}
+
+Gewogen Gini impurity $= \frac{9}{15} \cdot 0.34 + \frac{6}{15}\cdot 0.28 = 0.32$
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{gini-impurity-3.png}
+    \caption{Splits telkens bij de split die je de laagste Gini impurity oplevert}
+\end{figure}
+
+\subsection{Decision Trees voor regressie}
+
+Decision trees kunnen ook gebruikt worden op continue waarden, om regressie mee te doen.
+
+\subsubsection{Voorbeeld 1: aantal golfspelers bij verschillende weersomstandigheden}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{decision-trees-regressie.png}
+    \caption{De dataset}
+\end{figure}
+
+We gaan via gemiddeldes berekenen hoeveel elk `blad' in de decision tree zal zijn:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.55\textwidth]{decision-trees-regressie2.png}
+    \caption{De decision tree}
+\end{figure}
+
+\subsubsection{Voorbeeld 2: Autoprijs op basis van 2 eigenschappen van de auto}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{decision-trees-regressie3.png}
+    \caption{We splitsen de data op, juist zoals bij classificatie}
+\end{figure}
+
+\section{Ensemble learning}
+
+\subsection{Problematiek van decision trees}
+
+Decision trees hebben de neiging tot overfitting
+
+\textbf{Oplossing:} combineer de voorspellingen van verschillende gerandomiseerde modellen
+(bijvoorbeeld decision trees) tot één model = ensemble learning
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{ensemble-learning.png}
+    \caption{Combineren van meerdere modellen tot één model}
+\end{figure}
+
+Zo'n combinatie van verschillende decision trees (beslissingsbomen) noemen we een forest (bos)
+
+\subsection{Overzicht Ensemble learning methodes}
+
+\begin{itemize}
+    \item \textbf{Bootstrap aggregating (=bagging)}
+    \item \textbf{Boosting}
+    \item Bayes optimal classifier
+    \item Bayesian model averaging/combination
+    \item Bucket of models
+    \item \textbf{Stacking}
+\end{itemize}
+
+\subsection{Bagging}
+
+\subsubsection{Concept van bagging - Majority voting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{ensemble-learning-jury.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{bagging.png}
+    \caption{Verschillende decision trees samenvoegen tot één finaal model}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{bagging-majority-voting.png}
+    \caption{Het finale model keurt een sample foutief als het door de meerderheid van de bomen foutief wordt gekeurd}
+\end{figure}
+
+\subsubsection{De techniek van bagging}
+
+Methode om de variantie te reduceren en overfitting te vermijden
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{bagging-techniek.png}
+\end{figure}
+
+\begin{enumerate}
+    \item Kies verschillende subsets (bags) uit de trainingset
+    \item Willekeurige selectie met teruglegging
+    \item Train op elke subset een classifier
+\end{enumerate}
+
+\subsubsection{Random Forest Trees}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{bagging-random-forest-trees.png}
+    \caption{}
+\end{figure}
+
+Hyperparameters:
+
+\begin{itemize}
+    \item \textbf{n\_estimators:} aantal bomen in het bos: meestal hoe meer hoe beter
+    \item \textbf{criterion: } Gini (default) of Entropy
+    \item \textbf{Maximum number of features:} het maximum aantal features per boom
+    \begin{itemize}
+        \item int: aantal features
+        \item float: percentage
+        \item 'auto' max\_features: vierkantswortel van totaal aantal features
+        \item 'sqrt': max\_features: vierkantswortel van totaal aantal features
+        \item 'log2': log van het aantal features
+        \item Default worden alle features gebruikt
+    \end{itemize}
+    \item \textbf{max\_depth:} de maximale diepte van de boom. Als je te maken hebt met noisy data is het aan te raden de maximale diepte beperkt te houden
+    \item \textbf{min\_samples\_split:} het minimum aantal samples nodig om binnen een boom te blijven splitsen
+    \item \textbf{min\_samples\_leaf:} het minimum aantal samples dat zich aan een blad van de boom moet bevinden. Hoe groter deze waarde, hoe mminder vatbaar voor overfitting
+    \item \textbf{Bootstrap aggregating: } Bagging (zie verder). Staat default op True
+    \item \textbf{oob\_score:} `out of bag'-score = de gemiddelde error bij het testen van een sample op bomen die niet op deze sample getraind zijn geweest
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{bagging-random-forest-trees2.png}
+    \caption{number of estimators vs oob score}
+\end{figure}
+
+
+\subsection{Boosting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{boosting-principe.png}
+    \caption{}
+\end{figure}
 
 
 \end{document}
