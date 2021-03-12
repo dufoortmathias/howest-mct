@@ -3531,5 +3531,194 @@ Dit is een threadklasse: thread opstarten via start()
     \item Event mbt sluiten van de GUI verzorgen zowel langs client/server.
 \end{itemize}
 
+\section{Objectserialisation}
+
+\subsection{Doelstelling}
+
+\begin{itemize}
+    \item Bespreken wat serialisatie betekent en context kunnen schetsen
+    \item Geserialiseerde objecten kunnen wegschrijven naar File
+    \item Objecten kunnen inlezen vanuit File
+    \item Hoe vermijden we dat attribuut meegeserialiseerd wordt?
+\end{itemize}
+
+\subsection{Uitgangssituatie}
+
+Tijdens het runnen van een programma:
+
+\begin{itemize}
+    \item Meerdere objecten worden gecreëerd
+    \item Objecten worden verder uitgebreid
+\end{itemize}
+
+Het aanmaken van deze objecten vraagt tijd. Vaak is er veel info nodig
+om de objecten te creëren. Hoe kunnen we objecten bewaren?
+
+Mogelijke oplossingen zijn:
+
+\begin{enumerate}
+    \item Info uit objecten als text in File wegschrijven: zie vroeger (File I/O)!
+    \item Objecten bewaren in File = serialiseren van objecten.
+\end{enumerate}
+
+\subsection{Serialiseren in Python: de Pickle library}
+
+The pickle module implements binary protocols for serializing and de-
+serializing a Python object structure. 'Pickling' is the process whereby
+a Python object hierarchy is converted into a byte stream, and
+'unpickling' is the inverse operation, whereby a byte stream (from a
+binary file or bytes-like object) is converted back into an object
+hierarchy. Pickling (and unpickling) is alternatively known as
+'serialization', 'marshalling', [1] or 'flattening'; however, to avoid
+confusion, the terms used here are 'pickling' and 'unpickling'.
+
+\url{https://docs.python.org/3/library/pickle.html}
+
+\subsubsection{Pickling}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{pickling.png}
+    \caption{Pickling}
+\end{figure}
+
+\begin{minted}{python}
+import pickle
+
+dict = {1: 'mct', 2: 'ipo', 3: 'devine', 4: 'dae'}
+print(dict)
+
+my_writer_obj = open('data.txt', mode='wb')
+pickle.dump(dict, my_writer_obj)
+my_writer_obj.close()
+\end{minted}
+
+\subsubsection{Unpickling}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{unpickling.png}
+    \caption{Unpickling}
+\end{figure}
+
+\begin{minted}{python}
+my_writer_obj = open('data.txt', mode='rb')
+dict_howest = pickle.load(my_writer_obj)
+print(dict_howest)
+\end{minted}
+
+Met eigen klasse(s) analoog. Klasse student erft van klasse Persoon.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{unpickling2.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Wat kan pickled en unpickled worden?}
+
+De volgende types kunnen worden gepickled:
+
+\begin{itemize}
+    \item None, True en False
+    \item integers, floating point numbers
+    \item strings, bytes, bytearrays
+    \item tuples, lists, sets, dicionaries met pickable objects
+    \item functies gedefinieerd 'at the top level' van een module (dus geen lambdas)
+    \item ingebouwde functies at top level
+    \item klasses die gedefinieerd zijn at top level
+    \item instanties van zo'n klasses waarvan \_\_dict\_\_() of het resultaat van \_\_getstate\_\_() pickable is
+\end{itemize}
+
+\subsubsection{Pickle: valkuilen}
+
+Wat met klasse-attributen? (zie demo)
+
+\begin{quotation}
+"When a class instance is unpickled, its \_\_init\_\_() method is usually not
+invoked. The default behaviour first creates an uninitialized instance
+and then restores the saved attributes."
+\end{quotation}
+
+\begin{minted}{python}
+import pickle
+
+from data.Persoon import Persoon
+
+my_writer_obj = open("student.txt", mode='rb')
+s1 = pickle.load(my_writer_obj)
+my_writer_obj.close()
+
+# test
+print(s1)
+print("Aantal objecten klasse Persoon: %d" % Persoon.geef_aantal_personen())
+
+# output:
+>> Student COLPAERT, Barbara (2018)
+>> Aantal objecten klasse Persoon: 0
+\end{minted}
+
+\textbf{Oplossing:} overschrijf de methode \_\_getstate\_\_() of \_\_setstate\_\_() in dataklasse:
+
+\begin{itemize}
+    \item \_\_getstate\_\_() = classes can further influence how their instances are pickled 
+    \item \_\_setstate\_\_(state) = upon unpickling, if the class defines \_\_setstate\_\_(), it is called with the unpickled state
+\end{itemize}
+
+\begin{minted}{python}
+def __setstate__(self, state):
+    # restore instance attributes
+    self.__dict__().update(state)
+    Persoon.__aantal_personen += 1
+\end{minted}
+
+\subsection{Library jsonpickle}
+
+\begin{quotation}
+    jsonpickle is a Python library for serialization and deserialization of complex
+Python objects to and from JSON.
+
+\url{https://jsonpickle.github.io/}
+\end{quotation}
+
+Voordelen:
+
+\begin{itemize}
+    \item Snel
+    \item Human readable
+    \item Geen beveiligingsproblemen
+    \item Kan geparsed worden door alle programmeertalen
+\end{itemize}
+
+Pickle is traag, onveilig, en kan alleen in Python geparsed worden. 
+Het enige voordeel van pickle is dat het arbitraire Python objecten kan serialiseren,
+terwijl beide JSON en MessagePack limieten hebben op welke data ze kunnen uitschrijven.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{jsonpickle.png}
+    \caption{Jsonpickle}
+\end{figure}
+
+Pickle vs jsonpickle: \url{https://www.benfrederickson.com/dont-pickle-your-data/}
+
+\subsection{Serialiseren in Python: toegepast in Networking}
+
+\subsubsection{Demo}
+
+(zie demo\_networking.zip)
+
+De demo is herwerkt zodat tussen client en clienthandler(server) objecten van 
+eigen klasse(s) worden heen en weer gestuurd. 
+
+\begin{enumerate}
+    \item List met objecten van de klasse Som wordt langs clientside klaargezet
+    \item Clienthandler ontvangt de list, en berekent 1 voor 1 de sommen
+    \item Dezelfde list wordt naar de client teruggestuurd
+\end{enumerate}
+
+Voor demos met pickle, zie demo 6 \& 7.
+
+Voor demos met jsonpickle, zie demo 8.
 
 \end{document}
