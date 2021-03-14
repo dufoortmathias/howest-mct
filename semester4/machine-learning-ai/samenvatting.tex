@@ -1510,10 +1510,10 @@ Deze formules kunnen we gebruiken om een classifier te evalueren.
 \end{equation}
 
 \begin{itemize}
+    \item = Het aantal juiste positieve voorspellingen op het totaal aantal positieve waarden in werkelijkheid
     \item Wordt vaak in combinatie gebruikt met Precision (PPV)
 \end{itemize}
 
-TODO
 
 \subsection{Positive Predictive Value (PPV)}
 
@@ -1523,6 +1523,10 @@ TODO
     \text{Precision} = \frac{TP}{TP + FP}
 \end{equation}
 
+\begin{itemize}
+    \item = Het aantal juiste positieve voorspellingen op het totaal aantal positieve voorspellingen
+\end{itemize}
+
 \subsection{F1 Score}
 
 \begin{equation}
@@ -1531,6 +1535,7 @@ TODO
 
 \begin{itemize}
     \item Is een harmonisch gewogen gemiddelde van de recall en de precision
+    \item Is de $F_\beta$-score met $\beta = 1$ : $F_{\beta} = \frac{(1+\beta^2)*\text{Precision}*\text{Recall}}{(\beta^2 * \text{Precision}) + \text{Recall}}$
 \end{itemize}
 
 \subsection{Receiver Operating Characteristic (ROC)}
@@ -2184,7 +2189,7 @@ Kans op spam:
 Kans op ham:
 
 \begin{align*}
-    p(ham | text{get free advice}) & = p(ham) \cdot p(get|ham) \cdot p(free|ham) \cdot p(advice | ham)\\
+    p(ham | \text{get free advice}) & = p(ham) \cdot p(get|ham) \cdot p(free|ham) \cdot p(advice | ham)\\
     & = 0.77 \cdot 0.55 \cdot 0.21 \cdot 0.41 = 0.0365
 \end{align*}
 
