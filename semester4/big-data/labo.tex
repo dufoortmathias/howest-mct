@@ -523,11 +523,11 @@ Shards states:
 \subsection{Change number of replicas}
 
 \begin{minted}{json}
-    {
-        "index": {
-            "number_of_replicas": 0
-        }
+{
+    "index": {
+        "number_of_replicas": 0
     }
+}
 \end{minted}
 
 How many shards in total? \textbf{2}
@@ -559,6 +559,42 @@ TODO: meer info
         \item Unique cluster ID
         \item Not easy to create a new cluster
     \end{itemize}
+\end{itemize}
+
+\section{Linux batching + Dask}
+
+\subsection{Python \& data engineering/science}
+
+\begin{itemize}
+    \item Veel tools, libraries (numpy, pandas)
+    \item Jammer genoeg slecht schaalbaar $\Rightarrow$ parallellisatie
+    \item Threads/processes kan, maar complex en niet ideaal
+    \item Wat als he tniet in memory past?
+    \begin{itemize}
+        \item Naar disk?
+        \item Kan, maar complex! Sommige operaties `vereisen' alles in memory
+    \end{itemize}
+\end{itemize}
+
+\subsection{Spark vs Dask}
+\subsubsection{Spark}
+
+\begin{itemize}
+    \item Complex, leercurve!
+    \item Complete `engine', clustering
+    \item Streaming engine
+    \item In Java geschreven: gebruikt de Java Virtual Machine (JVM) $\Rightarrow$ minder toegankelijk
+    \item Standalone
+\end{itemize}
+
+\subsubsection{Dask}
+
+\begin{itemize}
+    \item Eenvoudiger (zeker als je Python kent)
+    \item Lightweight, zelfs op 1 node zinnig
+    \item Flexibeler, maar minder performant
+    \item Integratie met andere libraries
+    \item In zekere zin `de Python versie van Spark'
 \end{itemize}
 
 \end{document}

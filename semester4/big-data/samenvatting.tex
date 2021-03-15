@@ -2126,12 +2126,12 @@ Data processing: 3 styles
 \end{figure}
 
 
-A linux program always has three things:
+A linux program always has three standard streams:
 
 \begin{itemize}
-    \item STDIN (0)
-    \item STDOUT (1)
-    \item STDERR (2)
+    \item Standard input = STDIN (0)
+    \item Standard output = STDOUT (1)
+    \item Standard error = STDERR (2)
 \end{itemize}
 
 \begin{figure}[H]
@@ -2140,6 +2140,10 @@ A linux program always has three things:
 \end{figure}
 
 \subsection{Map/Reduce}
+
+= A programming model for processing big data sets with a parallel, distributed, algorithm on a cluster
+
+\url{https://en.wikipedia.org/wiki/MapReduce}
 
 \subsubsection{Why not everything is possible with Unix tools}
 
@@ -2155,51 +2159,72 @@ A linux program always has three things:
 
 \subsubsection{Hadoop}
 
-TODO: more info about what hadoop is
+Hadoop is a software framework by Apache for distributed storage and processing of big data using the Map/Reduce programming model. 
+Hadoop is made out of modules, each of which carries out a particular task essential for a computer system designed for big data analysis.
 
 \url{https://en.wikipedia.org/wiki/Apache_Hadoop}
 
+\textbf{Modules}
 
-= Combination Map Reduce / HDFS
+\begin{itemize}
+    \item \textbf{Distributed filesystem:} allows data to be stored in an easily accessible format, across many linked storage devices.
+    \item \textbf{MapReduce:} the basic tools for data analysis
+    \item \textbf{Hadoop common:} provides the tools (in Java) needed to read data stored under the Hadoop file system
+    \item \textbf{YARN:} manages resources of the systems storing the data and running the analysis
+\end{itemize}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{hadoop.png}
 \end{figure}
 
+\textbf{Two layers:}
 
 \begin{itemize}
-    \item Map reduce
+    \item MapReduce layer
     \begin{itemize}
-        \item job tracker knows where which task is running
-        \item copy tasks to correct node
+        \item The job tracker is responsible for the distribution of tasks to `task trackers'
+        \item Task trackers = compute nodes
     \end{itemize}
-    \item HDFS
+    \item HDFS layer
     \begin{itemize}
-        \item name node tracks "files on which node"
+        \item Name node tracks "files on which node". It functions as entrance to the file system, which consists of many data nodes.
         \item 3+ replicas (availability)
-        \item "Network attached storage on steroids"
     \end{itemize}
 \end{itemize}
 
 \subsubsection{HDFS}
 
-= Big datablocks (64+ MB) + replication over many nodes, many disks and standard network
+= Big datablocks (64+ MB) + replication over many nodes, many disks and standard network.
+
+= "Network attached storage on steroids"
 
 \begin{itemize}
     \item HDFS consist of a daemon process running on each machine, exposing a network service that allows other nodes to access files stored on that machine
     \item HDFS creates one big filesystem that can use the space on the disk of all machines running the daemon
-    \item TODO
+    \item A central server called the \textbf{NameNode} keeps track of which file blocks are stored on which machine
+    \item The blocks are replicated on multiple machines (for availability and redundancy), similar to RAID.
 \end{itemize}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{hdfs.png}
-    \caption{}
 \end{figure}
 
 \subsubsection{Map reduce}
-TODO: more info about map reduce
+
+Map Reduce is named after the two basic operations this module carries out:
+
+\begin{itemize}
+    \item Map = read data from a DB, put it in a format suitable for analysis
+    \item Reduce = perform mathematical operations
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{map-reduce.jpg}
+    \caption{Map reduce schematic}
+\end{figure}
 
 \begin{enumerate}
     \item Read input files (HDFS input parser)
@@ -2221,24 +2246,20 @@ TODO: more info about map reduce
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{map-reduce.jpg}
-    \caption{Map reduce schematic}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
     \includegraphics[width=0.5\textwidth]{map-reduce-wordcount.png}
     \caption{}
 \end{figure}
 
-\subsection{Spark - Data processing framework}
+Ideally every mapper and reducer work on their own disks.
 
-or Dataflow engine
+\subsection{Spark - Data processing framework or Dataflow engine}
+
+Apache Spark is an analytics engine for large-scale data processing. 
 
 \subsubsection{Why Spark is more powerful than Hadoop}
 
 \begin{itemize}
-    \item Everything with Map \& Reduce: not very flexible
+    \item Doing everything with Map \& Reduce: not very flexible
     \begin{itemize}
         \item Integration with Machine Learning?
     \end{itemize}
@@ -2252,46 +2273,47 @@ or Dataflow engine
         \item Not only Map \& Reduce
         \item No automatic sorting if not necessary
     \end{itemize}
-    \item Uses a DAG (= Directed Acyclic Graph = execution plan, similar to a database query plan)
-    \item Only write to disk if necessary
+    \item Uses a DAG (Directed Acyclic Graph) = execution plan, similar to a database query plan
+    \item Only writes to disk if necessary
 \end{itemize}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.25\textwidth]{spark.png}
-    \caption{}
+    \includegraphics[width=0.4\textwidth]{spark.png}
+    \caption{Example of a Spark job}
 \end{figure}
 
 \begin{itemize}
-    \item Similar to "query planner" from RDBMS
-    \item Only two stages
+    \item A job is associated with a chain of Resilient Distributed Dataset (RDD) dependencies organized in a DAG
+    \item Similar to `query planner' from RDBMS
+    \item This job performs a simple word count: 
     \begin{itemize}
-        \item 1 shuffle (= merging over different nodes)
+        \item First, it performs a textFile operation to read an input file in HDFS
+        \item Then a flatMap operation to split each line into words
+        \item Then a map operation to form key value pairs \{word: amount of occurences\}
+        \item Finally a reduceByKey operation to sum the counts for each word
     \end{itemize}
-    Only 1 write to disk, everything in memory
+    \item The blue boxes = the spark operation that the user calls in their code
+    \item The dots in the boxes = RDDs created in the operations. The operations are group by the stage they are run in.
+    \item This visualisation shows 2 interesting things:
+    \begin{enumerate}
+        \item It reveals the Spark optimization of pipelineing operations that are not seperated by shuffles. After reading from HDFS, each executor directly applies the flatMap and map functions to the partition in the same task, removing the need to trigger another stage
+        \item One of the RDDs is cached in the first stage (green dot) $\Rightarrow$ future computations on this RDD can access at least a subset of the original file from memory instead of from HDFS
+    \end{enumerate}
 \end{itemize}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{spark2.png}
-    \caption{Hadoop (Map Reduce) vs Spark Framework}
-\end{figure}
-
-\subsubsection{Complete framework}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.45\textwidth]{spark-completeframework.png}
-    \includegraphics[width=0.45\textwidth]{spark-completeframework2.png}
-    \caption{A complete framework that uses Spark}
+    \caption{Hadoop (Map Reduce) vs Spark Framework: Only 1 write to disk, everything in memory}
 \end{figure}
 
 \subsubsection{RDD or Resiliant Distributed Dataset}
 
 \begin{itemize}
-    \item RDD is a read-only, partitioned collection of records
+    \item RDD is a read-only, collection of records partitioned across the nodes of the cluster
     \item Fixed number of partitions
-    \item It can be operated on in parallel
+    \item They can be operated on in parallel
     \item firstRDD = sc.textfile("file.txt")
     \begin{itemize}
         \item sc = spark context
@@ -2301,39 +2323,25 @@ or Dataflow engine
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{rdd2.png}
-    \caption{}
+    \includegraphics[width=0.6\textwidth]{rdd2.png}
+    \caption{We divide the RDD into partitions, which are in turn also divided into memory partitions}
 \end{figure}
 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{rdd.png}
+    \includegraphics[width=0.4\textwidth]{rdd.png}
     \caption{Large textfile example}
 \end{figure}
-
-
-TODO
-
-Source:
-
-\begin{itemize}
-    \item Linux filesystem - file
-    \item HDFS
-    \item Cassandra / Hbase / ElasticSearch
-    \item MySQL
-    \item S3
-\end{itemize}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{spark-rdd.png}
-    \caption{}
+    \caption{The RDDs are partitioned over multiple nodes (servers)}
 \end{figure}
 
 \begin{itemize}
-    \item RDD is the dataset: but partitioned in RAM ("mapped")
-    \item It is the fundamental data structure of Spark
+    \item RDD is the fundamental data structure of Spark
     \item Allows a programmer to perform in-memory calculations on large clusters in a fault-tolerant manner
     \item $\Rightarrow$ speeds up the task
     \item Spark Dataframe APIs:
@@ -2344,12 +2352,20 @@ Source:
     \end{itemize}
 \end{itemize}
 
+\subsubsection{Complete Spark framework}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{spark-completeframework.png}
+    \includegraphics[width=0.45\textwidth]{spark-completeframework2.png}
+    \caption{A complete framework that uses Spark}
+\end{figure}
+
 \subsubsection{Realtime in-memory processing with Spark}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{spark-realtime-inmemory-processing.png}
-    \caption{}
 \end{figure}
 
 \begin{itemize}
@@ -2358,7 +2374,7 @@ Source:
         \item Local or cluster
         \item Starts with a session
     \end{itemize}
-    \item Executor process tasks (+ in memory storage/cache)
+    \item Every executor processes tasks (+ in memory storage/cache)
     \begin{itemize}
         \item 2-3 tasks per CPU
     \end{itemize}
@@ -2366,22 +2382,40 @@ Source:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{rdd-schematic.png}
-    \caption{}
+    \includegraphics[width=0.7\textwidth]{rdd-schematic.png}
 \end{figure}
+
+\begin{itemize}
+    \item RDDs are divided into memory partitions
+    \item You run transformations on these RDDs (happens in-memory)
+    \begin{itemize}
+        \item Repartition (when you add a server and you want to repartition the data so it is also partitioned on the new server)
+        \item Map: key values
+        \item Filter
+        \item Sort by key
+        \item Group by key
+    \end{itemize}
+    \item Only when you run an action (reduce, count, save as textfile, \dots), you will write to disk
+    \item Result: text file or new RDD
+\end{itemize}
 
 \subsubsection{Jobs}
 
-= RDD with action
+= RDD + action
 
 \begin{itemize}
     \item Stages = parts of the execution plan of the job
     \item Contains a sequence of transformations that can be completed without shuffling the data
-    \item Get data (stage 1)
-    \item Group by (stage 2)
-    \item Map \& union (stage 3)
-    \item Join everything (stage 4)
-    \item Stage = set of parallel tasks
+    \item \begin{itemize}
+        \item Get data (stage 1)
+        \item Group by (stage 2)
+        \item Map \& union (stage 3)
+        \item Join everything (stage 4)
+    \end{itemize}
+    \item Every stage = set of parallel tasks
+    \begin{itemize}
+        \item Same code - different subset of data
+    \end{itemize}
 \end{itemize}
 
 \begin{figure}[H]
@@ -2389,13 +2423,27 @@ Source:
     \includegraphics[width=0.5\textwidth]{spark-jobs.png}
 \end{figure}
 
-\textbf{One job: multiple tasks}
+\textbf{One job, multiple tasks:} For example: ounting words in a file:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{spark-jobs2.png}
-    \caption{}
+    \includegraphics[width=0.6\textwidth]{spark-jobs3.png}
+    \caption{Overview of multiple jobs}
 \end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{spark-jobs2.png}
+    \caption{Details of one job: multiple maps per job}
+\end{figure}
+
+
+\begin{itemize}
+    \item This job runs word count on 3 files and joins the results at the end
+    \item From the timeline, it's clear that the 3 word count stages run in parallel (because they do not depend on each other)
+    \item However: the join at the end does depend on the results from the 3 stages
+    \item Consequence: the collect stage at the end does not begin until all previous stages have finished.
+\end{itemize}
 
 \subsection{Conclusion}
 
@@ -2409,7 +2457,17 @@ Source:
 
 \subsection{The problem}
 
-TODO
+Say you need to create an application for a windmill park
+
+\begin{itemize}
+    \item What if you need to detect the situation: `In the last minutes the temperature is rising while the power is dropping'
+    \item Not very suitable for batch processing
+    \item If you would use a database instead:
+    \begin{itemize}
+        \item Would need to poll a lot: overhead!
+        \item Processing raw data is a lot slower than just ingesting
+    \end{itemize}
+\end{itemize}
 
 \subsection{Batch vs Stream}
 
@@ -2429,10 +2487,10 @@ TODO
     \item Never stop processing
     \begin{itemize}
         \item Process sliding window (for example: 1 hour)
-        \item Trend analysis
+        \item This allows you to do trend analysis very efficiently
     \end{itemize}
     \item Detect trends quickly (sharp decline, \dots) near realtime
-    \item Example: Sensor data trends analysis
+    \item Example: Windmill Sensor data trend analysis
 \end{itemize}
 
 \subsection{IoT use case}
