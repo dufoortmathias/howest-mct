@@ -2047,5 +2047,475 @@ What does ElasticSearch do with network partitioning problems?
     \caption{Simplified overview data store choices}
 \end{figure}
 
+\section{Data driven programming: Batch Processing}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{data-driven-programming.png}
+\end{figure}
+
+\begin{itemize}
+    \item In data driven programming, one of the steps is to download data
+    \item To use the data, it needs to be processed first
+\end{itemize}
+
+\subsection{Data processing}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{data-pipeline.png}
+    \caption{The data pipeline (can also be a chain of simple unix commands)}
+\end{figure}
+
+Data processing: 3 styles
+
+\subsubsection{Request - Response}
+
+\begin{itemize}
+    \item HTTP/REST API
+    \item SQL - Relational DB
+    \item Result: \textbf{online} "life data"
+    \item Response time: milliseconds - seconds
+\end{itemize}
+
+\subsubsection{Batch Processing}
+
+\begin{itemize}
+    \item Unix tools - Map/Reduce - OLAP ETL Processing
+    \item \textbf{Offline} - Throughput, high latency - Full scan reporting
+    \item Result: "derived" data
+    \item Response time: minutes - days
+\end{itemize}
+
+\subsubsection{Stream Processing}
+
+\begin{itemize}
+    \item Processing events - Twitter, Kafka
+    \item \textbf{Near Real Time}: low latency, sliding window \& continuous results
+\end{itemize}
+
+\subsection{Batch Processing}
+
+\subsubsection{Basic principles}
+
+\begin{itemize}
+    \item Dataset is limited in length, size, time, \dots. For example:
+    \begin{itemize}
+        \item One big log of all web activity of the last month
+        \item One log of all system activity the last day
+    \end{itemize}
+    \item Datasets are immutable: not changed by processing
+    \begin{itemize}
+        \item Original file/log does not get changed
+        \item Result of batch processing: new dataset
+        \item New dataset with new calculations (group by)
+    \end{itemize}
+    \item Reason: processing can always start again if you make a mistake
+\end{itemize}
+
+\subsubsection{Unix style}
+
+\begin{itemize}
+    \item Piping: |
+    \item Redirection: \& or >
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{linux-std.png}
+\end{figure}
+
+
+A linux program always has three things:
+
+\begin{itemize}
+    \item STDIN (0)
+    \item STDOUT (1)
+    \item STDERR (2)
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{linux-std2.png}
+\end{figure}
+
+\subsection{Map/Reduce}
+
+\subsubsection{Why not everything is possible with Unix tools}
+
+\begin{itemize}
+    \item What if the data does not fit on one (logical) drive?
+    \item Do you even want all data on one (logical) drive? (Throughput/latency/\dots)
+    \item For both storage and processing:
+    \begin{itemize}
+        \item Scale out: more processor cores, \dots
+        \item Possible with cheap(er) hardware
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Hadoop}
+
+TODO: more info about what hadoop is
+
+\url{https://en.wikipedia.org/wiki/Apache_Hadoop}
+
+
+= Combination Map Reduce / HDFS
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{hadoop.png}
+\end{figure}
+
+
+\begin{itemize}
+    \item Map reduce
+    \begin{itemize}
+        \item job tracker knows where which task is running
+        \item copy tasks to correct node
+    \end{itemize}
+    \item HDFS
+    \begin{itemize}
+        \item name node tracks "files on which node"
+        \item 3+ replicas (availability)
+        \item "Network attached storage on steroids"
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{HDFS}
+
+= Big datablocks (64+ MB) + replication over many nodes, many disks and standard network
+
+\begin{itemize}
+    \item HDFS consist of a daemon process running on each machine, exposing a network service that allows other nodes to access files stored on that machine
+    \item HDFS creates one big filesystem that can use the space on the disk of all machines running the daemon
+    \item TODO
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{hdfs.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Map reduce}
+TODO: more info about map reduce
+
+\begin{enumerate}
+    \item Read input files (HDFS input parser)
+    \item Map fase
+    \begin{enumerate}
+        \item Get a key and value log from your total log
+        \item Sort and send per key
+    \end{enumerate}
+    \item Reduce fase
+    \begin{itemize}
+        \item Merge all equal keys (key2 - value1, key2 - value2)
+        \item Process over all equal keys (already sorted)
+        \begin{itemize}
+            \item Only one record per key
+            \item Ex: count how may (uniq -c)
+        \end{itemize}
+    \end{itemize}
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{map-reduce.jpg}
+    \caption{Map reduce schematic}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{map-reduce-wordcount.png}
+    \caption{}
+\end{figure}
+
+\subsection{Spark - Data processing framework}
+
+or Dataflow engine
+
+\subsubsection{Why Spark is more powerful than Hadoop}
+
+\begin{itemize}
+    \item Everything with Map \& Reduce: not very flexible
+    \begin{itemize}
+        \item Integration with Machine Learning?
+    \end{itemize}
+    \item Next step can only start if \textbf{all previous tasks} are finished. 
+    \begin{itemize}
+        \item Previous task creates an 'intermediate' file
+    \end{itemize}
+    \item Good throughput (TBs of data), but long response time (minutes, hours) before you get a result because of constant disk activity
+    \item Allows flexibility with "operators"
+    \begin{itemize}
+        \item Not only Map \& Reduce
+        \item No automatic sorting if not necessary
+    \end{itemize}
+    \item Uses a DAG (= Directed Acyclic Graph = execution plan, similar to a database query plan)
+    \item Only write to disk if necessary
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.25\textwidth]{spark.png}
+    \caption{}
+\end{figure}
+
+\begin{itemize}
+    \item Similar to "query planner" from RDBMS
+    \item Only two stages
+    \begin{itemize}
+        \item 1 shuffle (= merging over different nodes)
+    \end{itemize}
+    Only 1 write to disk, everything in memory
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{spark2.png}
+    \caption{Hadoop (Map Reduce) vs Spark Framework}
+\end{figure}
+
+\subsubsection{Complete framework}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{spark-completeframework.png}
+    \includegraphics[width=0.45\textwidth]{spark-completeframework2.png}
+    \caption{A complete framework that uses Spark}
+\end{figure}
+
+\subsubsection{RDD or Resiliant Distributed Dataset}
+
+\begin{itemize}
+    \item RDD is a read-only, partitioned collection of records
+    \item Fixed number of partitions
+    \item It can be operated on in parallel
+    \item firstRDD = sc.textfile("file.txt")
+    \begin{itemize}
+        \item sc = spark context
+        \item .textfile = method
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{rdd2.png}
+    \caption{}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{rdd.png}
+    \caption{Large textfile example}
+\end{figure}
+
+
+TODO
+
+Source:
+
+\begin{itemize}
+    \item Linux filesystem - file
+    \item HDFS
+    \item Cassandra / Hbase / ElasticSearch
+    \item MySQL
+    \item S3
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{spark-rdd.png}
+    \caption{}
+\end{figure}
+
+\begin{itemize}
+    \item RDD is the dataset: but partitioned in RAM ("mapped")
+    \item It is the fundamental data structure of Spark
+    \item Allows a programmer to perform in-memory calculations on large clusters in a fault-tolerant manner
+    \item $\Rightarrow$ speeds up the task
+    \item Spark Dataframe APIs:
+    \begin{itemize}
+        \item Unlike an RDD, data is organized into named columns
+        \item Immutable distributed collection of data
+        \item Allows developers to impose a structure onto a distributed collection of data, allowing higher-level abstraction
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Realtime in-memory processing with Spark}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{spark-realtime-inmemory-processing.png}
+    \caption{}
+\end{figure}
+
+\begin{itemize}
+    \item SparkContext = programmable object
+    \begin{itemize}
+        \item Local or cluster
+        \item Starts with a session
+    \end{itemize}
+    \item Executor process tasks (+ in memory storage/cache)
+    \begin{itemize}
+        \item 2-3 tasks per CPU
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{rdd-schematic.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Jobs}
+
+= RDD with action
+
+\begin{itemize}
+    \item Stages = parts of the execution plan of the job
+    \item Contains a sequence of transformations that can be completed without shuffling the data
+    \item Get data (stage 1)
+    \item Group by (stage 2)
+    \item Map \& union (stage 3)
+    \item Join everything (stage 4)
+    \item Stage = set of parallel tasks
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{spark-jobs.png}
+\end{figure}
+
+\textbf{One job: multiple tasks}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{spark-jobs2.png}
+    \caption{}
+\end{figure}
+
+\subsection{Conclusion}
+
+\begin{itemize}
+    \item Batchprocessing = producing derived data in several steps without changing the source
+    \item Unix pipeline can be very powerful - more than typical sort-transform in programming languages
+    \item Use spark for multi-node batch processing
+\end{itemize}
+
+\section{Data driven programming: Stream Processing}
+
+\subsection{The problem}
+
+TODO
+
+\subsection{Batch vs Stream}
+
+\subsubsection{Batch}
+
+\begin{itemize}
+    \item Collect chunk/batch (one day) of data
+    \item Process until all data is processed
+    \item Work with averages, percentiles, \dots over longer time
+    \item Example: ETL process from OLTP data to Data cube
+\end{itemize}
+
+\subsubsection{Stream}
+
+\begin{itemize}
+    \item Little chunks (events) are fed continuously to the "stream processor" (=software)
+    \item Never stop processing
+    \begin{itemize}
+        \item Process sliding window (for example: 1 hour)
+        \item Trend analysis
+    \end{itemize}
+    \item Detect trends quickly (sharp decline, \dots) near realtime
+    \item Example: Sensor data trends analysis
+\end{itemize}
+
+\subsection{IoT use case}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{streamprocessing-iot-usecase.png}
+\end{figure}
+
+\begin{itemize}
+    \item Preprocessing of (time series) sensor data takes longer than sending the sensor data
+    \item Connect mroe than 1 processing app
+    \item IoT device - MQTT - Webservice problem situations:
+    \begin{itemize}
+        \item What if too many IoT devices connect and send data?
+        \item What if a service fails?
+    \end{itemize}
+\end{itemize}
+
+\subsection{Summary: What needs to be solved?}
+
+\begin{itemize}
+    \item Many producers of data (windmills): can consumer/processing keep up?
+    \begin{itemize}
+        \item Need for load balancing, tracking orders, \dots
+    \end{itemize}
+    \item Many consumers:
+    \begin{itemize}
+        \item Polling at low delay = overhead - rather have "notifications" (push instead of pull)
+        \item How to make sure you do not need to change the API all the time
+        \item How to keep the number of interfaces low? (Errors!)
+    \end{itemize}
+    \item Syncing between producers and consumers
+    \begin{itemize}
+        \item Crashed - heartbeat
+        \item Error handling
+        \item "Flow control"
+    \end{itemize}
+\end{itemize}
+
+\subsection{Publish/Subscribe model}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{publish-subscribe-model.png}
+\end{figure}
+
+
+\begin{itemize}
+    \item Producer = sends `events' or `messages'
+    \item Topic = consumer is subscribed at this queue and gets notified
+    \item Load balancing and/or fan-out
+\end{itemize}
+
+\subsubsection{Classic reason for a message queue}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{msg-queue-spaghetti.png}
+    \caption{Avoid `spaghetti services architecture'}
+\end{figure}
+
+\subsubsection{Database vs Msg queue}
+
+Database:
+
+\begin{itemize}
+    \item Stores data
+    \item Keeps data until it is deleted
+    \item Fast Random Search by index
+    \item Only if a trigger is programmed, app is notified
+\end{itemize}
+
+Msg queue:
+
+\begin{itemize}
+    \item Stores data
+    \item Deletes data after some time
+    \item Consume in order
+    \item All subscriber consumers get notified
+\end{itemize}
+
+TODO: watch video about kafka (before next theory lesson)
+
 
 \end{document}
