@@ -3721,4 +3721,461 @@ Voor demos met pickle, zie demo 6 \& 7.
 
 Voor demos met jsonpickle, zie demo 8.
 
+\section{Matrices}
+
+\subsection{Wat is matrix?}
+
+\begin{itemize}
+    \item Een tweedimensionele array van getallen
+    \item Bestaat uit rijen en kolommen
+    \item 4 rijen bij 3 kolommen: 4 bij 3 matrix
+\end{itemize}
+
+$\begin{bmatrix}
+    3 & 5 & 0\\
+    -2 & 0 & 7\\
+    4 & 4 & 4\\
+    -3 & 1 & 1\\
+\end{bmatrix}$
+
+Een matrix is een rechthoekig getallenschema, getallen geordend in rijen en kolommen
+
+$\begin{bmatrix}
+1 & -3 & 4\\
+-5 & 0 & 2
+\end{bmatrix}$ met $A \in \mathbb{R}^{2x3}$ = matrix met 2 rijen, 3 kolommen
+
+$\begin{bmatrix}
+1 & -3\\
+0 & 4\\
+5 & -1\\
+4 & 0\\
+\end{bmatrix}$ met $b \in \mathbb{R}^{4X2}$ = matrix met 4 rijen, 2 kolommen
+
+$\begin{bmatrix}
+6 & -3\\
+-2 & 8
+\end{bmatrix}$ met $C \in \mathbb{R}^{2x2}$ = matrix met 2 rijen, 2 kolommen
+
+\subsubsection{Voorstellen van een matrix}
+
+Door middel van subscriptnotatie: $a_{ij} =$ element op de $i^\text{de}$ rij, $j^\text{de}$
+
+$A = \begin{bmatrix}
+a_{11} & a_{12} & a_{13} & \dots & a_{1n}\\
+a_{21} & a_{22} & a_{23} & \dots & a_{2n}\\
+a_{31} & a_{32} & a_{33} & \dots & a_{3n}\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+a_{m1} & a_{m2} & a_{m3} & \dots & a_{mn}
+\end{bmatrix} \in \mathbb{R}^{mxn}$
+
+\subsubsection{Soorten matrices}
+
+\textbf{Vierkante matrix:} $m = n$
+
+$A = \begin{bmatrix}
+6 & \sqrt{2}\\
+-1 & \frac13
+\end{bmatrix}$
+
+\textbf{Rijmatrix:} $m = 1$
+
+$B = \begin{bmatrix}
+1 & -1 & -3 & 8 & -6 & 7
+\end{bmatrix}$
+
+
+\textbf{Kolommatrix:} $n = 1$
+
+$C = \begin{bmatrix}
+x\\
+y\\
+z
+\end{bmatrix}$
+
+\textbf{Nulmatrix:} alle $a_{ij} = 0$ 
+
+$O_{2x3} = \begin{bmatrix}
+0 & 0 & 0\\
+0 & 0 & 0
+\end{bmatrix}$
+
+Hoofddiagonaal van een matrix = $a_{11}, a_{22}, a_{33}, \dots, a_{nn}$
+
+\textbf{Eenheidsmatrix I:} vierkante matrix met overal 0, behalve 1 op de hoofddiagonaal:
+
+$I_3 = \begin{bmatrix}
+1 & 0 & 0\\
+0 & 1 & 0\\
+0 & 0 & 1
+\end{bmatrix}$
+
+\subsubsection{Gelijke matrices}
+
+Twee matrices zijn gelijk als:
+
+\begin{itemize}
+    \item ze dezelfde afmetingen hebben
+    \item de corresponderende elemten gelijk zijn
+\end{itemize}
+
+
+\subsection{Som \& verschil}
+
+\begin{itemize}
+    \item Als je twee matrices wil optellen/aftrekken, moeten de matrices dezelfde dimensie hebben:
+    \item $A \in \mathbb{R}^{mxn}, B \in \mathbb{R}^{mxn}$
+\end{itemize}
+
+\begin{align*}
+    A \pm B & = 
+\begin{bmatrix}
+    a_{11} & a_{12} & a_{13} & \dots & a_{1n}\\
+    a_{21} & a_{22} & a_{23} & \dots & a_{2n}\\
+    a_{31} & a_{32} & a_{33} & \dots & a_{3n}\\
+    \vdots & \vdots & \vdots & \ddots & \vdots\\
+    a_{m1} & a_{m2} & a_{m3} & \dots & a_{mn}
+\end{bmatrix} \pm 
+\begin{bmatrix}
+    b_{11} & b_{12} & b_{13} & \dots & b_{1n}\\
+    b_{21} & b_{22} & b_{23} & \dots & b_{2n}\\
+    b_{31} & b_{32} & b_{33} & \dots & b_{3n}\\
+    \vdots & \vdots & \vdots & \ddots & \vdots\\
+    b_{m1} & b_{m2} & b_{m3} & \dots & b_{mn}
+\end{bmatrix} \\
+& = \begin{bmatrix}
+    a_{11}+b_{11} & a_{12}+b_{12} & a_{13}b_{13} & \dots & a_{1n}b_{1n}\\
+    a_{21}b_{21} & a_{22}b_{22} & a_{23}b_{23} & \dots & a_{2n}b_{2n}\\
+    a_{31}b_{31} & a_{32}b_{32} & a_{33}b_{33} & \dots & a_{3n}b_{3n}\\
+    \vdots & \vdots & \vdots & \ddots & \vdots\\
+    a_{m1}b_{m1} & a_{m2}b_{m2} & a_{m3}b_{m3} & \dots & a_{mn}b_{mn}
+\end{bmatrix}\\
+A \pm B & \in \mathbb{R}^{mxn}
+\end{align*}
+
+\subsubsection{Voorbeelden}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{matrix-somverschil-voorbeelden.png}
+\end{figure}
+
+\subsection{Scalair veelvoud}
+
+We vermenigvuldigen elk element in de matrix met een scalair $\lambda$
+
+\begin{align*}
+\lambda \cdot A & = \lambda \cdot 
+\begin{bmatrix}
+    a_{11} & a_{12} & \dots & a_{1n}\\
+    a_{21} & a_{22} & \dots & a_{2n}\\
+    \vdots & \vdots & \ddots & \vdots\\
+    a_{m1} & a_{m2} & \dots & a_{mn}
+\end{bmatrix} =
+\begin{bmatrix}
+    \lambda\cdot a_{11} & \lambda\cdot a_{12} & \dots & \lambda\cdot a_{1n}\\
+    \lambda\cdot a_{21} & \lambda\cdot a_{22} & \dots & \lambda\cdot a_{2n}\\
+    \vdots & \vdots & \ddots & \vdots\\
+    \lambda\cdot a_{m1} & \lambda\cdot a_{m2} & \dots & \lambda\cdot a_{mn}
+\end{bmatrix}
+\lambda \cdot A & \in \mathbb{R}^{mxn}
+\end{align*}
+
+\subsubsection{Voorbeeld}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{matrix-scalair-voorbeeld.png}
+\end{figure}
+
+
+\subsection{Eigenschappen matrix operaties}
+
+$A, B, C \in \mathbb{R}^{mxn}, \lambda \in \mathbb{R}$
+
+\subsubsection{Commutativiteit}
+
+$A + B = B + A$
+
+\subsubsection{Associativiteit}
+
+$A + (B + C) = (A + B) + C = A + B + C$
+
+\subsubsection{Neutraal element = $O_{mxn}$}
+
+$A + O_{mxn} = A = O_{mxn} + A$
+
+\subsubsection{Eigenschappen met scalaire veelvoud}
+
+$\lambda(A + B) = \lambda A + \lambda B$
+
+$(\lambda + \mu)A = \lambda A + \mu A$
+
+$(\lambda \mu)A = \lambda(\mu A)$
+
+$A (\mu B) = \mu (AB)$
+
+\subsection{Getransponeerde matrix}
+
+Een getransponeerde matrix $A^T$ is een matrix waarbij we rijen en kolommen matrix verwisselen
+
+$A \in \mathbb{R}^{mxn}$
+
+$A = \begin{bmatrix}
+    a_{11} & a_{12} & \dots & a_{1n}\\
+    a_{21} & a_{22} & \dots & a_{2n}\\
+    \vdots & \vdots & \ddots & \vdots\\
+    a_{m1} & a_{m2} & \dots & a_{mn}
+\end{bmatrix}$
+
+$A^T = \begin{bmatrix}
+    a_{11} & a_{22} & \dots & a_{m1}\\
+    a_{12} & a_{22} & \dots & a_{m2}\\
+    \vdots & \vdots & \ddots & \vdots\\
+    a_{1n} & a_{2n} & \dots & a_{mn}
+\end{bmatrix}$
+
+$A^T \in \mathbb{R}^{\textcolor{red}{nxm}}$
+
+\subsubsection{Voorbeelden}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{matrix-getransponeerd-voorbeelden.png}
+\end{figure}
+
+
+\subsubsection{Eigenschappen}
+
+$(AT)^T = A$
+
+$(A + B)^T = A^T + B^T$
+
+$(AB)^T = B^T A^T$
+
+\subsection{Vermenigvuldigen van matrices}
+
+Gegeven matrix $A$ en matrix $B$ waarbij $A \in \mathbb{R}^{r\cdot c}$ en $B \in \mathbb{R}^{s \cdot d}$
+
+$A$ en $B$ kunnen vermenigdvuldigd worden als:
+
+\begin{itemize}
+    \item het aantal kolommen van A moet gelijk zijn aan het aantal rijen van B
+\end{itemize}
+
+De dimensie van de resulterende matrix is:
+
+\begin{itemize}
+    \item (het aantal rijen van A) x (het aantal rijen van B)
+\end{itemize}
+
+\subsubsection{Wiskundig}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{matrix-vermenigvuldigen.png}
+    \caption{}
+\end{figure}
+
+
+\subsubsection{Voorbeeld}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{matrix-vermenigvuldigen-voorbeeld.png}
+\end{figure}
+
+
+\subsubsection{Eigenschappen}
+
+\begin{itemize}
+    \item Geen commutativiteit: $A \cdot B \neq B \cdot A$
+    \item Nuldelers: $x$ heet een nuldeler als $x \neq 0$ en er bestaat $y$ zodat $xy = 0 of yx = 0$
+\end{itemize}
+
+\textbf{Voorbeeld nuldeler:}
+
+$\begin{bmatrix}
+1 & 1\\
+2 & 2
+\end{bmatrix}$ is een nuldeler omdat: 
+
+$\begin{bmatrix}
+    1 & 1\\
+    2 & 2
+\end{bmatrix} \cdot 
+\begin{bmatrix}
+    1 & 1\\
+    -1 & -1
+\end{bmatrix} = 
+\begin{bmatrix}
+    1 & 1\\
+    -1 & -1
+\end{bmatrix}
+ \cdot 
+\begin{bmatrix}
+    1 & 1\\
+    2 & 2
+\end{bmatrix} =
+\begin{bmatrix}
+    0 & 0\\
+    0 & 0
+\end{bmatrix}$
+
+\begin{itemize}
+    \item Macht van een matrix:
+    \begin{itemize}
+        \item Voorbeeld: $A^3 = A \cdot A \cdot A$
+        \item Enkel mogelijk bij vierkante matrices
+    \end{itemize}
+    \item Transponeren: $(A\cdot B)^T = B^T \cdot A^T$
+    \item Eenheidsmatrix $I_n$ is neutraal element: $A \cdot I_n = I_n \cdot A = A$
+\end{itemize}
+
+Extra toelichting: \url{https://www.youtube.com/watch?v=HmngGKVzdic}
+
+\subsection{Determinant van een matrix}
+
+= een speciaal getal dat kan worden berekend uit de elementen van een matrix
+
+\subsubsection{Notatie}
+
+De determinant van een \textbf{vierkante matrix} wordt aangeduid met:
+
+$det(A)$ of $|A|$
+
+\subsubsection{Toepassingen:}
+
+\begin{itemize}
+    \item Oplossen van lineaire stelsels
+    \item Testen van inverteerbaarheid van een matrix
+\end{itemize}
+
+\subsubsection{Berekenen van de determinant}
+
+\begin{itemize}
+    \item Bij $1x1$-matrix: het getal in de matrix = de determinant
+    \item Bij $2x2$-matrix: 
+\end{itemize}
+
+$\text{det}(A) = \begin{bmatrix}
+a_{11} & a_{12}\\
+a_{21} & a_{22}
+\end{bmatrix} = a_{11} \cdot a_{22} - a_{21}\cdot a_{12}$
+
+\begin{itemize}
+    \item Bij een $3x3$-matrix:
+\end{itemize}
+
+$\text{det}(A) = \begin{bmatrix}
+a_{11} & a_{12} & a_{13}\\
+a_{21} & a_{22} & a_{23}\\
+a_{31} & a_{32} & a_{33}
+\end{bmatrix} = a_{11} \cdot 
+\begin{bmatrix}
+a_{22} & a{23}\\
+a_{32} & a{33}
+\end{bmatrix} - a_{12} \cdot 
+\begin{bmatrix}
+a_{21} & a{23}\\
+a_{31} & a{33}
+\end{bmatrix} \textcolor{red}{+}  a_{13} \cdot 
+\begin{bmatrix}
+a_{21} & a{22}\\
+a_{31} & a{32}
+\end{bmatrix}
+$
+
+\subsubsection{Berekenen van de determinant: 2de methode (makkelijker)}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{3x3-matrix-determinant.png}
+\end{figure}
+
+
+\subsection{Inverse matrix}
+
+\subsubsection{Notatie}
+
+\begin{itemize}
+    \item Voor een getal: In $\mathbb{R}: ab = 1 \Leftrightarrow b = \frac{1}{a} = a^{-1}$
+    \item Voor een matrix: In $\mathbb{R}^{nxn}: AB = I_n \Leftrightarrow B  = A^{-1}$
+\end{itemize}
+
+Als er zo'n inverse bestaat zodat $AB = I_n = BA$ dan noemen we B de inverse matrix van A
+
+\subsubsection{Voorwaarden voor het bestaan van een inverse matrix}
+
+\begin{itemize}
+    \item Matrix is vierkant
+    \item De determinant is verschillend van $0$
+    \begin{itemize}
+        \item $det(A) \neq 0$ dan is $A$ \textbf{regulier} en $A^{-1}$ bestaat
+        \item $det(A) = 0$ dan is $A$ \textbf{singulier} en $A^{-1}$ bestaat niet
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Berekenen van inverse matrix}
+
+Door middel van \textbf{rij-operaties}: 
+
+\begin{enumerate}
+    \item We voegen de matrix $A$ samen met de eenheidsmatrix $I_n$. Dan bekomen we $: (A | I_n)$
+    \item Via rij-operaties op de samengevoegde matrix reduceren we de matrix tot we aan de linkerkant de eenheidsmatrix bekomen
+    \item Aan de rechterkant bekomen we de inverse matrix $A^{-1}$
+\end{enumerate}
+
+$(A | I_n)$ ------------ > rij-operaties > ------------ > $(I_n | A^{-1})$
+
+Toegelaten rij-operaties:
+
+\begin{itemize}
+    \item Rijen wisselen
+    \item Rij vermenigvuldigen met een getal
+    \item Rijen optellen
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{inverse-matrix-berekenen.png}
+    \caption{Rij-operaties}
+\end{figure}
+
+\subsubsection{Snelle methode voor inverse matrix van 2x2 matrix}
+
+Algemene formule 2x2 matrix
+
+$\begin{bmatrix}
+a & b\\
+c & d
+\end{bmatrix}^{-1} = \frac{1}{a\cdot d - b\cdot c}\cdot 
+\begin{bmatrix}
+d & -b\\
+-c & a
+\end{bmatrix}$
+
+\subsubsection{Eigenschappen inverse matrix}
+
+$(A\cdot B)^{-1} = B^{-1}\cdot A^{-1}$
+
+
+
+\subsection{Toepassingen}
+
+\subsubsection{Oplossen van stelsels}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{matrix-oplossen.png}
+\end{figure}
+
+\begin{align*}
+    A^{-1} \cdot A \cdot X & = A^{-1}\cdot T\\
+    I\cdot X & = A^{-1} \cdot T\\
+    X & = A^{-1}\cdot T
+\end{align*}
+
+
+
 \end{document}
