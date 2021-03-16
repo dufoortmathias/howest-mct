@@ -122,7 +122,7 @@ It handles\dots:
 \subsection{GNU Operating System}
 
 \begin{theorem}[GNU]
-GNU = GNU's Not Unix (recursive algorithm)
+GNU = GNU's Not Unix (recursive acronym)
 
 Founded by Richard Stallman (ex-MIT, founder of the Free Software Foundation), 1984
 
@@ -292,7 +292,10 @@ Our setup:
     \caption{Our setup}
 \end{figure}
 
-\subsection{MBR <> GPT}
+\subsection{Partitioning schemes}
+
+= a set of rules describing how a disk should be partitioned.
+A disk partitioning scheme is chosen by desired flexibility, speed, security, and necessary disk space.
 
 \subsubsection{MBR}
 
@@ -311,13 +314,15 @@ It contains:
 
 \end{theorem}
 
-Limitations:
+\textbf{Limitations:}
 
 \begin{itemize}
     \item Maximum disks of 2TB
-    \item 32-bit for number of logical sectors
-    \item Common sector size: 512 bytes
-    \item $2^{32} \cdot 512\ \text{bytes} = 4294967296 \cdot 512\ \text{bytes} \approx 2\text{TB}$
+    \begin{itemize}
+        \item 32-bit for number of logical sectors
+        \item Common sector size: 512 bytes
+        \item $2^{32} \cdot 512\ \text{bytes} = 4294967296 \cdot 512\ \text{bytes} \approx 2\text{TB}$
+    \end{itemize}
     \item Maximum amount of primary partitions = 4
 \end{itemize}
 
@@ -628,7 +633,6 @@ Install multiple pacakges in one command: apt install vim sudo tcpdump ntp
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth]{linux-filestructure.png}
-    \caption{}
 \end{figure}
 
 
@@ -691,7 +695,6 @@ Install multiple pacakges in one command: apt install vim sudo tcpdump ntp
         \begin{figure}[H]
             \centering
             \includegraphics[width=0.7\textwidth]{create-filesystem.png}
-            \caption{}
         \end{figure}
     \end{itemize}
     \item Mount filesystem
@@ -820,7 +823,6 @@ Absolute paths:
     \begin{figure}[H]
         \centering
         \includegraphics[width=0.3\textwidth]{linux-filestructure2.png}
-        \caption{}
     \end{figure}
     
     \item /opt
@@ -1114,7 +1116,6 @@ RAID level 6 like RAID 5, but with a second parity block.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.3\textwidth]{raid-6.png}
-    \caption{}
 \end{figure}
 
 
@@ -1593,7 +1594,6 @@ ls -la > output_$(date  +"%F")
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{redirection-std.png}
-    \caption{}
 \end{figure}
 
 \begin{minted}{bash}
