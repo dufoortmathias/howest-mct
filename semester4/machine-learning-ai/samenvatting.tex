@@ -2563,6 +2563,11 @@ Zo'n combinatie van verschillende decision trees (beslissingsbomen) noemen we ee
     \caption{Het finale model keurt een sample foutief als het door de meerderheid van de bomen foutief wordt gekeurd}
 \end{figure}
 
+\begin{itemize}
+    \item We kiezen de klasse op basis van de meerderheid (=er wordt `gestemd')
+    \item Bagging is goed bij uitschieters
+\end{itemize}
+
 \subsubsection{De techniek van bagging}
 
 Methode om de variantie te reduceren en overfitting te vermijden
@@ -2583,7 +2588,6 @@ Methode om de variantie te reduceren en overfitting te vermijden
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{bagging-random-forest-trees.png}
-    \caption{}
 \end{figure}
 
 Hyperparameters:
@@ -2609,7 +2613,7 @@ Hyperparameters:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{bagging-random-forest-trees2.png}
+    \includegraphics[width=0.4\textwidth]{bagging-random-forest-trees2.png}
     \caption{number of estimators vs oob score}
 \end{figure}
 
@@ -2621,6 +2625,120 @@ Hyperparameters:
     \includegraphics[width=0.5\textwidth]{boosting-principe.png}
     \caption{}
 \end{figure}
+
+\begin{itemize}
+    \item Boosting zal zoals bagging meerdere decision trees overlopen
+    \item Boosting zal dat in plaats van parallel, sequentieel doen
+    \item Boosting modellen zijn heel gevoelig voor overfitting
+    \item Er zijn meerdere vormen van Boosting
+    \begin{itemize}
+        \item Adaboost
+        \item Gradient Boosting
+        \item \dots
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Conceptuele werking}
+
+\begin{itemize}
+    \item Je vertrekt opnieuw van de trainingsset, bv 1000 samples
+    \item Eerste stap = je vult zoals bij bagging een `bag' (bv opnieuw 1000 samples)
+    \item Via onder andere resampling kan je die opvullen
+    \item Je traint een model met de data uit die bag
+    \item TODO
+    \item Je traint een tweede model met de data waar de vorige modellen het slecht mee deden
+    \item Je blijft dit doen, tot je genoeg modellen hebt
+    \item Om de ensemble te doen ga je net zoals bagging majority voting toepassen
+\end{itemize}
+
+\subsubsection{Adaboost}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{adaboost.png}
+    \caption{}
+\end{figure}
+
+
+\begin{itemize}
+    \item Adaboost gebruikt stumps (=decision tree met 2 vertakkingen)
+    \item Er wordt voting toegepast, maar elke deelmodel heeft een bepaald gewicht
+    \item TODO
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{adaboost2.png}
+    \caption{We verdelen bij elke iteratie de trainingsset in 2}
+\end{figure}
+
+\subsubsection{Gradient Boosting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{gradient-boosting.png}
+    \caption{}
+\end{figure}
+
+
+\begin{itemize}
+    \item 
+    \item TODO 
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{gradient-boosting2.png}
+    \includegraphics[width=0.45\textwidth]{gradient-boosting3.png}
+    \caption{}
+\end{figure}
+
+\subsection{Stacking}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{stacking.png}
+    \caption{}
+\end{figure}
+
+\begin{itemize}
+    \item Stacking zal alle predicties van een groep base learners (SVM, LogisticRegression, Naive Bayes, RFT, \dots) combineren tot een finale predictie
+    \item TODO
+\end{itemize}
+
+\subsubsection{Folding}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{stacking2.png}
+    \caption{De trainingdata wordt opgedeeld in folds}
+\end{figure}
+
+\begin{itemize}
+    \item TODO
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{stacking3.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{stacking4.png}
+    \caption{}
+\end{figure}
+
+\subsection{Samenvattend overzicht Ensemble learning}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{ensemble-learning-overzicht.png}
+\end{figure}
+
 
 
 \end{document}
