@@ -1135,10 +1135,13 @@ Bij classificatie is de output/target een \textbf{(discrete) variabele/klasse}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{classificatie-regressie3.png}
-    \caption{}
+    \caption{Toeveogen van een nieuw punt (rechts)}
 \end{figure}
 
-TODO: meer uitleg
+\begin{itemize}
+    \item Stel dat we een nieuw punt toevoegen dan kan het zijn dat onze regressie veel minder nauwkeurig is
+    \item Een betere manier: logistische regressie
+\end{itemize}
 
 \section{Logistische regressie}
 
@@ -1947,7 +1950,12 @@ Cross-validatie gaat ons toelaten om automatisch goede parameters te vinden voor
     \caption{}
 \end{figure}
 
-TODO
+\begin{itemize}
+    \item Je kan het Bayes optimization vergelijken met een randomized search
+    \item Je test willekeurig een aantal modellen uit met verschillende gamma- en $C$-waarden
+    \item Op basis van de resultaten die je haalt probeert Bayes optimization af te leiden waar het optimum ligt, zonder het expliciet te moeten uittesten
+    \item Met weinig rekenkracht kan je toch goede resultaten bekomen
+\end{itemize}
 
 \section{Niet-gebalanceerde data}
 
@@ -2009,17 +2017,21 @@ Misclassificatie van samples uit de minderheidsklasse leiden tijdens de training
 
 \begin{itemize}
     \item Je geeft meer `gewicht' aan een bepaalde klasse
-    \item TODO
+    \item Ook al gaat de accuracy naar beneden, wil je er toch voor zorgen dat een bepaalde klasse belangrijker wordt
 \end{itemize}
 
 \begin{minted}{python}
 model = LogisticRegression(C=1, solver='liblinear', class_weight='balanced')
+
+# voorbeeld: klasse 1 moet 20 keer belangrijker zijn dan klasse 0
+# stel dat klasse 0 goedaardige en klasse 1 kwaadaardige tumors zijn
+class_weight = {0: 1, 1:20}
 \end{minted}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{class-weight-balancing.png}
-    \caption{}
+    \caption{Omdat klasse 1 veel minder samples heeft, scoort het model slechter bij die samples}
 \end{figure}
 
 \subsubsection{Data augmentation - SMOTE (Synthetic Minority Over-sampling Technique)}
