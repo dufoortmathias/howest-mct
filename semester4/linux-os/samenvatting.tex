@@ -2123,5 +2123,470 @@ To create the setup in the previous section, we need to recap some basic network
     \end{itemize}
 \end{enumerate}
 
+\section{Netfilter, iptables, DHCP and DNS}
+
+\subsection{Intermezzo: kernel space vs user space}
+
+System memory can be divided in 2 parts: kernel space and user space
+
+\subsubsection{Kernel space}
+
+\begin{itemize}
+    \item Kernel space is that part of memory in which kernel processes are running
+    \item Kernel space memory can not be swapped or deallocated: it is fixed
+\end{itemize}
+
+\subsubsection{User space}
+
+\begin{itemize}
+    \item AKA userland
+    \item That part of the memory where user mode applications are running
+    \item Can be swapped out when needed
+\end{itemize}
+
+\subsection{Intermezzo: Routing}
+
+\begin{itemize}
+    \item Firewall without ruleset = router
+    \item Router with filtering = firewall
+\end{itemize}
+
+Routing = layer 3 (network)
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{routing-table.png}
+    \caption{What a route looks like (netstat -rn)}
+\end{figure}
+
+Routing = road signs of the network
+
+\begin{itemize}
+    \item Town name = network
+    \item Road sign = route
+    \item Street = interface/link
+\end{itemize}
+
+Router = connected with multiple networks
+
+\begin{itemize}
+    \item Possibly other routers and network further down
+    \item Routing table determines the path to follow
+    \item Create firewall:
+    \begin{itemize}
+        \item First create routes
+        \item Then add rules
+    \end{itemize}
+\end{itemize}
+
+
+\subsection{Firewalls}
+
+\subsubsection{3 types firewall}
+
+\begin{itemize}
+    \item Application Layer Gateway
+    \item Stateful Packet Inspection
+    \item Packet filtering
+\end{itemize}
+
+\subsubsection{Stateful Packet Inspection Firewall (SPI)}
+
+= Packet filter + inspection of state of connection
+
+\begin{itemize}
+    \item Invented / introduced by Check Point in 1994 in FireWall-1
+    \item Packet filter: \textit{stateless}
+    \item Every packet evaluated individually against ruleset
+    \item A lot of packets belong together => make it stateful
+    \item Extra advantage: drop packets which do not belong in the flow
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{stateful-packet-inspection.png}
+    \caption{}
+\end{figure}
+
+\begin{itemize}
+    \item 3 way handshake between client and server
+    \item Socket opens
+    \item Packets + ACKs
+    \item \dots
+    \item 4 way close
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{flowchart-states.png}
+    \caption{Flowchart of the states}
+\end{figure}
+
+
+Type of packet does not fit in one of the currently existing flows? $\Rightarrow$ DROP!
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{spi-table.png}
+    \caption{Firewall rule}
+\end{figure}
+
+Packet arrives with
+
+\begin{itemize}
+    \item sIP = 194.78.39.18
+    \item sPrt = 20233
+    \item dIP = 2.37.246.12
+    \item dPrt = 80
+    \item Flags = P (push)
+\end{itemize}
+
+
+$\Rightarrow$ Packet Filter firewall $\Rightarrow$ ACCEPT
+
+$\Rightarrow$ SPI and no SYN, SYN/ACK, ACK seen before? $\Rightarrow$ DROP
+
+
+\subsubsection{Stateful Packet Inspection vs Packet Filter}
+
+Pro:
+
+\begin{itemize}
+    \item More secure
+    \item Evaluate less individual packets (less CPU usage)
+\end{itemize}
+
+Cons:
+
+\begin{itemize}
+    \item Requires more memory (table with state of connections)
+    \begin{itemize}
+        \item Decades ago this was a problem because firewalls would only have several MBs of RAM
+        \item Not a problem anymore because of servers with a lot of RAM
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{SPI in Linux: Connection tracking (conntrack)}
+
+The connection tracking system stores information 
+about the state of a connection in a memory structure that 
+contains the source and destination IP addresses, port number pairs, 
+protocol types, state, and timeout.
+
+\begin{itemize}
+    \item conntrack: part of the kernel (it's a kernel module)
+    \item conntrack-tools: user space tools to interact with the in-kernel connection tracking system
+    \item SPI uses the conntrack kernel module, these days it is loaded by default
+\end{itemize}
+
+\subsubsection{Application Layer Gateway (ALG)}
+
+\begin{itemize}
+    \item Can filter based on contents in Layer 5: the Application layer
+    \item Has knowledge of application protocols
+    \item Example:
+    \begin{itemize}
+        \item Active FTP
+        \begin{itemize}
+            \item Active FTP uses a Control Connection (21/TCP) and a Data Connection (20/TCP), for example:
+            \item Client: 53621 $\Rightarrow$ Server: 21 (Control Connection: list, get, \dots)
+            \item Server: 20 $\Rightarrow$ Client: 53622 (Data Connection: actual transfer)
+        \end{itemize}
+        \item Passive FTP
+        \item HTTP: what website may be visited and what websites may not?
+    \end{itemize}
+\end{itemize}
+
+Problem: more and more traffic gets encrypted:
+
+\begin{itemize}
+    \item HTTPS, SMTP + SSL, SSH, \dots
+    \item One cannot `look' inside encrypted traffic
+    \item Solution: SSL-inspection
+    \item Purpose: SSL (client $\Rightarrow$ server)
+    \item Problem:
+    \begin{itemize}
+        \item SSL1: client makes SSL connection to Firewall
+        \item SSL2: Firewall makes second SSL connection to server
+        \item The certificates for the two SSL connections are different
+        \item Man In The Middle attacks on the Firewall device are possible without the client or server knowing
+        \item Solution: end-to-end (E2E) encryption
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Purpose of a firewall}
+
+\begin{itemize}
+    \item Selectively allow network traffic
+    \item Network traffic which is welcome, may enter or may pass
+    \item Traffic that is not welcome, is banned
+    \item Firewall uses rules, traffic is evaluated against those rules
+\end{itemize}
+
+\subsection{Firewall in Linux: iptables}
+
+\begin{itemize}
+    \item iptables = package with userspace tools
+    \item Interacts with netfilter (package filtering framework) in kernel space 
+\end{itemize}
+
+\subsubsection{Netfilter}
+
+Networking stack = in kernel space
+
+\begin{itemize}
+    \item Driver of network interface card (NIC)
+    \item Ethernet
+    \item CSMA/CD
+    \item Flow-Control
+    \item IEEE802.11 (VLAN)
+    \item \dots
+\end{itemize}
+
+These processes in kernel space are provided with a couple API hooks
+
+\subsubsection{Hooks}
+
+\begin{theorem}
+    A hook is a functionality provided by software for users of that software
+    to have their own code called under certain circumstances.
+
+    Specific actions can be `hung' on these `hooks'
+
+    \url{https://en.wikipedia.org/wiki/Hooking}
+\end{theorem}
+
+Specifically for netfilter hooks:
+
+\begin{itemize}
+    \item Code in the Linux kernel which can catch a specific event of a packet in the network stack
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{hooks.png}
+    \caption{5 hooks in the kernel networking stack}
+\end{figure}
+
+Example: NF\_IP\_LOCAL\_IN:
+
+\begin{itemize}
+    \item Using iptables a `rule' can be created specifying which packets may be delivered to a service in this OS, and which can't.
+    \item iptables uses these netfilter hooks in the kernel
+    \item Packet via hook from kernelspace (networking stack, netfilter hook) to userspace (iptables)
+    \item iptables decides what has to happen to the packet and passes decision via the hook back to the kernel
+\end{itemize}
+
+\subsubsection{iptables - tables}
+
+iptables uses tables to order firewall rules
+
+5 built-in tables:
+
+\begin{itemize}
+    \item \textbf{Filter table}
+    \begin{itemize}
+        \item Most commonly used
+        \item To decide if a packet is allowed to its desired destination or not
+    \end{itemize}
+    \item \textbf{NAT table}
+    \begin{itemize}
+        \item To do Network Address Translation
+        \item Source NAT and/or destination NAT
+    \end{itemize}
+    \item Mangle table
+    \begin{itemize}
+        \item To alter the headers of IP-packets in transit
+        \item Adjust TTL, TOS, put a label/mark, \dots
+    \end{itemize}
+    \item Raw table
+    \begin{itemize}
+        \item If you do not want Stateful Packet Inspection
+        \item Directly evaluate packages instead of using states, do everything manually
+    \end{itemize}
+    \item Security table
+    \begin{itemize}
+        \item To put SELinux security context marks on packets
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{iptables - chains}
+
+Within each table rules are arranged in chains
+
+\begin{itemize}
+    \item These chains represent the netfilter hooks
+    \item Chains determine \textbf{when} a rule will be evaluated
+    \item 5 chains in iptables:
+    \begin{enumerate}
+        \item PREROUTING: triggered by the NF\_IP\_PRE\_ROUTING hook
+        \item INPUT: triggered by the NF\_IP\_LOCAL\_IN hook
+        \item FORWARD: triggered by the NF\_IP\_FORWARD hook
+        \item OUTPUT: triggered by the NF\_IP\_LOCAL\_OUT hook
+        \item POSTROUTING: triggered by the NF\_IP\_POST\_ROUTING hook
+    \end{enumerate}
+    \item Chains allow to decide where in the path of `packet-delivery' a firewall has to evaluate a rule
+\end{itemize}
+
+There are 5 built-in tables and 5 available chains.
+Is every chain available in every table?
+
+\begin{itemize}
+    \item No: security table is of no use in PREROUTING or POSTROUTING  
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{iptables-tables-and-chains.png}
+    \caption{Tables \& Chains}
+\end{figure}
+
+\begin{itemize}
+    \item DNAT = destination NAT = Destination of IP packet gets translated
+    \item Has to be done before packet gets routed $\Rightarrow$ PREROUTING
+    \item The translated packet is basically a new packet which was crafted by this system and which has to leave this system $\Rightarrow$ OUTPUT
+\end{itemize}
+
+\subsubsection{Order of passing through chains}
+
+Assumption: routing is correct and firewall allows packet
+
+\begin{itemize}
+    \item Incoming packets destined for local system: PREROUTING $\Rightarrow$ INPUT
+    \item Incoming packets destined for another system: PREROUTING $\Rightarrow$ FORWARD $\Rightarrow$ POSTROUTING
+    \item Outgoing locally created packets: OUTPUT $\Rightarrow$ POSTROUTING
+\end{itemize}
+
+\subsubsection{iptables rules}
+
+Rules are places in a certain chain of a certain table
+
+\begin{itemize}
+    \item The packet gets matched with each rule from top to bottom
+    \item Each rule has a `matching' component and an `action' component
+    \begin{itemize}
+        \item If packet matches with `this', do `that'
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Targets}
+
+The `action' component of a rule is the `target'
+
+2 categories of targets:
+
+\begin{itemize}
+    \item Terminating targets
+    \begin{itemize}
+        \item Do an action that ends all further evaluation and gives control back to the netfilter hook
+        \item Decision is passed on to hook: DROP or ALLOW
+    \end{itemize}
+    \item Non-terminating targets
+    \begin{itemize}
+        \item Do an action and continue with the evaluation within the chain
+        \item Eventually a chain must reach a terminating target and give control back to hook
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{iptables and connection tracking (SPI)}
+
+A connection can have a certain state
+
+\begin{itemize}
+    \item \textbf{NEW}
+    \item \textbf{ESTABLISHED}
+    \item \textbf{RELATED}
+    \item INVALID
+    \item UNTRACKED
+    \item SNAT
+    \item DNAT
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{packet-flow-netfilter.png}
+    \caption{\url{Bron: https://en.wikipedia.org/wiki/Iptables}}
+\end{figure}
+
+\subsection{iptables in practice}
+
+\subsubsection{Matches and Targets}
+
+A rule is a combination of a `match' and a `target'
+
+\textbf{Matches}
+
+\begin{itemize}
+    \item A condition that must be met for iptables to process the package
+    \item Some examples:
+    \begin{itemize}
+        \item -s (--source): specifies the source of the packet
+        \item -d (--destination): specifies the destination of the packet
+        \item -p (--protocol): the protocol (e.g. tcp) which has to be matched
+        \item -i (--in-interface): specifies the NIC where the packet arrives
+        \item -o (--out-interface): specifies the NIC where the packet leaves
+        \item ! stands for negation
+    \end{itemize}
+\end{itemize}
+
+\textbf{Targets}
+
+\begin{itemize}
+    \item Determine the action which has to be taken when a packet is matched
+    \item \textbf{ACCEPT:} allow the packet without further checks
+    \item \textbf{DROP:} refuse the packet without sending an answer (without letting the sender know)
+    \item QUEUE: pass the packet on to userspace
+    \item RETURN: give the packet to the next rule in the former chain
+    \item LOG: write a log entry when this rule is matched and continue
+    \item \textbf{REJECT:} refuse the packet and let the sender know it was refused
+\end{itemize}
+
+\subsubsection{Inspect rule, create rules}
+
+-A (--append): append a rule at the bottom of the ruleset
+-D (--delete): remove a rule
+-L (--list): show a list of all rules
+
+\begin{minted}{bash}
+~# iptables –L –nv --line-numbers
+
+# Give a list of rules
+# Don't do name resolving (-n)
+# Do it verbosely (v)
+# Show line numbers
+\end{minted}
+
+\subsubsection{Configure firewall: best practices}
+
+\begin{itemize}
+    \item Log in through the console
+    \item Throw away all existing rules (flush)
+    \item Put the default policy on DROP
+    \item Allow management through the local network
+    \item Start `punching holes'
+\end{itemize}
+
+\begin{minted}{bash}
+# throw away all rules
+~# iptables -F
+\end{minted}
+
+\begin{minted}{bash}
+# Default policy DROP
+# by default we don't want to allow anything
+~# iptables -P INPUT DROP
+~# iptables -P FORWARD DROP
+~# iptables -P OUTPUT DROP
+\end{minted}
+
+\begin{minted}{bash}
+# Allow management through SSH from internal LAN
+# Traffic destined for this system => INPUT chain
+
+iptables –A INPUT -s 192.168.X.0/24 
+        -d 192.168.X.254 -i ens34 -p tcp -m tcp --dport 22 -j ACCEPT
+\end{minted}
+
+
 
 \end{document}
