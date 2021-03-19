@@ -4176,6 +4176,446 @@ $(A\cdot B)^{-1} = B^{-1}\cdot A^{-1}$
     X & = A^{-1}\cdot T
 \end{align*}
 
+\section{Eigenwaardes en eigenvectoren}
+
+\subsection{Toepassing bij machine learning?}
+
+PCA (Principal Component Analysis):
+
+\begin{itemize}
+    \item gegeven: grote dataset van meetgegevens van talrijke parameters
+    \item probleem: heel moeilijk/lastig om verbanden te zien
+    \item daarom: dataset gaan reduceren tot de meest essentiële parameters.
+    \item gevolg: het is een manier voor datareductie met beperkt verlies aan informatie.
+\end{itemize}
+
+\subsection{Eigenwaarden en eigenvectoren}
+
+$v$ is een eigenvector van de matrix $A$:
+
+\begin{equation}
+    A \cdot v = \lambda \cdot v
+\end{equation}
+
+Met $\lambda$ een constante = de \textbf{eigenwaarde} van de matrix A
+
+Kortom:
+
+\begin{itemize}
+    \item het resultaat van $A \cdot v$ is een veelvoud van de vector $v$ die je gebruikt hebt.
+    \item $v$ wordt door $A$ op een veelvoud van zichzelf (`een veelvoud van zijn eigen') afgebeeld
+    \item Je reduceert de matrix
+    \item We gaan op zoek naar $v$ en $\lambda$
+    \item Nulvector wordt steeds op zichzelf afgebeeld, en wordt daarom niet als eigenvector aanvaard
+    \item De eigenwaarde kan wel $0$ zijn 
+\end{itemize}
+
+\subsubsection{Voorbeelden}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{eigenvector-voorbeeld.png}
+    \caption{Voorbeeld 1. $\lambda$ = 2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{eigenvector-voorbeeld2.png}
+    \caption{Voorbeeld 2: $A$ heeft nog een eigenvector. $\lambda$ = 0}
+\end{figure}
+
+
+\subsubsection{Rekenregel}
+
+Als $v_1$ en $v_2$ beiden eigenvectoren van $A$ zijn met dezelfde eigenwaarde $\lambda$, 
+dan is elke lineaire combinatie $a \cdot v_1 + b \cdot v_2$.
+
+$\lambda$ bepaalt dus een deelruimte (`eigenruimte') die bestaat uit eigenvectoren en de nulvector.
+
+\subsubsection{Terugvinden van eigenwaarden en eigenvectoren}
+
+\textbf{Voorwaarde:}
+
+Als $|A - \lambda I| = 0$, dan is er een eigenvector $v (\neq 0)$ 
+zodat $(A - \lambda I) \cdot v = 0$. $I =$ eenheidsmatrix.
+
+\begin{itemize}
+    \item $|A - \lambda I| = 0 \Rightarrow$ karakteristieke vergelijking 
+    \item Extra toelichting: \url{https://www.youtube.com/watch?v=NetdsJohezI}
+\end{itemize}
+
+\subsubsection{Voorbeeld berekening eigenvector}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{eigenvector-berekening-voorbeeld.png}
+    \caption{Berekenen van de eigenwaarden}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{eigenvector-berekening-voorbeeld2.png}
+    \caption{Berekening van elk van de eigenvectoren. Analoog voor $\lambda = -1$ en $\lambda = 3$}
+\end{figure}
+
+\subsection{Covariantie}
+
+\begin{itemize}
+    \item \textbf{Standaardafwijking:} maat voor de spreiding van 1 variabele
+    \item \textbf{Covariantie:} maat voor de spreiding van 2 variabelen
+    \item \textbf{Correlatie:} idem, maar is een gestandardizeerde maat: het resultaat ligt tussen -1 en 1. Dit laat vergelijking meer toe
+    \item \url{https://www.youtube.com/watch?v=FPEXZ991MuE}
+\end{itemize}
+
+\subsubsection{Covariantie: positieve samenhang}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{covariantie-positieve-samenhang.png}
+    \caption{Matig positieve covariantie: punten vooral in Hoog-hoog/laag-laag kwadranten}
+\end{figure}
+
+\begin{itemize}
+    \item Hoe meer punten in het `hoog-hoog' en `laag-laag' kwadrant, hoe groter de positieve samenhang.
+    \item Als alle punten $(x_i; y_i)$ op één lijn liggen, is de correlatie tussen $x$ en $y$ perfect.
+\end{itemize}
+
+\subsubsection{Covariantie: negatieve samenhang}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{covariantie-negatieve-samenhang.png}
+    \caption{Matig negatieve covariantie: punten vooral in hoog-laag/laag-hoog kwadranten}
+\end{figure}
+
+\begin{itemize}
+    \item Hoe meer punten in het `hoog-laag' en `laag-hoog' kwadrant, hoe groter de negatieve samenhang.
+\end{itemize}
+
+\subsubsection{Wiskundig}
+
+De covariantie zegt iets over de richting van het lineair verband en wordt als volgt berekend:
+
+\begin{equation}
+S_{xy} = \frac{1}{N} \cdot \sum_{i=1}^N (x_i - \bar{x}) \cdot (y_i - \bar{y})
+\end{equation}
+
+met:
+
+\begin{itemize}
+    \item $\bar{x} en \bar{y} =$ de gemiddelden
+    \item $N$ of $N-1$: populatie of steekproef
+    \item \textbf{Opgelet:} covariantie gaat op zoek naar een \textbf{lineair} verband!
+\end{itemize}
+
+\subsubsection{Covariantie tussen meer dan 2 variabelen}
+
+Wordt gegeven in een covariantiematrix:
+
+$\begin{bmatrix}
+V_a & C_{a,b} & C_{a,c} & C_{a,d} & C_{a,e}\\
+C_{a,b} & V_b & C_{b,c} & C_{b,d} & C_{b,e}\\
+C_{a,c} & C_{b,c} & V_c & C_{c,d} & C_{c,e}\\
+C_{a,d} & C_{b,d} & C_{c,d} & V_d & C_{d,e}\\
+C_{a,e} & C_{b,e} & C_{c,e} & C_{d,e} & V_e
+\end{bmatrix}$
+
+
+\begin{itemize}
+    \item Op hoofddiagonaal: de varianties
+    \item Op andere posities: de covarianties
+    \item \url{https://www.youtube.com/watch?v=9H-dcZOlY5I}
+\end{itemize}
+
+\subsubsection{Correlatiecoëfficiënt}
+
+Wens je de sterkte te achterhalen, dan dien je ook de correlatiecoëfficiënt te bepalen:
+
+\begin{equation}
+    R(x,y) = \frac{cov(x,y)}{\sigma_x \cdot \sigma_y} = \frac{\sum_{i=1}^N (x_i - \bar{x})\cdot (y_i - \bar{y})}{\sqrt{\sum_{i=1}^N (x_i - \bar{x})^2} \cdot \sqrt{\sum_{i=1}^N (y_i - \bar{y})^2}}                            
+\end{equation}
+
+
+\begin{itemize}
+    \item Bij $R = -1$: perfect negatief lineair verband
+    \item Bij $R = 1$: perfect positief lineair verband
+    \item Bij $R = 0$: geen correlatie
+\end{itemize}
+
+\section{Zoekalgoritmen in grafen}
+
+\subsection{Doelstelling}
+
+\begin{itemize}
+    \item Begrippen definiëren in grafentheorie
+    \item Kortste-pad algoritme van Dijkstra
+    \item Kortste-pad algoritme A*
+    \item Toepassing van A* algoritme
+\end{itemize}
+
+\subsection{Wat is een zoekalgoritme}
+
+Doel: zoektocht naar eindbestemming via het kortste pad van a naar z
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{zoekalgoritme.png}
+    \caption{Elke verbinding heeft een bepaald `gewicht', bv: de tijd om de verbinding te doorlopen}
+\end{figure}
+
+\subsubsection{A* (A-star)}
+
+Het A* zoekalgoritme is een van de meest populaire zoekalgoritmes voor 
+het vinden van het kortste pad tussen nodes
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{a-star.png}
+\end{figure}
+
+\subsection{Grafen terminologie}
+
+\subsubsection{Basisterminologie}
+
+\begin{itemize}
+    \item Een graaf $G$ bestaat uit een verzameling knopen (nodes) $V$ en een verzameling bogen (transitions, edges) $E$ 
+    \item $G = (V, E)$
+    \item \textbf{Orde} van een graaf = aantal knopen in een graaf: $|V|$
+    \item \textbf{Grootte} van een graaf = aantal bogen $|E|$
+    \item Een boog is een paar $(v,w)$ waarbij $v$ en $w$ nodes uit $V$ zijn
+    \item Een boog kan een \textbf{kost} hebben. 
+    \begin{itemize}
+        \item Als de bogen een kost hebben:\textbf{gewogen graaf}. 
+        \item Indien geen kost: \textbf{ongewogen graaf}.
+    \end{itemize}    
+    \item Een boog kan een richting hebben (pijlpunt)
+    \begin{itemize}
+        \item Als ze gericht zijn: \textbf{gerichte graaf}
+        \item Indien niet: \textbf{Ongerichte graaf}
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{gerichte-graaf.png}
+    \caption{Gewogen, gerichte graaf}
+\end{figure}
+
+
+\subsubsection{Pad}
+
+\begin{theorem}
+    Een pad is een reeks van knopen die verbonden zijn
+
+    \begin{itemize}
+        \item De ongewogen lengte van het pad = aantal bogen op het pad
+        \item De gewogen lengte van het pad = som van de kosten van de bogen
+        \item `Enkelvoudig' pad = pad waarbij alle knopen verschillend zijn (met eventueel uitzondering van eerste en laatste)
+    \end{itemize}
+\end{theorem}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{grafen-pad.png}
+    \caption{Pad}
+\end{figure}
+
+
+\subsubsection{Cykel}
+
+\begin{theorem}
+    Een cykel is een pad met lengte groter dan 0 waarbij begin- en eindknoop hetzelfde zijn
+\end{theorem}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{grafen-cykel.png}
+\end{figure}
+
+\subsubsection{Enkelvoudige graaf}
+
+\begin{theorem}
+    Een graaf wordt enkelvoudig genoemd als de graaf niet meer dan 1 boog tussen 2 knopen en geen lussen heeft
+\end{theorem}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{enkelvoudige-graaf.png}
+    \caption{Enkelvoudige grafen}
+\end{figure}
+
+\subsubsection{Volledige graaf}
+
+\begin{theorem}
+    Een graaf met $n$ knopen noemen we een volledige graaf $K_n$ als alle knopen onderling verbonden zijn
+\end{theorem}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{volledige-grafen.png}
+\end{figure}
+
+\subsection{Visualisatie: datastructuren voor grafen}
+
+Voorstellen van een graaf kan een enorme impact hebben op de performantie van een algoritme.
+
+Twee basiskeuzes:
+
+\begin{itemize}
+    \item Matrix (adjecentiematrix): tweedimensionale array
+    \item List (adjecentielijst)
+\end{itemize}
+
+\subsubsection{Adjecentiematrix}
+
+= tweedimensionele array
+
+\begin{itemize}
+    \item Elke boog $(v,w) \rightarrow a[v][w] =$ kost van boog
+    \begin{itemize}
+        \item Ongewogen graaf: $a[v][w] = 1$
+    \end{itemize} 
+    \item Indien geen boog: $a[v][w] = \inf$
+    \item Ongewogen graaf: $a[v][w] = 0$
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{adjecentiematrix.png}
+    \caption{Voorbeeld}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{adjecentiematrix2.png}
+    \caption{Voorbeeld}
+\end{figure}
+
+\textbf{Initialiseren:}
+
+Eerst alle elementen op $\inf$ of $0$, daarna alle bogen inlezen en overeenkomstige elementen aanpassen
+
+
+\subsubsection{Adjecentielijst}
+
+\begin{itemize}
+    \item De knopen worden bijgehouden in een array
+    \item Voor elke knoop houden we een afzonderlijk (geschakelde) list bij waarmee deze verbonden is.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{adjecentielijst.png}
+    \includegraphics[width=0.4\textwidth]{adjecentielijst2.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{adjecentielijst3.png}
+    \caption{Voorbeeld}
+\end{figure}
+
+\subsection{Kortste-pad probleem}
+
+Onderscheid tussen:
+
+\begin{itemize}
+    \item Ongewogen kortste pad: pad tussen twee knopen met minimum aantal bogen
+    \item Gewogen kortste pad: pad tussen twee knopen met minimum som van kosten van de bogen
+    \begin{itemize}
+        \item Algoritme van Dijkstra
+        \item A* algoritme
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Dijkstra}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dijkstra.png}
+    \caption{Voorbeeld: gezocht kortste afstand van A tot Z. Tussen 2 knopen = afstand van de weg}
+\end{figure}
+
+Werking: 
+
+\begin{itemize}
+    \item zie les
+    \item \url{https://www.101computing.net/dijkstras-shortest-path-algorithm/}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{dijkstra-algoritme.png}
+    \caption{Werking van het algoritme}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dijkstra-oef.png}
+    \caption{2 oefeningen}
+\end{figure}
+
+\subsubsection{A-star algoritme}
+
+
+\begin{itemize}
+    \item Meest succesvolle algoritme om een kortste pad terug te vinden. 
+    \item Er wordt constant gebruik gemaakt van:
+    \begin{itemize}
+        \item Kortste pad tot de onderzochte knoop $\rightarrow g(n)$
+        \item Schatting tot de eindknoop: $\rightarrow h(n)$
+    \end{itemize}
+\end{itemize}
+
+In knoop $n$ geldt dat: $f(n) = g(n) + h(n)$
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{a-star-afstand.png}
+    \caption{Bij elke knoop staat ook de afstand in vogelvlucht tot Z}
+\end{figure}
+
+\begin{itemize}
+    \item De afstand in vogelvlucht noemen we ook de heuristic 
+\end{itemize}
+
+\url{https://www.101computing.net/a-star-search-algorithm/}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{a-star-algoritme.png}
+    \caption{Werking van het algoritme}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{a-star-oef.png}
+    \caption{2 oefeningen}
+\end{figure}
+
+\subsubsection{Programmeren van het A* algoritme}
+
+Wat hebben we nodig?
+
+\begin{itemize}
+    \item klasse Node 
+    \begin{itemize}
+        \item Properties voor de getalwaarden $g, h,$ en $f$
+        \item Property dat de dichtste parent bijhoudt
+    \end{itemize}
+    \item Lijst met gesloten nodes die reeds bezocht zijn
+    \item Gesorteerde lijst met nodes die moeten onderzocht worden (sorteren op totale afstand f)
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{a-star-doolhof.png}
+    \caption{A* is heel handig om de kortste weg rond obstakels te vinden}
+\end{figure}
+
+
 
 
 \end{document}
