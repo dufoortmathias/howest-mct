@@ -2587,6 +2587,302 @@ iptables –A INPUT -s 192.168.X.0/24
         -d 192.168.X.254 -i ens34 -p tcp -m tcp --dport 22 -j ACCEPT
 \end{minted}
 
-TODO: overview iptables
+\section{Setting up our firewall in a full-fledged environment}
+
+In this chapter, we will set up a firewall in this environment:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{full-fledged-environment.jpg}
+\end{figure}
+
+\subsection{Installation: the necessary steps}
+
+\begin{enumerate}
+    \item Forwarding: WAN / LAN / DMZ
+    \begin{itemize}
+        \item /proc/sys/net/ip\_forward (temporary, doesn't survive reboot)
+        \item /etc/sysctl.conf (persistent)
+    \end{itemize}
+    \item Network interface config
+    \begin{itemize}
+        \item /etc/network/interfaces
+        \item Configure all 3 interfaces
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.4\textwidth]{etc-network-interfaces.png}
+            \caption{Example}
+        \end{figure}
+    \end{itemize}
+    \item Check interface IP configuration
+    \item Check route information
+    \begin{itemize}
+        \item The firewall has 1 default gateway (NAT internet interface / DHCP)
+        \item The 2 internal networks are directly connected
+        \item Check if all are reachable with the use of \textbf{ping}
+    \end{itemize}
+\end{enumerate}
+
+\subsection{iptables chains}
+
+\begin{itemize}
+    \item Standard table = filter table
+    \item 3 most important chains: INPUT, OUTPUT, FORWARD
+\end{itemize}
+
+
+\subsubsection{INPUT chain}
+
+= Traffic from host to firewall itself (to the processes that are running on that machine).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{input-chain.jpg}
+\end{figure}
+
+\subsubsection{OUTPUT chain}
+
+= Traffic from firewall to host
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{output-chain.jpg}
+\end{figure}
+
+\subsubsection{FORWARD chain}
+
+= Traffic passing through firewall from one NIC to another, or from one subnet to another.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{forward-chain.jpg}
+\end{figure}
+
+\subsection{Common iptables commands}
+
+\subsubsection{Clear tables}
+
+Flush all rules:
+
+\begin{minted}{bash}
+iptables -F
+\end{minted}
+
+\subsubsection{Close firewall}
+
+By default iptables is completely open
+
+\begin{minted}{bash}
+# close tables
+iptables -P INPUT DROP
+iptables -P FORWARD DROP
+
+# keep output open
+iptables -P OUTPUT ACCEPT
+
+# why accept? 
+# --> to make traffic from firewall itself to other host
+# security issue? only if firewall gets compromised
+\end{minted}
+
+
+\subsection{Allow SSH}
+
+\begin{itemize}
+    \item TCP traffic (port 22)
+    \item Traffic from host INTO server
+\end{itemize}
+
+\begin{minted}{bash}
+iptables -A INPUT -p TCP --dport 22 -s 192.168.20.0/24 -j ACCEPT
+# source = 192.168.20.0/24
+# accept 
+# we do not specify the table, so the default is used: FILTER table
+\end{minted}
+
+\begin{itemize}
+    \item Avoid connection from WAN! (to protect against brute-force attacks)
+    \item IMPROVE: limit to correct incoming interface
+    \begin{itemize}
+        \item for example: only allow the ens33 interface
+    \end{itemize}
+    \item SSH = needed for daily maintenance of server
+    \item What about reply?
+    \begin{itemize}
+        \item No problem, because OUTPUT == ACCEPT
+    \end{itemize}
+\end{itemize}
+
+\subsection{Allow TCP and UDP INTO firewall}
+
+Our current situation: our firewall blocks all incoming traffic except SSH from the 192.168.20.0/24 subnet.
+
+\begin{itemize}
+    \item Only if traffic was started FROM firewall itself
+    \item $\Rightarrow$ only allow replies, never new connections
+\end{itemize}
+
+\begin{minted}{bash}
+iptables -A INPUT -p TCP -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -A INPUT -p UDP -m state --state RELATED,ESTABLISHED -j ACCEPT
+\end{minted}
+
+\subsection{Allow PING or ICMP}
+
+Why ping?
+
+\begin{itemize}
+    \item 2 way communication
+    \begin{itemize}
+        \item PING comes in (request)
+        \item Firewall replies (reply)
+    \end{itemize}
+\end{itemize}
+
+\begin{minted}{bash}
+# Allow incoming ICMP connection if a host pings firewall (REQUEST)
+iptables -A INPUT –p icmp --icmp-type echo-request –j ACCEPT
+
+# Allow incoming reply if firewall pinged some host (REPLY)
+iptables –A INPUT –p icmp --icmp-type echo-reply –j ACCEPT
+\end{minted}
+
+Reply or request from firewall to host:
+
+\begin{itemize}
+    \item Already OK, because OUTPUT == ACCEPT
+\end{itemize}
+
+\subsection{Internet connectivity}
+
+\subsubsection{Who?}
+
+\begin{itemize}
+    \item For internal network \underline{through} firewall to oustide (NAT)
+    \item For DMZ network \underline{through} firewall to outside (NAT)
+    \item For internal network \underline{through} firewall to DMZ network (no NAT, routing)
+    \item One subnet to other subnet $\Rightarrow$ one NIC to another NIC
+    \item SOURCE NAT = from private local net NAT to elsewhere (public)
+    \item Chain = POSTROUTING (when leaving firewall)
+\end{itemize}
+
+\subsubsection{How?}
+
+We need to configure three things:
+
+\begin{enumerate}
+    \item Allow traffic from internal NIC to WAN NIC $\Rightarrow$ FORWARD chain
+    \item Allow traffic from DMZ NIC to WAN NIC $\Rightarrow$ FORWARD chain
+    \item Configure an iptable rule for NAT
+\end{enumerate}
+
+\begin{minted}{bash}
+# syntax == sudo iptables -A FORWARD -i <in-interface> -o <out-interface> -j ACCEPT
+# example: 
+iptables -A FORWARD -i ens37 -o ens33 -j ACCEPT
+
+# or: it always goes out on WAN NIC:
+iptables -A FORWARD -o ens33 -j ACCEPT
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{forward-out-chain.jpg}
+\end{figure}
+
+\begin{itemize}
+    \item iptable rule for NAT
+    \item Not in FILTER table, but in our NAT table
+    \item POSTROUTING chain
+\end{itemize}
+
+\begin{minted}{bash}
+# syntax == sudo iptables -t nat -A <chain> -o <out-interface> -j MASQUERADE]
+# example:
+iptables -t nat -A POSTROUTING -o ens33 -j MASQUERADE
+# -j MASQUERADE will MASQ your internal IP by using external IP
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{postrouting-chain.jpg}
+\end{figure}
+
+\subsubsection{Allow returning traffic}
+
+Traffic that returns and is for internal LAN or for DMZ
+
+\begin{minted}{bash}
+# allow through firewall, only if related or established traffic
+iptables -A FORWARD -i ens33 -m state --state RELATED,ESTABLISHED -j ACCEPT
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{forward-in-chain.jpg}
+\end{figure}
+
+\subsection{Webserver}
+
+Traffic from internet to WAN interface, with destination a webserver in the DMZ network
+
+\subsubsection{PREROUTING}
+
+\begin{itemize}
+    \item We need to catch WAN traffic on WAN interface ens33
+    \item TCP port 80
+    \item Prepare it for transport to internal network
+    \begin{itemize}
+        \item Change public IP to private (internal) IP
+        \item = PORT FORWARDING
+    \end{itemize}
+\end{itemize}
+
+\begin{minted}{bash}
+# tell the PREROUTING chain: route all incoming traffic for the WAN interface, 
+# TCP port 80 to an internal ip and port
+iptables -t NAT -A PREROUTING -i ens33 -p tcp --dport 80 -j DNAT 
+    --to-destination 192.168.10.10:80
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{prerouting-chain.jpg}
+\end{figure}
+
+\subsubsection{WAN traffic to internal webserver}
+
+\begin{itemize}
+    \item Problem: now firewall blocks this
+    \begin{itemize}
+        \item Is a 'new' connection, not a reply
+        \item It only allows related and established connections
+    \end{itemize}
+    \item Solution: 
+    \begin{itemize}
+        \item Open TCP port 80
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{forward-in-chain.jpg}
+\end{figure}
+
+
+\subsection{\textcolor{red}{Don't forget to save!}}
+
+\begin{itemize}
+    \item All iptables changes are in memory
+    \item Changes disappear on next reboot
+\end{itemize}
+
+\begin{minted}{bash}
+# command to save the iptables changes
+# needs the netfilter-persistent package
+sudo netfilter-persistent save
+\end{minted}
+
+
 
 \end{document}
