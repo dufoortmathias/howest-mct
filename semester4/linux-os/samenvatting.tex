@@ -2879,7 +2879,7 @@ iptables -t NAT -A PREROUTING -i ens33 -p tcp --dport 80 -j DNAT
 
 \begin{minted}{bash}
 # command to save the iptables changes
-# needs the netfilter-persistent package
+# !! needs the iptables-persistent and netfilter-persistent packages !!
 sudo netfilter-persistent save
 \end{minted}
 
