@@ -1182,7 +1182,7 @@ plt.show()
 \begin{minted}{python}
 # filteren van data
 result_check = iris['Species'] == 'Iris-setosa'
-# print(type(result_check)) == TODO
+# print(type(result_check)) == <class 'pandas.core.series.Series'>
 filtered_setosa = iris.loc[result_check, :]
 # of in 1 lijn:
 filtered_setosa = iris.loc[iris['Species'] == 'Iris-setosa', :]
@@ -1519,7 +1519,7 @@ Interpretatie:
 \subsubsection{Wiskundig}
 
 \begin{equation}
-    TODO    
+    Kurtosis = \Bigg(\frac{\frac{\sum(x-\bar{x})^4}{n}}{(\frac{\sum(x-\bar{x})^2}{n})^2} \Bigg) -3
 \end{equation}
 
 
@@ -1873,7 +1873,7 @@ Vervolgens trekken we een nieuwe letter
 \subsection{Permutaties}
 
 \begin{theorem}[Permutatie]
-    Een permutatie van een verzameling elementen is een herschikking/herordening ervan.
+    Een permutatie van een verzameling elementen is een herschikking of herordening ervan.
 
     $\Rightarrow$ volgorde is van belang! 
 \end{theorem}
@@ -1881,6 +1881,7 @@ Vervolgens trekken we een nieuwe letter
 \subsubsection{Voorbeeld:} 
 
 Je organiseert een wedstrijd voor 10 hardlopers. 
+
 Op hoeveel manieren kan ik de gouden/zilveren/bronzen medaille gaan verdelen?
 
 \begin{itemize}
@@ -1888,16 +1889,22 @@ Op hoeveel manieren kan ik de gouden/zilveren/bronzen medaille gaan verdelen?
     \item Aantal permutaties van 3 uit 10: $10 \cdot 9 \cdot 8 = 720$
 \end{itemize}
 
-\subsubsection{Oefening}
+\subsubsection{Oefeningen}
 
 Een reclameblok bestaat uit 9 items: 2 over eten, 3 over reizen, 4 over auto's
 
 \begin{enumerate}
     \item Op hoeveel manieren kunnen deze items gerangschikt worden?
+    \begin{itemize}
+        \item $9 \cdot 8 \cdot 7 \cdot 6 \cdot 5 \cdot 4 \cdot 3 \cdot 2 \cdot 1 = 9! = 362880$
+    \end{itemize}
     \item Op hoeveel manieren kunnen deze items gerangschikt worden als de items over reizen direct na elkaar komen?
+    \begin{itemize}
+        \item Aantal manieren om reizen te rangschikken: $3!$
+        \item Aantal manieren om de rest te rangschikken: $7!$
+        \item Eindoplossing: $3! \cdot 7!$
+    \end{itemize}
 \end{enumerate}
-
-TODO: oplossing oefeningen
 
 \subsection{Combinaties}
 
@@ -1922,7 +1929,7 @@ $\binom{63}{8} = \frac{63!}{(63-8)! \cdot 8!} = 3 872 894 697$
 
 \subsubsection{Oefening}
 
-We gooien met 5 identieke munstukken. Wat is de kans dat we 3 of 4 keer kop gooien?
+We gooien met 5 identieke munstukken. Wat is de kans dat we 3 \textbf{of} 4 keer kop gooien?
 
 \begin{itemize}
     \item Gevraagd: $P(3\ \text{keer kop of}\ 4\ \text{keer kop})$
@@ -1932,8 +1939,7 @@ We gooien met 5 identieke munstukken. Wat is de kans dat we 3 of 4 keer kop gooi
         \item 3x kop: $\binom{5}{3} = 10$
         \item 4x kop: $\binom{5}{4} = 5$
     \end{itemize}
-    \item Resultaat: somregel = $P(3\ \text{keer kop of}\ 4\ \text{keer kop}) = \frac{10}{32} + \frac{5}{32}$
-    \item TODO
+    \item Resultaat: somregel = $P(3\ \text{keer kop of}\ 4\ \text{keer kop}) = \frac{10}{32} + \frac{5}{32} = \frac{15}{32}$
 \end{itemize}
 
 \subsection{Theoretische en empirische kansen}
@@ -2124,11 +2130,11 @@ Je vermenigvuldigt voor elke machine het productiepercentage met het defect perc
 Die kansen tel je op:
 
 \begin{center}
-    \begin{align}
+    \begin{align*}
         & P(D | M_1) \cdot P(M_1) + P(D | M_2) \cdot P(M_2) + P(D | M_3) \cdot P(M_3)\\
         & = 0.01 \cdot 0.02 + 0.02 \cdot 0.3 + 0.03 \cdot 0.5 \\
         & = 0.023
-    \end{align}
+    \end{align*}
 \end{center}
 
 \subsection{Oefening 2}
@@ -2144,11 +2150,12 @@ Die kansen tel je op:
 \subsubsection{Oplossing}
 
 \begin{center}
-    \begin{align}
-        & P(M_2 | D) = \frac{P(M_2 \cap D)}{P(D)} & = \frac{P(D | M_2) \cdot P(M_2)}{P(D)}\\
-        & = \frac{0.02 \cdot 0.3}{TODO}\\
-        & = 
-    \end{align}
+    \begin{align*}
+        P(M_2 | D) & = \frac{P(M_2 \cap D)}{P(D)}\\
+        & = \frac{P(D | M_2) \cdot P(M_2)}{P(D)}\\
+        & = \frac{0.02 \cdot 0.3}{0.023}\\
+        & = 0.261
+    \end{align*}
 \end{center}
 
 \subsection{Onafhankelijke gebeurtenissen}
@@ -4615,7 +4622,351 @@ Wat hebben we nodig?
     \caption{A* is heel handig om de kortste weg rond obstakels te vinden}
 \end{figure}
 
+\section{Geavanceerde Pandas functionaliteit}
 
+\subsection{Doelstelling}
+
+\begin{itemize}
+    \item Gebruik van Lambda-expressions
+    \item Gebruik van iterators
+\end{itemize}
+
+\subsection{Lambda expressions in Python}
+
+\subsubsection{Lambda functions}
+
+Functies kunnen verkort genoteerd worden via het keyword `lambda':
+
+\begin{minted}{python}
+raise_to_power = lambda x, y: x ** y
+raise_to_power(2,3)
+\end{minted}
+
+\subsubsection{Anonymous functions}
+
+Python ondersteunt concept van anonieme functies (functies zonder
+naam) at runtime, via label `lambda'.
+
+Lambda functies zijn vooral handig in combinatie met andere functies
+zoals filter(), map() and reduce(). Zoek zelf eens op wat deze functies doen.
+
+\textbf{Voorbeeld: Map}
+
+De functie map heeft 2 parameters:
+
+\begin{itemize}
+    \item Function
+    \item Sequentie van waarden
+\end{itemize}
+
+Map voert de functie over alle elementen van de sequentie uit
+
+\begin{minted}{python}
+nums = [48, 6, 9, 21, 1]
+
+square_all = map(lambda num: num ** 2, nums)
+\end{minted}
+
+Opmerking: Map geeft een map-object terug
+
+\subsubsection{Voorbeelen lambda-functions}
+
+\begin{minted}{python}
+som = lambda x, y : x + y
+print(som(2,3))
+> 5
+
+alist = [0, 1, 2, 3, 4]
+result = map(lambda num: num * 6, alist)
+print(list(result))
+> [0, 6, 12, 18, 24]
+
+koord = " het was een zeer lange dag op kantoor"
+result = map(lambda x: len(x), koord.split())
+print(list(result))
+> [3, 3, 3, 4, 5, 3, 2, 7]
+
+echo_word = (lambda word, echo: word * echo)
+# call echo_word: result
+result = echo_word('hey', 5)
+print(result)
+> heyheyheyheyhey
+
+koord = " het was een zeer lange dag op kantoor"
+result = filter(lambda x: len(x) > 3, koord.split())
+print(list(result))
+> ['zeer', 'lange', 'kantoor']
+\end{minted}
+
+\subsection{Iterable, Enumerate}
+
+\subsubsection{Enkele handige methodes}
+
+\begin{itemize}
+    \item iter()
+    \item enumerate()
+    \item zip()
+    \item \dots
+\end{itemize}
+
+\subsubsection{Iterable}
+
+\begin{quote}
+    `An iterable is an object that has an \_\_iter\_\_ method which returns an iterator'
+\end{quote}
+
+Voorbeelden: list, string, dictionary
+
+\begin{itemize}
+    \item Deze objecten kunnen m.b.v. een for-lus overlopen worden
+\end{itemize}
+
+Werkwijze: 
+
+\begin{itemize}
+    \item Via de achterliggende methode iter() wordt een iterator aangemaakt
+    \item Via next() springen we telkens naar het volgende element in de verzameling
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{iterables.png}
+    \caption{Voorbeelden}
+\end{figure}
+
+\subsubsection{Functie enumerate()}
+
+Return-waarde = `enumerate-object' dat een iterable-object is:
+overloopt een verzameling van tuples waarbij elke tuple een index-value paar is
+
+\begin{minted}{python}
+mutants = ['charles xavier', 
+    'bobby drake', 
+    'kurt wagner', 
+    'max eisenhardt', 
+    'kitty pride']
+
+# create a list of tuples: mutant_list:
+mutant_list = list(enumerate(mutants))
+
+# print the list of tuples
+print(mutant_list)
+> [(0, 'charles xavier'), (1, 'bobby drake'), (2, 'kurt wagner'), 
+    (3, 'max eisenhardt'), (4, 'kitty pride')]
+
+# unpack and print the tuple pairs:
+for index1, value1 in mutant_list:
+    print(index1, value1)
+
+> 0 charles xavier
+> 1 bobby drake
+> 2 kurt wagner
+> 3 max eisenhardt
+> 4 kitty pride
+\end{minted}
+
+\subsubsection{zip()}
+
+Parameter: verschillende iterables
+
+Return-waarde: `zip'-object dat een iterator object is;
+overloopt een verzameling van tuples waarbij elke tuple de elementen
+uit de verschilende iterables bevat
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{zip.png}
+    \caption{}
+\end{figure}
+
+\begin{minted}{python}
+# create a zip object using the three lists: mutant_zip
+mutant_zip = zip(mutants, aliases, powers)
+print(mutant_zip)
+for value1, value2, value3 in mutant_zip:
+    print(value1, value2, value3)
+\end{minted}
+
+\subsubsection{unzip()}
+
+= Omgekeerde bewerking van zip()
+
+
+\begin{minted}{python}
+z1 = zip(mutants, powers)
+# unzip the tuples in z1 by unpacking with * and zip(): result1, result2
+result1, result2 = zip(*z1)
+\end{minted}
+
+\subsubsection{Toepassing: Big data}
+
+Probleem: een bestand is te groot om in 1 keer in het geheugen te laden
+
+Oplossing: in stapjes inladen vai de methode `read\_csv()' en de optionele parameter `chunksize'
+
+Gebruik een for-lus op elke dataframe te overlopen
+
+\begin{minted}{python}
+import pandas as pd
+
+result = []
+
+for chunk in pd.read_csv('data.csv', chunksize=1000):
+    result.append(sum(chunk['x']))
+
+total = sum(result)
+print(total)
+\end{minted}
+
+\subsection{List comprehensions}
+
+\subsubsection{De klassieke manier: for-lus}
+
+Gebruik van een for-lus is eerder inefficiënt, vrij dure operatie, \dots
+
+\begin{minted}{python}
+nums = [12, 8, 21, 3, 16]
+new_nums = []
+for num in nums:
+    new_nums.append(num+1)
+
+print(new_nums)
+\end{minted}
+
+\subsubsection{Listcomprehension}
+
+Zetten een for-lus om in 1 lijn code
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{listcomprehension-syntax.png}
+    \caption{Syntax}
+\end{figure}
+
+\begin{minted}{python}
+nums = [12, 8, 21, 3, 16]
+new_nums = [num+1 for num in nums]
+\end{minted}
+
+Niet enkel beperkt tot lists, maar voor elke iterable:
+
+\begin{minted}{python}
+result = [num for num in range(11)]
+print(result)
+> [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+\end{minted}
+
+Ook voor nested for-lussen:
+
+\begin{minted}{python}
+# met for-lus
+pairs_1 = []
+
+for num1 in range(0, 2):
+    for num2 in range(6, 8):
+        pairs_1.append(num1, num2)
+print(pairs_1)
+
+# met list comprehension
+pairs_2 = [(num1, num2) for num1 in range(0, 2) for num2 in range(6, 8)]
+print(pairs_2)
+
+> [(0,6), (0,7), (1,6), (1,7)]
+\end{minted}
+
+Aanmaken van een matrix
+
+\begin{minted}{python}
+matrix = [[col for col in range(0,5)] for row in range(0,5)]
+# print the matrix
+for row in matrix:
+    print(row)
+
+> [[0, 1, 2, 3, 4],
+   [0, 1, 2, 3, 4],
+   [0, 1, 2, 3, 4],
+   [0, 1, 2, 3, 4],
+   [0, 1, 2, 3, 4]]
+\end{minted}
+
+\subsubsection{Condities in listcomprehensions}
+
+In een listcomprehension kan ook een conditie worden opgenomen:
+
+\begin{minted}{python}
+[num ** 2 for num in range(10) if num % 2 == 0]
+> [0, 4, 16, 36, 64]
+
+[num ** 2 if num % 2 == 0 else 0 for num in range(10)]
+> [0, 0, 4, 0, 16, 0, 36, 0, 64]
+\end{minted}
+
+\subsubsection{Condities in dictionaries}
+
+Via listcomprehensions kan men ook een dictionary op snelle manier aanmaken
+
+\begin{minted}{python}
+pos_neg = {num: -num for num in range(4)}
+print(pos_neg)
+> {0: 0, 1, -1, 2: -2, 3: -3}
+\end{minted}
+
+\subsection{Generator \& Generator functions}
+
+\subsubsection{Generator}
+
+Gelijkaardig aan list comprehensions, syntax is iets verschillend:
+
+Gebruik () ipv []
+
+\begin{minted}{python}
+(2 * num for num in range(10))
+> <generator object <genexpr> at 0x1046bf888
+\end{minted}
+
+Verschil met een listcomprehension:
+
+\begin{itemize}
+    \item Een listcomprehension geeft een volledige list terug
+    \item Een generator geeft een generator-object terug dat de list \textbf{niet} in het geheugen bijhoudt
+    \item Over beide kan met itereren (for-lus/next method)
+    \item Generator is een voorbeeld van \textbf{lazy evaulation:} waarde wordt pas afgeleverd wanneer deze echt nodig
+    \item Generator-objecten zijn nuttig bij heel grote lijsten waarbij men deze niet in memory kan bijhouden
+    \item Ook hier kunnen extra condities meegegeven worden
+\end{itemize}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{generator-object.png}
+    \caption{Overzicht generators}
+\end{figure}
+
+\subsubsection{Generator function}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{generator-function.png}
+\end{figure}
+
+\begin{itemize}
+    \item Uses a generator-object
+    \item In plaats van return keyword is dit vervangen door \textbf{yield} keyword
+    \item Hierdoor worden tijdens de functie waarden teruggegeven
+\end{itemize}
+
+\begin{minted}{python}
+def num_sequence(n):
+    """ Generate values from 0 to n."""
+    i = 0
+    while i < n:
+        yield i
+        i += 1
+
+result = num_sequence(5)
+print(type(result))
+> <class 'generator'>
+\end{minted}
 
 
 \end{document}
