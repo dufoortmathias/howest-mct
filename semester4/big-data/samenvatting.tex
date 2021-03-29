@@ -2045,7 +2045,7 @@ What does ElasticSearch do with network partitioning problems?
     \caption{Simplified overview data store choices}
 \end{figure}
 
-\section{Data driven programming: Batch Processing}
+\section{Batch Processing}
 
 \begin{figure}[H]
     \centering
@@ -2451,7 +2451,7 @@ Apache Spark is an analytics engine for large-scale data processing.
     \item Use spark for multi-node batch processing
 \end{itemize}
 
-\section{Data driven programming: Stream Processing}
+\section{Stream Processing}
 
 \subsection{The problem}
 
@@ -2529,18 +2529,34 @@ Say you need to create an application for a windmill park
     \end{itemize}
 \end{itemize}
 
-\subsection{Publish/Subscribe model}
+These challenges cannot be solved properly with classic database solutions.
+
+We need a software solution: a message broker
+
+\subsection{Message broker}
+
+= server software that connects message producers (=data producers) and message consumers (=data consumers) as clients
+
+The message producers will publish events in the queues of a message broker.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{publish-subscribe-model.png}
 \end{figure}
 
+\subsubsection{Publish/Subscribe model}
 
 \begin{itemize}
     \item Producer = sends `events' or `messages'
-    \item Topic = consumer is subscribed at this queue and gets notified
-    \item Load balancing and/or fan-out
+    \item Topic = consumer is subscribed to this queue and gets notified
+    \item Load balancing: distribute the load between multiple message consumers
+    \begin{itemize}
+        \item = each message is delivered to \textit{one} of the consumers
+    \end{itemize}
+    \item Fan-out: data of a certain topic is broadcast to all data processors
+    \begin{itemize}
+        \item = each message is delivered to \textit{all} of the consumers
+    \end{itemize}
 \end{itemize}
 
 \subsubsection{Classic reason for a message queue}
@@ -2553,7 +2569,7 @@ Message queues have been used for much longer than since the IoT boom, for examp
     \caption{To avoid `spaghetti services architecture', you can use a message broker inbetween the servers and data consumers}
 \end{figure}
 
-\subsubsection{Database vs Msg queue}
+\subsubsection{Database vs Message queue}
 
 Database:
 
@@ -2564,21 +2580,31 @@ Database:
     \item Only if a trigger is programmed, app is notified
 \end{itemize}
 
-Msg queue:
+Message queue:
 
 \begin{itemize}
     \item Stores data
-    \item Deletes data after some time
+    \item Keeps data until the data is processed, then deletes it
     \item Consume in order
     \item All subscriber consumers get notified
 \end{itemize}
 
 \subsection{Streams `consume'}
 
+There are 3 messaging systems that make the trade-off between:
+
 \begin{itemize}
+    \item latency = how fast the data gets sent and processed
+    \item durability = how sure I am that the data gets processed at all
+\end{itemize}.
+
+We start with the lowest latency and lowest durability, and move our way up:
+
+\begin{enumerate}
     \item Direct messaging
     \begin{itemize}
-        \item UDP multicast - videostream, financial data
+        \item UDP multicast - videostream, financial data, stock broker monitoring
+        \item It's important to get the latest data as fast as possible
         \item Very low latency
         \item When too much data is sent at once:
         \begin{itemize}
@@ -2587,17 +2613,20 @@ Msg queue:
     \end{itemize}
     \item Message brokers (RabbitMQ, Azure Service Bus)
     \begin{itemize}
+        \item Message brokers save the messages in a message queue in RAM
+        \item Sometimes the message is backed up to a log on the disk
         \item Once message is received, message queue entry is deleted
-        \item In memory, or "spill over" on disk
-        \item Low latency
+        \item In memory, or "spill over" on disk if RAM is full
+        \item Problem: If a message needs to be resent to a consumer, it is not certain that it arrives in the correct order.
+        \item Low latency, a bit higher than Direct Messaging
     \end{itemize}
     \item (Partitioned) Log message queue (Kafka, AWS Kinesis)
     \begin{itemize}
-        \item Message stays for a while
+        \item Message stays for a while in an append-only log
         \item Good latency (but higher)
-        \item High throughput (parallel partitions)
+        \item High throughput (parallel partitions on different disks, or even on different nodes) 
     \end{itemize}
-\end{itemize}
+\end{enumerate}
 
 \subsection{Advantages Message Queue / Broker}
 
@@ -2613,15 +2642,28 @@ Msg queue:
     \item Consumers can crash: message is buffered
 \end{itemize}
 
-\subsection{Advantages log}
+\subsection{(Partitioned) Log Message Queues}
 
+= Message queues that work with an append-only log file
 
 \begin{itemize}
-    \item \textbf{Topic} = group of partitions that listens to the same producer
-    \item Partitioning scaling
-    \begin{itemize}
-        \item Different disks/servers
-    \end{itemize} 
+    \item \textbf{Topic} = all events that are similar, for example: all windmill sensor readings
+    \item We can make topics scalable by writing these events to different partitions
+    \item All the partitions for a topic listen to the same producer
+    \item Topics can also be replicated for high availability
+\end{itemize}
+
+\url{https://www.youtube.com/watch?v=avi-TZI9t2I}
+
+\url{http://www.benniehaelen.com/hadoop/using-apache-kafka/}
+
+
+\subsubsection{Advantages (Partitioned) Log Message Queues}
+
+\begin{itemize}
+    \item Very scalable
+    \item Every time we add data to a partition, it gets a sequence number (= a `message offset')
+    \item A message consumer has its own offset that can be compared with the partition's offset
     \item Consumer can crash and then restart with the correct \textbf{offset}
 \end{itemize}
 
@@ -2640,8 +2682,8 @@ Msg queue:
 \begin{itemize}
     \item Consumer can have 1 to n partitions
     \item No 2 consumers in the same group have any partition in common
-    \item Partition is always connected to one (or no) consumer
-    \item You can loadbalance 
+    \item Every partition writes data to (maximum) one consumer
+    \item $\Rightarrow$ loadbalancing 
 \end{itemize}
 
 \subsection{Message Queue vs Log based message queue}
@@ -2651,7 +2693,7 @@ Msg queue:
 \begin{itemize}
     \item Lower latency (in DRAM, writes only on disk if necessary)
     \item Data delivered $\Rightarrow$ data deleted
-    \item Scaleable
+    \item Scalable
     \item In order delivery is not guaranteed when using load balancing
 \end{itemize}
 
@@ -2665,14 +2707,12 @@ Msg queue:
     \item Message ordering \& producer recovery
 \end{itemize}
 
-\subsection{Intro to message brokers and Kafka in more detail}
-
-TODO: A talk is available as a video link on Leho
-
-\subsubsection{Use case: message queue for analytics}
+\subsection{Use case: message queue for analytics}
 
 \begin{itemize}
     \item Central hub for batch and stream
+    \item All data is sent to the hub
+    \item You can do both real time analytics (trend analysis) and batch processing at the same time
     \item Can also contain a database as producer/consumer
 \end{itemize}
 
@@ -2681,7 +2721,7 @@ TODO: A talk is available as a video link on Leho
     \includegraphics[width=0.5\textwidth]{message-queue-analytics.png}
 \end{figure}
 
-\subsection{Some use cases for message queues}
+\subsubsection{Some other use cases for message queues}
 
 \begin{itemize}
     \item Software integration hub
@@ -2689,35 +2729,198 @@ TODO: A talk is available as a video link on Leho
     \item Use a message broker for streaming data: Ingest/buffering
 \end{itemize}
 
+\url{https://www.youtube.com/watch?v=UEg40Te8pnE&t=1510s}
+
 \subsection{Events \& data architecture}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{events-data-architecture-1.png}
-    \caption{}
+    \caption{Situation}
 \end{figure}
 
-TODO
+Situation:
+
+\begin{itemize}
+    \item You need to process sensor data from a windmill park
+    \item You also need to correlate that data with the configuration data from the windmills (which is on a database)
+    \item \textbf{Goal:} train a machine learning algorithm to figure out what configuration is optimal for a certain windmill on a certain location
+    \item \textbf{Problem:} if you have a lot of windmills, you would need to make lots of requests to the configuration database
+\end{itemize}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{events-data-architecture-2.png}
-    \caption{}
+    \caption{Better solution}
 \end{figure}
 
-TODO
+\begin{itemize}
+    \item Sensor data is still sent to the message broker
+    \item To correlate with the configuration data, we will not connect directly to the database
+    \item Instead, we will create a cache (in RAM)
+    \item \textbf{Problem:} cache is not always the most recent 
+    \item \textbf{Solution:} send changes made to the configuration data to the message broker, to update the cache with the new configuration data
+\end{itemize}
 
 \subsection{Stream Analytics}
 
+Analysis with stream processing is very different than analytics with batch processing: 
+with stream processing, we use `rolling statistics':
+
 \begin{itemize}
-    \item `Rolling analytics'
+    \item Multiple ways to do rolling analytics:
     \begin{itemize}
         \item Thumbling window (1:00-2:59, 3:00-5:59)
         \item Hopping window (1:00-2:59, 2:00-4:59)
-        \item Sliding window (last 2 minutes: 1:04-3:04)
+        \item Sliding window (last 2 minutes: 1:04-3:04, = the heaviest calculation)
     \end{itemize}
-    \item Apache Spark, Flink Kafka Streams, Azure Stream Analytics
+    \item Apache Spark, Flink Kafka Streams, Azure Stream Analytics have services to do these calculations
 \end{itemize}
 
+\section{Intro to message brokers and Kafka in more detail}
+
+The talk is available as a video link on Leho, it is recommended that you watch it:
+
+\url{https://leho-howest.instructure.com/courses/8864/modules/items/260222}
+
+\subsection{Situation}
+
+Say you have two microservices A and B, where A sends data to B, to process it.
+
+\begin{itemize}
+    \item A is faster than B
+    \item If B processes data slower than A can send it, B will get overloaded
+    \item Solution: partition the work amongst multiple instances of B
+    \item This is difficult to program properly $\Rightarrow$ use a message broker 
+\end{itemize}
+
+\subsection{Message brokers}
+
+\begin{itemize}
+    \item Most common model = Publish/Subscribe model
+    \item Popular Message brokers = ActiveMQ, RabbitMQ
+    \item Standard protocols: AMQP, MQTT, STOMP
+    \item It handles new producers/consumers for you
+    \item It removes disconnected/timed-out clients
+    \item If a consumer fails to receive a message, the producer holds on to it for future retransmission, or delivers it to another instance
+\end{itemize}
+
+A message broker also allows you to set the way messages are delivered to your consumers:
+
+\begin{itemize}
+    \item Divided = divide the message to one of the consumers
+    \item All at once = deliver the message to all consumers 
+\end{itemize}
+
+\subsection{Kafka}
+
+Kafka is a logging service
+
+\begin{itemize}
+    \item Kafka is not a message broker, but it has most of the functionality you would commonly expect from a message broker
+    \item 2 main differences:
+    \begin{itemize}
+        \item Messages are not removed as soon as they are acknowledged by a consumer
+        \item A consumer can go back in time to read messages that are older out of the queue
+    \end{itemize}
+    \item Kafka works like a Partitioned Log based Message Queue
+\end{itemize}
+
+\subsubsection{History}
+
+\begin{itemize}
+    \item Founded in 2011 by LinkedIn
+    \item Open sourced and then futher developed by Apache
+    \item Companies like Netflix, Spotify and PayPal use it
+    \item Written in Scala
+    \item Uses its own client protocol
+    \item The official client is in Java, but there are many other stable clients for every programming languages
+    \item Well supported
+\end{itemize}
+
+\subsubsection{Sending a message to a partition}
+
+\begin{itemize}
+    \item You can let Kafka choose a partition
+    \item You can choose an algorithm to pick a partition for you
+    \item You can choose a partition by the partition number
+\end{itemize}
+
+\subsubsection{Kafka message production}
+
+\begin{itemize}
+    \item The client contacts the Partition leader and sends the message
+    \item You can choose whether to wait for acknowledgment (synchronously) or to send the message asynchronously
+    \item What if a Kafka node dies?
+    \begin{itemize}
+        \item If data was safely persisted to disk, Kafka will recover
+        \item Kafka only fsyncs after a certain interval $\Rightarrow$ you might lose some data
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Kafka replication}
+
+\begin{itemize}
+    \item To protect a Kafka node against failure
+    \item New nodes need to be added in increments of 2
+    \item There are many configurations possible to increase the availability
+\end{itemize}
+
+\subsubsection{Kafka consumer}
+
+\begin{itemize}
+    \item A consumer is always part of a consumer group
+    \item A consumer group has its own offset: it defines how far a consumer has read in the queue
+\end{itemize}
+
+\subsubsection{Consumer availability and load balancing}
+
+What happens if a consumer in a consumer group dies?
+
+\begin{itemize}
+    \item Each consumer sends a `heartbeat' to the Kafka node
+    \item Kafka checks that every consumer sends a heartbeat
+    \item If Kafka gets no heartbeat from a consumer, it declares it dead
+    \item It then tells every consumer in the group that a consumer has died, and that every consumer needs to stop consuming
+\end{itemize}
+
+\subsubsection{Consuming messages}
+
+3 basic steps:
+
+\begin{enumerate}
+    \item You pull a message from the queue
+    \item You perform all the handling of the message (including handling the result downstream)
+    \item You mark the message's offset as done 
+\end{enumerate}
+
+\subsubsection{How to handle lost messages}
+
+Because of operational events like network outages or component failures, some messages
+may need to be sent again. In message brokers, there are two policies to handle this:
+
+\begin{itemize}
+    \item At-least-once: it is possible that you can read a message more than once
+    \item At-most-once: it is possible that some messages may get lost
+\end{itemize}
+
+Kafka has an at-least-once guarantee, if correctly used. 
+As a consequence, some messages are sent twice. 
+Kafka solves this by doing deduplication or partial detection.
+The database will simply overwrite the existing entry if it already exists.
+
+This makes Kafka \textbf{idempotent:} for the same input, the output should always be
+the same, independant of the machine or time.
+
+\subsubsection{How far can you go back in time?}
+
+Kafka has 2 settings:
+
+\begin{itemize}
+    \item Log retention hours: specifies the amount of hours you want to keep data on disk
+    \item Log retention size: specifies the maximum amount of disk space the partitions may use 
+\end{itemize}
+
+By default, Kafka sets the log retention hours to 172 hours (1 week), and does not set a default size limit.
 
 \end{document}
