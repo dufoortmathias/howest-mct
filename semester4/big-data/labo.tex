@@ -597,4 +597,257 @@ TODO: meer info
     \item In zekere zin `de Python versie van Spark'
 \end{itemize}
 
+\section{TICK Stack}
+
+The Tick stack is an acronym for a platform of open source tools 
+built to make collection, storage, graphing, and alerting on 
+time series data incredibly easy.
+
+The tools:
+
+\begin{itemize}
+    \item Telegraf
+    \item InfluxDB
+    \item Chronograf
+    \item Kapacitor
+\end{itemize}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{tick-stack-components.png}
+    \caption{The components of the TICK Stack}
+\end{figure}
+
+\subsection{Telegraf}
+
+\begin{itemize}
+    \item = Agent for collecting and reporting metrics and events
+    \item Has inputs and outputs
+\end{itemize}
+
+\subsection{InfluxDB}
+
+= Purpose built time series database
+
+\begin{itemize}
+    \item Open source
+    \item Simple HTTP API (POST, GET) with client libraries
+    \item Somewhat similar to classic SQL, there are two versions:
+    \begin{itemize}
+        \item V1: SQL \& Flux: SELECT * FROM measurement WHERE tag=value
+        \item V2: Flux, less like SQL, better for time series data:
+\begin{minted}{bash}
+# Flux
+from(bucket: "bucket")
+|> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+|> filter(fn: (r) => r["_measurement"] == "test")
+\end{minted}
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Key concepts}
+
+
+\begin{itemize}
+    \item Line protocol = a text-based format that provides the measurement, tag set, field set, and timestamp of a data point:
+\begin{minted}{bash}
+weather,location=us-midwest temperature=79,humidity=49 1591711854359    
+weather,location=us-midwest temperature=82,humidity=50 1591711787540   
+    |    -------------------- --------------------------  |
+    |             |             |                         |
+    |             |             |                         |
++-----------+--------+-+---------+--------------+---------+
+|measurement|,tag_set| |field_set|              |timestamp|
++-----------+--------+-+---------+--------------+---------+
+\end{minted}
+    \item Measurement = data that belongs together
+    \item Timestamp = UNIX format
+    \item Tags / Fields = key:value
+    \item Tag = metadata
+    \begin{itemize}
+        \item Tags are indexed
+        \item `Fields' where you want to query on
+        \item Only strings!
+    \end{itemize}
+    \item Field = data
+    \begin{itemize}
+        \item Fields are not indexed
+        \item Floats, integers, strings, and booleans
+    \end{itemize}
+    \item Tag set = set of tags
+    \item Field set = set of fields
+\end{itemize}
+
+\subsection{Chronograf}
+
+= A visualization tool
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{chronograf-data-visualization.png}
+    \includegraphics[width=0.45\textwidth]{chronograf-infrastructure-monitoring.png}
+    \caption{Data visualization and Infrastructure Monitoring}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{chronograf-database-management.png}
+    \includegraphics[width=0.45\textwidth]{chronograf-alert-management.png}
+    \caption{Database management and alert management}
+\end{figure}
+
+\subsection{Kapacitor}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{kapacitor.png}
+    \caption{}
+\end{figure}
+
+\subsection{Deployment models}
+
+V2
+
+\begin{itemize}
+    \item Open source version (OSS)
+    \begin{itemize}
+        \item No clustering
+        \item No out-of-the-box replication
+    \end{itemize}
+    \item Enterprise version: expensive, contact sales
+    \item Cloud version: cheaper, usage based
+    \item Chronograf and InfluxDB: one component
+    \item Multi-tenant focus
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{influxdb-2.png}
+    \caption{InfluxDB 2.0: a better graphic}
+\end{figure}
+
+\subsection{Architecture of the TICK stack}
+
+\subsubsection{Write Ahead Log (WAL)}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{tick-architecture-wal.png}
+\end{figure}
+
+\begin{itemize}
+    \item Disk optimized format (fast writes $\leftrightarrow$ slow queries)
+    \begin{itemize}
+        \item Not optimized for fast queries $\Rightarrow$ memory!
+    \end{itemize}
+    \item In case of a crash: replay WAL (durability $\uparrow$)
+    \item What if we have more data than memory?
+    \begin{itemize}
+        \item Out-of-memory errors (OOM)
+    \end{itemize}
+    \item InfluxDB v1 vs v2  \& OSS vs cloud:
+    \begin{itemize}
+        \item V1 \& V2 OSS: flat, simple file
+        \item V2 cloud: Kafka
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Time Structured Merge Tree (TSM)}
+
+\begin{itemize}
+    \item A data structure optimized for storage and fast time-series queries
+    \item Compressed data in columnar format
+    \item Easy memory-mapping
+    \item Similar to Log Structured Merge Tree (LSM)
+    \item Field values are grouped by series key, ordered by time
+    \item Series key = measurement, tag set and (a single) field key
+\end{itemize}
+
+TODO: slide 29 of 35
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{tick-architecture-wal-tsm.png}
+    \caption{TSM + WAL}
+\end{figure}
+
+\begin{itemize}
+    \item Fast(er) queries: only read required series
+    \item Compression: saved data is smaller than original (more data per node)
+    \item Columnar: easy for memory-mapping
+    \begin{itemize}
+        \item Data is cached for a limited time (solves OOM)
+    \end{itemize}
+    \item What if we have many series keys (high cardinality)
+    \begin{itemize}
+        \item Finding the right data will be slow!
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Time series index (TSI)}
+
+\begin{itemize}
+    \item A data structure optimized for storage and fast query of series keys
+    \begin{itemize}
+        \item TSM stores the data grouped by the series key
+        \item TSI stores the series keys grouped by measurement, tag and field key
+    \end{itemize}
+    \item TSI answers two questions:
+    \begin{itemize}
+        \item What measurements, tags and fields exists?
+        \item Given a measurement, tag, field, what series key exists?
+    \end{itemize}
+    \item TSI stores the index in memory and on disk
+    \begin{itemize}
+        \item Memory = page cache (least recently used memory)
+        \item Disk: writes to a WAL, compaction in the background
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Sharding}
+
+V1:
+
+\begin{itemize}
+    \item Directory with WAL, TSM and TSI files
+    \item Retention policy (on database level)
+    \item Each shard has a start and endtime
+    \item Scalability \dots but only for InfluxDB Cloud / InfluxDB Enterprise
+\end{itemize}
+
+V2:
+
+\begin{itemize}
+    \item Sharding in V1 has much overhead: WAL, TSM and TSI / shard 
+    \begin{itemize}
+        \item Too much redundant data, especially for the TSI
+        \item Too many writes
+    \end{itemize}
+    \item Not everyone needs a retention policy
+    \item Sharding is now implemented as a block, like in most other database systems (in OSS only 1 shard)
+\end{itemize}
+
+\subsection{Pitfalls, tips \& tricks}
+
+\begin{itemize}
+    \item Tips for optimal (write) performance:
+    \begin{itemize}
+        \item Order your timestamps
+        \item Order your tags alphabetically
+        \item Use the right precision: seconds, milliseconds, microseconds or nanoseconds
+        \item Write in bulks (less fsync's)
+    \end{itemize}
+    \item Duplicates: measurement, tag set \& timestamp
+    \item Tags vs. Fields 
+    \item V2 is a great product, but:
+    \begin{itemize}
+        \item Documentation is far from complete
+        \item Bugs in client libraries, e.g. precision is neglected
+        \item Quick release cycle / bug fixes
+    \end{itemize}
+    \item V1 vs. V2, OSS vs. Cloud vs. Enterprise
+\end{itemize}
+
+
 \end{document}
