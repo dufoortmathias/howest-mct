@@ -1317,8 +1317,6 @@ But: Python + Postgres can handle almost any analytics challenge
 
 \subsection{Key-Value}
 
-
-
 \begin{itemize}
     \item Adding to the end of a file is the fastest way to write
     \item Key-value DBs are relatively simple databases
@@ -2547,10 +2545,12 @@ Say you need to create an application for a windmill park
 
 \subsubsection{Classic reason for a message queue}
 
+Message queues have been used for much longer than since the IoT boom, for example:
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{msg-queue-spaghetti.png}
-    \caption{Avoid `spaghetti services architecture'}
+    \caption{To avoid `spaghetti services architecture', you can use a message broker inbetween the servers and data consumers}
 \end{figure}
 
 \subsubsection{Database vs Msg queue}
@@ -2573,7 +2573,151 @@ Msg queue:
     \item All subscriber consumers get notified
 \end{itemize}
 
-TODO: watch video about kafka (before next theory lesson)
+\subsection{Streams `consume'}
+
+\begin{itemize}
+    \item Direct messaging
+    \begin{itemize}
+        \item UDP multicast - videostream, financial data
+        \item Very low latency
+        \item When too much data is sent at once:
+        \begin{itemize}
+            \item Solution: use back pressure / message dropping
+        \end{itemize}
+    \end{itemize}
+    \item Message brokers (RabbitMQ, Azure Service Bus)
+    \begin{itemize}
+        \item Once message is received, message queue entry is deleted
+        \item In memory, or "spill over" on disk
+        \item Low latency
+    \end{itemize}
+    \item (Partitioned) Log message queue (Kafka, AWS Kinesis)
+    \begin{itemize}
+        \item Message stays for a while
+        \item Good latency (but higher)
+        \item High throughput (parallel partitions)
+    \end{itemize}
+\end{itemize}
+
+\subsection{Advantages Message Queue / Broker}
+
+\begin{itemize}
+    \item Producers can crash
+    \item Producers can change the format of the message (eg.: make it longer)
+    \item Producers don't have to wait on consumers
+    \begin{itemize}
+        \item Fire and forget
+        \item Buffering
+        \item Lower latency
+    \end{itemize}
+    \item Consumers can crash: message is buffered
+\end{itemize}
+
+\subsection{Advantages log}
+
+
+\begin{itemize}
+    \item \textbf{Topic} = group of partitions that listens to the same producer
+    \item Partitioning scaling
+    \begin{itemize}
+        \item Different disks/servers
+    \end{itemize} 
+    \item Consumer can crash and then restart with the correct \textbf{offset}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{log-advantages.png}
+\end{figure}
+
+\subsection{Partitioning consumer}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{partitioning-consumer.png}
+\end{figure}
+
+\begin{itemize}
+    \item Consumer can have 1 to n partitions
+    \item No 2 consumers in the same group have any partition in common
+    \item Partition is always connected to one (or no) consumer
+    \item You can loadbalance 
+\end{itemize}
+
+\subsection{Message Queue vs Log based message queue}
+
+\subsubsection{Message queue}
+
+\begin{itemize}
+    \item Lower latency (in DRAM, writes only on disk if necessary)
+    \item Data delivered $\Rightarrow$ data deleted
+    \item Scaleable
+    \item In order delivery is not guaranteed when using load balancing
+\end{itemize}
+
+\subsubsection{Log Based Message Queue}
+
+\begin{itemize}
+    \item On disk
+    \item One partition = one consumer (limitation of consumers)
+    \item Data can be reread after delivery
+    \item Scales very high: multiple disks, multiple partitions and nodes
+    \item Message ordering \& producer recovery
+\end{itemize}
+
+\subsection{Intro to message brokers and Kafka in more detail}
+
+TODO: A talk is available as a video link on Leho
+
+\subsubsection{Use case: message queue for analytics}
+
+\begin{itemize}
+    \item Central hub for batch and stream
+    \item Can also contain a database as producer/consumer
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{message-queue-analytics.png}
+\end{figure}
+
+\subsection{Some use cases for message queues}
+
+\begin{itemize}
+    \item Software integration hub
+    \item Start of Data pipeline for different services (Realtime analytics/`slow' services)
+    \item Use a message broker for streaming data: Ingest/buffering
+\end{itemize}
+
+\subsection{Events \& data architecture}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{events-data-architecture-1.png}
+    \caption{}
+\end{figure}
+
+TODO
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{events-data-architecture-2.png}
+    \caption{}
+\end{figure}
+
+TODO
+
+\subsection{Stream Analytics}
+
+\begin{itemize}
+    \item `Rolling analytics'
+    \begin{itemize}
+        \item Thumbling window (1:00-2:59, 3:00-5:59)
+        \item Hopping window (1:00-2:59, 2:00-4:59)
+        \item Sliding window (last 2 minutes: 1:04-3:04)
+    \end{itemize}
+    \item Apache Spark, Flink Kafka Streams, Azure Stream Analytics
+\end{itemize}
 
 
 \end{document}
