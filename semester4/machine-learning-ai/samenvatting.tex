@@ -2751,6 +2751,326 @@ Hyperparameters:
     \includegraphics[width=0.5\textwidth]{ensemble-learning-overzicht.png}
 \end{figure}
 
+\section{Unsupervised learning}
+
+\subsection{Introductie}
+
+Unsupervised learning bevat een set aan machine learning techieken om in
+niet-gelabelde data structuren te zoeken en beschrijven
+
+Belangrijke technieken omvatten:
+
+\begin{itemize}
+    \item Clustering
+    \item Anomaly / outlier detection
+    \item Dimensionality reduction (=data comprimeren zodat je alleen relevante features overhoudt)
+    \item Blind signal seperation (= mix van signalen (bv WiFi-signalen) die uit elkaar getrokken moeten worden)
+\end{itemize}
+
+\subsection{Clustering}
+
+\begin{theorem}
+    Clustering is het groeperen van gegevens zodat binnen een bepaalde groep (=cluster) 
+    de gelijkenis groter is dan de gelijkenis met gegevens in een andere groep
+\end{theorem}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{clustering.png}
+    \caption{Clustering: verdelen in groepen}
+\end{figure}
+
+\subsubsection{Voorbeelden}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{clustering-voorbeeld.png}
+    \caption{Voorbeeld: face clustering}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{clustering-marktsegmentatie.png}
+    \caption{Voorbeeld: Marktsegmentatie}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{clustering-socialmedia.png}
+    \caption{Social media clustering}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{clustering-image-segmentation.png}
+    \caption{Image segmentation}
+\end{figure}
+
+
+Andere voorbeelden:
+
+\begin{itemize}
+    \item Gerelateerde resultaten bij een zoekopdracht van een zoekmachine tonen
+    \item Gelijkaardige artikels op nieuwssites
+\end{itemize}
+
+\subsection{K-means clustering}
+
+K-means clustering is een zeer populaire clustering techniek door zijn eenvoud
+
+\begin{itemize}
+    \item Simpel om te begrijpen
+    \item Performant op grote dataset
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{k-means-1.png}
+    \caption{Voorbeeld: zoek gelijksoortige clusters in deze data}
+\end{figure}
+
+\subsubsection{Hoe gelijkenis uitdrukken?}
+
+Via een afstandfunctie:
+
+\begin{itemize}
+    \item Hoe dicht liggen trainingssamples qua afstand van elkaar in de feature space?
+    \item Veelgebruikte afstandsmaat is de \textbf{Euclidische afstand}
+    \item Soms wordt ook de Manhattan Distance gebruikt: \url{https://en.wikipedia.org/wiki/Taxicab_geometry}
+    \item Of de cosine distance: \url{https://en.wikipedia.org/wiki/Cosine_similarity}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{k-means-euclidische-afstand.png}
+\end{figure}
+
+\subsubsection{Werking}
+
+\begin{enumerate}
+    \item Initialiseer (al dan niet willekeurig) 4 \textbf{centoïden}
+    \item Zolang er datapunten veranderen van cluster:
+    \begin{enumerate}
+        \item Wijs de datapunten toe aan de dichtsbij liggende centoïde 
+        \item Verplaats de centoïden naar het gemiddelde van de clusters
+    \end{enumerate}
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{k-means-2.png}
+    \caption{Initialiseren van de centoïden}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{k-means-3.png}
+    \includegraphics[width=0.45\textwidth]{k-means-4.png}
+    \caption{Datapunten toewijzen aan dichtsbij liggende centoïde, dan de centoïden verplaatsen naar het gemiddelde van de clusters}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{k-means-5.png}
+    \includegraphics[width=0.45\textwidth]{k-means-6.png}
+    \caption{Opnieuw punten toewijzen en centoïden verplaatsen naar gemiddelde van de clusters}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{k-means-7.png}
+    \includegraphics[width=0.45\textwidth]{k-means-8.png}
+    \caption{Opnieuw punten toewijzen en centoïden verplaatsen naar gemiddelde van de clusters}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{k-means-9.png}
+    \caption{Wijs de datapunten opnieuw toe aan de dichtsbij liggende centoïde. We verplaatsen opnieuw de centoïden. Hier stoppen we omdat er geen datapunten meer van cluster veranderen.}
+\end{figure}
+
+
+\subsubsection{Eigenschappen van K-means clustering}
+
+\begin{itemize}
+    \item Eenvoudig en resultaten gemakkelijk interpreteerbaar
+    \item K-means vindt niet altijd het globale optimum (=beste oplossing)
+    \item Uiteindelijke resultaat hangtaf van initialisatie van de centoïden
+    \begin{itemize}
+        \item Probeer verschillende initialisaties
+        \item Initiailiseer eerste centoïde op een willekeurig datapunt
+        \item Leg de tweede centoïde op een datapunt dat zover mogelijk van het eerste verwijderd is, de derde zo ver mogelijk van de twee eerste, enzoverder
+    \end{itemize}
+    \item Zeer gevoelig aan uitschieters
+    \item Problemen bij clusters met hetzelfde gemiddelde of niet-sferische clusters
+    \begin{itemize}
+        \item Oplossing: kernel K-means of spectral clustering:
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{k-means-kernel.png}
+    \caption{K-means vs Kernel K-means}
+\end{figure}
+
+\subsubsection{Strategie om het aantal clusters te bepalen}
+
+\begin{itemize}
+    \item Visuele inspectie van de datapunten (indien mogelijk)
+    \item Silhouette clustering
+    \item \textbf{Elbow method}
+\end{itemize}
+
+\begin{theorem}
+    Met de Elbow method kunnen we het aantal clusters vinden door voor een verschillend aantal
+    clusters de `sum of squared error (SSE)' te bepalen. De SSE is de som voor de gekwadrateerde
+    afstanden tussen elk datapunt in een cluster en de centoïde van die cluster
+\end{theorem}
+
+\begin{equation}
+    SSE = \sum_{i=1}^K \sum_{x \in c_i} dist(x, c_i)^2
+\end{equation}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{k-means-elbow.png}
+    \caption{Elbow method voor het vinden van het aantal clusters}
+\end{figure}
+
+Aantal clusters K is daar war de fout niet noemenswaardig meer zakt. In het bovenstaande voorbeeld: $K=6$
+
+\subsection{Hierarchical clustering}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{clustering-hierarchical.png}
+    \caption{Clusters kunnen worden voorgesteld via een \textbf{dendogram}}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dendogram.png}
+    \caption{Dendogram (= een soort boomstructuur-diagram)}
+\end{figure}
+
+\begin{itemize}
+    \item Je groepeert telkens 2 datapunten die het dichtst bij elkaar liggen
+    \item Daarna groepeer je die clusters tot een cluster van clusters
+    \item Nu kan je heel gemakkelijk het aantal clusters kiezen
+    \item Het geeft ook een mooi inzicht over hoe de clusters tot stand zijn gekomen
+\end{itemize}
+
+\subsubsection{Sterktes van hierarchical clustering}
+
+\begin{itemize}
+    \item Geen vooropgesteld aantal clusters nodig. Elk gewenst aantal clusters kan bekomen worden door het dendogram op de juiste plaats af te snijden
+    \item De structuur van het dendogram kan nuttig zijn. Bijvoorbeeld in biologie, productcategorieën, \dots
+\end{itemize}
+
+\subsubsection{Hoe ga je nu de afstand tussen 2 clusters bepalen?}
+
+3 manieren:
+
+\begin{enumerate}
+    \item Met \textbf{single linkage}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.25\textwidth]{single-linkage.png}
+        \caption{Single linkage: je neemt de dichtste 2 punten}
+    \end{figure}
+    \item Met \textbf{complete linkage}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.25\textwidth]{complete-linkage.png}
+        \caption{Complete linkage: je neemt de verste 2 punten}
+    \end{figure}
+    \item Met \textbf{average linkage}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.25\textwidth]{average-linkage.png}
+        \caption{Average linkage: je neemt de gemiddeldes van alle afstanden. Meer rekenwerk, maar minder gevoelig voor uitschieters maar wel een voorkeur voor globale clusters}
+    \end{figure}
+\end{enumerate}
+
+\subsubsection{Complexiteit van hierarchical clustering}
+
+Zeer rekenintensief:
+
+\begin{itemize}
+    \item Het aantal berekeningen is minstens kwadratisch afhankelijk van het aantal datapunten.
+    \item Niet bruikbaar voor grote datasets.
+\end{itemize}
+
+\subsection{Guassian mixture models}
+
+Voorgaande modellen wijzen datapunten aan 1 enkele cluster
+
+\begin{itemize}
+    \item Je probeert om Gaussisaanse curves te fitten op de data om zo clusters te vinden
+    \item Je regelt de varianties en gemiddelden van die Gaussisaanse functies: je `verplaatst' ze
+    \item Je berekent zo een kans: er is x kans dat een punt tot een bepaalde cluster behoort 
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{guassian-mixture-models.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{guassian-mixture-models2.png}
+\end{figure}
+
+\subsection{Spectral clustering}
+
+Hou rekening met de affiniteit in plaats van de absolute locatie.
+
+\begin{itemize}
+    \item Affiniteit = TODO
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{spectral-clustering.png}
+    \caption{Spectral clustering kan (zoals Kernel K-means) het `donut-probleem' oplossen}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{spectral-clustering2.png}
+    \caption{Opstellen van de affiniteitmatrix}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{spectral-clustering3.png}
+\end{figure}
+
+\begin{itemize}
+    \item In de matrix zetten we hoe ver elk punt van elk ander punt ligt
+    \item In de matrix kan je dan makkelijk zien wat de clusters zijn
+    \item Handig voor datasets waar je patronen en specifieke lijnen hebt in de data, bijvoorbeeld image recognition
+\end{itemize}
+
+\subsection{Self organizing maps}
+
+\begin{itemize}
+    \item Ook `Kohonen Maps' genoemd
+    \item Competitie-gebaseerde clustering
+    \item TODO
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.25\textwidth]{self-organizing-maps.png}
+    \includegraphics[width=0.3\textwidth]{self-organizing-maps2.png}
+    \includegraphics[width=0.25\textwidth]{self-organizing-maps3.png}
+    \caption{}
+\end{figure}
+
+\subsection{Dimensionality reduction}
 
 
 \end{document}
