@@ -2123,7 +2123,7 @@ To create the setup in the previous section, we need to recap some basic network
     \end{itemize}
 \end{enumerate}
 
-\section{Netfilter, iptables, DHCP and DNS}
+\section{Netfilter, iptables}
 
 \subsection{Intermezzo: kernel space vs user space}
 
@@ -2881,6 +2881,861 @@ iptables -t NAT -A PREROUTING -i ens33 -p tcp --dport 80 -j DNAT
 # command to save the iptables changes
 # !! needs the iptables-persistent and netfilter-persistent packages !!
 sudo netfilter-persistent save
+\end{minted}
+
+\section{DHCP}
+
+\begin{itemize}
+    \item Works with UDP
+    \item Ports 67 and 68
+    \item Broadcast: because the client does not have an IP address yet
+    \item DHCP servers are limited to their own subnet (layer 2)
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dhcp-dora.png}
+    \caption{Server = 67, Client = 68}
+\end{figure}
+
+\subsection{Installing a DHCP server}
+
+\begin{itemize}
+    \item Package = isc-dhcp-server
+    \item ISC = Internet Systems Consortium 
+    \item \url{https://www.isc.org/mission/}
+\end{itemize}
+
+\begin{minted}{bash}
+~$ sudo apt install isc-dhcp-server
+\end{minted}
+
+\subsubsection{Configuration file}
+
+\begin{itemize}
+    \item System-wide host-specific configuration file $\Rightarrow$ somewhere under /etc/
+    \item /etc/default/isc-dhcp-server
+    \item In this file you need to allow dhcp to run
+\end{itemize}
+
+\subsubsection{Parameters to configure}
+
+\begin{itemize}
+    \item Listen on which NIC?
+    \item domain-name
+    \item domain-name-servers
+    \item subnet
+    \begin{itemize}
+        \item Network address and netmask
+        \item dhcp-range
+        \item default gateway
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Example configuration}
+
+/etc/default/isc-dhcp-server:
+
+\begin{minted}{bash}
+INTERFACESv4="ens34"
+\end{minted}
+
+/etc/dhcp/dhcpd.conf:
+
+\begin{minted}{bash}
+subnet 192.168.20.0 netmask 255.255.255.0 {
+    range 192.168.20.50  192.168.20.100;
+    option routers 192.168.20.254;
+    option domain-name "mctinternal.be";
+    option domain-name-servers 192.168.20.30;
+}
+\end{minted}
+
+\subsubsection{Dynamic vs static assignments}
+
+Dynamic:
+
+\begin{itemize}
+    \item Available IP from the range gets assigned
+\end{itemize}
+
+Static:
+
+\begin{itemize}
+    \item Host with MAC-address X:Y:Z always has to receive IP address a.b.c.d
+    \item Note: a.b.c.d lies outside the range, but inside the subnet!
+\end{itemize}
+
+\begin{minted}{bash}
+host nameOfTheHost {
+    hardware ethernet c8:f7:33:22:c6:4e;
+    fixed-address 192.168.20.200;
+}
+\end{minted}
+
+\subsection{Intermezzo: high availability}
+
+\begin{itemize}
+    \item Purpose: increase the availability of a service
+    \item How? Build in redundancy
+    \item Redundancy = overcapacity
+    \item In other words: create overcapacity and ensure that it does not oppose each other
+\end{itemize}
+
+\subsubsection{Active-Passive clustering}
+
+\begin{itemize}
+    \item One server is active and serves clients
+    \item The other server is passive and only intervenes when the active one fails
+    \item The passive server periodically syncs with the changes from the active server
+    \item Or every transaction is synced to both servers at the same time
+    \item $\Rightarrow$ `Referee' required
+\end{itemize}
+
+\subsubsection{Split-brain}
+
+With most types of clustering, there is a possible problem. Take the following situation:
+
+\begin{itemize}
+    \item Active still works
+    \item Passive still works
+    \item But they don't know it from each other
+    \item $\Rightarrow$ passive thinks active is gone and becomes active
+    \item Problem: 2 active servers $\Rightarrow$ many problems
+\end{itemize}
+
+\subsubsection{STONITH}
+
+\begin{itemize}
+    \item A way of `fencing' with clusters
+    \item = Shoot The Other Node In The Head
+    \item \url{https://en.wikipedia.org/wiki/STONITH}
+    \item You provide a mechanism to `kill' one node once the other node takes over
+    \item Common fencing mechanisms:
+    \begin{itemize}
+        \item Shutting down the UPS to the server
+        \item Hardware-wise shut down the network
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Highly available DHCP server}
+
+\begin{itemize}
+    \item 2 DHCP servers in network $\Rightarrow$ Many possible problems:
+    \begin{itemize}
+        \item If they have incompatible configurations
+        \item If they have the exact same configurations
+    \end{itemize}
+\end{itemize}
+
+Solution: a High Availability (HA) DHCP server
+
+\begin{itemize}
+    \item With a HA DHCP server, it is possible to `share' DHCP configuration among multiple servers
+    \item Let the HA DHCP server fix its own problems 
+\end{itemize}
+
+Easier solution:
+
+\begin{itemize}
+    \item 2 DHCP servers with the same configuration
+    \item Except the subnet range: make sure the subnet range do not overlap
+\end{itemize}
+
+\subsection{DNS Server}
+
+\subsubsection{Properties of DNS}
+
+\begin{itemize}
+    \item 53/UDP (normal use)
+    \item 53/TCP (zone transfer, or as a fallback for UDP)
+    \item Resource Records (RR)
+    \item FQDN, with a trailing dot at the end
+    \begin{itemize}
+        \item For example: `www.example.com.'
+        \item \url{http://www.dns-sd.org/TrailingDotsInDomainNames.html}
+    \end{itemize}, 
+    \item 2 types of DNS queries:
+    \begin{itemize}
+        \item Iterative queries: the DNS server will not go and fetch the complete answer for your query but will give back a referral to other DNS server’s, which might have the answer.
+        \item Recursive queries: queries in which the DNS server, who received your query, will do all the job of fetching the answer and giving it back to you.
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Structure of a DNS packet}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dns-structure.png}
+    \caption{Structure of a DNS packet}
+\end{figure}
+
+\subsubsection{DNS Records}
+
+\begin{itemize}
+    \item Convert hostnames into IP-address = \textbf{A-record}
+    \item Convert IP address into hostname = \textbf{PTR-record}
+    \item What server does e-mail for this domain = \textbf{MX-record}
+    \item Anti-SPAM = \textbf{SPF-record} (using a specifically formatted TXT-record)
+    \item What server does DNS for the domain = \textbf{NS-record}
+    \item Alias of another A-record = \textbf{CNAME}
+\end{itemize}
+
+\subsection{DNS in Debian GNU/Linux}
+
+\subsubsection{DNS Client}
+
+\begin{itemize}
+    \item Using the `dig' command, you can query DNS servers
+    \item There are many parameters to filter/change the query:
+    \begin{itemize}
+        \item dig ns www.nmct.be $\Rightarrow$ query only NS-records
+        \item +norecurse $\Rightarrow$ don't use recursive queries
+        \item You can query a specific DNS server: dig @ns1.example.com www.example.com
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dig1.png}
+    \caption{dig www.nmct.be}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dig2.png}
+    \caption{dig ns www.nmct.be $\Rightarrow$ query NS-records}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dig3.png}
+    \caption{dig +norecurse @192.168.20.254 www.mct.be}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dig5.png}
+    \caption{dig @ns1.howest.be www.howest.be $\Rightarrow$ query a specific DNS server}
+\end{figure}
+
+\subsubsection{DNS Server}
+
+The standard, most popular DNS server is \textbf{Bind}
+
+\begin{minted}{bash}
+# install the necessary bind packages
+sudo apt install bind9 bind9utils bind9-doc
+
+cat /etc/bind/db.root
+
+# activate the bind
+/etc/default/bind9
+    OPTIONS="-4 -u bind"
+
+# configuration
+/etc/bind/named.conf.local 
+    zone "example.com" {
+        type master;
+        file "/etc/bind/zones/example.com";
+    };
+
+    zone "20.168.192.in-addr.arpa" {
+        type master;
+        file "/etc/bind/zones/reverse/rev.20.168.192";
+    };
+
+\end{minted}
+
+
+\begin{minted}{bash}
+# create a zone file
+sudo mkdir -p /etc/bind/zones/reverse
+
+# contents of a zone file:
+/etc/bind/zones/example.com
+    ;
+    ; BIND data for example.com
+    ;
+    $TTL 3h
+    @       IN      SOA     ns1.example.com. admin.example.com. (
+                            1       ; SERIAL
+                            3h      ; Refresh
+                            1h      ; Retry
+                            1w      ; Expire
+                            1h )    ; Minimum
+    ;
+    @       IN      NS      ns1.example.com.
+    @       IN      NS      ns2.example.com.
+
+    example.com.      IN      A       192.168.20.30
+    ns1                     IN      A       192.168.20.30
+    ns2                     IN      A       192.168.20.31
+    www                     IN      CNAME   example.com.
+    ftp                     IN      CNAME   example.com.
+\end{minted}
+
+\begin{minted}{bash}
+# create a reverse zone file
+sudo mkdir -p /etc/bind/zones/reverse
+
+# contents of a reverse zone file:
+/etc/bind/zones/reverse/rev.20.168.192
+    ;
+    ; BIND reverse file for 20.168.192.in-addr.arpa
+    ;
+    $TTL    604800
+    @       IN      SOA     ns1.example.com. admin.example.com. (
+                                    1       ; Serial
+                                    3h      ; Refresh
+                                    1h      ; Retry
+                                    1w      ; Expire
+                                    1h )    ; Minimum
+    ;
+    @       IN      NS      ns1.example.com.
+    @       IN      NS      ns2.example.com.
+
+    38      IN      PTR     example.com.
+\end{minted}
+
+
+\subsection{3 useful tips}
+
+\subsubsection{Asynchronous routing and SPI}
+
+Be careful with asynchronous routing and Stateful Packet Inspection
+
+\begin{itemize}
+    \item SYN arrives through side A
+    \item SYN, ACK leaves through side B
+    \item ACK arrives through side A
+\end{itemize}
+
+\subsubsection{Make brute force on your SSH-daemon harder}
+
+\begin{minted}{bash}
+iptables -A INPUT -s 192.168.20.0/24 -d 192.168.20.201/32 
+    -i eth0 -p tcp -m tcp --dport 22 -j ACCEPT
+
+iptables -A INPUT -i eth0 -p tcp -m tcp --dport 22 
+    -m state --state NEW -m recent --update --seconds 60 --hitcount 4 
+    --name DEFAULT --mask 255.255.255.255 --rsource -j DROP
+\end{minted}
+
+\subsubsection{DansGuardian}
+
+\begin{itemize}
+    \item Software designed to control which websites users can access
+    \item It also includes virus filtering and usage monitoring features
+    \item \url{https://en.wikipedia.org/wiki/DansGuardian}
+\end{itemize}
+
+\section{Webserver \& Loadbalancer}
+\subsection{Apache}
+
+Apache is not just a webserver: Apache is a gigantic software project with:
+
+\begin{itemize}
+    \item 28 categories
+    \item 185 individual projects
+    \item One of which is `HTTP server' (aka httpd)
+    \item \url{https://www.apache.org/index.html#projects-list}
+    \item \url{http://httpd.apache.org/}
+    \item Apache has its own license 
+\end{itemize}
+
+\subsubsection{History}
+
+\begin{itemize}
+    \item 1989 
+    \begin{itemize}
+        \item Tim Berners-Lee writes a proposal for an `information management system'
+        \item Together with Belgian Robert Cailliau
+        \item HyperText Transfer Protocol (HTTP)
+        \item Founder of websites on the internet
+    \end{itemize}
+    \item Early 1990s
+    \begin{itemize}
+        \item World Wide Web is gradually emerging
+    \end{itemize}
+    \item 1995: many dissatisfied with the quality of the existing web servers
+    \begin{itemize}
+        \item Student projects, no real commercial webservers yet
+        \item An alliance of programmers decides to create a web server themselves
+    \end{itemize}
+\end{itemize}
+
+Because Apache was a gathering of work by many, there were a lot of `holes' in the code
+
+\begin{itemize}
+    \item Many `patches' had to be released to close those `holes'
+    \item Hence the name = A patchy webserver
+\end{itemize}
+
+\subsubsection{Apache modules}
+
+Apache has a modular design
+
+\begin{itemize}
+    \item Extra functionality wanted $\Rightarrow$ load module
+    \begin{itemize}
+        \item mod\_proxy
+        \item mod\_rewrite
+        \item mod\_ssl
+        \item \dots
+        \item \url{https://httpd.apache.org/docs/2.4/mod/}
+    \end{itemize}
+\end{itemize}
+
+\begin{minted}{bash}
+# get list of currently loaded modules
+apache2ctl -M
+\end{minted}
+
+Which modules are enabled on your system?
+
+\begin{minted}{bash}
+/etc/apache2/mods-enabled/
+# this is full of symbolic links
+# don't change these links, modules are enabled/disabled with commands
+a2enmod
+a2dismod
+\end{minted}
+
+\subsubsection{File structure}
+
+System-wide host-specific configuration files: /etc/apache2/
+
+\begin{itemize}
+    \item Configuration
+    \begin{itemize}
+        \item conf-available
+        \item conf-enabled
+    \end{itemize}
+    \item Modules
+    \begin{itemize}
+        \item mods-available
+        \item mods-enabled
+    \end{itemize}
+    \item Sites
+    \begin{itemize}
+        \item sites-available
+        \item sites-enabled
+    \end{itemize}
+\end{itemize}
+
+DocumentRoot = /var/www/html
+
+\subsubsection{Multiple websites on 1 server: possible?}
+
+\begin{itemize}
+    \item Using VirtualHosts
+    \item Every VirtualHost has a DocumentRoot
+    \begin{itemize}
+        \item = The folder containing the website's files
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Basic Authentication}
+
+Using 2 files:
+
+\begin{itemize}
+    \item .htaccess
+    \item .htpasswd
+\end{itemize}
+
+
+\subsection{Intermezzo: Loadbalancing algorithms}
+
+3 important load-balancing algorithms:
+
+\begin{itemize}
+    \item Round-robin
+    \item Least connections
+    \item Source
+\end{itemize}
+
+\subsubsection{Round-robin (RR)}
+
+= Alternate between each backend server
+
+Example with 3 servers:
+
+\begin{itemize}
+    \item 1st request goes to server 1
+    \item 2nd request goes to server 2
+    \item 3rd request goes to server 3
+    \item 4th request goes to server 1
+    \item 5th request goes to server 2
+    \item 6th request goes to server 3
+    \item \dots
+\end{itemize}
+
+Advantages:
+
+\begin{itemize}
+    \item Proportional distribution
+    \item Very simple implementation
+\end{itemize}
+
+Drawbacks:
+
+\begin{itemize}
+    \item Does not take capacity of backend server into account
+    \item Does not take backend server load into account
+\end{itemize}
+
+\textbf{Weighted Round-robin}
+
+\begin{itemize}
+    \item Solution for `Does not take capacity of backend server into account'
+    \item Every backend server gets a weight
+    \item Weight represents capacity
+    \item Higher weight = backend server can process more connections
+    \item \underline{No} solution for `Does not take backend server load into account'
+\end{itemize}
+
+\subsubsection{Least connections}
+
+Not all connections are equal:
+
+\begin{itemize}
+    \item Short visits
+    \item Long-term visits
+    \item Visits with little server load
+    \item Visits with a lot of taxes
+    \item \dots
+\end{itemize}
+
+Backend server with the least number of active connections receives the new request
+
+\begin{itemize}
+    \item Ensures a more balanced distribution
+    \item \underline{Partial} solution for `Does not take backend server load into account'
+\end{itemize}
+
+\textbf{Weighted Least connections}
+
+\begin{itemize}
+    \item Every backend server gets a weight
+    \item Weight represents capacity
+    \item Higher weight = backend server can process more connections
+\end{itemize}
+
+\subsubsection{Source}
+
+\begin{itemize}
+    \item Choice of backend server is determined by hash of source IP
+    \item Ensures that a user always ends up on the same server
+\end{itemize}
+
+\subsubsection{Levels of loadbalancing}
+
+\begin{itemize}
+    \item No loadbalancing
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\textwidth]{loadbalancing1.png}
+    \end{figure}
+    \item Level 4 loadbalancing
+    \begin{itemize}
+        \item Simples form of loadbalancing
+        \item IP+port combination
+    \end{itemize}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\textwidth]{loadbalancing2.png}
+    \end{figure}
+    \item Level 7 loadbalancing
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\textwidth]{loadbalancing3.png}
+    \end{figure}
+\end{itemize}
+
+
+
+
+\subsection{HAProxy}
+
+HAProxy is free, open-source software that provides a high availability load balancer
+and proxy server for TCP and HTTP-based applications that spreads requests across multiple servers
+
+Used by:
+
+\begin{itemize}
+    \item GitHub
+    \item Imgur
+    \item Instagram
+    \item Twitter
+    \item \dots
+\end{itemize}
+
+Configuration manual: \url{http://www.haproxy.org/download/2.0/doc/configuration.txt}
+
+\subsubsection{Access Control Lists (ACLs)}
+
+The ACLs test a certain condition, and link an action to that condition. Examples:
+
+\begin{itemize}
+    \item pattern matching (regex)
+    \item number of connections
+    \item \dots
+\end{itemize}
+
+\begin{minted}{bash}
+# create an ACL that matches when the path of a request starts with /blog
+# Example: http://yourdomain.com/blog/blog-entry-1
+# the acl's name is url_blog
+acl url_blog path_beg /blog
+\end{minted}
+
+You can send these actions to a backend
+
+\subsubsection{Backend}
+
+= Term for `the underlying web servers'
+
+In our case: 2 webservers with apache httpd:
+
+\begin{itemize}
+    \item 192.168.X.20
+    \item 192.168.X.30
+\end{itemize}
+
+Backend, in its simplest form, consists of:
+
+\begin{itemize}
+    \item Chosen loadbalancing algorithm
+    \item List of webservers and portnumbers
+\end{itemize}
+
+Example configuration:
+
+\begin{minted}{bash}
+backend web-backend
+    balance roundrobin
+    server web1 web1.yourdomain.com:80 check
+    server web2 web2.yourdomain.com:80 check
+
+backend blog-backend
+    balance roundrobin
+    mode http
+    server blog1 blog1.yourdomain.com:80 check
+    server blog1 blog1.yourdomain.com:80 check
+\end{minted}
+
+\subsubsection{Frontend}
+
+Specifies how requests should be forwarded to backends
+
+\begin{itemize}
+    \item Frontend consists in its simplest form of:
+    \begin{itemize}
+        \item Collection of IP addresses and port numbers
+        \item ACLs
+        \item `use\_backend' rules (determines which backend to use, based on ACLs)
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Stickyness}
+
+Some applications require that a user always connect to the same backend server.
+
+\begin{itemize}
+    \item This is called `sticky sessions'
+    \item Parameter appsession in haproxy is used for this
+\end{itemize}
+
+\subsubsection{Health Checks}
+
+\begin{itemize}
+    \item Haproxy must know which backend server can handle all requests
+    \item Simplest way: try 3-way open to the TCP port of each of the backend servers
+    \item More advanced way: request web page of backend server, calculate hash, compare hash with hash of "OK" page
+    \begin{itemize}
+        \item Specific health check page that checks whether the application is still OK
+    \end{itemize}
+\end{itemize}
+
+Server is alive $\Rightarrow$ is still participating in the load balancing
+
+Server is dead? $\Rightarrow$ is automatically removed from load balancing
+
+\subsubsection{High availability vs Load balancing}
+
+High Availability
+
+\begin{itemize}
+    \item The goal is to \textbf{maximize availability}, usually by setting up different systems that can fulfill the same function
+\end{itemize}
+
+Load Balancing
+
+\begin{itemize}
+    \item The goal is to \textbf{distribute the load} between different systems that fulfill the same function
+\end{itemize}
+
+Combination of HA and LB is possible
+
+\subsubsection{Installation haproxy}
+
+\begin{minted}{bash}
+# install the haproxy package
+sudo apt install haproxy
+
+# enable haproxy
+sudo vim /etc/default/haproxy
+
+# show haproxy version info
+sudo haproxy -v
+\end{minted}
+
+\subsubsection{Configuration haproxy}
+
+\begin{minted}{bash}
+# this file contains configuration for frontend, backend and ACLs
+sudo vim /etc/haproxy/haproxy.cfg
+\end{minted}
+
+\begin{minted}{bash}
+frontend resume_site_front
+    bind 192.168.X.10:80
+    stats uri /haproxy?stats
+    default_backend resume_site_back
+ 
+ backend resume_site_back
+    balance roundrobin
+    server webserver1 192.168.X.20:80 check
+    server webserver2 192.168.X.30:80 check
+\end{minted}
+
+\subsubsection{Start haproxy}
+
+\begin{minted}{bash}
+sudo systemctl restart haproxy
+\end{minted}
+
+Navigate to http://192.168.\textbf{X}.10/\textbf{haproxy?stats}
+
+Security issues: do not enable this for remote connections (information disclosure)
+
+\subsubsection{Check the operation of the loadbalancer}
+
+\begin{enumerate}
+    \item On both webservers: 
+\begin{minted}{bash}
+    # use this command to 'sniff' traffic
+    tcpdump -flni any port 80
+\end{minted}
+    \item Browse to your public IP
+\end{enumerate}
+
+On both web servers, you can see some continuous movement
+
+\begin{itemize}
+    \item But we only requested our webpage once?
+    \item This is because we do a check (see configuration) to check if the servers are alive
+\end{itemize}
+
+\subsubsection{General parameters}
+
+httplog:
+
+\begin{itemize}
+    \item Enable logging of HTTP request, session state and timers
+    \item By default: the log output format is very poor: it only contains the souce and destination addresses and the instance name
+    \item By specifying `option httplog', each log line turns into a much richer format
+\end{itemize}
+
+httpclose:
+
+\begin{itemize}
+    \item Enable or disable passive HTTP connection closing
+\end{itemize}
+
+abortonclose:
+
+\begin{itemize}
+    \item Enable or disable early dropping of aborted requests pending in queues.
+\end{itemize}
+
+httpchk:
+
+\begin{itemize}
+    \item Enable HTTP protocol to check on the servers health
+    \item Default: layer 4 health check
+    \item `option httpchk' => layer 7 health check
+    \item When "option httpchk" is specified, a complete HTTP request is sent once the TCP connection is established, 
+        and responses 2xx and 3xx are considered valid, while all other ones indicate a server failure, 
+        including the lack of any response.
+\end{itemize}
+
+\subsubsection{Health checks: parameters}
+
+inter:
+
+\begin{itemize}
+    \item Interval (in seconds) between 2 consecutive health checks
+    \item Default: 2 seconds
+\end{itemize}
+
+fastinter:
+
+\begin{itemize}
+    \item Interval (in seconds) between 2 consecutive health checks when state of backend server is `transitionally up' or `transitionally down'
+    \item Default: value of inter
+\end{itemize}
+
+downinter:
+
+\begin{itemize}
+    \item Interval when backend server is down
+    \item Default: value of inter
+\end{itemize}
+
+fall:
+
+\begin{itemize}
+    \item Number of consecutive failed health checks before a backend server gets status DOWN
+    \item Default: 3
+\end{itemize}
+
+rise:
+
+\begin{itemize}
+    \item Number of consecutive succesful health checks before a backens server gets status UP
+    \item Default: 2
+\end{itemize}
+
+\subsection{3 tips}
+
+\subsubsection{Limit the number of simultaneous connections per host}
+
+\begin{minted}{bash}
+iptables -A INPUT -p tcp --syn --dport 80 -m connlimit --connlimit-above 15 
+    --connlimit-mask 32 -j REJECT --reject-with tcp-reset
+\end{minted}
+
+\subsubsection{Transparent proxy with iptables and squid}
+
+Iptables: forward to a squid proxy
+
+\begin{minted}{bash}
+iptables -t nat -A PREROUTING -i ens34 -s 192.168.45.0/24 
+    -p tcp --dport 80 -j REDIRECT --to-port 3128
+
+# Squid listens on 3128/TCP
+\end{minted}
+
+\subsubsection{Conntrack -L}
+
+Conntrack = userspace tool to interact with kernelspace connection tracking module
+
+\begin{minted}{bash}
+# give a list of current connections being `tracked'
+conntrack -L
 \end{minted}
 
 
