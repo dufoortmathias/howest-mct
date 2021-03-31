@@ -2378,5 +2378,356 @@ In de controller injecteren we nu de IVaccinationService en niet meer de Reposit
     \item Welke zijn de drie manieren om services te registeren in .NET Core?
 \end{itemize}
 
+\section{Testing}
+
+\subsection{Probleemstelling}
+
+\begin{itemize}
+    \item Hoe groter het project hoe meer werk om te testen
+    \item Gevolg is dat we dit durven vergeten
+    \item Bij aanpassingen of uitbreidingen moet de bestaande code blijven werken
+    \item We willen geen werkende code kapot maken door aanpassingen of uitbreidingen
+    \item We moeten systeem hebben waar we kunnen op vertrouwen en die automatisch onze code gaat testen
+\end{itemize}
+
+\subsection{Waarom testing?}
+
+\begin{itemize}
+    \item We willen zeker zijn dat de code werkt onder verschillende omstandigheden, met verschillende input
+    \item Kwaliteit code verhogen
+    \item Verplicht code opdelen in kleine stukken die we kunnen testen
+    \item Je bent verplicht na te denken over de project requirements
+    \item Automatisch ga je meer error handling in je code gaan schrijven
+    \item Gemoedsrustig bij refactoring code als je weet dat er test aanwezig zijn
+\end{itemize}
+
+\subsection{2 soorten}
+
+\begin{itemize}
+    \item Manueel
+    \item Automatisch
+\end{itemize}
+
+\subsubsection{Manual testing}
+
+\begin{itemize}
+    \item Persoon zal manueel testing uitvoeren
+    \begin{itemize}
+        \item Door de applicatie navigeren
+        \item Data invullen in de invoerschermen
+        \item Controleren of dit voldoet aan de eisen
+    \end{itemize}
+    \item Dit is zeer duur
+    \item Foutgevoelig: mensen vergeten dingen
+    \item Je moet zeer goede scenario's hebben en deze moeten up to date zijn
+    \item We doen dit als laatste stap in project, als validatie of acceptatie van de klant
+\end{itemize}
+
+\subsubsection{Automated test}
+
+\begin{itemize}
+    \item Machines gaan testscripts uitvoeren
+    \item Dit gaat van het testen van methodes tot volledige user interfaces
+    \item Dit is goedkoper en sneller
+    \item Toch vraagt dit ook goed geschreven test scripts en scenario’s
+    \item Grote voordeel is dat we het automatisch kunnen laten uitvoeren
+    \item We kunnen dit opnemen in een CI/CD pipeline
+\end{itemize}
+
+\subsection{Types tests}
+
+\begin{itemize}
+    \item \textbf{Unit tests}
+    \item \textbf{Integration tests}
+    \item Functional tests
+    \item Acceptance tests
+    \item Performance test
+    \item Smoke test
+    \item Regression test
+    \item Stress test
+\end{itemize}
+
+\subsubsection{Unit test}
+
+\begin{itemize}
+    \item Kleine compacte test
+    \item Test heel kleine eigenschappen van de applicatie
+    \item Dit zijn meestal methodes die we testen
+    \item Heel eenvoudige te automatisteren
+    \item Zeer snel uit te voeren door de developer
+    \item Bv.: bereken de prijs van een parkeerticket
+\end{itemize}
+
+\subsubsection{Integration test}
+
+\begin{itemize}
+    \item Een test die verschillende onderdelen samen zal testen
+    \item Werkt de code goed samen met de database ?
+    \item Werken de verschillende microservices samen ?
+    \begin{itemize}
+        \item Bv: spreken we de externe API correct aan?
+    \end{itemize}
+    \item Complexer om op te zetten
+    \item Trager bij uitvoeren
+    \item Maakt soms gebruik van dummy databases of in memory databases
+\end{itemize}
+
+\subsubsection{Functional test}
+
+\begin{itemize}
+    \item Controleren van de business requirements van de applicatie, doet de applicatie wat de klant vraagt ?
+    \item Controleren van wat we inputten en wat er uitkomt, stappen er tussen en hoe het werkt is niet belangrijk
+    \item Zal meestal manueel verlopen, naar het einde van het project toe
+    \item Goede requirements belangrijk
+\end{itemize}
+
+\subsubsection{Acceptance tests}
+
+\begin{itemize}
+    \item Gaat verder dan functional test, we testen ook requirements maar nog aantal extra zaken
+    \item Volledig applicatie moet up and running zijn
+    \item Zo dicht mogelijk naar productie omstandigheden testen
+    \item Is de performance goed om op te leveren ?
+    \item Meestal laatste test voor oplevering
+\end{itemize}
+
+\subsubsection{Performance test}
+
+\begin{itemize}
+    \item Testen van applicatie onder heavy load
+    \item Testen van stabiliteit, schaalbaarheid
+    \item Functioneel is niet belangrijk, wel hoever kunnen we het systeem duwen tot het onder gaat
+    \item Men kan dit automatisteren
+\end{itemize}
+
+\subsubsection{Smoke test}
+
+\begin{itemize}
+    \item Eerste test na aanpassing om te beslissen of ze verder gaan testen of niet
+    \item Soms ook \textbf{intake test} genoemd
+\end{itemize}
+
+\subsubsection{Regression test}
+
+\begin{itemize}
+    \item Na het doen van aanpassingen testen of dingen die werkten voor de aanpassingen nog steeds werken
+\end{itemize}
+
+\subsubsection{Stress test}
+
+\begin{itemize}
+    \item Testen hoe systeem zal reageren als we veel meer load toepassen dan wat moet volgens de requirements
+    \item Bv.: storage en databases extreem belasten
+\end{itemize}
+
+\subsection{Test Frameworks}
+
+Er is ondersteuning voor verschillende test frameworks:
+
+\begin{itemize}
+    \item MS Test
+    \item Nunit
+    \item \textbf{XUnit}
+    \item vApus (Stress Testing framework van Sizing Servers Lab (Howest))
+\end{itemize}
+
+\subsubsection{XUnit}
+
+\begin{minted}{bash}
+dotnet new xunit --name <naam-test-project>
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{xunit.png}
+    \caption{In het test project moeten we referentie leggen naar onze API}
+\end{figure}
+
+\subsection{Unit test in detail}
+
+\begin{itemize}
+    \item Testen van één klein stukje code
+    \item We weten wat we als uitkomst verwachten
+    \item We testen ook de mogelijk dingen die kunnen fout lopen
+    \item We schrijven eerst code en dan test
+    \item We schrijven eerst de test en dan de code (test driven development)
+\end{itemize}
+
+\subsubsection{Voorbeeld}
+
+\begin{itemize}
+    \item Unit test zonder parameter
+    \item {[Fact]} Attribuut boven de test methode
+    \item Assert zal het resultaat controleren
+    \item Via \textbf{dotnet test} commando project uitvoeren
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{unit-test1.png}
+    \caption{Voorbeeld}
+\end{figure}
+
+\begin{itemize}
+    \item Tweede manier van testen via {[Theory]}
+    \item Meerdere input data voor zelfde test
+    \item Resultaat altijd zelfde (Assert.True)
+    \item Via {[InlineData]} waarden doorgeven
+    \item Zal automatisch meerdere tests genereren
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{unit-test2.png}
+    \caption{}
+\end{figure}
+
+\begin{itemize}
+    \item Assert.True
+    \item Assert.False
+    \item Assert.Contains
+    \item Assert.Equals
+    \item \dots
+    \item Assert zal check doen of waarde correct is en al dan niet de test doen lukken of mislukken
+\end{itemize}
+
+\subsubsection{Exceptions testen}
+
+\begin{itemize}
+    \item Ontstaan er exceptions bij foutieve data?
+    \item Ontstaat de juiste exception?
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{unit-test3.png}
+    \includegraphics[width=0.4\textwidth]{unit-test4.png}
+    \caption{Voorbeeld}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dotnet-test.png}
+    \caption{dotnet test zal ons project starten en testen}
+\end{figure}
+
+\subsection{Integration test in detail}
+
+Van controller $\Rightarrow$ tot in de database
+
+\begin{itemize}
+    \item Controller
+    \item Service
+    \item Repository
+    \item Database
+\end{itemize}
+
+We testen dus de volledige flow $\Rightarrow$ trager
+
+\subsubsection{Testen van de volledige flow}
+
+\begin{itemize}
+    \item We moeten dus onze applicatie (API) opstarten in het Test project
+    \item We gaan deze applicatie delen over de verschillende tests
+    \begin{itemize}
+        \item \textbf{IClassFixture} gebruiken om applicatie te delen
+        \item We maken klasse die erft van \textbf{IClassFixture} met als parameter onze \textbf{StartUp}
+        \item \textbf{WebApplicationFactory} zal \textbf{TestServer} opstarten
+        \item In de \textbf{ctor} moeten we onze StartUp meegeven via \textbf{WebApplicationFactory}
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{integration-test1.png}
+\end{figure}
+
+
+\subsubsection{Toevoegen van een test}
+
+\begin{itemize}
+    \item \textbf{\_client} zal HTTP Request aanroepen via URL
+\begin{minted}{csharp}
+response.StatusCode.Should().Be(HttpStatusCode.OK)
+\end{minted}
+    \begin{itemize}
+        \item Fluent assertion zal controleren of we een OK (200) terugkrijgen
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{integration-test2.png}
+\end{figure}
+
+
+\begin{itemize}
+    \item We deserialiseren de response.Content
+    \item Via fluent assertions controleren we of er 5 inzitten
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{integration-test3.png}
+    \includegraphics[width=0.5\textwidth]{integration-test4.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{WebApplicationFactory}
+
+\begin{itemize}
+    \item WebApplicationFactory $\Rightarrow$ opstarten test server met ons project
+    \item We kunnen startup overriden $\Rightarrow$ service uitpluggen
+    \item We erven van WebApplicationFactory<Startup>
+    \item Daarna kunnen we ConfigureWebHost overriden en services registreren specifiek voor test project
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{integration-test5.png}
+\end{figure}
+
+\subsection{Test driven development}
+
+\begin{itemize}
+    \item Tot nu toe schrijven we onze code en daarna de test die we nodig hebben
+    \item Bij Test Driven Development werken we andersom
+    \item We schrijven een reeks testen die falen
+    \item Als een test lukt, doen we iets verkeerd omdat we nog geen code geschreven hebben $\Rightarrow$ herschrijven tot de test faalt
+    \item Daarna schrijven we onze programmalogica tot onze testen niet meer falen
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{test-driven-development.png}
+    \caption{Overzicht TDD}
+\end{figure}
+
+\subsection{Code Coverage}
+
+\begin{itemize}
+    \item Code coverage/Test Coverage wil zeggen de hoeveelheid source code die getest zal worden door alle geschreven test
+    \item Hoe hoger de test coverage hoe meer source code van het programma getest zal worden door test wat zou moeten resulteren in minder bugs
+    \item We maken hiervoor terug gebruik van opensource framework
+\end{itemize}
+
+\subsubsection{Wat zal Code Coverage o.a. proberen te bepalen?}
+
+\begin{itemize}
+    \item \textbf{Function Coverage:} hoevel functies in de source code worden aangroepen door test
+    \item \textbf{Branch Coverage:} hoeveel if/else statements worden getest en welke paden (true of false)
+    \item \textbf{Line Coverage:} hoeveel lijnen source code worden getest
+\end{itemize}
+
+\subsection{Wat is belangrijk?}
+
+\begin{itemize}
+    \item Waarom testing?
+    \item Welke testen zijn er en wanneer gebruiken we deze
+    \item Wat is \textbf{test driven development}?
+    \item Je moet \textbf{unittests} en \textbf{integrationtest} kunnen schrijven
+\end{itemize}
+
+
 
 \end{document}
