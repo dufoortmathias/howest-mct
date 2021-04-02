@@ -4968,5 +4968,204 @@ print(type(result))
 > <class 'generator'>
 \end{minted}
 
+\section{Decorators}
+
+\subsection{Doelstelling}
+
+\begin{itemize}
+    \item Gebruik van functies als objecten
+    \item Gebruik van decorators binnen python
+    \item Tips \& trics
+\end{itemize}
+
+\subsection{Vooraf: functies zijn ook objecten}
+
+Functies zijn ook objecten. Hierdoor kunnen ze dus ook in een datastructuur (bv. list) bewaard worden.
+Dus kunnen functies als parameter doorgegeven worden!
+
+Ze kunnen dus ook aangemaakt worden door andere functies en zelfs teruggegeven worden.
+
+\subsection{Wat?}
+
+Een \textbf{decorator} is een:
+
+\begin{itemize}
+    \item functie dat een andere functie X aanvaardt
+    \item het breidt de functionaliteit van deze functie X uit
+    \item zonder expliciet deze functe X te wijzigen
+\end{itemize}
+
+\subsection{Uitbreiden van een functie}
+
+Doel: breid bestaande functie(s) met extra functionaliteit uit
+
+\subsubsection{Via de oude manier}
+
+\begin{minted}{python}
+def startstop(func):
+    def wrapper(list):
+        print("starting...")
+        func(list)
+        print("finished!")
+    return wrapper
+
+def mijn_methode1(list):
+    print(f"Som berekenen van de list {list}")
+    print(f"De som is: {sum(list)}")
+\end{minted}
+
+Werkwijze: geef de functie als parameter door. Verwerk deze in een nieuwe methode, en geef die laatste terug.
+
+\begin{minted}{python}
+mijn_methode_uitgebreid = startstop(mijn_methode1)
+mijn_methode_uitgebreid([11, 22, 33, 44])
+\end{minted}
+
+\subsubsection{Via decorators}
+
+Via decorators kan de bovenstaande code korter en efficiënter geschreven worden:
+
+\begin{minted}{python}
+def startstop(func):
+    def wrapper(list):
+        print("starting...")
+        func(list)
+        print("finished!")
+    return wrapper
+
+@startstop
+def mijn_methode1(list):
+    print(f"Som berekenen van de list {list}")
+    print(f"De som is: {sum(list)}")
+
+
+mijn_methode1([11, 22, 33, 44])
+\end{minted}
+
+\subsection{Toepassingen}
+
+
+\subsubsection{Uitvoeringstijd}
+
+\begin{itemize}
+    \item Via een decorator meet men efficiënt de uitvoeringstijd van methode(s)
+\end{itemize}
+
+\begin{minted}{python}
+def measure_time(func):
+    def wrapper():
+        starttime = time.perf_counter()
+        func()
+        endtime = time.perf_counter()
+        print(f"Time needed: {endtime-starttime} seconds")
+    return wrapper
+
+@measure_time
+def calculate_sum():
+    result = sum([i ** 2 for i in range(1000000)])
+    print(f"Sum: {result}")
+
+calculate_sum()
+\end{minted}
+
+\subsubsection{Sleep}
+
+Decorators kunnen ook gecombineerd worden
+
+\begin{minted}{python}
+def sleep(func):
+    def wrapper():
+        time.sleep(5)
+        return func()
+    return wrapper
+
+@measure_time
+@sleep
+def calculate_sum():
+    result = sum([i ** 2 for i in range(1000000)])
+    print(f"Sum: {result}")
+
+calculate_sum()
+\end{minted}
+
+\section{Level up your python code}
+
+\subsection{Enumerate}
+
+Gebruik enumerate in plaats van range(len()) als je naast het item uit een lijst 
+ook de positie wenst te gebruiken
+
+\begin{minted}{python}
+names = ['Nik', 'Jane', 'Katie', 'Jim', 'Luke']
+
+# using range(len()):
+for i in range(len(names)):
+    print(i, names[i])
+
+# using enumerate:
+for index, name in enumerate(names):
+    print(index, name)
+\end{minted}
+
+\subsection{Dictionary: gebruik get()}
+
+\begin{itemize}
+    \item Met mijn\_dictionary['key'] kan je een waarde uit een dictionary halen
+    \item Maar als de key niet bestaat gooit Python een error
+    \item Met mijn\_dictionary.get('key') geeft Python None weer als de key niet bestaat
+\end{itemize}
+
+\begin{minted}{python}
+nik = {
+    'age': 32,
+    'gender': 'male',
+    'employed': True
+}
+
+# throws an error
+print(nik['location'])
+
+# returns None
+print(nik.get('location'))
+\end{minted}
+
+\subsection{Zip om meerdere lists gelijktijdig te overlopen}
+
+\begin{itemize}
+    \item zip() laat toe om meerdere collecties samen te overlopen
+    \item De zip-methode geeft een zip-object terug dat je in een list/tuple/dict kan omzetten
+\end{itemize}
+
+
+\begin{minted}{python}
+names = ['Nik', 'Jane', 'Katie', 'Jim', 'Luke']
+ages = [32, 28, 37, 52]
+gender = ['male', 'female', 'female', 'male']
+
+for_loop = []
+for i in range(len(names)):
+    for_looped.append((names[i], ages[i], gender[i]))
+print(for_looped)
+
+# zipping through lists with zip()
+zipped = zip(names, ages, gender)
+zipped_list = list(zipped)
+print(zipped_list)
+\end{minted}
+
+\subsection{Alternatieven voor dict/list/set/tuple}
+
+\begin{itemize}
+    \item \url{https://docs.python.org/3/library/collections.html#module-collections}
+    \item \url{https://coderzcolumn.com/tutorials/python/collections-in-python}
+\end{itemize}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{collections.png}
+    \caption{}
+\end{figure}
+
 
 \end{document}
