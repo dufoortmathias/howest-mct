@@ -3057,10 +3057,16 @@ Hou rekening met de affiniteit in plaats van de absolute locatie.
 \subsection{Self organizing maps}
 
 \begin{itemize}
-    \item Ook `Kohonen Maps' genoemd
+    \item Ook `Kohonen Maps' genoemd (=genoemd naar een Finse professor)
     \item Competitie-gebaseerde clustering
-    \item TODO
+    \item We spannen een net over (meestal) twee-dimensionale data
+    \item Voor elk datapunt kijken we welk knooppunt van het net het dichtst bij ligt
+    \item We verplaatsen elk datapunt naar dat dichtstbijzijnde knooppunt 
+    \item We doen dit herhaaldelijk $\Rightarrow$ clustering
+    \item Visualisatie: \\ \url{https://en.wikipedia.org/wiki/Self-organizing_map#/media/File:TrainSOM.gif}
 \end{itemize}
+
+\url{https://en.wikipedia.org/wiki/Self-organizing_map}
 
 \begin{figure}[H]
     \centering
@@ -3070,7 +3076,177 @@ Hou rekening met de affiniteit in plaats van de absolute locatie.
     \caption{}
 \end{figure}
 
-\subsection{Dimensionality reduction}
+\section{Dimensionality reduction}
+
+\subsection{Wat?}
+
+Binnen de context van machine learning (en statistiek) staat \textbf{dimensionality reduction} voor
+het proces waarbij het aantal variabelen (features in een dataset) gereduceerd wordt naar een
+kleinere set van `principle variables'.
+
+Meest gebruikte algoritmes voor dimensionality reduction:
+
+\begin{itemize}
+    \item \textbf{Principle Component Analysis (PCA)} en Kernel PCA
+    \item Linear Discriminant Analysis (LDA)
+    \item Autoencoders
+    \item Missing Values Ratio
+    \item Low variance filter
+\end{itemize}
+
+\subsection{Waarom?}
+
+\begin{itemize}
+    \item The curse of dimensionality
+    \begin{itemize}
+        \item Wanneer het aantal feature zeer groot is, dan wordt het moeilijk om bepaalde algoritmes effectief te trainen
+        \item Bijvoorbeeld: clustering algoritmes
+    \end{itemize}
+    \item Visualisaties in 2D of 3D $\Rightarrow$ dimensie reduceren naar respectievelijk 2 of 3
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.3\textwidth]{dim-reduction-2d-3d.png}
+    \end{figure}
+    
+    \item Verwijderen van ruis
+    \item Datacompressie
+\end{itemize}
+
+\subsection{Toepassingen}
+
+\begin{itemize}
+    \item Document classification
+    \item Classificatie van genen (veel genen, weinig samples)
+    \item Gezichtsherkenning
+    \item Spraakherkenning
+    \item Handschriftherkenning
+    \item Compressie
+    \item Intrusion detection
+\end{itemize}
+
+\subsection{Principle Component Analysis (PCA)}
+
+Principal component analysis (PCA) is een wiskundige techniek om het aantal (mogelijks)
+gecorreleerde features te transformeren (te combineren) naar een kleiner aantal niet-gecorreleerde features
+die de principle components worden genoemd.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{pca1.png}
+    \caption{Voorbeeld}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{pca2.png}
+    \caption{We identificeren de 2 principle components}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{pca3.png}
+    \caption{We reduceren de data naar de grootste principle component}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pca4.png}
+    \caption{\url{http://setosa.io/ev/principal-component-analysis/}}
+\end{figure}
+
+\subsubsection{Voorbeeld aan de hand van de MNIST dataset}
+
+= dataset met zwart-wit afbeeldingen van getallen van 28x28 pixels
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{mnist.png}
+\end{figure}
+
+\begin{itemize}
+    \item De dimensie van 1 afbeelding (=aantal features) $= 28\cdot 28 = 784$
+    \item We moeten zoeken naar manier om deze afbeeldingen in een lagere dimensie voor te stellen
+\end{itemize}
+
+In Sklearn:
+
+\begin{minted}{python}
+# principle component analysis
+from sklearn.decomposition import PCA
+
+pca = PCA(n_components=10, svd_solver='full')
+pca.fit(X_train)
+# reduceren van de training- en testset
+X_train_pca = pca.transform(X_train)
+X_test_pca = pca.transform(X_test)
+
+# elke afbeelding in zowal training- als de testset is gereduceerd tot 10 features
+X_train_pca.shape
+> (30000, 10)
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{mnist-pca.png}
+    \caption{Visualisatie van de eerste 10 principle components}
+\end{figure}
+
+Stel dat voor een bepaalde afbeelding we volgende PCA-scores berekend hebben:
+
+\begin{minted}{bash}
+354.77; 143.18; -381.81; -620.98; 310.27; -489.44; -533.56; -232.51; -366.40; 64.69
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{mnist-pca2.png}
+    \caption{PCA-scores van een bepaalde afbeelding. We vermenigvuldigen elke PC met zijn respectieve PCA-score}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{mnist-pca3.png}
+    \caption{Reconstructie van de digit aan de hand van 10 principle components (in plaats van de originele 784 features)}
+\end{figure}
+
+\subsubsection{Kiezen van het aanal priciple components: verklaarde variantie}
+
+PCA zoekt de componenten die een zo groot mogelijke variantie in de dataset verklaren. 
+We willen zoveel mogelijk informatie overhouden na dimensionality reduction.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pca-variantie.png}
+    \caption{Het belang van elke principle component: hoeveel data kan er door een PC verklaard worden}
+\end{figure}
+
+\begin{itemize}
+    \item Rode curve = cumulatieve waarde
+    \item De eerste 16 components $\Rightarrow$ goed voor 60\% van de verklaarde variantie
+    \item $\Rightarrow$ 40\% gaat verloren
+    \item Makkelijk afleesbaar hoeveel PC's je nodig hebt voor bvb 90\% verklaarde variantie
+\end{itemize}
+
+
+\subsubsection{Face recognition}
+
+Bij face recogntion noemt men de principle components `Eigenfaces'
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{eigenfaces.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{eigenfaces2.png}
+    \caption{We beschrijven een gezicht als een gewogen som van Eigenfaces}
+\end{figure}
+
+
+
+
+
 
 
 \end{document}
