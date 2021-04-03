@@ -3149,9 +3149,8 @@ cat /etc/bind/db.root
 
 \end{minted}
 
-
 \begin{minted}{bash}
-# create a zone file
+# create a zones folder, and a zones/reverse folder
 sudo mkdir -p /etc/bind/zones/reverse
 
 # contents of a zone file:
@@ -3178,9 +3177,6 @@ sudo mkdir -p /etc/bind/zones/reverse
 \end{minted}
 
 \begin{minted}{bash}
-# create a reverse zone file
-sudo mkdir -p /etc/bind/zones/reverse
-
 # contents of a reverse zone file:
 /etc/bind/zones/reverse/rev.20.168.192
     ;
