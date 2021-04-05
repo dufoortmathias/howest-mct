@@ -2577,7 +2577,9 @@ Zo'n combinatie van verschillende decision trees (beslissingsbomen) noemen we ee
 
 \begin{itemize}
     \item We kiezen de klasse op basis van de meerderheid (=er wordt `gestemd')
-    \item Bagging is goed bij uitschieters
+    \item Als er 1 model overfitting doet (bvb: ten gevolge van ruis), zullen andere modellen dat misschien niet doen
+    \item Als je zo genoeg modellen traint haal je zo goed als alle ruis er uit
+    \item Bagging is daarom goed bij uitschieters
 \end{itemize}
 
 \subsubsection{De techniek van bagging}
@@ -2602,7 +2604,21 @@ Methode om de variantie te reduceren en overfitting te vermijden
     \includegraphics[width=0.5\textwidth]{bagging-random-forest-trees.png}
 \end{figure}
 
-Hyperparameters:
+\begin{itemize}
+    \item = Verschillende decision trees combineren tot 1 bos = 1 groot model
+    \item Dat moet niet noodzakelijk met pure enkel decision trees, je mag dat ook doen met andere classifiers zoals Logistic Regression
+    \item ExtraTrees = aangepaste versie van de Random Forest Trees
+    \begin{itemize}
+        \item = Extremely Randomized Trees
+        \item Werken niet met bags, maar met de volledige trainingset waar samples uit gehaald worden
+        \item Splits worden willekeurig gekozen
+        \item $\Rightarrow$ Entropy en Gini impurity hoef je niet uit te rekenen $\Rightarrow$ minder rekenwerk
+        \item Deze methode werkt goed met groot aantal bomen
+        \item Vaak minder goede accuracy dan andere methodes, maar werkt heel snel
+    \end{itemize}
+\end{itemize}
+
+\textbf{Hyperparameters:}
 
 \begin{itemize}
     \item \textbf{n\_estimators:} aantal bomen in het bos: meestal hoe meer hoe beter
@@ -2634,14 +2650,15 @@ Hyperparameters:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{boosting-principe.png}
-    \caption{}
+    \includegraphics[width=0.7\textwidth]{boosting-principe.png}
+    \caption{Single vs bagging vs boosting}
 \end{figure}
 
 \begin{itemize}
     \item Boosting zal zoals bagging meerdere decision trees overlopen
     \item Boosting zal dat in plaats van parallel, sequentieel doen
     \item Boosting modellen zijn heel gevoelig voor overfitting
+    \item Modellen kunnen minder snel getraind worden dan bij Bagging, omdat het vorige model moet wachten op 
     \item Er zijn meerdere vormen van Boosting
     \begin{itemize}
         \item Adaboost
@@ -2650,59 +2667,92 @@ Hyperparameters:
     \end{itemize}
 \end{itemize}
 
-\subsubsection{Conceptuele werking}
-
-\begin{itemize}
-    \item Je vertrekt opnieuw van de trainingsset, bv 1000 samples
-    \item Eerste stap = je vult zoals bij bagging een `bag' (bv opnieuw 1000 samples)
-    \item Via onder andere resampling kan je die opvullen
-    \item Je traint een model met de data uit die bag
-    \item TODO
-    \item Je traint een tweede model met de data waar de vorige modellen het slecht mee deden
-    \item Je blijft dit doen, tot je genoeg modellen hebt
-    \item Om de ensemble te doen ga je net zoals bagging majority voting toepassen
-\end{itemize}
-
 \subsubsection{Adaboost}
+
+= Adaptive boosting
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{adaboost.png}
-    \caption{}
+    \includegraphics[width=0.8\textwidth]{adaboost.png}
+    \caption{Werking Adaboost}
 \end{figure}
 
+We beginnen juist zoals bij bagging:
 
 \begin{itemize}
-    \item Adaboost gebruikt stumps (=decision tree met 2 vertakkingen)
-    \item Er wordt voting toegepast, maar elke deelmodel heeft een bepaald gewicht
-    \item TODO
+    \item Je vertrekt opnieuw van de trainingsset, bv 1000 samples
+    \item Eerste stap = je vult zoals bij bagging een `bag' (bv opnieuw 1000 samples, via sampling en replacement: sommige samples gaan meerdere keren voorkomen, andere niet, \dots)
+    \item Je traint een model met de data uit die bag
+    \item Dit model kan eender welk soort model zijn, maar meestal neemt men een decision tree met maar 1 splitsing (=stump)
+    \item Je test dit model, eventueel op de data die niet werd geselecteerd uit de trainingset
 \end{itemize}
+
+Maar hier komt Adaboost aan te pas;
+
+\begin{itemize}
+    \item Je traint een tweede model met opnieuw willekeurige data
+    \item Maar: data die door het vorige model verkeerd werd geclassificeerd krijgt nu een grotere kans om in de nieuwe bag te komen
+    \item Zo wordt model 2 meer getraind op de tekortkomingen van het eerste model 
+    \item Dit doe je herhaaldelijk voor x aantal modellen
+    \item Via majority voting krijg je 1 finaal model
+\end{itemize}
+
+Je kan blijven modellen maken tot je een bepaalde accuracy bekomt
+
+Maar: hoe meer modellen je traint, hoe meer kans op overfitting. De bags van de latere modellen bevattan alsmaar meer ruis.
+
+\textbf{Learning rate}
+
+= voor welk percentage mogen de volgende modellen meetellen?
+
+Stel dat we de learning rate op 0.9 zetten, dan telt het eerste model mee voor $0.9^0$, 
+het tweede voor $0.9^1$, het derde voor $0.9^2$, het vierde voor $0.9^3$, \dots
+
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{adaboost2.png}
-    \caption{We verdelen bij elke iteratie de trainingsset in 2}
+    \caption{Adaboost zal in zijn originele vorm met stumps (=decision trees met 1 splitsing) werken}
 \end{figure}
+
+\begin{itemize}
+    \item We splitsen bij elke iteratie de trainingsset in 2
+    \item Bij de eerste iteratie zijn er 3 punten negatief geclassificeerd terwijl ze positief zijn
+    \item Bij de tweede iteratie is er een nieuwe splitsing. Deze keer krijgen de verkeerd geclassificeerde punten uit het vorig model meer gewicht
+    \item Maar nu zijn er 3 negatieve punten die positief geclassificeerd worden
+    \item Daarom gaan we nu bij de derde iteratie opnieuw een splitsing doen.
+    \item Deze keer krijgen die verkeerd geclassificeerde punten meer gewicht
+    \item Op basis van deze modellen met hun gewicht maken we een finaal model (=voting met gewicht)
+\end{itemize}
 
 \subsubsection{Gradient Boosting}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{gradient-boosting.png}
-    \caption{}
+    \caption{Gradient Boosting}
 \end{figure}
 
-
 \begin{itemize}
-    \item 
-    \item TODO 
+    \item Gelijkaardig aan Adaboost: de volgende trees worden vooral getraind op de tekortkomingen van de vorige trees
+    \item Model 1 maakt een ruwe schatting met een trainingset
+    \item Model 2 zal met dezelfde trainingset voorspellen hoe fout het eerste model was
+    \item Deze 2 modellen combineren we tot 1 model
+    \item Model 3 zal voorspellen hoe fout de combinatie van model 1 en 2 was, om daaruit een nieuw model te halen
+    \item Model 4 zal hetzelfde doen met model 1 + 2 + 3
+    \item \dots
+    \item Hier ook veel last van uitschieters en overfitting
 \end{itemize}
+
+Bij regressie: de fouten worden bepaald door de residuen van 
+
+Bij classificatie: de fouten worden bepaald door de procentuele zekerheden van een voorspelling. Als een model niet zeker genoeg of te zeker was over een voorspelling, wordt die zekerheid aangepast door het volgende model.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.45\textwidth]{gradient-boosting2.png}
     \includegraphics[width=0.45\textwidth]{gradient-boosting3.png}
-    \caption{}
+    \caption{Bij elke iteratie worden de residuen berekend}
 \end{figure}
 
 \subsection{Stacking}
@@ -2710,45 +2760,41 @@ Hyperparameters:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{stacking.png}
-    \caption{}
+    \caption{De Meta Learner is een classificatiemodel die de voorspelligen zal combineren tot 1 finale voorspelling}
 \end{figure}
 
 \begin{itemize}
-    \item Stacking zal alle predicties van een groep base learners (SVM, LogisticRegression, Naive Bayes, RFT, \dots) combineren tot een finale predictie
-    \item TODO
+    \item Stacking zal alle predicties van een groep (meestal verschillende) base learners combineren tot een finale predictie
+    \item Die base learners zijn bijvoorbeeld: SVM, LogisticRegression, Naive Bayes, RFT, \dots
+    \item Als meta learner wordt heel vaak Logistic Regression gebruikt
 \end{itemize}
 
 \subsubsection{Folding}
 
+Intern wordt de data eerst geprocessed, de dataset wordt opgedeeld in folds: 
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{stacking2.png}
-    \caption{De trainingdata wordt opgedeeld in folds}
+    \caption{K=10 $\Rightarrow$ 9/10 folds worden gebruikt als training data}
 \end{figure}
-
-\begin{itemize}
-    \item TODO
-\end{itemize}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{stacking3.png}
-    \caption{}
+    \caption{1/10 wordt als test data gebruikt}
 \end{figure}
 
-\subsubsection{}
+\begin{itemize}
+    \item Die test data wordt ook door de getrainde base learning modellen gestuurd
+    \item Met die resultaten zal de meta learner trainen
+\end{itemize}
+
+\subsection{Overzicht Ensemble learning}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{stacking4.png}
-    \caption{}
-\end{figure}
-
-\subsection{Samenvattend overzicht Ensemble learning}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{ensemble-learning-overzicht.png}
+    \includegraphics[width=0.8\textwidth]{ensemble-learning-overzicht.png}
 \end{figure}
 
 \section{Unsupervised learning}
@@ -3028,12 +3074,20 @@ Voorgaande modellen wijzen datapunten aan 1 enkele cluster
 Hou rekening met de affiniteit in plaats van de absolute locatie.
 
 \begin{itemize}
-    \item Affiniteit = TODO
+    \item Doet het vooral goed in specifieke gevallen: waar de cluster niet bepaald wordt door de densiteit, maar door de affiniteit
+    \item Affiniteit = samenhang
+    \item Spectral clustering zal werken met een affiniteitmatrix:
+    \begin{itemize}
+        \item We starten met een bepaald punt
+        \item We kijken hoe dichtbij andere punten liggen
+        \item We noteren in een matrix voor elk punt hoe dichtbij elk ander punt ligt
+    \end{itemize}
+    \item Handig voor datasets waar je patronen en specifieke lijnen hebt in de data, bijvoorbeeld image recognition
 \end{itemize}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{spectral-clustering.png}
+    \includegraphics[width=0.9\textwidth]{spectral-clustering.png}
     \caption{Spectral clustering kan (zoals Kernel K-means) het `donut-probleem' oplossen}
 \end{figure}
 
@@ -3046,13 +3100,8 @@ Hou rekening met de affiniteit in plaats van de absolute locatie.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{spectral-clustering3.png}
+    \caption{Via Principle Component Analysis (PCA) bepalen we de `richting' van de patronen}
 \end{figure}
-
-\begin{itemize}
-    \item In de matrix zetten we hoe ver elk punt van elk ander punt ligt
-    \item In de matrix kan je dan makkelijk zien wat de clusters zijn
-    \item Handig voor datasets waar je patronen en specifieke lijnen hebt in de data, bijvoorbeeld image recognition
-\end{itemize}
 
 \subsection{Self organizing maps}
 
