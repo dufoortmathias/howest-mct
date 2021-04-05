@@ -1491,11 +1491,11 @@ You can easily search and replace in a text file, even with regex:
 # search and replace the next instance:
 :s/old/new
 
-# all instances: TODO: difference between :s and :%s
+# all instances in current line
 :s/old/new/g
 
-# all instances between line x and y:
-:x,ys/old/new/g
+# all instances between line 10 and 20:
+:10,20s/old/new/g
 
 # all instances in a complete file:
 :%s/old/new/g
