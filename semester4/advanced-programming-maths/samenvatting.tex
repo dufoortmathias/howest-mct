@@ -2365,12 +2365,41 @@ uitsluiten: $B_i \cap B_j = \phi$ als $i \neq j$
 
 \subsection{Bayesiaans leren: toepassing in machine learning}
 
+\begin{theorem}
+    Bayesiaans leren heeft in essentie de volgende vorm: Er zijn een aantal hypotheses $H_1, \dots, H_n$ die samen de uitkomstenverzameling vormen.
+
+    De hypotheses zijn meer of minder waarschijnlijk: de (initiële) bijbehorende verdeling is de \textbf{a-priori verdeling}, de kansen
+    $P(H_i)$ zijn de \textbf{a-priori kansen}
+\end{theorem}
+
+Na het verkrijgen van nieuwe informatie/data/gebeurtenis $E$ worden de kansen van de hypotheses aangepast volgens de stelling van Bayes:
+
+\begin{equation}
+    P(H_i | E) = \frac{P(E | H_i) \cdot P(H)}{\sum_{j=1}^n P(E | H_j) \cdot P(H_j)}
+\end{equation}
+
+
+\begin{itemize}
+    \item De kansen $P(H_i | E)$ zijn de \textit{a-posteriori} kansen. 
+    \item De kansen $P(E | H_i)$ zijn de \textit{likelihoods} van $E$
+\end{itemize}
+
+\subsubsection{Leren}
+
+Op grond van telkens nieuwe data $E_1, E_2, \dots$ wordt de verdeling van de hypotheses voortdurend aangepast: $P_0, P_1, P_2, \dots$
+
+\begin{itemize}
+    \item $P_0$ is de a-priori verdeling, waarbij $P_0(H_i) = P(H_i)$
+    \item Na het verkrijgen van data $E_1$ wordt de nieuwe verdeling $P_1$, waarbij $P_1(H_i) = P_0(H_i | E_1)$
+    \item Na het verkrijgen van data $E_2$ wordt de nieuwe verdeling $P_2$, waarbij $P_2(H_i) = P_1(H_i | E_2)$
+    \item \dots
+\end{itemize}
+
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{bayesiaans-leren.png}
-    \includegraphics[width=0.75\textwidth]{bayesiaans-leren2.png}
-    \includegraphics[width=0.75\textwidth]{bayesiaans-leren3.png}
-    \caption{TODO: tekst ipv images}
+    \includegraphics[width=0.5\textwidth]{bayesiaans-leren.png}
+    \caption{Bayesiaans leren}
 \end{figure}
 
 
