@@ -54,14 +54,14 @@
 
 \subsection{Functies}
 
-\begin{theorem}[Re"ele functie]
-Een re"ele functie is een relatie in $\mathbb{R}$ waarbij elke waarde $x$ hoogstens één beeldwaarde $f(x)$ heeft
+\begin{theorem}[Reële functie]
+Een reële functie is een relatie in $\mathbb{R}$ waarbij elke waarde $x$ hoogstens één beeldwaarde $f(x)$ heeft
 \end{theorem}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{reele-functie.png}
-    \caption{Voorbeelden re"ele functies}
+    \caption{Voorbeelden reële functies}
 \end{figure}
 
 \begin{theorem}
@@ -106,8 +106,8 @@ Verloop van een functie wordt via een tekenschema verduidelijkt:
 \begin{theorem}[Veelterm]
 \begin{equation}
     \begin{aligned}
-        A(x) = a_nx^n + a_{n-1}x^{n-1} + a_{n-2}x^{n-2} + ... + a_{2}x^{2} + a_1x + a_0\\
-        (a_n,a_{n-1},...,a_2,a_1,a_0 \in \mathbb{R})
+        A(x) &= a_nx^n + a_{n-1}x^{n-1} + a_{n-2}x^{n-2} + ... + a_{2}x^{2} + a_1x + a_0\\
+        & (a_n,a_{n-1},...,a_2,a_1,a_0 \in \mathbb{R})
     \end{aligned}
 \end{equation}
 
@@ -116,8 +116,8 @@ Verloop van een functie wordt via een tekenschema verduidelijkt:
 \begin{theorem}[Veeltermfunctie]
 \begin{equation}
     \begin{aligned}
-        f(x) = a_nx^n + a_{n-1}x^{n-1} + a_{n-2}x^{n-2} + ... + a_{2}x^{2} + a_1x + a_0\\
-        Graad\ van\ veelterm = n\ als\ a_n \neq 0
+        f(x) &= a_nx^n + a_{n-1}x^{n-1} + a_{n-2}x^{n-2} + ... + a_{2}x^{2} + a_1x + a_0\\
+        & Graad\ van\ veelterm\ = n\ (als\ a_n \neq 0)
     \end{aligned}
 \end{equation}
 \end{theorem}
@@ -126,10 +126,10 @@ Verloop van een functie wordt via een tekenschema verduidelijkt:
 
 \begin{itemize}
     \item Constante functie: $f(x) = 4$
-    \item Lineaire functie: $f(x) = 4$
+    \item Lineaire functie: $f(x) = 3x+6$
     \item Tweedegraadsfunctie: $f(x) = 3x^2 + 2x + 1$
     \item Derdegraadsfunctie: $f(x) = 5x^3 - 3x^2 + 2x - 1$
-    \item Exponenti"ele functie: $f(x) = 2^x$
+    \item Exponentiële functie: $f(x) = 2^x$
     \item Logaritmische functie: $(fx) = log_2(x)$
 \end{itemize}
 
@@ -153,7 +153,7 @@ Voorbeeld: $f(x) = 3x + 6$
 \end{theorem}
 
 \begin{itemize}
-    \item Betekenis van a: de richtingsco"effici"ent (rico)
+    \item Betekenis van a: de richtingscoëfficiënt (rico)
     \item Betekenis van b: het snijpunt met de y-as
     \item Nulpunt: $f(x) = 0 \\ \Leftrightarrow 3x + 6 = 0 \\ \Leftrightarrow 3x = -6  \\ \Leftrightarrow x = -2$
 \end{itemize}
@@ -225,7 +225,7 @@ Bij een tweedegraadsvergelijking is de discriminant:
     \caption{Symmetrieas: $x = \frac{-b}{2a}$}
 \end{figure}
 
-Voorbeeld: 
+Hoe steil verloopt de grafiek? 
 
 \begin{figure}[H]
     \centering
@@ -246,9 +246,9 @@ Voorbeeld:
 
 \end{theorem}
 
-\subsubsection{Exponenti"ele functie}
+\subsubsection{Exponentiële functie}
 
-\begin{theorem}[Exponenti"ele functie]
+\begin{theorem}[Exponentiële functie]
 \begin{equation}
     f(x) = a^{g(x)}
 \end{equation}
@@ -281,7 +281,7 @@ Met grondtal $a \in \mathbb{R}_0^+ \backslash \{1\}$
     \end{aligned}
 \end{equation}
 
-$f(x) = e^x$ is een bijzondere exponenti"ele functie
+$f(x) = e^x$ is een bijzondere exponentiële functie
 \end{theorem}
 
 \begin{figure}[H]
@@ -290,7 +290,7 @@ $f(x) = e^x$ is een bijzondere exponenti"ele functie
     \caption{Verschil tussen $2^x$, $3^x$ en $e^x$}
 \end{figure}
 
-\section{Exponenti"ele verbanden in data}
+\section{Exponentiële verbanden in data}
 
 \subsection{Lineaire groei}
 
@@ -299,7 +299,7 @@ Kenmerkend:
 \begin{itemize}
     \item Per tijdseenheid wordt hetzelfde getal \textbf{opgeteld}
     \item Grafiek is een rechte
-    \item Algemene formule (N = aantal, t = tijd, b: beginhoeveelheid): 
+    \item \textbf{Algemene formule} (N = aantal, t = tijd, b = beginhoeveelheid): 
     \begin{equation}
         N = a\cdot t + b
     \end{equation}
@@ -311,14 +311,14 @@ Kenmerkend:
     \caption{Lineaire groei}
 \end{figure}
 
-\subsection{Exponenti"ele groei}
+\subsection{Exponentiële groei}
 
 Kenmerkend: 
 
 \begin{itemize}
     \item Per tijdseenheid wordt de hoeveelheid met hetzelfde getal \textbf{vermenigvuldigd}
-    \item Grafiek is een exponenti"ele functie
-    \item \textbf{Algemene formule:} 
+    \item Grafiek is een exponentiële functie
+    \item \textbf{Algemene formule} (N = aantal, t = tijd, b = beginhoeveelheid, g = groeifactor): 
     \begin{equation}
         N = b \cdot g^t
     \end{equation}
@@ -327,13 +327,13 @@ Kenmerkend:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{exponentiele-groei.png}
-    \caption{Exponenti"ele groei}
+    \caption{Exponentiële groei}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{voorbeeld-groei.png}
-    \caption{Voorbeeld exponenti"ele groei met groeifactor $\approx 1.22$}
+    \caption{Voorbeeld exponentiële groei met groeifactor $\approx 1.22$}
 \end{figure}
 
 
@@ -377,7 +377,7 @@ g = \frac{p + 100}{100}\%
     \caption{Let op: hier gebeuren vaak fouten bij het omrekenen}
 \end{figure}
 
-\subsection{Voorbeeld}
+\subsection{Voorbeeld exponentiële groei}
 
 Een hoeveelheid groeit exponentieel. Na 5u is $N = 82$ en na 12u is $N = 246$.
 
@@ -385,9 +385,9 @@ Stel de formule van N op.
 
 \textbf{Oplossing}
 
-\begin{equation}
+\begin{equation*}
 N = b \cdot g^t
-\end{equation}
+\end{equation*}
 
 \underline{Stap 1: groeifactor berekenen per tijdseenheid:}
 
@@ -420,13 +420,13 @@ $\Leftrightarrow b = \frac{82}{1.170}^5 \approx 37$
 $\Leftrightarrow N = 37 \cdot 1.170^t$
 \end{center}
 
-\subsection{Belangrijke maten voor exponenti"ele toename}
+\subsection{Belangrijke maten voor exponentiële toename}
 
 
 \begin{theorem}[Verdubbelingstijd]
 De verdubbelingstijd is de nodige tijd tot de hoeveelheid verdubbeld is.
 
-De verdubbelingstijd $t$ kan je berekenen met:
+De verdubbelingstijd $t$ kan je berekenen door het omrekenen van deze formule:
 \begin{equation}
 g^t = 2
 \end{equation}
@@ -455,7 +455,7 @@ $\Leftrightarrow t = 8.69\ jaar$
 \begin{theorem}[Halveringstijd]
 De halveringstijd is de nodige tijd tot de hoeveelheid gehalveerd is.
 
-De halveringstijd $t$ kan je berekenen met:
+De halveringstijd $t$ kan je berekenen door het omrekenen van deze formule:
 \begin{equation}
 g^t = 1/2
 \end{equation}
@@ -479,15 +479,16 @@ We weten:
     \item Na 8 jaar: hoeveelheid verdubbeld (= factor van 2)
 \end{itemize}
 
-\begin{center}
-$g^5 \cdot 1.1^3 = 2$
+\begin{align*}
+g^5 \cdot 1.1^3 = 2
+\end{align*}
 
 We moeten $g$ vinden:
 
-$\Leftrightarrow g^5 = \frac{2}{1.1^3}$
-
-$\Leftrightarrow g = \sqrt[5]{\frac{2}{1.1^3}}$
-\end{center}
+\begin{align*}
+\Leftrightarrow g^5 = \frac{2}{1.1^3}\\
+\Leftrightarrow g = \sqrt[5]{\frac{2}{1.1^3}}
+\end{align*}
 
 \section{Belangrijke functies met betrekking tot machine learning}
 
@@ -524,8 +525,8 @@ De logistische groei is de mate van toename, afhankelijk van hoeveel er nog bij 
 \end{equation}
 
 \begin{itemize}
-    \item t = de tijd,
-    \item B en g = constanten
+    \item $t =$ de tijd,
+    \item $B$ en $g =$ constanten
 \end{itemize}
 
 
@@ -538,15 +539,15 @@ y = \frac{G}{1 + B\cdot g^t}
 \end{equation}
 
 \begin{itemize}
-    \item t = de tijd
-    \item B en constanten
-    \item G = bovengrens
+    \item $t =$ de tijd,
+    \item $B$ en $g =$ constanten,
+    \item $G =$ bovengrens
 \end{itemize}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{logistische-groei.png}
-    \caption{Grafiek logistische groei met G = 800}
+    \caption{Grafiek logistische groei met $G = 800$}
 \end{figure}
 
 \subsubsection{Voorbeeld}
@@ -557,7 +558,7 @@ Het aantal vissen in een meer is gegeven door:
     $N = \frac{2500}{1 + 5.5 \cdot 0.74^t}$
 \end{center}
 
-waarbij N = aantal vissen, t = tijd
+waarbij $N =$ aantal vissen, $t =$ tijd
 
 \textbf{Beredeneer}: Wanneer bereiken we het 'verzadigingsniveau'
 
@@ -579,7 +580,7 @@ De wiskundige notatie voor een logistische functie is:
     f(x) = \frac{c}{1 + a\cdot b^x}
 \end{equation}
 
-met a,b,c constanten waarbij de constante c de belangrijkste is:
+met $a,b,c$ constanten waarbij de constante $c$ de belangrijkste is:
 
 c drukt uit wat de maximumwaarde kan zijn
 \end{theorem}
@@ -616,7 +617,7 @@ Regressieanalyse:
 Enkelvoudige vorm: 
 
 \begin{itemize}
-    \item 1 inputwaarde x
+    \item 1 inputwaarde $x$
     \item via lineaire functie $h_{\theta}(x) = \theta_0 + \theta_1x$
 \end{itemize}
 
@@ -648,7 +649,7 @@ Elke inputwaarde heeft een zeker belang (gewicht).
 Vereenvoudiging:  
 
 \begin{itemize}
-    \item 1 inputwaarde x
+    \item 1 inputwaarde $x$
     \item Logistische functie $p = \frac{1}{1 + e^{-(b_0+b_1x)}}$
 \end{itemize}
 
@@ -662,7 +663,7 @@ Uitkomst:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.3\textwidth]{logistisch-regressiemodel.png}
-    \caption{1 inputwaarde x, met twee  uitkomsten}
+    \caption{1 inputwaarde $x$, met twee  uitkomsten}
 \end{figure}
 
 \subsubsection{Lineair vs logistisch regressiemodel}
@@ -677,7 +678,7 @@ Welk model gaat het snelst naar 0 en 1?
 
 \begin{itemize}
     \item Het logistische model
-    \item Daarom is het logistische model beter voor classificate: je splitst de groep op in 2
+    \item Daarom is het logistische model beter voor classificatie: je splitst de groep op in 2
 \end{itemize}
 
 \subsubsection{Meerdere inputfactoren}
@@ -702,10 +703,7 @@ Doelstelling:
 
 \begin{itemize}
     \item Model dat in staat is om data te gaan categoriseren
-    \item Hoe?
-    \begin{itemize}
-        \item $\Rightarrow$ Met behulp van verschillende inputvariabelen en bijhorende parameters 
-    \end{itemize}
+    \item Hoe? Met behulp van verschillende inputvariabelen en bijhorende parameters 
 \end{itemize}
 
 \begin{figure}[H]
@@ -717,21 +715,21 @@ Doelstelling:
 
 \subsubsection{Kansen}
 
-Kans dat de toestand tot groep A behoort:
+Kans dat de toestand tot groep $A$ behoort:
 
 \begin{itemize}
     \item $\theta_{A,0} + \theta_{A,1}x_1 + \theta_{A,2}x_2$
     \item Voorbeeld: $0.01 + 0.1x_1 + 0.1x_2$
 \end{itemize}
 
-Kans dat de toestand tot groep B behoort:
+Kans dat de toestand tot groep $B$ behoort:
 
 \begin{itemize}
     \item $\theta_{B,0} + \theta_{B,1}x_1 + \theta_{B,2}x_2$
     \item Voorbeeld: $0.1 + 0.2x_1 + 0.2x_2$
 \end{itemize}
 
-Kans dat de toestand tot groep C behoort:
+Kans dat de toestand tot groep $C$ behoort:
 
 \begin{itemize}
     \item $\theta_{C,0} + \theta_{C,1}x_1 + \theta_{C,2}x_2$
@@ -744,9 +742,11 @@ Het softmax-model berekent de mate van zekerheid dat een toestand tot een bepaal
 
 vb: volgende quotiënt drukt uit hoe zeker hij is dat (z1, z2) tot categorie A behoort:
 
-$\frac{e^{\theta_{A,0} + \theta_{A,1}z_1 + \theta_{A,2}z_2}}{e^{\theta_{A,0} + \theta_{A,1}z_1 + \theta_{A,2}z_2} + e^{\theta_{B,0} + \theta_{B,1}z_1 + \theta_{B,2}z_2} + e^{\theta_{C,0} + \theta_{C,1}z_1 + \theta_{C,2}z_2} }$
+\begin{align*}
+    \frac{e^{\theta_{A,0} + \theta_{A,1}z_1 + \theta_{A,2}z_2}}{e^{\theta_{A,0} + \theta_{A,1}z_1 + \theta_{A,2}z_2} + e^{\theta_{B,0} + \theta_{B,1}z_1 + \theta_{B,2}z_2} + e^{\theta_{C,0} + \theta_{C,1}z_1 + \theta_{C,2}z_2} }
+\end{align*}
 
-(analoog voor categorie B en C: vervang de teller)
+(analoog voor categorie B en C: pas de teller aan)
 
 \begin{figure}[H]
     \centering
@@ -766,8 +766,8 @@ waarbij:
 
 \begin{itemize}
     \item $x_k = \theta_{k,0} + \theta_{k,1}x_1 + \theta_{k,2}x_2 + \dots + \theta_{k,m}x_m$
-    \item n = aantal groepen
-    \item m = het aantal meetcriteria
+    \item $n =$ aantal groepen
+    \item $m =$ het aantal meetcriteria
 \end{itemize}
 
 \subsection{Logistic regression cost function}
@@ -788,7 +788,7 @@ waarbij:
     \item \textbf{Doel: } vinden van de beste gewichten zodat de voorspelling == de werkelijkheid
 \end{itemize}
 
-\subsubsection{Success meten}
+\subsubsection{Succes meten}
 
 \textbf{Stel:} je maakt een logistisch regressiemodel die bepaalt of een object een groene appel of een tennisbal is. 
 
@@ -825,7 +825,7 @@ Hoe brengen we 2 mogelijke situaties in 1 functie samen?
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{logistische-regressie-2situaties.png}
-    \caption{}
+    \caption{Samenbrengen van de 2 situaties in 1 formule}
 \end{figure}
 
 \subsubsection{Kostenfunctie $J(\theta)$}
@@ -876,7 +876,7 @@ Mooie blogpost: \url{https://adit.io/posts/2016-03-13-Logistic-Regression.html}
 \begin{itemize}
     \item Doelstelling:
     \begin{itemize}
-        \item Nut van de pandas library kunnen situeren
+        \item Nut van de Pandas library kunnen situeren
         \item Data-analyse: basisbewerkingen
     \end{itemize}
     \item Pandas = `Python Data Analysis Library'
@@ -1017,7 +1017,7 @@ Name: Jan, dtype: int64
 # test deze eens zelf uit als oefening :)
 \end{minted}
 
-\subsubsection{Veelgebruikte commandos bij dataframes}
+\subsubsection{Veelgebruikte commando's bij dataframes}
 
 \begin{minted}{python}
 df.shape            # geeft de dimensie als een tuple terug
@@ -1078,7 +1078,7 @@ data.iloc[0:5, 5:8]
 
 \subsubsection{loc}
 
-= label based indexing / selection
+= lable-based indexing / selection
 
 \begin{itemize}
     \item Nut: selecteren van rijen en kolommen via label / via conditionele look-up
@@ -1203,8 +1203,6 @@ filtered_setosa = iris.loc[iris['Species'] == 'Iris-setosa', :]
     \caption{Reshaping data: change the layout of a data set}
 \end{figure}
 
-(komen we later nog op terug)
-
 \section{Normaaldistributie}
 
 \subsection{Doelstellling}
@@ -1248,7 +1246,7 @@ Wanneer komt een normaalverdeling voor?
     \item 1 maximum = gemiddelde = mediaan ($\mu$)
     \item Uitslagen vooral geconcentreerd rond gemiddelde
     \item Frequentie daalt naarmate scores afwijken
-    \item Twee buigpunten
+    \item Twee buigpunten: ($\mu - \sigma$ en $\mu + \sigma$)
     \item Symmetrie
 \end{itemize}
 
@@ -1280,7 +1278,7 @@ Wanneer komt een normaalverdeling voor?
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.4\textwidth]{gauss-verschillend.png}
+    \includegraphics[width=0.6\textwidth]{gauss-verschillend.png}
     \caption{Impact $\mu$ en $\sigma$}
 \end{figure}
 
@@ -1340,7 +1338,7 @@ Standaardafwijking berekenen:
     
     \begin{itemize}
         \item $\mu = 0$
-        \item $\sigma$ = 1
+        \item $\sigma = 1$
     \end{itemize}
 \end{theorem}
 
@@ -1351,23 +1349,21 @@ Standaardafwijking berekenen:
     \caption{Oppervlakte onder grafiek $=1$}
 \end{figure}
 
-\subsubsection{Standardizeren van een normaalverdeling}
+\subsubsection{Standaardiseren van een normaalverdeling}
 
-\textbf{Doel:} een normaalverdeling omzetten in een standaardnormaalverdeling waarbij $\mu = 0$ en $\sigma = 1$
+\begin{theorem}
+    Een normaalverdeling omzetten in een standaardnormaalverdeling waarbij $\mu = 0$ en $\sigma = 1$ noemen we het standaardiseren van die normaalverdeling.
+\end{theorem}
+
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth]{standardizeren.png}
-    \caption{Standardizeren}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.3\textwidth]{gauss-notatiewijze.png}
-    \caption{Uitgangspunt: willekeurige normaalverdeling}
+    \caption{Standaardiseren}
 \end{figure}
 
 \begin{itemize}
+    \item Willekeurige normaalverdeling: $X \sim N(\mu, \sigma^2)$
     \item Verschuiven naar $0$: $X - \mu$
     \item samendrukken/uitrekken tot $\sigma = 1$: $\frac{X - \mu}{\sigma}$
 \end{itemize}
@@ -1376,14 +1372,14 @@ Standaardafwijking berekenen:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth]{gestandardizeerd.png}
-    \caption{Gestandardizeerd: alle eigenschappen blijven bewaard, enkel de hoogte blijft hetzelfde}
+    \caption{Gestandaardiseerd: alle eigenschappen blijven bewaard, enkel de hoogte blijft hetzelfde}
 \end{figure}
 
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{standardizering-voorbeeld.png}
-    \caption{Standardizeren: voorbeeld}
+    \caption{Standaardiseren: voorbeeld}
 \end{figure}
 
 \subsection{Kansberekening}
@@ -1391,7 +1387,7 @@ Standaardafwijking berekenen:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{normaalverdeling-kansen.png}
-    \caption{$Z ~ N(0, 1) \rightarrow \mu = 0$ en standaardafwijking $\sigma = 1$}
+    \caption{$Z \sim N(0, 1) \rightarrow \mu = 0$ en standaardafwijking $\sigma = 1$}
 \end{figure}
 
 \begin{itemize}
@@ -1522,8 +1518,6 @@ Interpretatie:
     Kurtosis = \Bigg(\frac{\frac{\sum(x-\bar{x})^4}{n}}{(\frac{\sum(x-\bar{x})^2}{n})^2} \Bigg) -3
 \end{equation}
 
-
-
 Interpretatie:
 
 \begin{itemize}
@@ -1543,7 +1537,7 @@ Voorbeeld: suikerfabriek produceert 1kg suikerzakken
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{anomaly-detection.png}
+    \includegraphics[width=0.8\textwidth]{anomaly-detection.png}
     \caption{Verdeling 1kg suikerzak}
 \end{figure}
 
@@ -1653,8 +1647,6 @@ Bij een kansexperiment is de kans op een gebeurtenis $G$ gelijk aan:
 
 $P(G) = \frac{\text{aantal gunstige uitkomsten}}{\text{aantal mogelijke uitkomsten}}$
 
-
-
 \end{theorem}
 
 \subsubsection{Wiskundige notatie}
@@ -1691,7 +1683,7 @@ Wat is de kans op de gebeurtenis `de som is 6 ogen'?
 Wat is de kans op de gebeurtenis `de som is minstens 9 ogen'?
 
 \begin{itemize}
-    \item \item $P(\text{som} >= 9) = \frac{10}{36} = \frac{5}{18}$
+    \item $P(\text{som} >= 9) = \frac{10}{36} = \frac{5}{18}$
 \end{itemize}
 
 \begin{figure}[H]
@@ -1714,7 +1706,7 @@ Wat is de kans op de gebeurtenis `de som is minstens 9 ogen'?
     \end{itemize}
     \item Wat is de kans dat de som van de ogen minstens 8 is?
     \begin{itemize}
-        \item Opnieuw kansentabel opstellen $\Rightarrow \frac{15}{36}$ 
+        \item Opnieuw kansentabel opstellen $\Rightarrow \frac{6}{24} = \frac{1}{4}$ 
     \end{itemize}
 \end{itemize}
 
@@ -1764,8 +1756,13 @@ Als $P(A \cap B)$ leeg is, dan geldt:
 Voor 3 gebeurtenissen A,B,C
 
 \begin{equation}
-    P(A \cup B \cup C) = P(A) + P(B) + P(C) - P(A \cap B) - P(A \cap C) - P(B \cap C) \mathbf{+} P(A \cap B \cap C)
+    \begin{aligned}
+        P(A \cup B \cup C) &= P(A) + P(B) + P(C)\\
+        & - P(A \cap B) - P(A \cap C) - P(B \cap C)\\
+        & + P(A \cap B \cap C)
+    \end{aligned}
 \end{equation}
+
 
 
 \begin{figure}[H]
@@ -1780,23 +1777,25 @@ Voor 3 gebeurtenissen A,B,C
 
 \begin{itemize}
     \item Je gooit een 6
-    \item Alle andere mogelijke gebeuretissen = complement
+    \item Verzameling van alle andere mogelijke gebeurtenissen = complement van die gebeurtenis
 \end{itemize}
 
-\begin{theorem}[Complementregel]
-    Een gebeurtenis $G$ en de complement-gebeurtenis $G_{\text{complement}}$ vormen samen alle mogelijkheden
+\begin{theorem}
+    De complementregel stelt dat een gebeurtenis $G$ en zijn complement $G_{\text{complement}}$ samen alle mogelijkheden vormen.
 
     \begin{equation}
         \begin{aligned}
             P(G) + P(G_{\text{complement}}) = 1\\
-            P(G) = 1 - P(G_{\text{complement}})
+            \Leftrightarrow P(G) = 1 - P(G_{\text{complement}})
         \end{aligned}
     \end{equation}
 \end{theorem}
 
-\subsection{Samengesteld experiment (stochastisch exp)}
+\subsection{Samengesteld of stochastisch experiment}
 
-Een samengesteld kansexperiment: hetzelfde experiment wordt een aantal keer herhaald
+\begin{theorem}
+    Een stocastisch kansexperiment is een experiment dat een aantal keer herhaald wordt.
+\end{theorem}
 
 Verschillende oplossingsmethodes mogelijk:
 
@@ -1929,7 +1928,7 @@ $\binom{63}{8} = \frac{63!}{(63-8)! \cdot 8!} = 3 872 894 697$
 
 \subsubsection{Oefening}
 
-We gooien met 5 identieke munstukken. Wat is de kans dat we 3 \textbf{of} 4 keer kop gooien?
+We gooien met 5 identieke muntstukken. Wat is de kans dat we 3 \textbf{of} 4 keer kop gooien?
 
 \begin{itemize}
     \item Gevraagd: $P(3\ \text{keer kop of}\ 4\ \text{keer kop})$
@@ -2021,7 +2020,7 @@ Een patiënt heeft mogelijk last van griep, verkoudheid, of beide.
 Vragen
 
 \begin{enumerate}
-    \item De patient vertelt dat hij last heeft van hoestbuien. Hoe groot is de kans dat hij griep heeft?
+    \item De patiënt vertelt dat hij last heeft van hoestbuien. Hoe groot is de kans dat hij griep heeft?
     \item Hij zegt dat hij ook last heeft van hoofdpijn. Hoe groot is de kans nu dat hij griep heeft?
 \end{enumerate}
 
@@ -2086,7 +2085,11 @@ $P(A|B) = \frac{P(AB)}{P(B)}$
 Daaruit volgt:
 
 \begin{equation}
-    P(A \cap B) = P(AB) = P (B|A) P(A) = P (A|B) P(B)
+    \begin{aligned}
+        P(A \cap B) &= P(AB)\\
+        &= P (B|A) \cdot P(A)\\
+        &= P (A|B) \cdot P(B)
+    \end{aligned}
 \end{equation}
 
 De kans dat A en B samen voorkomen:
@@ -2111,7 +2114,7 @@ Met 3 verzamelingen:
 \textbf{Algemeen:}
 
 \begin{equation}
-    P(ABC\dots Z) = P(Z|ABC\dots Y) \cdot \dots \cdot P (C| A B ) P (B|A) P(A)
+    P(ABC\dots Z) = P(Z|ABC\dots Y) \cdot \dots \cdot P (C| A B ) \cdot P(B|A) \cdot P(A)
 \end{equation}
 
 \subsection{Oefening 1}
@@ -2179,7 +2182,7 @@ In een groep van 65 jongeren is er onderzoek gedaan of ze wel of niet sporten
 
 \begin{itemize}
     \item Kans dat een leerling sport: $P(A) = \frac{55}{65} = \frac{11}{13}$
-    \item Kans dat een leerling sport onder voowaarde dat het een jongen is: $P(A | B) = \frac{11}{13}$
+    \item Kans dat een leerling sport onder voorwaarde dat het een jongen is: $P(A | B) = \frac{11}{13}$
     \item \textbf{Vaststelling:} of een leerling sport beoefend is onafhankelijk of het een jongen is
 \end{itemize}
 
@@ -2223,7 +2226,7 @@ Men schrijft dit kort als:
 
 \subsubsection{Oefening 1}
 
-\textbf{Opgave:} controleer of het hebben van blauwe ogen al dan niet afhankelijk is van het geslacht
+Controleer of het hebben van blauwe ogen al dan niet afhankelijk is van het geslacht
 
 \begin{figure}[H]
     \centering
@@ -2231,13 +2234,10 @@ Men schrijft dit kort als:
     \caption{Opgave}
 \end{figure}
 
-\textbf{Oplossing:}
-
-
 
 \subsubsection{Oefening 2}
 
-\textbf{Opgave:} controleer of kans op bloedgroep AB al dan niet onafhankelijk is van de waarde Rh+
+Controleer of kans op bloedgroep AB al dan niet onafhankelijk is van de waarde Rh+
 
 \begin{figure}[H]
     \centering
@@ -2262,7 +2262,7 @@ Men schrijft dit kort als:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{bayes-voorbeeld1.png}
+    \includegraphics[width=0.5\textwidth]{bayes-voorbeeld2.png}
     \caption{Voorbeeld 2}
 \end{figure}
 
@@ -2270,7 +2270,9 @@ Men schrijft dit kort als:
 
 Uit:
 
-$P(A | B) = \frac{P(A \cap B)}{P(B)}$ en $P(B | A) = \frac{P(A \cap B)}{P(A)}$
+\begin{center}
+    $P(A | B) = \frac{P(A \cap B)}{P(B)}$ en $P(B | A) = \frac{P(A \cap B)}{P(A)}$
+\end{center}
 
 volgt:
 
@@ -2313,12 +2315,12 @@ Ter herinnering:
 
 Daaruit volgt:
 
-\begin{center}
-    \begin{align}
+\begin{equation}
+    \begin{aligned}
         P(B) & = P(B \cap A) + P(B \cap \bar{A})\\
         & = P(B | A) \cdot P(A) + P(B | \bar{A}) \cdot P(\bar{A})
-    \end{align}
-\end{center}
+    \end{aligned}
+\end{equation}
 
 \begin{figure}[H]
     \centering
@@ -2329,8 +2331,8 @@ Daaruit volgt:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{bayes-variant-voorbeeld1.png}
-    \includegraphics[width=0.6\textwidth]{bayes-variant-voorbeeld1-opl.png}
+    \includegraphics[width=0.5\textwidth]{bayes-variant-voorbeeld2.png}
+    \includegraphics[width=0.6\textwidth]{bayes-variant-voorbeeld2-opl.png}
     \caption{Voorbeeld 2}
 \end{figure}
 
@@ -2340,12 +2342,12 @@ We beschouwen van een gebeurtenis $H$ ook zijn complement $\bar{H}$,
 waarbij nu geldt dat $P(H) = P(\bar{H})$
 
 
-\begin{center}
-    \begin{align}
+\begin{equation}
+    \begin{aligned}
         P(H | E) & = \frac{P(E | H) \cdot P(H)}{P(E | H) \cdot P(H) + P(E | \bar{H}) \cdot P(\bar{H})}\\
         & = \frac{P(E | H)}{P(E | H) + P(E | \bar{H})}
-    \end{align}
-\end{center}
+    \end{aligned}
+\end{equation}
 
 \subsection{Regel van Bayes (algemeen)}
 
@@ -2359,7 +2361,7 @@ uitsluiten: $B_i \cap B_j = \phi$ als $i \neq j$
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{bayes-algemeen-voorbeeld1.png}
-    \includegraphics[width=0.5\textwidth]{bayes-algemeen-voorbeeld1-opl.png}
+    \includegraphics[width=0.6\textwidth]{bayes-algemeen-voorbeeld1-opl.png}
     \caption{Voorbeeld algemene regel van Bayes}
 \end{figure}
 
@@ -2403,7 +2405,7 @@ Op grond van telkens nieuwe data $E_1, E_2, \dots$ wordt de verdeling van de hyp
 \end{figure}
 
 
-\subsection{Na"ive Bayes Spam Filter}
+\subsection{Naïve Bayes Spam Filter}
 
 \textbf{Doelstelling:} Regel van Bayes kennen en toepassen om een eenvoudige spam-filter te programmeren.
 
@@ -2413,13 +2415,13 @@ Op grond van telkens nieuwe data $E_1, E_2, \dots$ wordt de verdeling van de hyp
     \begin{itemize}
         \item $P(\text{spam} | \text{message}) = \frac{P(\text{message}|\text{spam}) \cdot P(\text{spam})}{P(\text{message})}$
         \item Waarbij: $P(\text{spam} | \text{message})=$ de kans dat een email uit spamfolder effectief spam is
-        \item En: $P(\text{message}|\text{spam})=$ de kans op klassificatie spam door deze filter
+        \item En: $P(\text{message}|\text{spam})=$ de kans op classificatie spam door deze filter
     \end{itemize}
     \item Email komt in inbox: hoe groot is de kans dat het geen spam is?
     \begin{itemize}
         \item $P(\neg \text{spam} | \text{message}) = \frac{P(\text{message}|\neg \text{spam}) \cdot P(\neg \text{spam})}{P(\text{message})}$
         \item Waarbij: $P(\neg \text{spam} | \text{message})=$ de kans dat een email uit inbox effectief geen spam is
-        \item En: $P(\text{message}| \neg \text{spam})=$ de kans op klassificatie geen spam door deze filter
+        \item En: $P(\text{message}| \neg \text{spam})=$ de kans op classificatie geen spam door deze filter
     \end{itemize}
 \end{itemize}
 
@@ -2474,7 +2476,6 @@ Onze filter classificeert een message als spam als:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{bayes-spam2.png}
-    \caption{}
 \end{figure}
 
 \subsubsection{Parameters}
@@ -2510,7 +2511,7 @@ Meer info: zie labo-oefening week3B
 
 \begin{itemize}
     \item Je wenst zelf niveau van loggen bepalen
-    \item Formaat van logbericht vooraf definieren
+    \item Formaat van logbericht vooraf definiëren
     \item Locatie (scherm/bestand/\dots) vooraf vastleggen
 \end{itemize}
 
@@ -2556,7 +2557,8 @@ logging.critical("...")     # Wel gelogd
 logging.basicConfig(level=logging.ERROR, format="*** %(message)s ****")
 # Voorbeeld 2
 logging.basicConfig(level=logging.DEBUG,
-    format="%(asctime)s\t%(levelname)s -- %(processName)s%(filename)s:%(lineno)s -- %(message)s")
+    format="%(asctime)s\t%(levelname)s --\
+        %(processName)s%(filename)s:%(lineno)s -- %(message)s")
 \end{minted}
 
 \subsubsection{Naar een file loggen}
@@ -2571,7 +2573,7 @@ logging.basicConfig(
 
 \subsubsection{Toegepast}
 
-(zie ook demos)
+(zie ook demo's)
 
 \begin{minted}{python}
 @studentennummer.setter
@@ -2590,17 +2592,18 @@ def inlezen_studenten(bestandsnaam):
     try:
         logging.info("Bestand %s inlezen" % bestandsnaam)
         fo = open(bestandsnaam)
-        lijn = fo.readline() # eerste lijn = niets mee doen
-        lijn = fo.readline()
-        while (lijn != ""):
-            lijn = lijn.rstrip('\n')
-            delen = lijn.split(';')
+        line = fo.readline() # eerste line = niets mee doen
+        line = fo.readline()
+        while (line != ""):
+            line = line.rstrip('\n')
+            parts = line.split(';')
             try:
-                student = Student(delen[0], delen[1], delen[2], delen[3], int(delen[4]))
+                student = Student(parts[0], parts[1], 
+                                parts[2], parts[3], int(parts[4]))
                 studenten.append(student)
             except:
-                logging.debug("Ongeldig lijn bij inlezen file: %s" % lijn)
-            lijn = fo.readline() # lees volgende lijn in
+                logging.debug("Ongeldig lijn bij inlezen file: %s" % line)
+            line = fo.readline() # lees volgende lijn in
         logging.info("Bestand volledig ingelezen")
         fo.close()
     except FileNotFoundError as ex:
@@ -2617,7 +2620,9 @@ def opslaan_studenten(bestandsnaam, studenten):
         fo = open(bestandsnaam, "w")
         fo.write("Naam;Voornaam;StudentenNummer;Opleiding;Geboortejaar\n")
         for student in studenten:
-            fo.write(student.naam + ";" + student.voornaam + ";" + str(student.studentenummer) + ";" + student.opleiding + ";" + str(student.geboortejaar) + "\n")
+            fo.write(student.naam + ";" + student.voornaam + ";" 
+                    + str(student.studentenummer) + ";" + student.opleiding 
+                    + ";" + str(student.geboortejaar) + "\n")
         fo.close()
         logging.info("Opslaan studenten voltooid")
     except FileNotFoundError as ex:
@@ -3078,7 +3083,7 @@ Geen beperking in het aantal producers/consumers:
     \item Poort = een logische connectie naar een computer
     \item Identificeert zich met een nummer tussen 1 en 65535
     \item Netwerkprogrammeur zal expliciet een poort van een machine refereren als er een server programma op draait
-    \item Poortnrs tussen 1 en 1023: standard services
+    \item Poortnummers tussen 1 en 1023: standard services
     \item Achter elke gebruikte poort schuilt dus een server programma, wachtend voor een request (aanvraag) als client connectie wil maken dan heeft het het overeenkomstig poortnummer van de service nodig
 \end{itemize}
 
@@ -3088,7 +3093,7 @@ Geen beperking in het aantal producers/consumers:
 
 \begin{itemize}
     \item Ook hier logisch abstract concept: geen hardware
-    \item Wijst op één van de twee eindpunten van een communicatielink tss twee processen
+    \item Wijst op één van de twee eindpunten van een communicatielink tussen twee processen
     \item client wil connectie $\Rightarrow$ creeërt hiervoor socket
     \item idem langs serverzijde: socket verzorgt communicatie met de client
     \item zo kan 1 poort geassocieerd worden met vele sockets
@@ -3099,7 +3104,7 @@ Geen beperking in het aantal producers/consumers:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{client-server-communicatie.png}
-    \caption{}
+    \caption{Stappenplan client-server communicatie}
 \end{figure}
 
 Een communicatielink gecreëerd via TCP-sockets is een connectie-georiënteerde link: 
@@ -3112,12 +3117,15 @@ Twee types processen:
     \item Client
 \end{itemize}
 
-
 Stappen:
 
 \begin{enumerate}
-    \item aanmaken van een server socket
-    \item aanmaken van een socket door de client
+    \item aanmaken van een server socket: socket() + bind()
+    \item de serversocket doen luisteren naar connections: listen() + accept()
+    \item aanmaken van een socket door de client: socket()
+    \item verbinden met een server: connect()
+    \item data versturen en ontvangen: write() en read()
+    \item sockets sluiten: close()
 \end{enumerate}
 
 \subsection{Network programming in Python}
@@ -3140,7 +3148,7 @@ s = socket.socket (socket_family , socket_type , protocol = 0)
         \centering
         \includegraphics[width=0.5\textwidth]{socket-type.png}
     \end{figure}
-    \item protocol = meestal niet gespecifieerd, standaard = 0    
+    \item protocol = meestal niet gespecificeerd, standaard = 0    
 \end{itemize}
 
 
@@ -3281,7 +3289,7 @@ socket_to_server.close()
     \item Eenvoudige GUI opbouwen via de Tkinter library
 \end{itemize}
 
-\subsection{GUI in Python?}
+\subsection{Manieren om een GUI in Python te bouwen}
 
 \begin{itemize}
     \item PyQT5
@@ -3319,7 +3327,7 @@ top.mainloop()
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{tkinter-start.png}
+    \includegraphics[width=0.25\textwidth]{tkinter-start.png}
     \caption{Basisvenster}
 \end{figure}
 
@@ -3353,7 +3361,7 @@ root.mainLoop()
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{tkinter-frame.png}
+    \includegraphics[width=0.3\textwidth]{tkinter-frame.png}
     \caption{Resultaat}
 \end{figure}
 
@@ -3369,7 +3377,7 @@ root.mainLoop()
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{tkinter-widgets.png}
+    \includegraphics[width=0.4\textwidth]{tkinter-widgets.png}
     \caption{Widgets}
 \end{figure}
 
@@ -3390,7 +3398,7 @@ root.mainLoop()
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{tkinter-demo.png}
+    \includegraphics[width=0.4\textwidth]{tkinter-demo.png}
     \caption{Resultaat van de demo}
 \end{figure}
 
@@ -3447,7 +3455,7 @@ app = Window(root)
 root.mainloop()
 \end{minted}
 
-Zie andere demos op leho.
+Zie andere demo's op leho.
 
 \section{Network \& threading}
 
@@ -3484,7 +3492,7 @@ De basistechniek is gebaseerd op een \textbf{twee-stappen proces}:
 \textbf{Gevolgen}
 
 \begin{itemize}
-    \item Main-thread mag "vergeten" dat een client ingelogd is, omdat een andere thread de communicatie verder afhandelt.
+    \item Main-thread mag `vergeten' dat een client ingelogd is, omdat een andere thread de communicatie verder afhandelt.
     \item Main-thread mag weer wachten op nieuwe clients
     \item Indien er een probleem met één client is, heeft dit geen effect op de andere clients of op algemene service!
 \end{itemize}
@@ -3502,6 +3510,7 @@ Dit is een threadklasse: thread opstarten via start()
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{multithreaded-server-python.png}
+    \caption{De multithreaded server}
 \end{figure}
 
 \begin{figure}[H]
@@ -3558,14 +3567,6 @@ Dit is een threadklasse: thread opstarten via start()
     \includegraphics[width=0.6\textwidth]{multithreaded-server-gui-python2.png}
     \caption{De ClientHandler klasse}
 \end{figure}
-
-\subsubsection{To-do's}
-
-\begin{itemize}
-    \item Zorg ervoor dat alle threads correct kunnen afgesloten worden
-    \item Zorgt het sluiten van de serversocket ervoor dat geconnecteerde clients niet meer kunnen communiceren?
-    \item Event mbt sluiten van de GUI verzorgen zowel langs client/server.
-\end{itemize}
 
 \section{Objectserialisation}
 
@@ -3647,8 +3648,8 @@ Met eigen klasse(s) analoog. Klasse student erft van klasse Persoon.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{unpickling2.png}
-    \caption{}
+    \includegraphics[width=0.7\textwidth]{unpickling2.png}
+    \caption{Pickling \& Unpickling}
 \end{figure}
 
 \subsubsection{Wat kan pickled en unpickled worden?}
@@ -3723,10 +3724,10 @@ Voordelen:
     \item Snel
     \item Human readable
     \item Geen beveiligingsproblemen
-    \item Kan geparsed worden door alle programmeertalen
+    \item Kan geparset worden door alle programmeertalen
 \end{itemize}
 
-Pickle is traag, onveilig, en kan alleen in Python geparsed worden. 
+Pickle is traag, onveilig, en kan alleen in Python geparset worden. 
 Het enige voordeel van pickle is dat het arbitraire Python objecten kan serialiseren,
 terwijl beide JSON en MessagePack limieten hebben op welke data ze kunnen uitschrijven.
 
@@ -3753,98 +3754,121 @@ eigen klasse(s) worden heen en weer gestuurd.
     \item Dezelfde list wordt naar de client teruggestuurd
 \end{enumerate}
 
-Voor demos met pickle, zie demo 6 \& 7.
+Voor demo's met pickle, zie demo 6 \& 7.
 
-Voor demos met jsonpickle, zie demo 8.
+Voor demo's met jsonpickle, zie demo 8.
 
 \section{Matrices}
 
 \subsection{Wat is matrix?}
 
 \begin{itemize}
-    \item Een tweedimensionele array van getallen
+    \item Een tweedimensionale array van getallen
     \item Bestaat uit rijen en kolommen
     \item 4 rijen bij 3 kolommen: 4 bij 3 matrix
 \end{itemize}
 
-$\begin{bmatrix}
-    3 & 5 & 0\\
-    -2 & 0 & 7\\
-    4 & 4 & 4\\
-    -3 & 1 & 1\\
-\end{bmatrix}$
+\begin{center}
+    $\begin{bmatrix}
+        3 & 5 & 0\\
+        -2 & 0 & 7\\
+        4 & 4 & 4\\
+        -3 & 1 & 1\\
+    \end{bmatrix}$
+\end{center}
+
 
 Een matrix is een rechthoekig getallenschema, getallen geordend in rijen en kolommen
 
-$\begin{bmatrix}
-1 & -3 & 4\\
--5 & 0 & 2
-\end{bmatrix}$ met $A \in \mathbb{R}^{2x3}$ = matrix met 2 rijen, 3 kolommen
+\begin{center}
+    $\begin{bmatrix}
+        1 & -3 & 4\\
+        -5 & 0 & 2
+    \end{bmatrix}$ met $A \in \mathbb{R}^{2x3}$ = matrix met 2 rijen, 3 kolommen        
+\end{center}
 
-$\begin{bmatrix}
-1 & -3\\
-0 & 4\\
-5 & -1\\
-4 & 0\\
-\end{bmatrix}$ met $b \in \mathbb{R}^{4X2}$ = matrix met 4 rijen, 2 kolommen
+\begin{center}
+    $\begin{bmatrix}
+        1 & -3\\
+        0 & 4\\
+        5 & -1\\
+        4 & 0\\
+    \end{bmatrix}$ met $b \in \mathbb{R}^{4X2}$ = matrix met 4 rijen, 2 kolommen
+\end{center}
 
-$\begin{bmatrix}
-6 & -3\\
--2 & 8
-\end{bmatrix}$ met $C \in \mathbb{R}^{2x2}$ = matrix met 2 rijen, 2 kolommen
+\begin{center}
+    $\begin{bmatrix}
+        6 & -3\\
+        -2 & 8
+    \end{bmatrix}$ met $C \in \mathbb{R}^{2x2}$ = matrix met 2 rijen, 2 kolommen        
+\end{center}
 
 \subsubsection{Voorstellen van een matrix}
 
 Door middel van subscriptnotatie: $a_{ij} =$ element op de $i^\text{de}$ rij, $j^\text{de}$
 
-$A = \begin{bmatrix}
-a_{11} & a_{12} & a_{13} & \dots & a_{1n}\\
-a_{21} & a_{22} & a_{23} & \dots & a_{2n}\\
-a_{31} & a_{32} & a_{33} & \dots & a_{3n}\\
-\vdots & \vdots & \vdots & \ddots & \vdots\\
-a_{m1} & a_{m2} & a_{m3} & \dots & a_{mn}
-\end{bmatrix} \in \mathbb{R}^{mxn}$
+\begin{center}
+    $A = \begin{bmatrix}
+        a_{11} & a_{12} & a_{13} & \dots & a_{1n}\\
+        a_{21} & a_{22} & a_{23} & \dots & a_{2n}\\
+        a_{31} & a_{32} & a_{33} & \dots & a_{3n}\\
+        \vdots & \vdots & \vdots & \ddots & \vdots\\
+        a_{m1} & a_{m2} & a_{m3} & \dots & a_{mn}
+    \end{bmatrix} \in \mathbb{R}^{mxn}$
+\end{center}
+
 
 \subsubsection{Soorten matrices}
 
 \textbf{Vierkante matrix:} $m = n$
 
-$A = \begin{bmatrix}
-6 & \sqrt{2}\\
--1 & \frac13
-\end{bmatrix}$
+\begin{center}
+    $A = \begin{bmatrix}
+        6 & \sqrt{2}\\
+        -1 & \frac13
+    \end{bmatrix}$
+\end{center}
 
 \textbf{Rijmatrix:} $m = 1$
 
-$B = \begin{bmatrix}
-1 & -1 & -3 & 8 & -6 & 7
-\end{bmatrix}$
-
+\begin{center}
+    $B = \begin{bmatrix}
+        1 & -1 & -3 & 8 & -6 & 7
+    \end{bmatrix}$
+\end{center}
 
 \textbf{Kolommatrix:} $n = 1$
 
-$C = \begin{bmatrix}
-x\\
-y\\
-z
-\end{bmatrix}$
+\begin{center}
+    $C = \begin{bmatrix}
+        x\\
+        y\\
+        z
+    \end{bmatrix}$
+\end{center}
+
 
 \textbf{Nulmatrix:} alle $a_{ij} = 0$ 
 
-$O_{2x3} = \begin{bmatrix}
-0 & 0 & 0\\
-0 & 0 & 0
-\end{bmatrix}$
+\begin{center}
+    $O_{2x3} = \begin{bmatrix}
+        0 & 0 & 0\\
+        0 & 0 & 0
+    \end{bmatrix}$
+\end{center}
+
 
 Hoofddiagonaal van een matrix = $a_{11}, a_{22}, a_{33}, \dots, a_{nn}$
 
 \textbf{Eenheidsmatrix I:} vierkante matrix met overal 0, behalve 1 op de hoofddiagonaal:
 
-$I_3 = \begin{bmatrix}
-1 & 0 & 0\\
-0 & 1 & 0\\
-0 & 0 & 1
-\end{bmatrix}$
+\begin{center}
+    $I_3 = \begin{bmatrix}
+        1 & 0 & 0\\
+        0 & 1 & 0\\
+        0 & 0 & 1
+    \end{bmatrix}$
+\end{center}
 
 \subsubsection{Gelijke matrices}
 
@@ -3852,7 +3876,7 @@ Twee matrices zijn gelijk als:
 
 \begin{itemize}
     \item ze dezelfde afmetingen hebben
-    \item de corresponderende elemten gelijk zijn
+    \item de corresponderende elementen gelijk zijn
 \end{itemize}
 
 
@@ -3993,7 +4017,7 @@ $(AB)^T = B^T A^T$
 
 Gegeven matrix $A$ en matrix $B$ waarbij $A \in \mathbb{R}^{r\cdot c}$ en $B \in \mathbb{R}^{s \cdot d}$
 
-$A$ en $B$ kunnen vermenigdvuldigd worden als:
+$A$ en $B$ kunnen vermenigvuldigd worden als:
 
 \begin{itemize}
     \item het aantal kolommen van A moet gelijk zijn aan het aantal rijen van B
@@ -4126,7 +4150,7 @@ $
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{3x3-matrix-determinant.png}
+    \includegraphics[width=0.7\textwidth]{3x3-matrix-determinant.png}
 \end{figure}
 
 
@@ -4308,7 +4332,7 @@ zodat $(A - \lambda I) \cdot v = 0$. $I =$ eenheidsmatrix.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{covariantie-positieve-samenhang.png}
-    \caption{Matig positieve covariantie: punten vooral in Hoog-hoog/laag-laag kwadranten}
+    \caption{Matig positieve covariantie: punten vooral in hoog-hoog/laag-laag kwadranten}
 \end{figure}
 
 \begin{itemize}
@@ -4340,7 +4364,7 @@ S_{xy} = \frac{1}{N} \cdot \sum_{i=1}^N (x_i - \bar{x}) \cdot (y_i - \bar{y})
 met:
 
 \begin{itemize}
-    \item $\bar{x} en \bar{y} =$ de gemiddelden
+    \item $\bar{x}$ en $\bar{y} =$ de gemiddelden
     \item $N$ of $N-1$: populatie of steekproef
     \item \textbf{Opgelet:} covariantie gaat op zoek naar een \textbf{lineair} verband!
 \end{itemize}
@@ -4494,9 +4518,7 @@ het vinden van het kortste pad tussen nodes
 
 \subsection{Visualisatie: datastructuren voor grafen}
 
-Voorstellen van een graaf kan een enorme impact hebben op de performantie van een algoritme.
-
-Twee basiskeuzes:
+Voorstellen van een graaf kan een enorme impact hebben op de performantie van een algoritme. Twee basiskeuzes:
 
 \begin{itemize}
     \item Matrix (adjecentiematrix): tweedimensionale array
@@ -4505,7 +4527,7 @@ Twee basiskeuzes:
 
 \subsubsection{Adjecentiematrix}
 
-= tweedimensionele array
+= tweedimensionale array
 
 \begin{itemize}
     \item Elke boog $(v,w) \rightarrow a[v][w] =$ kost van boog
@@ -4994,7 +5016,7 @@ def num_sequence(n):
 
 result = num_sequence(5)
 print(type(result))
-> <class 'generator'>
+> <class generator>
 \end{minted}
 
 \section{Decorators}
