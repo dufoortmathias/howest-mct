@@ -155,7 +155,7 @@ Alles volledig opensource via \url{https://github.com/dotnet}
     \begin{itemize}
         \item Web Assembly support
     \end{itemize}
-    \item \textbf{Framework om API’s te bouwen , webapi (wij gebruiken dit)}
+    \item \textbf{Framework om API’s te bouwen, webapi (wij gebruiken dit)}
 \end{itemize}
 
 Cross platform zowel om uit te voeren als te onwikkelen (Visual Studio \& Visual Studio Code zijn cross-platform)
@@ -275,17 +275,17 @@ Zelfde als HTTP Triggers in Azure Functions (cfr. Module IoT Cloud Semester 3)
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{startup-cs1.png}
-    \caption{ConfigureServices}
+    \caption{ConfigureServices methode}
 \end{figure}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth]{startup-cs2.png}
-    \caption{Controllers}
+    \caption{Controllers toevoegen}
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{startup-cs3.png}
-    \caption{Swagger}
+    \includegraphics[width=0.7\textwidth]{startup-cs3.png}
+    \caption{Swagger opzetten}
 \end{figure}
 
 \begin{theorem}[Dependency Injection]
@@ -340,6 +340,7 @@ Dependency Injection is het injecteren van services in de ASP.NET Container
     \item We kunnen verschillende files gebruiken:
     \begin{itemize}
         \item Appsettings.Development.json
+        \item Appsettings.Docker.json
         \item Appsettings.Production.json
         \item \dots
     \end{itemize}
@@ -487,14 +488,14 @@ Meest gebruikt:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{model-binding-formfields.png}
-    \caption{Voorbeeld: Form Fields}
+    \includegraphics[width=0.75\textwidth]{model-binding-formfields.png}
+    \caption{In Postman kunnen we Form Fields toevoegen}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{model-binding-requestbody.png}
-    \caption{Voorbeeld: Request Body (enkel bij gebruik van [ApiController] attribuut)}
+    \includegraphics[width=0.75\textwidth]{model-binding-requestbody.png}
+    \caption{We kunnen ook manueel een Request Body gebruiken}
 \end{figure}
 
 Via Route attribuut kunnen we parameters doorgeven:
@@ -539,7 +540,7 @@ Via Route attribuut kunnen we parameters doorgeven:
     \item JSON file die bij de applicatie zit
     \item Verschillende versies mogelijk
     \begin{itemize}
-        \item Development/Testing/Production..
+        \item Development/Testing/Production/Docker\dots
     \end{itemize}
     \item Eerst geladen
     \item Bevat dingen die zowel voor development als production geldig zijn
@@ -547,13 +548,12 @@ Via Route attribuut kunnen we parameters doorgeven:
     \begin{itemize}
         \item Overriden wat reeds in appsettings.json szit
     \end{itemize}
-    \item JSON file
 \end{itemize}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{appsettings-json.png}
-    \caption{Probeer met Secties te werken (zie MailServerSettings)}
+    \caption{Probeer met Secties te werken (zie sectie MailServerSettings)}
 \end{figure}
 
 \begin{itemize}
@@ -575,7 +575,7 @@ Via Route attribuut kunnen we parameters doorgeven:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{appsettings-json-configure.png}
-    \caption{Configuration.GetSection("SectionNaam")}
+    \caption{In Startup.cs: Configuration.GetSection("SectionNaam")}
 \end{figure}
 
 Gebruik in de controller: 
@@ -592,7 +592,7 @@ Gebruik in de controller:
     \caption{}
 \end{figure}
 
-In VSCode:
+\textbf{In VSCode:}
 
 \begin{itemize}
     \item launch.json openen
@@ -603,8 +603,8 @@ In VSCode:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.3\textwidth]{appsettings-json-vscode.png}
-    \caption{launch.json}
+    \includegraphics[width=0.4\textwidth]{appsettings-json-vscode.png}
+    \caption{In launch.json zet je de verschillende profielen}
 \end{figure}
 
 \begin{figure}[H]
@@ -614,11 +614,11 @@ In VSCode:
 \end{figure}
 
 
-\textbf{Visual Studio 2019}
+\textbf{In Visual Studio 2019:}
 
 \begin{itemize}
     \item We bepalen de profielen in de map Properties
-    \item In launchSettings.json
+    \item In het launchSettings.json bestand
 \end{itemize}
 
 \subsubsection{Azure Keyvault}
@@ -641,9 +641,6 @@ In VSCode:
 \section{Web API DTO, Validation, Versioning}
 
 \subsection{Validation}
-
-
-
 
 \begin{itemize}
     \item Altijd valideren:
@@ -896,7 +893,7 @@ In de AutoMapping klasse definiëren we de mapping tussen Customer en CustomerDT
 
 \begin{itemize}
     \item We gebruiken HTTP Post
-    \item List<IFromFile> bevat de bestanden
+    \item List<IFormFile> bevat de bestanden
     \item Via for lus overlopen en wegschrijven naar C:\textbackslash Temp\textbackslash test.csv
     \item System.IO.File zorgt voor aanmaken file en wegschrijven data
 \end{itemize}
@@ -930,7 +927,7 @@ In de AutoMapping klasse definiëren we de mapping tussen Customer en CustomerDT
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{binary-files-download.png}
+    \includegraphics[width=0.6\textwidth]{binary-files-download.png}
     \caption{Downloading files}
 \end{figure}
 
@@ -1041,7 +1038,7 @@ ResponseCache attribuut
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{caching-response-attribute.png}
-    \caption{}
+    \caption{ResponseCache met Duration=15, Location=ResponseCacheLocation.Any}
 \end{figure}
 
 
@@ -1206,7 +1203,7 @@ Microservices != containerization (maar het is wel een logische stap)
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{microservices-demo.png}
+    \includegraphics[width=0.7\textwidth]{microservices-demo.png}
     \caption{Een voorbeeld van een app die gebruik maakt van microservices en containers}
 \end{figure}
 
@@ -1297,7 +1294,6 @@ docker commit -c <startup-command>
 \begin{itemize}
     \item Volgorde is belangrijk!
     \item Gebruikt cache wanneer mogelijk (snellere builds)
-    \item 
 \end{itemize}
 
 \begin{figure}[H]
@@ -1308,7 +1304,7 @@ docker commit -c <startup-command>
 
 \begin{itemize}
     \item FROM: build image
-    \item COPY: bestanden die we nodig hebben kopiëren
+    \item COPY: bestanden die we nodig hebben kopiëren naar de container
     \item RUN: commando's uitvoeren, programma's installeren
     \item WORKDIR: verander de huidige map
     \item ENTRYPOINT: startupcommando, met argumenten
