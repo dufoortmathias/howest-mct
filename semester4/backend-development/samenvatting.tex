@@ -1665,27 +1665,27 @@ Dit zijn klasses die onze database tables voorstellen. Een ID bepalen we door:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{efcore-fluentapi.png}
-    \caption{Fluent API}
+    \includegraphics[width=0.95\textwidth]{efcore-fluentapi.png}
+    \caption{Voorbeelden Fluent API}
 \end{figure}
 
 \subsection{EF Context}
 
-(of DBContext)
+(of DbContext)
 
 \begin{itemize}
-    \item Erft altijd van DBContext
+    \item Erft altijd van DbContext
     \item Klasse is verantwoordelijk voor de communicatie met de database via een sessie die deze opzet met de database
-    \item We bepalen de tabellen, via DbSet
+    \item We bepalen de tabellen, via DbSet<Model>
     \item We bepalen ook welke database we gebruiken via OnConfiguring waar we ConnectionString opgeven
     \item DbContext zal ook de relaties aanmaken en beheren
-    \item Ook queries uitvoeren tov de database is een taak
+    \item DbContext zal ook queries uitvoeren tov de database
 \end{itemize}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{efcore-dbcontext.png}
-    \caption{BloggingContext erft van DBContext}
+    \caption{BloggingContext erft van DbContext}
 \end{figure}
 
 \subsubsection{Aanmaken van de database en/of tabellen}
@@ -1851,9 +1851,6 @@ EF Core zal dit detecteren en default zien als navigation properties
     \caption{Records deleten (HttpDelete)}
 \end{figure}
 
-
-\subsubsection{Hoe halen we records op (SELECT)?}
-
 \begin{enumerate}
     \item BloggingContext aanmaken via \textbf{using} statement
     \item Eerst blog ophalen via de Linq Where clause
@@ -1872,7 +1869,7 @@ Bv: hoe post toevoegen aan bestaande blog?
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{efcore-insert-related.png}
+    \includegraphics[width=0.75\textwidth]{efcore-insert-related.png}
     \caption{Gerelateerde data toevoegen (HttpPost met blogId parameter)}
 \end{figure}
 
@@ -1893,7 +1890,7 @@ Bv: hoe post toevoegen aan bestaande blog?
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{efcore-select-related.png}
+    \includegraphics[width=0.75\textwidth]{efcore-select-related.png}
     \caption{Gerelateerde data ophalen (HttpGet blogs + de posts bij elke blog)}
 \end{figure}
 
@@ -1903,7 +1900,7 @@ Bv: hoe post toevoegen aan bestaande blog?
     \item Er zal \textbf{Exception} ontstaan bij serialisatie
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.7\textwidth]{efcore-select-related2.png}
+        \includegraphics[width=0.95\textwidth]{efcore-select-related2.png}
         \caption{}
     \end{figure}
     
@@ -1965,7 +1962,7 @@ Bv: hoe post toevoegen aan bestaande blog?
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{querying-select-met.png}
-    \caption{}
+    \caption{Include}
 \end{figure}
 
 \subsubsection{Ophalen van 1 specifiek item}
@@ -2085,7 +2082,7 @@ We introduceren \textbf{Design Patterns}:
     \item Patterns zijn \textbf{niet} verbonden aan een taal (zowel in C\#, Python, \dots)
 \end{itemize}
 
-Opgepast:
+\textcolor{red}{Opgepast:}
 
 \begin{itemize}
     \item Design Patterns lossen niet alles op
@@ -2097,15 +2094,13 @@ Opgepast:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.25\textwidth]{repository-service-pattern.png}
-    \caption{}
+    \caption{Voorbeeld met 1 controller, 3 services en 2 repositories}
 \end{figure}
-
-We introduceren Repository \& Service pattern
 
 \begin{itemize}
     \item Controller zal praten met Service laag
     \begin{itemize}
-        \item Service laag (Business layer0 bevat de Business logica)
+        \item Service laag (=Business layer, bevat de Business logica)
         \item Business logica is:
         \begin{itemize}
             \item Berekeningen, beslissingen
@@ -2117,7 +2112,11 @@ We introduceren Repository \& Service pattern
         \item Repository bevat code om met database te spreken
         \item Hier zullen we onze LINQ queries schrijven
     \end{itemize}
-    \item Er zijn veel andere patterns, bv: Mediator pattern \url{https://www.dofactory.com/net/mediator-design-pattern}
+    \item Er zijn veel andere patterns
+    \begin{itemize}
+        \item bv: Mediator pattern 
+        \item \url{https://www.dofactory.com/net/mediator-design-pattern}
+    \end{itemize}
 \end{itemize}
 
 \subsection{Repositories}
@@ -2191,7 +2190,7 @@ We introduceren Repository \& Service pattern
 \begin{itemize}
     \item De interface zal specificeren welke methodes er aanwezig zijn
     \item Iedere klasse die de interface gaat implementeren kan zijn eigen kan dan eigen context voorzien
-    \item We gaan dit ook doen voor Repositories \& Services. Altijd een interface voorzien
+    \item We gaan dit ook doen voor Repositories \& Services: altijd een interface voorzien
 \end{itemize}
 
 Hoe moeten we deze nu gebruiken?
@@ -2218,10 +2217,10 @@ $\Rightarrow$ Dependency Injection
 
 \begin{itemize}
     \item Dit is terug een Design pattern
-    \item Doelstelling is Inversion of Control (IoC) bekomen
+    \item Doelstelling is \textbf{Inversion of Control (IoC)} bekomen
     \begin{itemize}
         \item Het aanmaken van objecten gaan we uit handen geven aan een \textbf{IoC container}
-        \item We zijn gewoon om VaccinTypeRepository p = new VaccinTypeRepository() te schrijven
+        \item Normaal schrijven we: \mintinline{csharp}{VaccinTypeRepository p = new VaccinTypeRepository()}
         \item De IoC container zal dit voor ons doen achter de schermen
         \item Via DI zal dit object beschikbaar zijn als we het nodig hebben
         \item Indien je niet tevreden bent kan je de ASP.NET IoC Container uitpluggen en zelf maken
@@ -2257,7 +2256,7 @@ $\Rightarrow$ Dependency Injection
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{dependency-injection-registratie.png}
+    \includegraphics[width=0.75\textwidth]{dependency-injection-registratie.png}
     \caption{\url{https://www.c-sharpcorner.com/article/understanding-addtransient-vs-addscoped-vs-addsingleton-in-asp-net-core/}}
 \end{figure}
 
@@ -2276,26 +2275,26 @@ dan zal er een object gemaakt van hun respectievelijk type RegistrationContext e
 
 \begin{itemize}
     \item In onze VaccinTypeRepository hebben we de RegistrationContext nodig want anders kunnen we niet praten met de database
-    \item We maken gebruik van constructor injection om een instantie van RegistrationContext binnen te brengen in onze VaccinTypeRepository
+    \item We maken gebruik van \textbf{constructor injection} om een instantie van RegistrationContext binnen te brengen in onze VaccinTypeRepository
     \item De IoC container van ASP.NET Core heeft voor IRegistrationContext een RegistrationContext object geregistreerd in Startup.cs
     \item Bij het uitvoeren van het project ziet .NET dat er een IRegistrationContext nodig is bij VaccinTypeRepository. ASP.NET vraagt aan de IoC container een object waar de interface IRegistrationContext voor is geregistreerd en zal dit binnen brengen via de constructor.
 \end{itemize}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{dependency-injection-2.png}
-    \caption{}
+    \includegraphics[width=0.6\textwidth]{dependency-injection-2.png}
+    \caption{Constructor injection}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{dependency-injection-3.png}
-    \caption{Stel dat we IRegistrationContext niet geregistreerd hebben in de Startup.cs: veel gemaakt error!}
+    \includegraphics[width=0.99\textwidth]{dependency-injection-3.png}
+    \caption{Als we IRegistrationContext niet registreren in de Startup.cs: veel gemaakte error!}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{dependency-injection-4.png}
+    \includegraphics[width=0.6\textwidth]{dependency-injection-4.png}
     \caption{We passen nu ook onze Controller aan en injecteren de repository in de Controller}
 \end{figure}
 
@@ -2310,7 +2309,7 @@ De service layer bevat:
         \item Procedures
         \item Andere services aanroepen, vb mail sturen
     \end{itemize}
-    \item Aanroepen naar databas
+    \item Aanroepen naar database
     \begin{itemize}
         \item Soms is het gewoon doorgeven van method calls
         \item Veel overhead code soms
@@ -2346,7 +2345,7 @@ We gaan niet voor iedere Repository een service maken, de service zal meer op fu
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{services-1.png}
-    \caption{}
+    \caption{Voorbeeld Service}
 \end{figure}
 
 Nu moeten we de service registreren zodat we deze kunnen gebruiken:
@@ -2354,7 +2353,7 @@ Nu moeten we de service registreren zodat we deze kunnen gebruiken:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{services-2.png}
-    \caption{Registratie VaccinationService}
+    \caption{Registratie VaccinationService in Startup.cs}
 \end{figure}
 
 In de controller injecteren we nu de IVaccinationService en niet meer de Repository
@@ -2362,7 +2361,7 @@ In de controller injecteren we nu de IVaccinationService en niet meer de Reposit
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{services-3.png}
-    \caption{Injectie IVaccinationService}
+    \caption{Injectie IVaccinationService in de controller}
 \end{figure}
 
 \subsection{Wat is belangrijk?}
@@ -2389,7 +2388,7 @@ In de controller injecteren we nu de IVaccinationService en niet meer de Reposit
 \subsection{Waarom testing?}
 
 \begin{itemize}
-    \item We willen zeker zijn dat de code werkt onder verschillende omstandigheden, met verschillende input
+    \item We willen zeker zijn dat de code werkt onder verschillende omstandigheden, met verschillende inputs
     \item Kwaliteit code verhogen
     \item Verplicht code opdelen in kleine stukken die we kunnen testen
     \item Je bent verplicht na te denken over de project requirements
@@ -2598,7 +2597,7 @@ dotnet new xunit --name <naam-test-project>
     \centering
     \includegraphics[width=0.4\textwidth]{unit-test3.png}
     \includegraphics[width=0.4\textwidth]{unit-test4.png}
-    \caption{Voorbeeld}
+    \caption{Voorbeeld met ArgumentException}
 \end{figure}
 
 \begin{figure}[H]
@@ -2635,7 +2634,7 @@ We testen dus de volledige flow $\Rightarrow$ trager
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{integration-test1.png}
+    \includegraphics[width=0.75\textwidth]{integration-test1.png}
 \end{figure}
 
 
@@ -2646,28 +2645,24 @@ We testen dus de volledige flow $\Rightarrow$ trager
 \begin{minted}{csharp}
 response.StatusCode.Should().Be(HttpStatusCode.OK)
 \end{minted}
-    \begin{itemize}
-        \item Fluent assertion zal controleren of we een OK (200) terugkrijgen
-    \end{itemize}
+    \item Fluent assertion zal controleren of we een OK (200) terugkrijgen
 \end{itemize}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{integration-test2.png}
+    \includegraphics[width=0.75\textwidth]{integration-test2.png}
 \end{figure}
-
 
 \begin{itemize}
     \item We deserialiseren de response.Content
     \item Via fluent assertions controleren we of er 5 inzitten
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{integration-test3.png}
+        \includegraphics[width=0.5\textwidth]{integration-test4.png}
+        \caption{Je kan dat ook doen via Assert}
+    \end{figure}
 \end{itemize}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{integration-test3.png}
-    \includegraphics[width=0.5\textwidth]{integration-test4.png}
-    \caption{}
-\end{figure}
 
 \subsubsection{WebApplicationFactory}
 
@@ -2680,7 +2675,7 @@ response.StatusCode.Should().Be(HttpStatusCode.OK)
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{integration-test5.png}
+    \includegraphics[width=0.75\textwidth]{integration-test5.png}
 \end{figure}
 
 \subsection{Test driven development}
