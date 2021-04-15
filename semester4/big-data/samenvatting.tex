@@ -1,6 +1,6 @@
 \documentclass{article}
 
-\usepackage[dutch]{babel}
+\usepackage[english]{babel}
 \usepackage[margin=3cm]{geometry}
 \usepackage{graphicx}
 \usepackage{float}
@@ -2138,7 +2138,9 @@ Data processing can be done in 3 ways:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{linux-std.png}
+    \includegraphics[width=0.65\textwidth]{linux-std.png}
+    \includegraphics[width=0.3\textwidth]{linux-std2.png}
+    \caption{Linux streams}
 \end{figure}
 
 
@@ -2149,17 +2151,6 @@ A linux program always has three standard streams:
     \item Standard output = STDOUT (1)
     \item Standard error = STDERR (2)
 \end{itemize}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.3\textwidth]{linux-std2.png}
-\end{figure}
-
-\subsection{Map/Reduce}
-
-= A programming model for processing big data sets with a parallel, distributed, algorithm on a cluster
-
-\url{https://en.wikipedia.org/wiki/MapReduce}
 
 \subsubsection{Why not everything is possible with Unix tools}
 
@@ -2173,10 +2164,19 @@ A linux program always has three standard streams:
     \end{itemize}
 \end{itemize}
 
+\subsection{Map/Reduce}
+
+= A programming model for processing big data sets with a parallel, distributed, algorithm on a cluster
+
+\url{https://en.wikipedia.org/wiki/MapReduce}
+
+
 \subsubsection{Hadoop}
 
-Hadoop is a software framework by Apache for distributed storage and processing of big data using the Map/Reduce programming model. 
-Hadoop is made out of modules, each of which carries out a particular task essential for a computer system designed for big data analysis.
+\begin{theorem}
+    Hadoop is a software framework by Apache for distributed storage and processing of big data using the Map/Reduce programming model. 
+    Hadoop is made out of modules, each of which carries out a particular task essential for a computer system designed for big data analysis.
+\end{theorem}
 
 \url{https://en.wikipedia.org/wiki/Apache_Hadoop}
 
@@ -2192,6 +2192,7 @@ Hadoop is made out of modules, each of which carries out a particular task essen
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{hadoop.png}
+    \caption{A multi-node Hadoop cluster}
 \end{figure}
 
 \textbf{Two layers:}
@@ -2211,11 +2212,16 @@ Hadoop is made out of modules, each of which carries out a particular task essen
 
 \subsubsection{HDFS}
 
-= Big datablocks (64+ MB) + replication over many nodes, many disks and standard network.
+\begin{theorem}
+    The Hadoop distributed file system (HDFS) is a distributed, scalable, and portable 
+    file system written in Java for the Hadoop framework. It is used for storing the 
+    data that will be processed by MapReduce.
+\end{theorem}
 
-= `Network attached storage on steroids'
 
 \begin{itemize}
+    \item = `Network attached storage on steroids'
+    \item Big datablocks (64+ MB) + replication over many nodes, many disks and standard network.
     \item HDFS consist of a daemon process running on each machine, exposing a network service that allows other nodes to access files stored on that machine
     \item HDFS creates one big filesystem that can use the space on the disk of all machines running the daemon
     \item A central server called the \textbf{NameNode} keeps track of which file blocks are stored on which machine
@@ -2262,46 +2268,65 @@ Map Reduce is named after the two basic operations this module carries out:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{map-reduce-wordcount.png}
-    \caption{}
+    \includegraphics[width=0.75\textwidth]{map-reduce-wordcount.png}
+    \caption{Example with wordcount}
 \end{figure}
 
 Ideally every mapper and reducer work on their own disks.
 
 \subsection{Spark - Data processing framework or Dataflow engine}
 
-Apache Spark is an analytics engine for large-scale data processing. 
+\begin{theorem}
+    Apache Spark is an analytics engine for large-scale data processing. 
+    It uses Resilient Distributed Datasets (RDDs): an immutable
+    distributed collection of elements of the data. 
+    Each dataset in RDD is divided into logical partitions, 
+    which may be computed on different nodes of the cluster.
+    
+    Spark and its RDDs were developed in 2012 in response to limitations in MapReduce.
+\end{theorem}
+
+\url{https://en.wikipedia.org/wiki/Apache_Spark}
 
 \subsubsection{Why Spark is more powerful than Hadoop}
 
+Problems with Hadoop:
+
 \begin{itemize}
-    \item Doing everything with Map \& Reduce: not very flexible
+    \item Doing everything with Map \& Reduce: good for simple problems like wordcount, but not very flexible for complex tasks
     \begin{itemize}
-        \item Integration with Machine Learning?
+        \item $\Rightarrow$ No integration with Machine Learning
     \end{itemize}
-    \item Next step can only start if \textbf{all previous tasks} are finished. 
+    \item Next step (for example Reduce) can only start if \textbf{all previous tasks} are finished. 
     \begin{itemize}
-        \item Previous task creates an 'intermediate' file
+        \item Previous task creates an 'intermediate' file that the next task needs
     \end{itemize}
     \item Good throughput (TBs of data), but long response time (minutes, hours) before you get a result because of constant disk activity
-    \item Allows flexibility with `operators'
-    \begin{itemize}
-        \item Not only Map \& Reduce
-        \item No automatic sorting if not necessary
-    \end{itemize}
-    \item Uses a DAG (Directed Acyclic Graph) = execution plan, similar to a database query plan
-    \item Only writes to disk if necessary
+    \item Hadoop only has Map \& Reduce
+    \item Hadoop sorts even when not necessary
+\end{itemize}
+    
+What Spark does better:
+
+\begin{itemize}
+    \item Spark has many more operators than just Map \& Reduce
+    \item Sorting is a seperate operator $\Rightarrow$ only sort if actually necessary
+    \item Uses a DAG (Directed Acyclic Graph) as an execution plan, similar to a database query plan
+    \item Only writes to disk if necessary: makes more use of memory
 \end{itemize}
 
+\subsubsection{Execution plan using a Directed Acylic Graph (DAG) in Spark}
+
+Spark creates a DAG to figure out the best way to execute a job
+
+\begin{itemize}
+    \item Similar to `query planner' from RDBMS
+    \item A job is associated with a chain of Resilient Distributed Dataset (RDD) dependencies organized in a DAG
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth]{spark.png}
     \caption{Example of a Spark job}
 \end{figure}
-
-\begin{itemize}
-    \item A job is associated with a chain of Resilient Distributed Dataset (RDD) dependencies organized in a DAG
-    \item Similar to `query planner' from RDBMS
     \item This job performs a simple word count: 
     \begin{itemize}
         \item First, it performs a textFile operation to read an input file in HDFS
@@ -2320,7 +2345,7 @@ Apache Spark is an analytics engine for large-scale data processing.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{spark2.png}
+    \includegraphics[width=0.75\textwidth]{spark2.png}
     \caption{Hadoop (Map Reduce) vs Spark Framework: Only 1 write to disk, everything in memory}
 \end{figure}
 
@@ -2422,7 +2447,7 @@ Apache Spark is an analytics engine for large-scale data processing.
 \begin{itemize}
     \item Stages = parts of the execution plan of the job
     \item Contains a sequence of transformations that can be completed without shuffling the data
-    \item \begin{itemize}
+    \begin{itemize}
         \item Get data (stage 1)
         \item Group by (stage 2)
         \item Map \& union (stage 3)
@@ -2439,7 +2464,7 @@ Apache Spark is an analytics engine for large-scale data processing.
     \includegraphics[width=0.5\textwidth]{spark-jobs.png}
 \end{figure}
 
-\textbf{One job, multiple tasks:} For example: ounting words in a file:
+\textbf{One job, multiple tasks:} For example: counting words in a file:
 
 \begin{figure}[H]
     \centering
@@ -2518,7 +2543,7 @@ Say you need to create an application for a windmill park
 
 \begin{itemize}
     \item Preprocessing of (time series) sensor data takes longer than sending the sensor data
-    \item Connect mroe than 1 processing app
+    \item Connect more than 1 processing app
     \item IoT device - MQTT - Webservice problem situations:
     \begin{itemize}
         \item What if too many IoT devices connect and send data?
@@ -2567,11 +2592,11 @@ The message producers will publish events in the queues of a message broker.
 \begin{itemize}
     \item Producer = sends `events' or `messages'
     \item Topic = consumer is subscribed to this queue and gets notified
-    \item Load balancing: distribute the load between multiple message consumers
+    \item \textbf{Load balancing:} distribute the load between multiple message consumers
     \begin{itemize}
         \item = each message is delivered to \textit{one} of the consumers
     \end{itemize}
-    \item Fan-out: data of a certain topic is broadcast to all data processors
+    \item \textbf{Fan-out:} data of a certain topic is broadcast to all data processors
     \begin{itemize}
         \item = each message is delivered to \textit{all} of the consumers
     \end{itemize}
@@ -2607,44 +2632,47 @@ Message queue:
     \item All subscriber consumers get notified
 \end{itemize}
 
-\subsection{Streams `consume'}
+\subsection{3 types of messaging systems}
 
-There are 3 messaging systems that make the trade-off between:
+Messaging systems always have to make the trade-off between:
 
 \begin{itemize}
-    \item latency = how fast the data gets sent and processed
-    \item durability = how sure I am that the data gets processed at all
-\end{itemize}.
+    \item Latency = how fast the data gets sent and processed
+    \item Durability = how sure I am that the data gets processed at all
+\end{itemize}
 
 We start with the lowest latency and lowest durability, and move our way up:
 
-\begin{enumerate}
-    \item Direct messaging
+\subsubsection{Direct messaging}
+
+\begin{itemize}
+    \item UDP multicast - videostream, financial data, stock broker monitoring
+    \item It's important to get the latest data as fast as possible
+    \item Very low latency
+    \item When too much data is sent at once:
     \begin{itemize}
-        \item UDP multicast - videostream, financial data, stock broker monitoring
-        \item It's important to get the latest data as fast as possible
-        \item Very low latency
-        \item When too much data is sent at once:
-        \begin{itemize}
-            \item Solution: use back pressure / message dropping
-        \end{itemize}
+        \item Solution: use back pressure / message dropping
     \end{itemize}
-    \item Message brokers (RabbitMQ, Azure Service Bus)
-    \begin{itemize}
-        \item Message brokers save the messages in a message queue in RAM
-        \item Sometimes the message is backed up to a log on the disk
-        \item Once message is received, message queue entry is deleted
-        \item In memory, or `spill over' on disk if RAM is full
-        \item Problem: If a message needs to be resent to a consumer, it is not certain that it arrives in the correct order.
-        \item Low latency, a bit higher than Direct Messaging
-    \end{itemize}
-    \item (Partitioned) Log message queue (Kafka, AWS Kinesis)
-    \begin{itemize}
-        \item Message stays for a while in an append-only log
-        \item Good latency (but higher)
-        \item High throughput (parallel partitions on different disks, or even on different nodes) 
-    \end{itemize}
-\end{enumerate}
+\end{itemize}
+
+\subsubsection{Message brokers (RabbitMQ, Azure Service Bus)}
+
+\begin{itemize}
+    \item Message brokers save the messages in a message queue in RAM
+    \item Sometimes the message is backed up to a log on the disk
+    \item Once message is received, message queue entry is deleted
+    \item In memory, or if RAM is full, let it `spill over' on the disk disk
+    \item Problem: If a message needs to be resent to a consumer, it is not certain that it arrives in the correct order.
+    \item Low latency, a bit higher than Direct Messaging
+\end{itemize}
+
+\subsubsection{(Partitioned) Log message queue (Kafka, AWS Kinesis)}
+
+\begin{itemize}
+    \item Message stays for a while in an append-only log
+    \item Good latency (but higher)
+    \item High throughput (parallel partitions on different disks, or even on different nodes) 
+\end{itemize}
 
 \subsection{Advantages Message Queue / Broker}
 
@@ -2709,7 +2737,7 @@ We start with the lowest latency and lowest durability, and move our way up:
 \subsubsection{Message queue}
 
 \begin{itemize}
-    \item Lower latency (in DRAM, writes only on disk if necessary)
+    \item Lower latency (in RAM, writes only on disk if necessary)
     \item Data delivered $\Rightarrow$ data deleted
     \item Scalable
     \item In order delivery is not guaranteed when using load balancing
@@ -2736,7 +2764,7 @@ We start with the lowest latency and lowest durability, and move our way up:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{message-queue-analytics.png}
+    \includegraphics[width=0.7\textwidth]{message-queue-analytics.png}
 \end{figure}
 
 \subsubsection{Some other use cases for message queues}
@@ -2753,11 +2781,10 @@ We start with the lowest latency and lowest durability, and move our way up:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{events-data-architecture-1.png}
-    \caption{Situation}
+    \includegraphics[width=0.45\textwidth]{events-data-architecture-1.png}
 \end{figure}
 
-Situation:
+\textbf{Situation:}
 
 \begin{itemize}
     \item You need to process sensor data from a windmill park
@@ -2769,8 +2796,9 @@ Situation:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{events-data-architecture-2.png}
-    \caption{Better solution}
 \end{figure}
+
+\textbf{Better solution:}
 
 \begin{itemize}
     \item Sensor data is still sent to the message broker
@@ -2788,9 +2816,9 @@ with stream processing, we use `rolling statistics':
 \begin{itemize}
     \item Multiple ways to do rolling analytics:
     \begin{itemize}
-        \item Thumbling window (1:00-2:59, 3:00-5:59)
-        \item Hopping window (1:00-2:59, 2:00-4:59)
-        \item Sliding window (last 2 minutes: 1:04-3:04, = the heaviest calculation)
+        \item \textbf{Thumbling window} (1:00-2:59, 3:00-5:59)
+        \item \textbf{Hopping window} (1:00-2:59, 2:00-4:59)
+        \item \textbf{Sliding window} (last 2 minutes: 1:04-3:04, = the heaviest calculation)
     \end{itemize}
     \item Apache Spark, Flink Kafka Streams, Azure Stream Analytics have services to do these calculations
 \end{itemize}
