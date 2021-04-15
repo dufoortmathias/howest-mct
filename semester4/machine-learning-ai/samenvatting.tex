@@ -995,7 +995,7 @@ bijvoorbeeld 1 gebaseerd op L2 en 1 op L1.
 
 \subsubsection{Regularisatie met L2 norm}
 
-Bij L2 regularisatie wordt de complexiteit van het model ingeschat met behulp van de som 
+Bij L2 regularisatie wordt de regularisatieterm berekend met behulp van de som 
 van de kwadraten van de $\theta$'s 
 
 \begin{center}
@@ -1006,6 +1006,9 @@ $J_{L2} = \sum_{i=1}^n (\text{target}_i - \text{output}_i) + \lambda_2 \sum_{j=1
 
 
 \subsubsection{Regularisatie met L1 norm}
+
+Bij L2 regularisatie wordt de regularisatieterm berekend met behulp van de som 
+van de absolute waardes van de $\theta$'s 
 
 \begin{center}
 $J_{L1} = J + \lambda_1 \sum_{j=1}^m |\theta_j|$
@@ -1041,7 +1044,7 @@ lregmodel.score(X_test, y_test)
 
 \begin{theorem}[Classificatie]
 Classificatie is een supervised learning techniek waarbij een getraind model
-niet geziene inputs toewijst aan één of meerdere gelabelde categorieën (classes)
+niet-geziene inputs toewijst aan één of meerdere gelabelde categorieën (classes)
 \end{theorem}
 
 \subsubsection{Voorbeelden}
@@ -1077,7 +1080,9 @@ niet geziene inputs toewijst aan één of meerdere gelabelde categorieën (class
 
 \subsubsection{Multiclass classifier}
 
-Verdeel de samples in drie of meerdere verschillende klasses
+\begin{theorem}
+    Een multiclass classifier zal samples in 3 of meer verschillende klasses verdelen
+\end{theorem}
 
 \begin{figure}[H]
     \centering
@@ -1087,14 +1092,18 @@ Verdeel de samples in drie of meerdere verschillende klasses
 
 \subsubsection{Multilabel classifier}
 
-Er kunnen meerdere labels aan een sample toegewezen worden. 
-Een sample kan tot meerdere klasses behoren
+\begin{theorem}
+    Een multilabel classifier zal meerdere labels aan een sample toewijzen.
+    Een sample kan dus tot meerdere klasses behoren
+\end{theorem}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{multilabel-classifier.png}
     \caption{Image content analysis, een film kan tot meerdere genres behoren}
 \end{figure}
+
+\subsection{Voorbeeld van een classificatie: appel herkennen}
 
 \begin{figure}[H]
     \centering
@@ -1113,10 +1122,9 @@ Bij classificatie is de output/target een \textbf{(discrete) variabele/klasse}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{multilabel-classifier3.png}
-    \caption{}
 \end{figure}
 
-\subsection{Waarom lineaire regressie geen goede optie is}
+\subsubsection{Waarom lineaire regressie geen goede optie is}
 
 \begin{figure}[H]
     \centering
@@ -1127,7 +1135,7 @@ Bij classificatie is de output/target een \textbf{(discrete) variabele/klasse}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{classificatie-regressie2.png}
-    \caption{}
+    \caption{We proberen te classificeren met behulp van lineaire regressie}
 \end{figure}
 
 \begin{figure}[H]
@@ -1138,14 +1146,22 @@ Bij classificatie is de output/target een \textbf{(discrete) variabele/klasse}
 
 \begin{itemize}
     \item Stel dat we een nieuw punt toevoegen dan kan het zijn dat onze regressie veel minder nauwkeurig is
-    \item Een betere manier: logistische regressie
+    \item Een betere manier: \textbf{logistische regressie}
 \end{itemize}
 
 \section{Logistische regressie}
 
+\begin{theorem}
+    Logistische regressie wordt gebruikt om de kans te bepalen of een bepaalde sample 
+    tot één van twee klasses behoort. De uitkomst is dus een probabiliteit. 
+    
+    De naam is een beetje misleidend: Logistic Regression is eigenlijk een classificatietechniek. 
+    De reden voor deze naam is omdat regressie gebruikt wordt om de classificatie te berekenen.
+\end{theorem}
+
 \subsection{Het model}
 
-We willen dat het model $h_{\theta}(x)$ voldoet aan:
+Omdat de uitkomst een probabiliteit is, zoeken we een functie $h_{\theta}$ zodat het model $h_{\theta}(x)$ voldoet aan:
 
 \begin{center}
 $0 \leq h_{\theta}(x) \leq 1$
@@ -1155,18 +1171,32 @@ $0 \leq h_{\theta}(x) \leq 1$
     \item $h_{\theta}(x)$ = de geschatte kans dat $y=1$ bij input $x$
     \item Voorbeeld: $h_{\theta}(x) = 0.80$
     \begin{itemize}
-        \item Het model is voor 80\% zeker dat het om een appel gaat.
+        \item Het model is voor 80\% overtuigd dat het om een appel gaat.
+        \item Als je dus als threshold 50\% gebruikt, classificeert het model het object als een appel
     \end{itemize}
 \end{itemize}
+
+\subsubsection{De logistische functie}
 
 \begin{equation}
 h_{\theta}(x) = \frac{1}{1 + e^{-\theta^{\tau}x}}
 \end{equation}
 
+\begin{itemize}
+    \item Met $e =$ het getal van Euler = $\approx 2.718$
+    \item Dit is een sigmoïdefunctie: de basisvorm voor zo'n functie is $\frac{1}{1+e^{-z}}$
+    \item Bij onze logistische functie is $z$ dus gelijk aan $\theta^{\tau}x$
+    \begin{itemize}
+        \item Dit is gelijk aan de uitkomst van een lineaire regressiefunctie
+        \item Met $x =$ de samplewaardes
+        \item Met $\theta =$ de gewichten die bij die waardes horen 
+    \end{itemize}
+\end{itemize}
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.3\textwidth]{logistic-regression.png}
-    \caption{}
+    \caption{De logistische functie is duidelijk een sigmoïdefunctie of S-functie}
 \end{figure}
 
 \begin{itemize}
@@ -1389,7 +1419,7 @@ plt.contour(xx, yy, Z, colors='green')
     \caption{Niet-lineair scheidbare dataset}
 \end{figure}
 
-\subsubsection{Feature engineering: toevoegen van hogere orde features}
+\subsubsection{Feature engineering: automatisch toevoegen van hogere orde features}
 
 \begin{minted}{python}
 # Aanmaken van de hogere orde features
@@ -1439,20 +1469,20 @@ Data kan tot meerdere klasses behoren.
 We kunnen met zo'n data dus geen binaire classificatie doen.
 
 
-\subsubsection{One-vs-all}
+\subsubsection{One-vs-All}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{multi-class-classification.png}
-    \caption{One-vs-All: 3 binaire classifiers}
+    \caption{One-vs-All: we maken 3 binaire classifiers}
 \end{figure}
 
 
 \begin{itemize}
-    \item "One-vs-Rest"
+    \item `One-vs-Rest'
     \item Je classificeert 1 klasse tegen de rest
     \item Je hebt dus 1 classifier per klasse
-    \item Totaal aantal classifiers: N
+    \item Totaal aantal classifiers: N (met N = aantal klasses)
     \item Gevoeliger voor niet-gebalanceerde data (als er in een bepaalde klasse weinig datasamples zijn)
 \end{itemize}
 
@@ -1460,20 +1490,27 @@ We kunnen met zo'n data dus geen binaire classificatie doen.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{multi-class-classification2.png}
+    \includegraphics[width=0.4\textwidth]{multi-class-classification2.png}
     \caption{One-vs-One}
 \end{figure}
 
 \begin{itemize}
-    \item Je hebt $\frac{N\cdot(N-1)}{2}$ classifiers (met N aantal klasses) $\Rightarrow$ rekenintensief
+    \item Je hebt $\frac{N\cdot(N-1)}{2}$ classifiers (met N = aantal klasses) $\Rightarrow$ rekenintensiever dan One-vs-All
     \item Minder gevoelig voor niet-gebalanceerde data
 \end{itemize}
 
 \section{Evaluatie van een classifier}
 
+We moeten kunnen bepalen hoe goed een classifier is, om te weten hoe betrouwbaar de voorspelling is
+en om de classifier te vergelijken met andere classifiers. 
+Bij regressie kunnen we gebruikmaken van onder andere MAE, MSE en de determinatiecoëfficiënt.
+ 
+Bij classificatie zijn die metrics niet interpreteerbaar. 
+Daarom maken we gebruik van andere metrics die allemaal berekend worden met behulp van een waarheidstabel:
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{truth-table.png}
+    \includegraphics[width=0.4\textwidth]{truth-table.png}
     \caption{Confusion matrix}
 \end{figure}
 
@@ -1496,8 +1533,9 @@ Deze formules kunnen we gebruiken om een classifier te evalueren.
     \text{Accuracy} = \frac{TP + TN}{TP + FP + FN + TN}
 \end{equation}
 
+\textbf{Probleem:} stel dat TN = 990, FN = 10, TP = 0, FP = 0
+
 \begin{itemize}
-    \item Probleem: stel dat TN = 990, FN = 10, TP = 0, FP = 0
     \item Dan heb je een accuracy van 99\%, terwijl je eigenlijk geen enkele positieve predictie hebt
     \item Accuracy is dus niet altijd veelzeggend $\Rightarrow$ nood aan andere termen
 \end{itemize}
@@ -1622,7 +1660,7 @@ ROC bij verschillende treshold settings:
         \item Dan is TPR dichter bij 0\%
         \item En FPR ook dichter bij 0\%
     \end{itemize}
-    \item Je kiest de beste ROC $\Rightarrow$ ROC met grootste AOC
+    \item Je zoekt de beste ROC $\Rightarrow$ ROC met grootste AOC
 \end{itemize}
 
 \section{Support Vector Machines (SVM)}
@@ -1631,7 +1669,7 @@ ROC bij verschillende treshold settings:
 
 \begin{theorem}[SVM]
 Een SVM is een supervised ML algoritme dat zowel voor classificatie als regressie
-gebruikt kan worden. Classificatie gebeurt door het vinden van een hyper-plane die
+gebruikt kan worden. Classificatie gebeurt door het vinden van een hyperplane die
 een optimale scheiding maakt tussen twee verschillende klasses.
 \end{theorem}
 
@@ -1646,7 +1684,6 @@ een optimale scheiding maakt tussen twee verschillende klasses.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{svm-classifiers.png}
-    \caption{}
 \end{figure}
 
 \begin{itemize}
@@ -1688,8 +1725,8 @@ Antwoord: werken met een regularisatieparameter $C$
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.4\textwidth]{svm-regularisatie.png}
-    \caption{}
+    \includegraphics[width=0.55\textwidth]{svm-regularisatie.png}
+    \caption{Bij een grotere C-waarde krijgen we een smallere marge $\Rightarrow$ op zoek gaan naar de optimale C}
 \end{figure}
 
 \subsubsection{Wat bij niet-lineair scheidbare gegevens}
@@ -1746,7 +1783,7 @@ Hoe kan je onderstaande klasses scheiden?
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{svm-kernels2.png}
-    \caption{Voorbeeld ("Donut problem")}
+    \caption{Voorbeeld (`Donut problem')}
 \end{figure}
 
 \begin{itemize}
@@ -2187,7 +2224,7 @@ $p(spam | w_1, \dots, w_n) = p(spam) \cdot \prod_{i=1}^n p(w_i | spam)$
     \item $p(ham) = \frac{930}{280 + 930} = \frac{930}{1210} = 0.77 = 77\%$
 \end{itemize}
 
-Classificeer de zin: "Get free advice"
+Classificeer de zin: `Get free advice'
 
 Kans op spam:
 
@@ -2207,7 +2244,7 @@ Conclusie: $0.0365 > 0.0085 \Rightarrow$ bericht is ham
 
 \subsection{Laplacian smoothing}
 
-Classificeer de zin: "Get free valium"
+Classificeer de zin: `Get free valium'
 
 \begin{itemize}
     \item Valium behoort niet tot de trainingset $\Rightarrow p(valium | spam) = 0$ en $p(valium | ham) = 0$
