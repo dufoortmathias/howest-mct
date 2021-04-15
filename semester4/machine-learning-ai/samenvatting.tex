@@ -248,13 +248,11 @@ Hoe stuurhoek bepalen bij een self-driving car?
     \centering
     \includegraphics[width=0.4\textwidth]{machine-learning-project.png}
     \includegraphics[width=0.35\textwidth]{machine-learning-project2.png}
-    \caption{}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.45\textwidth]{machine-learning-project3.png}
-    \caption{}
 \end{figure}
 
 \subsubsection{Tijdverdeling}
@@ -327,7 +325,7 @@ $\mathbf{R^2}$\textbf{-waarde:} determinatiecoëfficiënt
 
 \subsection{De kostenfunctie}
 
-We moeten de kostenfunctie $J(\theta)$ via de \textbf{Least Mean Squared} methode (LMS). 
+We minimaliseren de kostenfunctie $J(\theta)$ via de \textbf{Least Mean Squared} methode (LMS). 
 
 \begin{equation}
 J(\theta) = \frac{1}{2\cdot m} \cdot \sum_{i=1}^m (h_{\theta}(x_i) - y_i)^2
@@ -399,6 +397,8 @@ Bij meervoudige lineaire regressie (multiple regression) wordt het model/hypothe
 aan de hand van een trainingset met \textbf{meerdere features}.
 \end{theorem}
 
+\textbf{Voorbeelden:}
+
 \begin{itemize}
     \item Bloeddruk wordt bepaald a.d.h.v. gewicht en leeftijd
     \item De kwaliteit van wijn wordt voorspeld op basis van: zuurtegraad, suikergehalte, chloriden, dichtheid, sulfaten, hoeveelheid alcohol, \dots
@@ -425,12 +425,11 @@ h_{\theta}(x) = \theta_0 + \theta_1x_1 + \theta_2x_2 + \dots + \theta_nx_n +
     \item Spreiding van de gegevens
 \end{itemize}
 
-We verwijderen de CHAS kolom:
+Verwijderen van een onnodige kolom:
 
 \begin{minted}{python}
 dataset.drop('CHAS', axis=1, inplace=True)
 \end{minted}
-
 
 \subsubsection{Uitschieters}
 
@@ -464,9 +463,10 @@ dataset.drop('CHAS', axis=1, inplace=True)
 \end{figure}
 
 \begin{minted}{python}
+# opsplisten in features en targets. axis=1 == column
 y = dataset['target_kolom'].values
 X = dataset.drop('target_kolom',axis=1).values
-# Alternatief
+# Alternatief: als bvb de laatste kolom het target is
 features=list(dataset.columns[:dataset.columns.size-1])
 X = dataset[features].values
 y = dataset['Price'].values
@@ -476,7 +476,7 @@ y = dataset['Price'].values
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{multiple-regression-training-testset.png}
+    \includegraphics[width=0.35\textwidth]{multiple-regression-training-testset.png}
     \caption{Dataset opsplitsen in training set en test set}
 \end{figure}
 
@@ -634,7 +634,7 @@ Om een beter model te verkrijgen (en zo een betere $R^2$ score), kunnen we versc
 \begin{itemize}
     \item Meer data toevoegen
     \item Ander model kiezen, hyperparameter tuning
-    \item Feature engineering 
+    \item Feature engineering: het aanmaken van extra features gebaseerd op de bestaande features
 \end{itemize}
 
 \subsection{Normalisatie / Scaling}
@@ -833,7 +833,7 @@ dataset.insert(dataset.columns.size - 1, 'LSTAT^3', dataset.LSTAT**3)
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{hogere-orde-features5.png}
+    \includegraphics[width=0.7\textwidth]{hogere-orde-features5.png}
     \caption{Resultaat toevoegen hogere-orde features}
 \end{figure}
 
@@ -891,6 +891,7 @@ en ook niet kan generaliseren op nieuwe data.
 \begin{itemize}
     \item Het model is te 'simpel'
     \item Model met hoge bias
+    \item $\Rightarrow$ de score met de training data en de score met de test data zijn beiden laag.
 \end{itemize}
 \end{theorem}
 
@@ -910,6 +911,7 @@ Overfitting treedt op wanneer een model de training data te goed modelleert en n
     \item Het model is te 'complex'
     \item De ruis van willekeurige fluctuaties in data worden opgepikt
     \item Model met een hoge variance
+    \item $\Rightarrow$ de score met de training data is groter dan de score met de test data
 \end{itemize}
 \end{theorem}
 
@@ -931,7 +933,7 @@ Afhankelijkheid van de grootte van de dataset (aantal observaties $m$):
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{overfitting2.png}
-    \caption{Voorbeeld: 3de orde polynoom}
+    \caption{Voorbeeld met 3de orde polynoom: links = overfitting, rechts niet}
 \end{figure}
 
 \subsection{Regularisatie (regularisation)}
@@ -940,18 +942,18 @@ Afhankelijkheid van de grootte van de dataset (aantal observaties $m$):
 Methode om de mate van bias van een hypothese te regelen en een 
 goed evenwicht te vinden tussen underfitting en overfitting.
 
+We gebruikten tot nu een kostenfunctie die we moesten minimaliseren om het model te trainen. Daar voegen we nu $R(\theta)$ aan toe:
+
 \begin{equation}
 J(\theta) = \frac{1}{2\cdot m} \sum_{i=1}^m (h_{\theta}(x_i) - y_i)^2 + R(\theta)
 \end{equation}
-
-
 \end{theorem}
 
 \begin{theorem}[$R(\theta)$]
 $R(\theta)$ is de regularisatie-term. 
 
 Dit is een extra kostenterm die het gebruik van hogere orde features afstraft
-tenzij ze de globale kostenfunctie doen dalen.
+tenzij ze de globale kostenfunctie doen dalen. $R(\theta)$ is gelijk aan $\lambda \theta \theta^{\tau}$.
 \end{theorem}
 
 \subsubsection{Voorbeeld regularisatie}
@@ -964,6 +966,7 @@ tenzij ze de globale kostenfunctie doen dalen.
     \item $\theta = \{\theta_1, \dots, \theta_n\}$
     \begin{itemize}
         \item intercept $\theta_0$ wordt meestal niet geregulariseerd
+        \item Als de $\theta$'s vergroten, zal de $R(\theta)$ ook vergroten
     \end{itemize}
     \item $\lambda$ is een tuning parameter (hyper parameter), we moeten die zelf vinden
     \begin{itemize}
@@ -987,7 +990,13 @@ Afhankelijk van hoe $R$ gedefinieerd wordt is er een andere benaming voor de reg
     \item Lasso regression (L1 regularisatie)
 \end{itemize}
 
+Het is ook mogelijk om meerdere regularisatietermen aan de kostenfunctie toe te voegen, 
+bijvoorbeeld 1 gebaseerd op L2 en 1 op L1.
+
 \subsubsection{Regularisatie met L2 norm}
+
+Bij L2 regularisatie wordt de complexiteit van het model ingeschat met behulp van de som 
+van de kwadraten van de $\theta$'s 
 
 \begin{center}
 $J_{L2} = J + \lambda_2 \sum_{j=1}^m \theta_j^2$
@@ -995,11 +1004,6 @@ $J_{L2} = J + \lambda_2 \sum_{j=1}^m \theta_j^2$
 $J_{L2} = \sum_{i=1}^n (\text{target}_i - \text{output}_i) + \lambda_2 \sum_{j=1}^m \theta_j^2$
 \end{center}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{regularisatie-l2.png}
-    \caption{}
-\end{figure}
 
 \subsubsection{Regularisatie met L1 norm}
 
@@ -1009,12 +1013,6 @@ $J_{L1} = J + \lambda_1 \sum_{j=1}^m |\theta_j|$
 $J_{L1} = \sum_{i=1}^n (\text{target}_i - \text{output}_i) + \lambda_1 \sum_{j=1}^m |\theta_j|$
 \end{center}
 
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{regularisatie-l1.png}
-    \caption{}
-\end{figure}
 
 \subsubsection{Voorbeeld regularisatie op huizenprijzen}
 
@@ -1118,7 +1116,7 @@ Bij classificatie is de output/target een \textbf{(discrete) variabele/klasse}
     \caption{}
 \end{figure}
 
-\subsection{Waarom regressie geen goede optie is}
+\subsection{Waarom lineaire regressie geen goede optie is}
 
 \begin{figure}[H]
     \centering
@@ -1500,7 +1498,7 @@ Deze formules kunnen we gebruiken om een classifier te evalueren.
 
 \begin{itemize}
     \item Probleem: stel dat TN = 990, FN = 10, TP = 0, FP = 0
-    \item Dan heb je een accuracy van 99\%, terwijl je eigenlijk geen enkele positieve predictie
+    \item Dan heb je een accuracy van 99\%, terwijl je eigenlijk geen enkele positieve predictie hebt
     \item Accuracy is dus niet altijd veelzeggend $\Rightarrow$ nood aan andere termen
 \end{itemize}
 
