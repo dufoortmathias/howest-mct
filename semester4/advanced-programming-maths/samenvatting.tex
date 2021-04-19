@@ -5218,5 +5218,282 @@ print(zipped_list)
     \caption{}
 \end{figure}
 
+\section{Convoluties}
+
+\subsection{Doelstelling}
+
+\begin{itemize}
+    \item Begrip convolutie kunnen toelichten
+    \item Convolutiedomeinen kennen
+    \item Toepassen op beeldverwerking
+\end{itemize}
+
+\subsection{Convolutie}
+
+\begin{theorem}
+    Convolutie is een maat voor de grootte van de overlap van twee functies: 
+    in hoeverre hebben ze een gemeenschappelijk deel?
+\end{theorem}
+
+Een convolutie is een wiskundige bewerking (aangeduid als $*$ of $\otimes$) op twee functies
+met als resultaat een nieuwe functie: de convolutie van beide.
+
+\subsubsection{Voorbeeld 1}
+
+\begin{itemize}
+    \item $f$ en $g$ zijn beide functies met waarde $1$ in het interval $[-0.5, 0.5]$ en $0$ elders
+    \item $f$ en $g$ zijn dus beide blokvormige functies
+    \item Symmetrie rond nul-punt: $f(x) = -f(x)$ en $g(x) = -g(x)$
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{convolutie-voorbeeld1.png}
+    \caption{f(x)}
+\end{figure}
+
+We laten nu $g$ verschuiven met een factor $t$ van $-\infty$ tot $+\infty$,
+en registreren de overlap tussen beide functies in een nieuwe functie $f \otimes g$:
+
+De convolutie is de oppervlakte van de gele figuur:
+
+\url{https://upload.wikimedia.org/wikipedia/commons/6/6a/Convolution_of_box_signal_with_itself2.gif}
+
+\begin{itemize}
+    \item Voor 1: geen overlap
+    \item Op 0: de hoogste overlap
+    \item Na 1: geen overlap meer
+\end{itemize}
+
+$\Rightarrow$ Convolutie van 2 blokvormige signalen: het resultaat is een driehoekig signaal
+
+\subsubsection{Voorbeeld 2}
+
+Convolutie van:
+
+\begin{itemize}
+    \item een blokvormig signaal
+    \item een impulsvormig signaal
+\end{itemize}
+
+Resultaat: 
+
+\url{https://upload.wikimedia.org/wikipedia/commons/b/b9/Convolution_of_spiky_function_with_box2.gif}
+
+Bron: \url{https://nl.wikipedia.org/wiki/Convolutie}
+
+\subsection{Wiskundig}
+
+Convolutie gebruikt integralen:
+
+\begin{equation}
+    \begin{aligned}
+        (f * g)(t) &= \int_{-\infty}^{\infty} f(\tau) g(t-\tau) d{\tau}\\
+        &= \int_{-\infty}^{\infty} f(t - \tau) g (\tau) d{\tau}
+    \end{aligned}
+\end{equation}
+
+
+\subsection{Toepassing: filters}
+
+In digitale signaalverwerking spelen filters een fundamentele rol om de ingangssignalen te bewerken
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{convolutie-filters.png}
+    \caption{Signaalverwerking}
+\end{figure}
+
+\subsection{Toepassing: Image processing}
+
+\begin{quote}
+    `Convolution is a well-known mathematical operation largely used in
+image processing for filtering operations'
+\end{quote}
+
+Werkwijze: matrix (`kernel' of `convolution matrix') over een afbeelding laten glijden.
+Startend links bovenaan, tot helemaal rechts onderaan
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{convolution-kernel.png}
+    \caption{De kernel zal een bewerking maken op de input}
+\end{figure}
+
+Visualisatie: \url{https://coolgpu.github.io/coolgpu_blog/assets/images/Conv2d_0p_1s_1inCh.gif}
+
+Resultaat = output image waarbij elke pixel de som van de producten van regio waarover de kernel glijdt.
+
+\subsubsection{Gray scaling}
+
+\begin{quote}
+    Most image processing algorithms assume a two dimensional matrix,
+not an image with the third dimension of color. To bring the image into
+two dimensions, we need to summarize the three colors into a single
+value. This process is more commonly know as grayscaling, where the
+resulting image only holds different intensities of gray
+\end{quote}
+
+Formule: $Y' = 0.299\cdot R + 0.587\cdot G + 0.114\cdot B$
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{convolution-grayscaling-python.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Edge detection}
+
+Randdetectie is één van de belangrijkste processen bij verwerken van afbeeldingen.
+
+\begin{itemize}
+    \item Zeer eenvoudig voor mens
+    \item Zeer lastig voor computers
+    \item Zeer belangrijk voor veel grafische pakketten
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{convolution-edgedetection2.png}
+    \caption{Randdetectie}
+\end{figure}
+
+
+Hoe vertelt een pixel dat hij op de rand zit?
+
+De rand in een afbeelding:
+
+\begin{itemize}
+    \item = lokaal gebied met hoog contrast
+    \item = sterke sprong in intensiteitswaarden tussen opeenvolgende pixels
+\end{itemize}
+
+Mogelijke algoritmes:
+
+\begin{itemize}
+    \item Robert's edge detection
+    \item Prewitt edge detection
+    \item Canny detector
+    \item \dots
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{convolution-edgedetection.png}
+    \caption{Edge detection}
+\end{figure}
+
+\begin{enumerate}
+    \item Goede detectie:
+    \begin{itemize}
+        \item Minimaliseer kans op vals positieven (onechte randen)
+        \item Minimaliseer kans op vals negatieven (echte randen missen)
+    \end{itemize}
+    \item Goede locatie:
+    \begin{itemize}
+        \item Gedetecteerde randen moeten zo dicht mogelijk tegen echte randen zitten
+    \end{itemize}
+    \item `Single response':
+    \begin{itemize}
+        \item Minimaliseer de kanshebbers rond een echte rand
+    \end{itemize}
+\end{enumerate}
+
+Twee grote groepen:
+
+\begin{itemize}
+    \item `Gradient-gebaseerde methodes': detecteren randen door te kijken naar het maximum en minimum van de eerste-orde afgeleide van de afbeelding
+    \item `Laplaciaan-gebaseerde methodes': zoekt nuldoorgangen van de tweede afgeleide om randen te detecteren
+\end{itemize}
+
+\subsubsection{Punten in de buurt van een rand detecteren}
+
+Via:
+
+\begin{enumerate}
+    \item Lokale maxima/minima van de eerste afgeleide
+    \item Detecteren van de nulovergangen van de tweede afgeleide
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.25\textwidth]{convolution-edgedetection3.png}
+    \caption{Randdetectie via afgeleiden}
+\end{figure}
+
+De rand kan aanzien worden als een 1-dimensionaal signaal waarvan het
+verloop van de pixelintensiteiten de vorm van een helling aanneemt:
+hoe steiler de helling, hoe sterker opeenvolgende intensiteitswaarde
+van elkaar verschillen en hoe uitgesprokener de rand.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{convolution-edgedetection4.png}
+    \caption{}
+\end{figure}
+
+Als we de gradient (afgeleide) nemen, zien we dat het maximum ervan
+gelegen is, daar waar de pixelintensiteiten het snelst veranderen. Een
+locatie (pixel) wordt als een rand aanzien wanneer de waarde van de
+gradient/afgeleide een zekere threshold overschrijdt
+
+\subsubsection{Sobel Edge Detection}
+
+Is één van de belangrijkste rand-detectie mechanismen
+
+Bepaalt de gradient (afgeleide) van een grijswaardenafbeelding.
+Maakt gebruik van de convolutie-techniek: 3x3 matrix over de afbeelding
+laten glijden om verticale en horizontale lijnen te detecteren.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{sobel-edgedetection.png}
+    \caption{We gebruiken 2 filters: 1 voor horizontale en 1 voor verticale randdetectie}
+\end{figure}
+
+Wordt gebruikt in beeldverwerking, vooral in randdetectiealgoritmen
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{sobel-edgedetection2.png}
+    \caption{Uitwerking}
+\end{figure}
+
+
+Extra toelichting (uitbereiding): \url{https://www.youtube.com/watch?v=uihBwtPIBxM}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{sobel.png}
+    \caption{We maken de berekening van 2 filters: x en y}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{sobel2.png}
+    \caption{We berekenen een delta uit de twee filters}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{sobel3.png}
+    \caption{Die delta gebruiken we samen met een (subjectief) gekozen threshold om een finale afbeelding te bekomen}
+\end{figure}
+
+\subsubsection{Alternatieve Edge Detection methodes}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{roberts.png}
+    \caption{Roberts (verouderd)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{prewitt.png}
+    \caption{Prewitt: gelijkaardig aan Sobel, maar gebruikt een andere kernel}
+\end{figure}
+
+
 
 \end{document}
