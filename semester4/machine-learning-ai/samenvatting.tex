@@ -1975,7 +1975,7 @@ Implementeren van een SVM:
     \item In bovenstaande afbeelding is er weinig verschil tussen een hoge of een lage y-waarde
     \item Er zit wel een hoge piek bij de x-waarde (zie groene grafiek)
     \item Die piek wordt nooit gevonden omdat we vasthangen aan het grid.
-    \item Oplossing: Random search
+    \item Oplossing: \textbf{Random search}
 \end{itemize}
 
 
@@ -2013,15 +2013,14 @@ Implementeren van een SVM:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{niet-gebalanceerde-data-problematiek.png}
-    \includegraphics[width=0.5\textwidth]{niet-gebalanceerde-data-problematiek2.png}
+    \includegraphics[width=0.45\textwidth]{niet-gebalanceerde-data-problematiek.png}
+    \includegraphics[width=0.54\textwidth]{niet-gebalanceerde-data-problematiek2.png}
 \end{figure}
 
 \begin{itemize}
     \item De ene klasse (0, blauw) komt veel meer voor dan de andere klasse (1, oranje)
     \item Dit heeft een grote impact op de scores van de klasse die het minst voorkomt
 \end{itemize}
-
 
 \subsection{Omgaan met niet-gebalanceerde data}
 
@@ -2034,17 +2033,18 @@ Implementeren van een SVM:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{niet-gebalanceerde-data-sampling.png}
+    \includegraphics[width=0.75\textwidth]{niet-gebalanceerde-data-sampling.png}
     \caption{Undersampling \& oversampling}
 \end{figure}
 
-\begin{itemize}
-    \item We nemen enkel een deel van de samples tot we er evenveel hebben als de minderheidsklasse (undersampling)
-    \begin{itemize}
-        \item Kies de samples waar de classifier het meeste fouten op maakt
-    \end{itemize}
-    \item We nemen kopieën van de minderheidsklasse tot we er evenveel hebben als de meerderheidsklasse
-\end{itemize}
+\begin{theorem}[Undersampling]
+    We nemen enkel een deel van de samples tot we er evenveel hebben als de minderheidsklasse.
+    We kiezen de samples waar de classifiers het meeste fouten op maakt.
+\end{theorem}
+
+\begin{theorem}[Oversampling]
+    We nemen kopieën van de minderheidsklasse tot we er evenveel hebben als de meerderheidsklasse
+\end{theorem}
 
 \subsubsection{Andere scoring parameter/metric kiezen}
 
@@ -2177,13 +2177,15 @@ Van een test is geweten dat:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{bayes.png}
-    \caption{}
 \end{figure}
 
 
 \subsection{Naive Bayes - tekstclassificatie}
 
-= een classificatietechniek
+\begin{theorem}
+    Naive Bayes is een simpele classificatietechniek gebaseerd op de regel van Bayes, 
+    met de aanpassing dat er naïve veronderstellingen gemaakt worden tussen de features.
+\end{theorem}
 
 \subsubsection{Spamdetectie}
 
@@ -2207,7 +2209,7 @@ Van een test is geweten dat:
 \end{align*}
 
 \begin{itemize}
-    \item $p(w_1 | w_2, \dots, w_n, spam$ is de kans om het eerste woord te vinden, gegeven alle woorden en gegeven een bericht spam is
+    \item $p(w_1 | w_2, \dots, w_n, spam)$ is de kans om het eerste woord te vinden, gegeven alle woorden en gegeven een bericht spam is
     \item Lastig te berekenen $\Rightarrow$ Naive Bayes veronderstelling (Naive = vereenvoudigd)
     \item \textbf{Naive Bayes} = beschouw elk woord onafhankelijk van de andere woorden
 \end{itemize}
@@ -2227,9 +2229,16 @@ $p(w_1 | spam)$ = de kans dat $w_1$ in een spambericht voorkomt
 \textbf{Vereenvoudigen}
 
 Kies spam of ham (=niet spam) op basis van welke deze klasses de grootste kans heeft.
-We hebben geen kansen nodig $\Rightarrow$ laat de noemer (=Marginal) vallen
+Om twee kansen te vergelijken die dezelfde noemer heeft, hoef je enkel naar de teller te kijken 
 
-$p(spam | w_1, \dots, w_n) = p(spam) \cdot \prod_{i=1}^n p(w_i | spam)$
+\begin{itemize}
+    \item $\Rightarrow$ laat de noemer (=Marginal) vallen
+    \item $\Rightarrow$ de berekening wordt eenvoudiger
+    \item We gebruiken hier geen $=$ meer, maar $\propto$ (= `proportional to'). Zo zeggen we dat we niet de echte kans uitrekenen, we berekenen een getal die proportioneel wel gelijk is aan die kans, zodat we ze kunnen gebruiken om te vergelijken met andere kansen.
+    \item \url{https://en.wikipedia.org/wiki/Proportionality_(mathematics)}
+\end{itemize}
+
+$p(spam | w_1, \dots, w_n) \propto p(spam) \cdot \prod_{i=1}^n p(w_i | spam)$
 
 \subsubsection{Voorbeeld}
 
@@ -2268,10 +2277,14 @@ Classificeer de zin: `Get free valium'
 
 \begin{itemize}
     \item Valium behoort niet tot de trainingset $\Rightarrow p(valium | spam) = 0$ en $p(valium | ham) = 0$
-    \item Het probleem: $p(spam | \text{get free valium}) = 0$ en $p(ham | \text{get free valium})$
+    \item Het probleem: $p(spam | \text{get free valium}) = 0$ en $p(ham | \text{get free valium}) = 0$
 \end{itemize}
 
-\textbf{Oplossing:} Laplacian smoothing (= add-one smoothing): kent niet geziene woorden en toch een zekere kans van voorkomen toe
+\textbf{Oplossing:} Laplacian smoothing 
+
+\begin{theorem}
+    Laplacian smoothing of add-one smoothing zal aan niet-geziene woorden toch een zekere kans van voorkomen toekennen.
+\end{theorem}
 
 \begin{equation}
     P(w_s) = \frac{C(w_s) + \alpha}{N + \alpha \cdot V}
@@ -2301,7 +2314,7 @@ Kans op spam:
 Kans op ham:
 
 \begin{align*}
-    p(ham | text{get free valium}) & = p(ham) \cdot p(get|ham) \cdot p(free|ham) \cdot p(valium | ham)\\
+    p(ham | \text{get free valium}) & = p(ham) \cdot p(get|ham) \cdot p(free|ham) \cdot p(valium | ham)\\
     & = 0.77 \cdot 0.546 \cdot 0.215 \cdot 0.001 = 0.00009
 \end{align*}
 
@@ -2325,20 +2338,26 @@ Vermenigvuldigen van veel kansen kan resulteren in een floating-point underflow
 
 \textbf{Oplossing:} gebruik van log likelihood:
 
-\begin{equation}
-    log(xy) = log(x) + log(y)
-\end{equation}
+\begin{theorem}
+    Log likelihood is een wiskundige functie: 
+    
+    \begin{equation}
+        log(x \cdot y) = log(x) + log(y)
+    \end{equation}
 
-$log(p(spam | w_1, \dots, w_n)) = log(p(spam)) + \sum_{i=1}^n log(p(w_i | spam))$
+    Deze functie kunnen we gebruiken in onze Naive Bayes rule, met $x = p(spam)$ en $y = \sum_{i=1}^n log(p(w_i | spam))$:
 
-Dit wordt meestal intern door de Python libraries gedaan
+    $log(p(spam | w_1, \dots, w_n)) \propto log(p(spam)) + \sum_{i=1}^n log(p(w_i | spam))$
+
+    Dit wordt meestal intern door de Python libraries gedaan
+\end{theorem}
+
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.65\textwidth]{log-likelihood.png}
-    \caption{Log likelihood met tekstclassificatie}
+    \includegraphics[width=0.9\textwidth]{log-likelihood.png}
+    \caption{Tekstclassificatie met behulp van de log likelihood function}
 \end{figure}
-
 
 \subsection{Tekstclassificatie in de praktijk}
 
@@ -2389,18 +2408,24 @@ for w in text_stemmer.split():
 
 \subsubsection{Opbouwen van feature vectors - bag of words}
 
-\begin{itemize}
-    \item \textbf{Bag of words} = collectie van unieke woorden die voorkomen in de volledige trainingset. De uiteindelijke feature vector heeft dezelfde dimensie als de bag of words
-    \item \textbf{Multi-variate Bernoulli Naive Bayes}: er wordt een document bijgehouden of een woord in de bag of words al dan niet voorkomt in een document (0 of 1) en dus niet de frequentie van voorkomen
-    \item \textbf{Multinomial Naive Bayes} = de frequentie (aantal keer) waarmee een woord uit de bag of words voorkomt in het document wordt bijgehouden. 
-    \item In scikit-learn: CountVectorizer
-\end{itemize}
+\begin{theorem}
+    Een bag of words is een collectie van unieke woorden die voorkomen in de volledige trainingset. 
+    De uiteindelijke feature vector heeft dezelfde dimensie als de bag of words
+\end{theorem}
 
+\begin{theorem}
+    Multi-variate Bernoulli Naive Bayes is een Naive Bayes classifier waarbij een document wordt bijgehouden
+    waarin staat of een woord in de bag of words al dan niet voorkomt in een document (0 of 1) en dus niet de frequentie van voorkomen
+\end{theorem}
 
-\textbf{tf-idf transformer:} term frequency-inverse document frequency transformer
+\begin{theorem}
+    Multinomial Naive Bayes is een Naive Bayes classifier waarbij de frequentie (aantal keer) waarmee een woord uit de bag of words voorkomt in het document wordt bijgehouden. 
 
-Sommige woorden die veel voorkomen in documenten zijn minder belangrijk.
-Met tf-idf transforming gaan we het gewicht van die woorden verminderen.
+    In scikit-learn: CountVectorizer
+
+    We zullen op dat frequentiedocument een tf-idf transformer of term frequency-inverse document frequency transformer loslaten.
+    Die transformer zal het gewicht van woorden die veel voorkomen in een document (en die dus minder belangrijk zijn) verlagen.
+\end{theorem}
 
 \begin{equation*}
     tfidf_{i,j} = tf_{i,j} \cdot log \Big(\frac{N}{df_i}\Big)
@@ -2414,7 +2439,7 @@ Met tf-idf transforming gaan we het gewicht van die woorden verminderen.
 \end{itemize}
 
 \begin{minted}{python}
-# je moet eerst de CountVectorizer toepassen voor je de TfidfTransformer kan gebruiken
+# eerst de CountVectorizer toepassen voor je de TfidfTransformer kan gebruiken:
 count_vect = CountVectorizer()
 X_train_bag_of_words = count_vect.fit(X_train)
 X_train_bag_of_words = count_vect.transform(X_train)
@@ -2440,38 +2465,38 @@ Bij ons voorbeeld van het classificeren van appels verdelen we nu de dataset her
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{decision-tree-1.png}
+    \includegraphics[width=0.7\textwidth]{decision-tree-1.png}
     \caption{Is de groenheid > 4? We trekken een lijn bij groenheid == 4}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{decision-tree-2.png}
+    \includegraphics[width=0.7\textwidth]{decision-tree-2.png}
     \caption{We voegen meerdere opsplitsingen toe}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{decision-tree-3.png}
+    \includegraphics[width=0.7\textwidth]{decision-tree-3.png}
     \caption{Eindresultaat}
 \end{figure}
 
 \subsubsection{Entropy}
 
-Hoe bepalen waar de boom te splitsen?
-
-Een goede split is deze waarbij de wanorde afneemt en beide kanten `zuiverder (pure) worden'
+Hoe bepalen waar de boom te splitsen? 
+Een goede split is deze waarbij de wanorde afneemt en beide kanten `zuiverder' (purer) worden.
 
 \begin{theorem}
-    De entropy (H) is de maat voor de wanorde (gemiddelde informatieinhoud)
+    De entropy (H) of de wanorde is de gemiddelde informatieinhoud van een gebeurtenis. 
+
+    \url{https://nl.wikipedia.org/wiki/Entropie_(informatietheorie)}
 \end{theorem}
 
 \begin{equation}
-    H = \sum_{i=1}^N p_i \cdot \log_2 \Big(\frac{1}{p_i}\Big)
-\end{equation}
-
-\begin{equation}
-    H = \textcolor{red}{-} \sum_{i=1}^N p_i \cdot \log_2 (\textcolor{red}{p_i})
+    \begin{aligned}
+        H &= \sum_{i=1}^N p_i \cdot \log_2 \Big(\frac{1}{p_i}\Big)\\
+        &= \textcolor{red}{-} \sum_{i=1}^N p_i \cdot \log_2 (\textcolor{red}{p_i})
+    \end{aligned}
 \end{equation}
 
 \textbf{Voorbeeld}
@@ -2493,8 +2518,8 @@ $\Rightarrow H = - (0.53 \cdot \log_2 (0.53) + 0.47 \cdot \log_2(0.47)) = - (- 0
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{information-gain.png}
-    \caption{Splitsen boven \& onder}
+    \includegraphics[width=0.9\textwidth]{information-gain.png}
+    \caption{Splitsen links \& rechts}
 \end{figure}
 
 Information gain $= 0.9974 - (\frac{5}{15} \cdot 0.72 + \frac{10}{15} \cdot 0.88) = 0.17073$
@@ -2502,8 +2527,8 @@ Information gain $= 0.9974 - (\frac{5}{15} \cdot 0.72 + \frac{10}{15} \cdot 0.88
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{information-gain2.png}
-    \caption{Splitsen links \& rechts}
+    \includegraphics[width=0.9\textwidth]{information-gain2.png}
+    \caption{Splitsen boven \& onder}
 \end{figure}
 
 Information gain $= 0.9974 - (\frac{9}{15} \cdot 0.76 + \frac{6}{15} \cdot 0.66) = 0.27740$
