@@ -20,7 +20,7 @@
 % theorem environment
 \usepackage{amssymb}
 
-\newtheorem{theorem}{Definitie}[section]
+\newtheorem{theorem}{Definition}[section]
 
 \usepackage{enumitem}
 
@@ -50,15 +50,15 @@
 
 \pagenumbering{arabic}
 
-\section{Introductie}
+\section{Introduction}
 
-\subsection{Verschil Server \& Workstation}
+\subsection{Difference Server \& Workstation}
 
 \subsubsection{Server}
 
 \begin{itemize}
     \item Deliver services to (multiple) users
-    \item Focussed: only this and nothing else
+    \item Focused: only this and nothing else
     \item Secure
     \item No GUI, everything happens through the commandline
     \item $\Rightarrow$ as small a footprint as possible
@@ -80,8 +80,9 @@
 \begin{itemize}
     \item The Linux Documentation Project: \url{http://tldp.org}
     \item Pluralsight LPIC-1: Linux Professional Institute Certification: \url{https://www.pluralsight.com/paths/lpic-1}
-    \item The Arch Linux Wiki is one of the most extensive sources of info about Linux: \url{https://wiki.archlinux.org}
+    \item The Arch Linux Wiki is one of the most extensive sources of info about Linux: 
     \begin{itemize}
+        \item \url{https://wiki.archlinux.org}
         \item In this module we will use Debian, not Arch, but many things are very similar
     \end{itemize}
     \item Google
@@ -93,7 +94,7 @@
 
 \begin{theorem}[Operating System]
 An operating system, or OS, is software that communicates with the hardware
-and alows other programs to run. 
+and allows other programs to run. 
 
 It is comprised of system software = the fundamental files your computer needs to function.
 \end{theorem}
@@ -135,7 +136,7 @@ By Linus Torvalds (Finland), 1991
 
 \begin{itemize}
     \item Own personal development, not initially intended to distribute
-    \item Interest from other developers, mainly to use with GNU OS
+    \item Quickly gained interest from other developers, mainly to use with GNU OS
     \item Meanwhile contributions of over 12000+ developers
     \item 492 of top-500 supercomputers in the world run Linux
     \item Basis for Android, Chrome OS
@@ -237,7 +238,7 @@ $\Rightarrow$ You're not paying for the operating system, you're paying for the 
         \item root has uid=0
         \item uid=0 has all rights
     \end{itemize}
-    \item Each user has a home-directory
+    \item Each user has a home-directory. The root user's home directory is /root/
 \end{itemize}
 
 \subsection{Disks, partition, filesystems}
@@ -321,7 +322,7 @@ It contains:
     \begin{itemize}
         \item 32-bit for number of logical sectors
         \item Common sector size: 512 bytes
-        \item $2^{32} \cdot 512\ \text{bytes} = 4294967296 \cdot 512\ \text{bytes} \approx 2\text{TB}$
+        \item $2^{32} \cdot 512\ \text{bytes} = 4 294 967 296 \cdot 512\ \text{bytes} \approx 2\text{TB}$
     \end{itemize}
     \item Maximum amount of primary partitions = 4
 \end{itemize}
@@ -350,15 +351,12 @@ UEFI, or Unified Extensible Firmware Interface, is a newer firmware interface by
 
 \begin{itemize}
     \item Disk = collection of blocks
-    \item Group of blocks together = sector
-    \item Common sector size: 512 bytes
+    \item Sector = group of blocks together (common sector size = 512 bytes)
     \item Sectors indicated with Logical Block Addresses (LBA)
     \item MBR in LBA 0
     \item GPT headers in LBA 1
     \item Partition tabel right after that
 \end{itemize}
-
-
 
 
 \subsubsection{Bootstrap procedure}
@@ -370,7 +368,7 @@ UEFI, or Unified Extensible Firmware Interface, is a newer firmware interface by
         \item BIOS gets loaded
     \end{itemize}
     \item Boot media are consulted
-    \item First boot medium, first sectors are being read $\Rightarrow$
+    \item First boot medium, first sectors are being read $\Rightarrow$ MBR
     \item MBR contains a bit-more-advanced loader: GRUB
     \begin{itemize}
         \item \underline{GR}and \underline{U}nified \underline{B}ootloader
@@ -384,12 +382,12 @@ UEFI, or Unified Extensible Firmware Interface, is a newer firmware interface by
 6 high level steps
 
 \begin{itemize}
-    \item BIOS (Basic Input/Output System) - loads MBR
-    \item MBR (Master Boot Record) - loads GRUB
-    \item GRUB (Grand Unified Bootloader) - loads kernel
-    \item Kernel - executes /sbin/init
-    \item Init - executes runlevel programs
-    \item Runlevel - programs from /etc/rc.d/rcXX.d are started
+    \item \textbf{BIOS} - loads MBR
+    \item \textbf{MBR} - loads GRUB
+    \item \textbf{GRUB} - loads kernel
+    \item \textbf{Kernel} - loads modules and executes /sbin/init
+    \item \textbf{Init} - executes runlevel programs
+    \item \textbf{Runlevel} - programs from /etc/rc.d/rcXX.d are started
 \end{itemize}
 
 \subsubsection{BIOS <> UEFI}
@@ -406,8 +404,8 @@ UEFI, or Unified Extensible Firmware Interface, is a newer firmware interface by
     \item Virtualisation is the norm
     \item Virtual machines typically have small disks
     \item Small disks are MBR partitioned
+    \item $\Rightarrow$ we learn MBR
 \end{itemize}
-
 
 
 \subsection{Filesystems}
@@ -434,27 +432,25 @@ UEFI, or Unified Extensible Firmware Interface, is a newer firmware interface by
 
 \subsubsection{Swap}
 
-= Paging
+\begin{theorem}
+    Memory paging or `Swap' is a memory management scheme by which a computer stores and receives data from a disk
+    to use in RAM. The OS retrieves data from disk in blocks called `pages'. Paging lets programs exceed the size of available
+    physical memory.
+\end{theorem}
 
 \begin{itemize}
     \item Free up physical memory (RAM) by moving pages to slower storage (storage disks instead of RAM)
     \item Page out $=$ memory page moves to swap
     \item "Swapiness"
     \begin{itemize}
-        \item = parameter between 0 and 100
         \item = how quickly linux will swap
-        \begin{itemize}
-            \item 0 = very conservative
-            \item 100 = very agressive
-        \end{itemize}
+        \item = parameter between 0 (very conservative) and 100 (very aggressive)
     \end{itemize}
     \item Windows uses a swap file (pagefile.sys)
     \item Linux uses a swap partition
 \end{itemize}
 
 \subsection{File structure}
-
-
 
 \begin{figure}[H]
     \centering
@@ -479,22 +475,22 @@ UEFI, or Unified Extensible Firmware Interface, is a newer firmware interface by
 \subsubsection{Packages}
 
 \begin{itemize}
-    \item Tools and applications are build up by files
+    \item Tools and applications are built up by files
     \item All files belonging to 1 application are bundled in a package
     \item Packages in debian have the .deb extension
-\end{itemize}
-
-Repositories
-
-\begin{itemize}
     \item Packages are collected in repositories
-    \item Are made available through the internet
-    \item Packages have dependencies
+    \item Packages have dependencies (= other packages the application depends on to run or install)
 \end{itemize}
+
+\begin{theorem}
+    Software repositories (repos) are storage locations for software packages and their metadata, 
+    which includes the list of dependencies of the package. The repositories are managed and updated by package managers. 
+\end{theorem}
+   
 
 \subsubsection{Package management}
 
-Debian: dpkg \& apt (Advanced Package Tool)
+Debian uses dpkg (Debian Package) \& apt (Advanced Package Tool):
 
 \begin{itemize}
     \item dpkg: Install, remove, give info about .deb packages
@@ -532,7 +528,11 @@ Which repositories? See /etc/apt/sources.list for the list of repositories. You 
     \item tcpdump
 \end{itemize}
 
-Install multiple pacakges in one command: apt install vim sudo tcpdump ntp
+Install multiple pacakges in one command: 
+
+\begin{minted}{bash}
+apt install vim sudo tcpdump ntp
+\end{minted}
 
 \subsection{Shutdown of VM}
 
@@ -583,16 +583,21 @@ Install multiple pacakges in one command: apt install vim sudo tcpdump ntp
     \begin{itemize}
         \item TCP or UDP port
     \end{itemize}
-    \item Overview of currently running / listening services: ss command
-    \begin{itemize}
-        \item ss -tulpn
-        \item t: show TCP
-        \item u: show UDP
-        \item l: show listening
-        \item p: show process ID
-        \item n: no name-resolving
-    \end{itemize} 
+    \item Overview of currently running / listening services: the ss command:    
 \end{itemize}
+
+\begin{minted}{bash}
+ss -tulpn
+\end{minted}
+
+\begin{itemize}
+    \item t: show TCP
+    \item u: show UDP
+    \item l: show listening
+    \item p: show process ID
+    \item n: no name-resolving
+\end{itemize} 
+
 
 \subsection{Wooclap Questions}
 
@@ -713,7 +718,7 @@ Install multiple pacakges in one command: apt install vim sudo tcpdump ntp
 Use /etc/fstab = a file that contains what needs to be mounted at boot
 
 \begin{itemize}
-    \item Device (/dev/sdXY or UUID) 
+    \item Device (identified by /dev/sdXY or UUID) 
     \item Mountpoint (/mnt/folder)
     \item Type of filesystem (ext4, ntfs, \dots)
     \item Options
@@ -757,59 +762,63 @@ Absolute paths:
 
 \subsection{Filesystem Hierarchy Standard (FHS)}
 
+\begin{theorem}
+    The Filesystem Hierarchy Standard (FHS) defines the directory structure
+    and directory contents in Linux distributions. 
+    
+    \url{https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard}
+\end{theorem}
+
 \begin{itemize}
-    \item Describes how the filesystem in Linux is build up
     \item Maintained by the Linux Foundation
     \item Most recent version: v3.0 (2015)
 \end{itemize}
 
-
-
 \subsubsection{Rules in the standard}
 
 \begin{itemize}
-    \item / is the root of the tree structure
-    \item /bin 
+    \item \textbf{/} is the root of the tree structure
+    \item \textbf{/bin}
     \begin{itemize}
         \item essential binaries (executable files), required for single user mode
     \end{itemize}
-    \item /boot
+    \item \textbf{/boot}
     \begin{itemize}
         \item the place on the filesystem where the boot files reside
         \item configuration files for GRUB
         \item kernels
         \item initrd
         \begin{itemize}
-            \item initial RamDisk
+            \item \underline{init}ial \underline{r}am\underline{d}isk
             \item During boot a temporary root-filesystem is being created in RAM
             \item This is used so the kernel can load important modules, so it can then switch to the real root filesystem
-            \item part of step 3 of the linux boot process (BIOS - MBR - GRUB - kernel - init - runlevel)
+            \item Part of step 3 of the linux boot process (BIOS - MBR - GRUB - kernel - init - runlevel)
         \end{itemize}
     \end{itemize}
-    \item /dev
+    \item \textbf{/dev}
     \begin{itemize}
         \item Devices get a place in the filesystem
         \begin{itemize}
-            \item sda
-            \item rtc
-            \item random
-            \item cpu
-            \item urandom
-            \item null
+            \item /dev/sda
+            \item /dev/rtc
+            \item /dev/random
+            \item /dev/cpu
+            \item /dev/urandom
+            \item /dev/null
         \end{itemize}
         \item ls -lah /dev/
     \end{itemize}
-    \item /etc
+    \item \textbf{/etc}
     \begin{itemize}
         \item Host-specific sytem-wide configuration files
         \item Configuration for this host, readable for the whole system
     \end{itemize}
-    \item /home
+    \item \textbf{/home}
     \begin{itemize}
         \item Each (non-system) user has a home directory
         \item except for root $\Rightarrow$ /root
     \end{itemize}
-    \item /mnt
+    \item \textbf{/mnt}
     \begin{itemize}
         \item (temporarily) `mounted' filesystems
         \begin{itemize}
@@ -825,12 +834,12 @@ Absolute paths:
         \includegraphics[width=0.3\textwidth]{linux-filestructure2.png}
     \end{figure}
     
-    \item /opt
+    \item \textbf{/opt}
     \begin{itemize}
         \item Optional application software packages
         \item Our installation $\Rightarrow$ no applications installed yet = empty (for now)
     \end{itemize}
-    \item /proc
+    \item \textbf{/proc}
     \begin{itemize}
         \item Virtual filesystem
         \item Provides information about processes and the linux kernel
@@ -838,23 +847,23 @@ Absolute paths:
         \item cat /proc/sys/net/ipv4/ip\_forward
         \item cat /proc/partitions
     \end{itemize}
-    \item /sbin
+    \item \textbf{/sbin}
     \begin{itemize}
         \item Essential system binaries
         \item Only executable by root user
         \item fsck, init, route
     \end{itemize}
-    \item /tmp
+    \item \textbf{/tmp}
     \begin{itemize}
         \item Directory for temporary files
         \item Emptied at reboot (with most distributions)
     \end{itemize}
-    \item /usr
+    \item \textbf{/usr}
     \begin{itemize}
         \item Read-only user data
         \item Constains most user (non-root) utilities and applications
     \end{itemize}
-    \item /var
+    \item \textbf{/var}
     \begin{itemize}
         \item Variable files
         \item Files that are expected to change continuously during normal system use
@@ -938,7 +947,7 @@ CTRL + r:
 
 \subsection{Introduction}
 
-Books:
+\textbf{Books:}
 
 \begin{itemize}
     \item A group of letters together = a word
@@ -951,7 +960,7 @@ Books:
     \end{itemize}
 \end{itemize}
 
-Computers: 
+\textbf{Computers:}
 
 \begin{itemize}
     \item Work with 0's and 1's
@@ -959,7 +968,7 @@ Computers:
     \item 1 Unicode character in UTF-8: between 8 and 32 bits (4 bytes)
     \item Gets stored on block devices
     \begin{itemize}
-        \item Hard devices, SSDs, RAMdisk, USB-stick
+        \item Hard disks, SSDs, RAMdisk, USB-stick
         \item The opposite of block devices = character devices 
     \end{itemize}
     \item System needs to organize this
@@ -989,18 +998,20 @@ Several choices:
 
 \subsection{ext2/3/4}
 
-Ext3 and Ext4 have journaling:
+The \textbf{extended filesystem} or \textbf{ext}, was implemented in 1992 as
+the first filesystem created specifically for the Linux kernel. 
+Ext3 and Ext4 are journaling filesystems.
 
 \subsubsection{Journaling}
 
-\begin{itemize}
-    \item Keeping track of changes that have not been committed to disk in a sort of 'diary'
-    \item A kind of logbook of previous actions
-    \item Why?
-    \begin{itemize}
-        \item Bring filesystem online faster after system crash or power failure
-    \end{itemize}
-\end{itemize}
+\begin{theorem}
+    A journaling filesystem is a filesystem that keeps track of changes
+    not yet committed to the disk by recording the goal of these changes
+    in a logbook-like data structure known as a `journal'. 
+
+    In the event of a system crash or power failure, these filesystems can be
+    brought back online faster with a lower likelihood of becoming corrupted.
+\end{theorem}
 
 \subsection{RAID}
 
@@ -1022,7 +1033,6 @@ Ext3 and Ext4 have journaling:
     \item Disks are connected to the controller
     \item The RAID controller displays the disks as 1 disk to the OS
     \item Nowadays, we call the RAID Controller the Host Bus Adapter (HBA)
-    \item 
 \end{itemize}
 
 \subsubsection{RAID 0}
@@ -1122,7 +1132,7 @@ RAID level 6 like RAID 5, but with a second parity block.
 
 \subsubsection{Disk failure}
 
-For every RAID level, a certain amount of disks can fail without it becoming a problem:
+For every RAID level, a certain amount of disks can fail without losing data:
 
 \begin{itemize}
     \item RAID 0: no disks can fail: if any disk fails, you lose data
@@ -1139,7 +1149,10 @@ Combining RAID levels is possible:
     \item RAID 10 = RAID 1 + RAID 0
     \item RAID 01 = RAID 0 + RAID 1
     \item RAID 50 = RAID 5 + RAID 0
+    \item \dots
 \end{itemize}
+
+\url{https://en.wikipedia.org/wiki/Nested_RAID_levels}
 
 \subsection{OpenZFS}
 
@@ -1159,13 +1172,13 @@ Combining RAID levels is possible:
     \item Option in Ubuntu-installer
 \end{itemize}
 
-Features:
+\textbf{Features:}
 
 \begin{itemize}
     \item Long term storage
     \item Checksum of all data and metadata
     \item Native RAID levels (0, 1, 5, 6, \dots)
-    \item All data gets written through Copy-On-Write:
+    \item All data gets written through \textbf{Copy-On-Write}:
     \begin{itemize}
         \item COW = when a write request is made, the data is copied into a new storage area, and then the original data is modified.
         \item Redirect-on-write or ROW: the original storage is never modified. When a write request is made, it is redirected away from the original data into a new storage area.
@@ -1212,7 +1225,7 @@ Features:
 
 \subsubsection{Do we still need backups if we have snapshots?}
 
-YES!
+\textcolor{red}{YES!}
 
 \begin{itemize}
     \item RAID 1 (mirroring) only protects against disk failure, nothing else
@@ -1285,8 +1298,7 @@ YES!
 
 \begin{itemize}
     \item Modern filesytems support links
-    \item This is different from shortcuts in Windows:
-    \item Windows shortcuts are text files that refer to other files
+    \item This is different from shortcuts in Windows: Windows shortcuts are text files that refer to other files
 \end{itemize}
 
 \subsubsection{Inodes}
@@ -1307,9 +1319,11 @@ YES!
 \subsubsection{Symbolic links}
 
 \begin{theorem}
-    A symbolic link (also symlink or soft link) is a term for any file that contains a reference to another file or directory in the form of an absolute or relative path
+    A symbolic link (also symlink or soft link) is a term for any 
+    file that contains a reference to another file or directory 
+    in the form of an absolute or relative path.
 
-    Also called 'softlinks'
+    Also called 'softlinks'.
 \end{theorem}
 
 \begin{minted}{bash}
@@ -1324,25 +1338,26 @@ YES!
 
 \subsubsection{Hardlinks}
 
-\begin{itemize}
-    \item Same file, different name
-    \item A hardlink refers to an inode, while a softlink refers to a file (which refers to an inode)
-\end{itemize}
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{soft-vs-hard-links.png}
     \caption{Symlink vs Hardlink}
 \end{figure}
 
+\begin{itemize}
+    \item file1 referse to the same file, but with a different name
+    \item A hardlink refers to an inode, while a softlink refers to a file (which refers to an inode)
+\end{itemize}
 
 \subsection{File permissions}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{file-permissions.png}
+    \includegraphics[width=0.9\textwidth]{file-permissions.png}
     \caption{The output of `ls -l' creates this type of output}
 \end{figure}
+
+From left to right:
 
 \begin{enumerate}
     \item first character: type of file (directory, symbolic link, block device, character device)
@@ -1428,6 +1443,8 @@ Usage and details for these commands: see labs
 
 \subsection{Text editors}
 
+Popular Linux text editors:
+
 \begin{itemize}
     \item Emacs (productivity, extensibility)
     \item Nano (simplicity)
@@ -1435,18 +1452,18 @@ Usage and details for these commands: see labs
     \item Ne
 \end{itemize}
 
-Our choice: Vim
+Our choice: \textbf{Vim}
 
 \subsubsection{vi vs vi-improved}
 
 \begin{itemize}
-    \item Navigating in vi: HJKL (left, down, up, right)
+    \item Navigating in vi: HJKL (which stands for left, down, up, right)
     \item Navigating in vim: HJKL or arrow keys
 \end{itemize}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{vi-vim.png}
+    \includegraphics[width=0.35\textwidth]{vi-vim.png}
     \caption{Everything you can do in vi, you can do in vim, and more!}
 \end{figure}
 
@@ -1511,7 +1528,8 @@ You can easily search and replace in a text file, even with regex:
 
 \begin{minted}{bash}
 # starting from line 4, indent the next 7 lines:
-(ESC) 7>>
+(ESC) 4gg
+7>>
 
 # remove indentation on line 10
 (ESC) 10gg
@@ -1536,7 +1554,8 @@ For more tricks: see labs
 = Use the output from one command as input for the next command
 
 \begin{minted}{bash}
-# sort the music file alphabetically and count the number of occurences of each unique line
+# sort the music file alphabetically
+# and count the number of occurences of each unique line
 sort music.txt | uniq -c
 
 # count the number of unique lines in music.txt
@@ -1699,7 +1718,9 @@ test -r test.txt & echo "MCT rocks"
 
 \subsubsection{Jobs}
 
-A job is a new process originating from the same parent
+\begin{theorem}
+    A job is a new process originating from the same parent
+\end{theorem}
 
 \begin{minted}{bash}
 # start a command as job
@@ -1714,16 +1735,22 @@ CTRL-Z
 \end{minted}
 
 
-\subsubsection{Inter-process Communication}
+\subsubsection{Inter-process Communication (IPC)}
 
-A signal is an asynchronous notification sent to a process or thread within that process
-to notify that there has been an event
+\begin{theorem}
+    Inter-process communication (IPC) refers to the mechanisms an OS provides
+    to allow processes to manage shared data. Signals are one of those mechanisms.
+\end{theorem}
 
-Signal sent to process $\Rightarrow$ OS interrupts normal execution of that process to deliver the signal
-
-Sending a signal to a process: with the `kill' command:
+\begin{theorem}
+    A signal is an asynchronous notification sent to a process or thread within that process
+    to notify that there has been an event
+    
+    Signal sent to process $\Rightarrow$ OS interrupts normal execution of that process to deliver the signal
+\end{theorem}
 
 \begin{minted}{bash}
+# Sending a signal to a process: with the `kill' command:
 # not only to kill a process, also to send other signals
 kill -s <signal>
 \end{minted}
@@ -1754,16 +1781,22 @@ pkill tail
 
 \subsection{Intermezzo: System Load}
 
-= a number which represents the load on a computer system
+\begin{theorem}
+    In Unix, the system load is a measure of the amount of computational
+    work that a computer system performs. 
+    
+    The load average represents the average system load over a period of time. 
+    It conventionally appears in the form of three numbers which represent the 
+    system load during the last one, five and fifteen minutes.
+\end{theorem}
 
 \begin{itemize}
     \item Completely idle system: system load 0
-    \item Each process which uses a resource or is waiting for a resource: system load + 1
-    \item Gives an indication of how heavy a computer system is loaded
+    \item Each process which uses a resource or is waiting for a resource increases the system load
     \item System load is a snapshot, doesn't say anything
     \begin{itemize}
         \item System load of 17: is that a problem? No.
-        \item More interesting: the evolution of the systemload over time
+        \item More interesting: the evolution of the system load over time $\Rightarrow$ load average
     \end{itemize} 
 \end{itemize}
 
@@ -1829,10 +1862,13 @@ netstat -anpt | awk '{print $5}' | sort | uniq -c
 
 \subsection{Regex}
 
-\begin{itemize}
-    \item Make the webscaper assignment
-    \item Use \url{www.regexr.com} to test regex
-\end{itemize}
+\begin{theorem}
+    A Regular Expression (regex) is a sequence of characters that
+    specifies a search pattern. These patterns can be used in 
+    many tools like sed, vim, grep, python, \dots to search and/or replace characters.
+\end{theorem}
+
+Use \url{www.regexr.com} to learn and test regex.
 
 \subsection{User management}
 
@@ -1911,7 +1947,7 @@ cat /etc/group
 
 \subsubsection{Overview of users}
 
-/etc/passwd
+/etc/passwd contains a row for every user, with:
 
 \begin{itemize}
     \item Username
@@ -1924,7 +1960,7 @@ cat /etc/group
 
 \subsubsection{Overview of groups}
 
-/etc/group
+/etc/group contains a row for every group, with:
 
 \begin{itemize}
     \item Groupname
@@ -1938,29 +1974,25 @@ cat /etc/group
     \item System-wide host-specific configuration file (because it's in /etc/)
     \item Contains information about password length, expiration, password hash
     \begin{itemize}
-        \item Mostly: sha512-hash
+        \item Most common: sha512-hash
     \end{itemize}
-    \item Assignment:
-    \begin{itemize}
-        \item write a one-liner
-        \item Get all usernames from /etc/shadow and save them in /tmp/usernames
-        \item Extract from /etc/shadow all usernames and hashes of passwords for the usernames where a hash of the password is known
-    \end{itemize} 
 \end{itemize}
 
 \subsubsection{/etc/gshadow}
 
+Contains a row for each group, with:
+
 \begin{itemize}
-    \item Contains an encrypted password for each group, as well as group membership and administrator information
-    \item Group name: the name of the group
-    \item Hashed password: 
+    \item the group's encrypted password, as well as group membership and administrator information
+    \item the group name
+    \item the hashed group password: 
     \begin{itemize}
         \item If the value of this field is !, no user is allowed to access the group using the newgrp command. 
         \item If the value of this field is !! : same things as !, but it also indicates that a password has never been set before
         \item If the value is null, only group members can log into the group
     \end{itemize}
-    \item Group administrators: users who can add or remove group members using the gpasswd command
-    \item Group members
+    \item a list of group administrators: users who can add or remove group members using the gpasswd command
+    \item a list of group members
 \end{itemize}
 
 \subsubsection{sudo}
@@ -2005,7 +2037,7 @@ sudo su - <username>
 
 \subsection{SSH}
 
-\underline{S}ecure \underline{SH}ell
+\underline{S}ecure \underline{Sh}ell
 
 \begin{itemize}
     \item In the past: telnet (23/TCP)
@@ -2284,7 +2316,7 @@ protocol types, state, and timeout.
 \begin{itemize}
     \item Can filter based on contents in Layer 5: the Application layer
     \item Has knowledge of application protocols
-    \item Example:
+    \item examples:
     \begin{itemize}
         \item Active FTP
         \begin{itemize}
@@ -2297,13 +2329,12 @@ protocol types, state, and timeout.
     \end{itemize}
 \end{itemize}
 
-Problem: more and more traffic gets encrypted:
+\textbf{Problem:} more and more traffic gets encrypted:
 
 \begin{itemize}
     \item HTTPS, SMTP + SSL, SSH, \dots
     \item One cannot `look' inside encrypted traffic
     \item Solution: SSL-inspection
-    \item Purpose: SSL (client $\Rightarrow$ server)
     \item Problem:
     \begin{itemize}
         \item SSL1: client makes SSL connection to Firewall
@@ -2325,14 +2356,18 @@ Problem: more and more traffic gets encrypted:
 
 \subsection{Firewall in Linux: iptables}
 
-\begin{itemize}
-    \item iptables = package with userspace tools
-    \item Interacts with netfilter (package filtering framework) in kernel space 
-\end{itemize}
-
 \subsubsection{Netfilter}
 
-Networking stack = in kernel space
+\begin{theorem}
+    Netfilter is a framework provided by the Linux kernel that offers
+    various functions and operations for packet filtering, network 
+    address translation (NAT) and port translation. 
+
+    This framework resides in kernel space, and is controllable by
+    userspace applications like \textbf{iptables}.
+\end{theorem}
+
+The entire network stack resides in kernel space:
 
 \begin{itemize}
     \item Driver of network interface card (NIC)
@@ -2348,7 +2383,7 @@ These processes in kernel space are provided with a couple API hooks
 \subsubsection{Hooks}
 
 \begin{theorem}
-    A hook is a functionality provided by software for users of that software
+    A hook is functionality provided by software for users of that software
     to have their own code called under certain circumstances.
 
     Specific actions can be `hung' on these `hooks'
@@ -2364,7 +2399,7 @@ Specifically for netfilter hooks:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{hooks.png}
+    \includegraphics[width=0.7\textwidth]{hooks.png}
     \caption{5 hooks in the kernel networking stack}
 \end{figure}
 
@@ -2379,7 +2414,7 @@ Example: NF\_IP\_LOCAL\_IN:
 
 \subsubsection{iptables - tables}
 
-iptables uses tables to order firewall rules
+iptables uses `tables' to order firewall rules
 
 5 built-in tables:
 
@@ -2437,8 +2472,8 @@ Is every chain available in every table?
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{iptables-tables-and-chains.png}
-    \caption{Tables \& Chains}
+    \includegraphics[width=0.7\textwidth]{iptables-tables-and-chains.png}
+    \caption{Tables and their chains}
 \end{figure}
 
 \begin{itemize}
@@ -2873,7 +2908,7 @@ iptables -t NAT -A PREROUTING -i ens33 -p tcp --dport 80 -j DNAT
 \subsection{\textcolor{red}{Don't forget to save!}}
 
 \begin{itemize}
-    \item All iptables changes are in memory
+    \item All iptables changes are saved in memory
     \item Changes disappear on next reboot
 \end{itemize}
 
@@ -2915,7 +2950,7 @@ sudo netfilter-persistent save
 \begin{itemize}
     \item System-wide host-specific configuration file $\Rightarrow$ somewhere under /etc/
     \item /etc/default/isc-dhcp-server
-    \item In this file you need to allow dhcp to run
+    \item In this file you need to explicitly allow dhcp to run
 \end{itemize}
 
 \subsubsection{Parameters to configure}
@@ -3052,13 +3087,13 @@ Easier solution:
     \item Resource Records (RR)
     \item FQDN, with a trailing dot at the end
     \begin{itemize}
-        \item For example: `www.example.com.'
+        \item For example: `www.example.com\textbf{\textcolor{red}{.}}'
         \item \url{http://www.dns-sd.org/TrailingDotsInDomainNames.html}
-    \end{itemize}, 
+    \end{itemize}
     \item 2 types of DNS queries:
     \begin{itemize}
-        \item Iterative queries: the DNS server will not go and fetch the complete answer for your query but will give back a referral to other DNS server’s, which might have the answer.
-        \item Recursive queries: queries in which the DNS server, who received your query, will do all the job of fetching the answer and giving it back to you.
+        \item \textbf{Iterative queries:} the DNS server will not go and fetch the complete answer for your query but will give back a referral to other DNS server’s, which might have the answer.
+        \item \textbf{Recursive queries:} queries in which the DNS server, who received your query, will do all the job of fetching the answer and giving it back to you.
     \end{itemize}
 \end{itemize}
 
@@ -3066,7 +3101,7 @@ Easier solution:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{dns-structure.png}
+    \includegraphics[width=0.7\textwidth]{dns-structure.png}
     \caption{Structure of a DNS packet}
 \end{figure}
 
@@ -3075,9 +3110,9 @@ Easier solution:
 \begin{itemize}
     \item Convert hostnames into IP-address = \textbf{A-record}
     \item Convert IP address into hostname = \textbf{PTR-record}
-    \item What server does e-mail for this domain = \textbf{MX-record}
+    \item Which server handles e-mail for this domain = \textbf{MX-record}
     \item Anti-SPAM = \textbf{SPF-record} (using a specifically formatted TXT-record)
-    \item What server does DNS for the domain = \textbf{NS-record}
+    \item Which server handles DNS for the domain = \textbf{NS-record}
     \item Alias of another A-record = \textbf{CNAME}
 \end{itemize}
 
@@ -3267,7 +3302,7 @@ Because Apache was a gathering of work by many, there were a lot of `holes' in t
 
 \begin{itemize}
     \item Many `patches' had to be released to close those `holes'
-    \item Hence the name = A patchy webserver
+    \item Hence the name = `A patchy' webserver
 \end{itemize}
 
 \subsubsection{Apache modules}
@@ -3434,25 +3469,29 @@ Backend server with the least number of active connections receives the new requ
     \item No loadbalancing
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.5\textwidth]{loadbalancing1.png}
+        \includegraphics[width=0.65\textwidth]{loadbalancing1.png}
     \end{figure}
-    \item Level 4 loadbalancing
+    \item Layer 4 loadbalancing
     \begin{itemize}
-        \item Simples form of loadbalancing
-        \item IP+port combination
+        \item Simplest form of loadbalancing
+        \item Deals with the delivery of messages with no regard to the content
+        \item IP+port combination (Transport layer)
     \end{itemize}
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.5\textwidth]{loadbalancing2.png}
+        \includegraphics[width=0.65\textwidth]{loadbalancing2.png}
     \end{figure}
-    \item Level 7 loadbalancing
+    \item Layer 7 loadbalancing
+    \begin{itemize}
+        \item Application layer
+        \item Deals with the actual content of each message (looks at URL, cookies, \dots)
+        \item \url{https://www.nginx.com/resources/glossary/layer-7-load-balancing/}
+    \end{itemize}
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.5\textwidth]{loadbalancing3.png}
+        \includegraphics[width=0.65\textwidth]{loadbalancing3.png}
     \end{figure}
 \end{itemize}
-
-
 
 
 \subsection{HAProxy}
