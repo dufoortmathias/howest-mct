@@ -2969,4 +2969,221 @@ Kafka has 2 settings:
 
 By default, Kafka sets the log retention hours to 172 hours (1 week), and does not set a default size limit.
 
+\section{Overview data pipelines}
+A full stack data engineer/scientist has to work with many different pipelines, for example:
+
+\begin{itemize}
+    \item A data pipeline for streaming
+    \item A data pipeline for AI
+    \item \dots
+    \item There are also many alternatives to a full blown data pipeline:
+    \begin{itemize}
+        \item Linux tools + Python + MySQL/PostgreSQL (for smaller jobs)
+        \item Pandas/Nifi + Python + Libraries
+        \item Tick stack for time series
+        \item ES Stack for text search, geospatial data
+    \end{itemize}
+\end{itemize}
+
+\subsection{Data pipeline for streaming}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{datapipelines-streaming.png}
+    \caption{Top: the data pipeline for streaming data, bottom: examples for every step}
+\end{figure}
+
+\begin{itemize}
+    \item Events
+    \begin{itemize}
+        \item logs
+        \item sensor data
+        \item `long latency' actions
+        \item Many events are JSON-documents (JSON or JSON lines: to process these, you can use the Python standard library)
+    \end{itemize}
+    \item Message queue or collector
+    \begin{itemize}
+        \item Collecting data from different sources, timing, formats
+        \item Example: Kafka-Python
+    \end{itemize}
+    \item Bulk storage
+    \begin{itemize}
+        \item Scalable, massive and high bandwidth storage
+        \item But relatively high latency
+    \end{itemize}
+    \item Batch processing
+    \begin{itemize}
+        \item immutable datasets taht are transformed to useable datasets
+        \item Possible with PySpark
+    \end{itemize}
+    \item Distributed stores
+    \begin{itemize}
+        \item To store the results
+        \item PyMongo, PyElasticSearch
+        \item Elasticsearch DSL is a high-level library, built on top of the official low-level client
+    \end{itemize}
+    \item App server: lightweight simple web application for quick visualisation or prototype
+    \item Flask
+\end{itemize}
+
+$\Rightarrow$ everything is possible with Python!
+
+\subsubsection{Batch vs Stream}
+
+\begin{itemize}
+    \item Batch if you can, stream if you must
+    \item Stream can be collected in batches
+    \item Kafka: Spark streaming (mini batches)
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{batch-vs-stream-kafka-spark.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Batch schedule}
+
+Apache Airflow is a helpful tool to do batch processing
+
+\begin{itemize}
+    \item To schedule
+    \item To run periodically: daily, hourly, \dots
+    \item Controlled using Python code
+    \item Uses a DAG to create a sequence of jobs
+    \item Similar to Linux's cronjobs
+    \begin{itemize}
+        \item But if something goes wrong in a cronjob script, you won't realize until it is too late
+        \item Airflow has ways to detect if a step fails
+    \end{itemize}
+    \item Backfill = command to reprocess older data, for example with a different ML model
+    \item Installed through pip
+    \item \url{https://en.wikipedia.org/wiki/Apache_Airflow}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{airflow.png}
+    \caption{`Airflow' web interface}
+\end{figure}
+
+\subsubsection{JSON vs Parquet}
+
+\textbf{JSON}
+
+Javascript Object Notation
+
+\begin{itemize}
+    \item Compressable with gzip
+    \item Document format
+    \item Need and read the complete file
+    \item Processing file with spark:
+    \begin{itemize}
+        \item RDD.toJSON().saveAsTextFile(file)
+    \end{itemize}
+    \item Supported by everybody
+    \item Used everywhere
+\end{itemize}
+
+\textbf{Parquet}
+
+Apache Parquet is a column-oriented data storage format for the Apache Hadoop ecosystem
+
+\begin{itemize}
+    \item Compressed by default (smaller)
+    \item Columnar format
+    \item Can load only the columns we need
+    \item Processing files with spark:
+    \begin{itemize}
+        \item RDD.write.parquet(file)
+    \end{itemize}
+    \item Limited support
+    \item Used for performance
+\end{itemize}
+
+\subsubsection{SQL}
+
+Use SQL to quickly access your batch processing
+
+\begin{minted}{python}
+RDD = spark.read.format("csv")
+
+RDD.options(header="true", inferSchema="true")
+RDD.load("test.csv")
+
+RDD.registerTempTable("table name")
+
+# quickly use SQL to verify the data has been loaded
+Spark.sql("SQL statement from tablename")
+\end{minted}
+
+
+\begin{itemize}
+    \item 
+\end{itemize}
+
+\subsubsection{Spark to Elastic Search Cluster}
+
+\begin{minted}{python}
+RDD = spark.read.parquet("")
+# save the dataframe to elasticsearch
+RDD.write.format("org.elasticsearch.spark.sql")
+   .option("es.batch.size.entries", "100")
+\end{minted}
+
+\subsection{Data pipeline for AI}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{datapipeline-ai.png}
+    \caption{Top: the data pipeline for AI, bottom: examples for every step}
+\end{figure}
+
+\subsection{Alternatives}
+
+\subsubsection{Elastic stack}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{elastic-stack.png}
+\end{figure}
+
+\subsubsection{Tick stack}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{tick-stack.png}
+\end{figure}
+
+\begin{itemize}
+    \item Only time series
+    \item Dashboarding
+    \item For visualisation and prediction, you need more tools than just the standard Tick stack!
+\end{itemize}
+
+\textbf{Components:}
+
+\begin{itemize}
+    \item \textbf{Telegraf:} Plugin-driven server agent for collecting and reporting metrics
+    \item \textbf{InfluxDB:} Scalable data store for metrics, events, and real-time analytics
+    \item \textbf{Chronograf:} Monitoring/visualization user interface for TICK stack
+    \item \textbf{Kapacitor:} Framework for processing, monitoring, and alerting on time-series data
+\end{itemize}
+
+\subsection{The data science pyramid}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{data-science-pyramid.png}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{data-science-hierarchy-of-needs.jpg}
+    \caption{Many jobs in data science!}
+\end{figure}
+
+
+
 \end{document}
