@@ -2636,7 +2636,30 @@ Zo'n combinatie van verschillende decision trees (beslissingsbomen) noemen we ee
 
 \subsection{Bagging}
 
-\subsubsection{Concept van bagging - Majority voting}
+\begin{theorem}
+    Bagging (\underline{B}ootstrap \underline{agg}regat\underline{ing}) is 
+    een ensemble learning methode om de stabiliteit en accuracy van machine 
+    learning algoritmes in classificatie en regressie te verbeteren. 
+    Meestal wordt het gebruikt met decision trees, maar het kan gebruikt worden
+    met eender welke methode. 
+
+    Het vermindert ook de variantie en vermijdt overfitting.
+\end{theorem}
+
+\url{https://en.wikipedia.org/wiki/Bootstrap_aggregating}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{bagging2.png}
+    \caption{Bagging}
+\end{figure}
+
+\begin{itemize}
+    \item Bij regressie wordt het gemiddelde van de outputs gebruikt om een finaal model te bekomen
+    \item Bij classificatie wordt majority voting gebruikt om een finaal model te bekomen.
+\end{itemize}
+
+\subsubsection{Concept van bagging: Majority voting}
 
 \begin{figure}[H]
     \centering
@@ -2664,8 +2687,6 @@ Zo'n combinatie van verschillende decision trees (beslissingsbomen) noemen we ee
 
 \subsubsection{De techniek van bagging}
 
-Methode om de variantie te reduceren en overfitting te vermijden
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{bagging-techniek.png}
@@ -2691,7 +2712,7 @@ Methode om de variantie te reduceren en overfitting te vermijden
     \begin{itemize}
         \item = Extremely Randomized Trees
         \item Werken niet met bags, maar met de volledige trainingset waar samples uit gehaald worden
-        \item Splits worden willekeurig gekozen
+        \item \textbf{Splits worden willekeurig gekozen}
         \item $\Rightarrow$ Entropy en Gini impurity hoef je niet uit te rekenen $\Rightarrow$ minder rekenwerk
         \item Deze methode werkt goed met groot aantal bomen
         \item Vaak minder goede accuracy dan andere methodes, maar werkt heel snel
@@ -2715,7 +2736,7 @@ Methode om de variantie te reduceren en overfitting te vermijden
     \item \textbf{max\_depth:} de maximale diepte van de boom. Als je te maken hebt met noisy data is het aan te raden de maximale diepte beperkt te houden
     \item \textbf{min\_samples\_split:} het minimum aantal samples nodig om binnen een boom te blijven splitsen
     \item \textbf{min\_samples\_leaf:} het minimum aantal samples dat zich aan een blad van de boom moet bevinden. Hoe groter deze waarde, hoe mminder vatbaar voor overfitting
-    \item \textbf{Bootstrap aggregating: } Bagging (zie verder). Staat default op True
+    \item \textbf{Bootstrap aggregating: } Bagging. Staat default op True
     \item \textbf{oob\_score:} `out of bag'-score = de gemiddelde error bij het testen van een sample op bomen die niet op deze sample getraind zijn geweest
 \end{itemize}
 
@@ -2738,7 +2759,7 @@ Methode om de variantie te reduceren en overfitting te vermijden
     \item Boosting zal zoals bagging meerdere decision trees overlopen
     \item Boosting zal dat in plaats van parallel, sequentieel doen
     \item Boosting modellen zijn heel gevoelig voor overfitting
-    \item Modellen kunnen minder snel getraind worden dan bij Bagging, omdat het vorige model moet wachten op 
+    \item Modellen kunnen minder snel getraind worden dan bij Bagging, omdat elk model moet wachten op het vorige
     \item Er zijn meerdere vormen van Boosting
     \begin{itemize}
         \item Adaboost
@@ -2760,7 +2781,7 @@ Methode om de variantie te reduceren en overfitting te vermijden
 We beginnen juist zoals bij bagging:
 
 \begin{itemize}
-    \item Je vertrekt opnieuw van de trainingsset, bv 1000 samples
+    \item Je vertrekt opnieuw van de trainingset, bv 1000 samples
     \item Eerste stap = je vult zoals bij bagging een `bag' (bv opnieuw 1000 samples, via sampling en replacement: sommige samples gaan meerdere keren voorkomen, andere niet, \dots)
     \item Je traint een model met de data uit die bag
     \item Dit model kan eender welk soort model zijn, maar meestal neemt men een decision tree met maar 1 splitsing (=stump)
@@ -2796,7 +2817,7 @@ het tweede voor $0.9^1$, het derde voor $0.9^2$, het vierde voor $0.9^3$, \dots
 \end{figure}
 
 \begin{itemize}
-    \item We splitsen bij elke iteratie de trainingsset in 2
+    \item We splitsen bij elke iteratie de trainingset in 2
     \item Bij de eerste iteratie zijn er 3 punten negatief geclassificeerd terwijl ze positief zijn
     \item Bij de tweede iteratie is er een nieuwe splitsing. Deze keer krijgen de verkeerd geclassificeerde punten uit het vorig model meer gewicht
     \item Maar nu zijn er 3 negatieve punten die positief geclassificeerd worden
@@ -2824,9 +2845,9 @@ het tweede voor $0.9^1$, het derde voor $0.9^2$, het vierde voor $0.9^3$, \dots
     \item Hier ook veel last van uitschieters en overfitting
 \end{itemize}
 
-Bij regressie: de fouten worden bepaald door de residuen
+\textbf{Bij regressie:} de fouten worden bepaald door de residuen
 
-Bij classificatie: de fouten worden bepaald door de procentuele zekerheden van een voorspelling. Als een model niet zeker genoeg of te zeker was over een voorspelling, wordt die zekerheid aangepast door het volgende model.
+\textbf{Bij classificatie:} de fouten worden bepaald door de procentuele zekerheden van een voorspelling. Als een model niet zeker genoeg of te zeker was over een voorspelling, wordt die zekerheid aangepast door het volgende model.
 
 \begin{figure}[H]
     \centering
@@ -2837,9 +2858,19 @@ Bij classificatie: de fouten worden bepaald door de procentuele zekerheden van e
 
 \subsection{Stacking}
 
+\begin{theorem}
+    Stacking (Stacked Generalization) is een ensemble learning methode
+    die de uitkomsten van meerdere (meestal verschillende) classificatie- of regressiemodellen 
+    combineerd via een metalearner.
+
+    De base learners worden getraind op een volledige trainingset, daarna wordt de
+    metalearner getraind om een finale voorspelling te maken gebruikmakend van de voorspellingen
+    van de base learners als features.
+\end{theorem}
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{stacking.png}
+    \includegraphics[width=0.75\textwidth]{stacking.png}
     \caption{De Meta Learner is een classificatiemodel die de voorspelligen zal combineren tot 1 finale voorspelling}
 \end{figure}
 
@@ -2855,13 +2886,13 @@ Intern wordt de data eerst geprocessed, de dataset wordt opgedeeld in folds:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{stacking2.png}
+    \includegraphics[width=0.75\textwidth]{stacking2.png}
     \caption{K=10 $\Rightarrow$ 9/10 folds worden gebruikt als training data}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{stacking3.png}
+    \includegraphics[width=0.75\textwidth]{stacking3.png}
     \caption{1/10 wordt als test data gebruikt}
 \end{figure}
 
@@ -2910,19 +2941,19 @@ Belangrijke technieken omvatten:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.35\textwidth]{clustering-voorbeeld.png}
+    \includegraphics[width=0.4\textwidth]{clustering-voorbeeld.png}
     \caption{Voorbeeld: face clustering}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.35\textwidth]{clustering-marktsegmentatie.png}
+    \includegraphics[width=0.4\textwidth]{clustering-marktsegmentatie.png}
     \caption{Voorbeeld: Marktsegmentatie}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.35\textwidth]{clustering-socialmedia.png}
+    \includegraphics[width=0.4\textwidth]{clustering-socialmedia.png}
     \caption{Social media clustering}
 \end{figure}
 
@@ -2961,7 +2992,7 @@ Via een afstandfunctie:
 
 \begin{itemize}
     \item Hoe dicht liggen trainingssamples qua afstand van elkaar in de feature space?
-    \item Veelgebruikte afstandsmaat is de \textbf{Euclidische afstand}
+    \item Veelgebruikte afstandsmaat is de \textbf{Euclidische afstand} (=Pythagoras)
     \item Soms wordt ook de Manhattan Distance gebruikt: \url{https://en.wikipedia.org/wiki/Taxicab_geometry}
     \item Of de cosine distance: \url{https://en.wikipedia.org/wiki/Cosine_similarity}
 \end{itemize}
@@ -3038,7 +3069,7 @@ Via een afstandfunctie:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{k-means-kernel.png}
-    \caption{K-means vs Kernel K-means}
+    \caption{K-means vs Kernel K-means op het donut-probleem}
 \end{figure}
 
 \subsubsection{Strategie om het aantal clusters te bepalen}
@@ -3065,7 +3096,7 @@ Via een afstandfunctie:
     \caption{Elbow method voor het vinden van het aantal clusters}
 \end{figure}
 
-Aantal clusters K is daar war de fout niet noemenswaardig meer zakt. In het bovenstaande voorbeeld: $K=6$
+Aantal clusters K is daar waar de fout niet noemenswaardig meer zakt. In het bovenstaande voorbeeld: $K=6$
 
 \subsection{Hierarchical clustering}
 
@@ -3231,7 +3262,7 @@ Meest gebruikte algoritmes voor dimensionality reduction:
         \item Wanneer het aantal feature zeer groot is, dan wordt het moeilijk om bepaalde algoritmes effectief te trainen
         \item Bijvoorbeeld: clustering algoritmes
     \end{itemize}
-    \item Visualisaties in 2D of 3D $\Rightarrow$ dimensie reduceren naar respectievelijk 2 of 3
+    \item Visualisaties in 2D of 3D nodig? $\Rightarrow$ dimensie reduceren naar respectievelijk 2 of 3
     \begin{figure}[H]
         \centering
         \includegraphics[width=0.3\textwidth]{dim-reduction-2d-3d.png}
