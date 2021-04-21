@@ -936,7 +936,7 @@ In de AutoMapping klasse definiëren we de mapping tussen Customer en CustomerDT
 = Comma-Seperated Values
 
 \begin{itemize}
-    \item Veel gebruikt formaat zowel in wereld van AI, Administratieve apps,…
+    \item Veel gebruikt formaat zowel in wereld van AI, Administratieve apps,\dots
     \item Veel software kan overweg met dit formaat bv.: Excel (import/export)
     \item Is flat tekst formaat met een separator (komma, puntkomma, dubbelpunt, \dots)
     \item Seperator zal de data scheiden van elkaar
@@ -2719,6 +2719,499 @@ response.StatusCode.Should().Be(HttpStatusCode.OK)
     \item Je moet \textbf{unittests} en \textbf{integrationtest} kunnen schrijven
 \end{itemize}
 
+\section{API security}
 
+\subsection{Stand van zaken}
+
+\begin{itemize}
+    \item We bouwen API’s in .NET Core 5
+    \item We kunnen databases aanspreken via EF Core
+    \item We maken gebruik van Docker voor de hosting
+    \item We bouwen de API volgens bepaalde patterns
+    \item We kunnen eenvoudige unit test en/of integration/functional test schrijven
+    \item \textbf{Maar onze API is nog niet beveiligd $\Rightarrow$ iedereen kan deze aanspreken}
+\end{itemize}
+
+\subsection{Wat willen we beveiligen}
+
+\begin{itemize}
+    \item Wie spreekt de API aan $\Rightarrow$ Nu is dat iedereen
+    \item Kunnen we gebruikers blokkeren ? $\Rightarrow$ bv iemand die API gaat aanvallen (hammering)
+    \item We willen onze gebruikers veilig opslaan zonder veel zorgen $\Rightarrow$ niet evident (cfr. GDPR, Compliance, \dots)
+    \item Gebruikers moeten zich eenvoudig kunnen registreren en dit op een veilige manier
+    \item We willen applicaties kunnen verbinden op een veilige manier:
+    \item Onze applicatie wil toegang tot Facebook data zonder dat we ons paswoord van Facebook moeten ingeven
+    \item In complexe API’s willen we rechten eenvoudige beheren en controleren
+    \item Vb: Enkel lezen, enkel schrijven, enkele order plaatsen etc..
+\end{itemize}
+
+\textbf{Conclusie:} niet eenvoudig, security is lastig en soms vak apart!
+
+\subsubsection{Voorbeeld}
+
+Een third party application wil uw Facebook profiel data opvragen
+
+\begin{itemize}
+    \item U zou uw facebook credentials moeten toevertrouwen aan deze third party application
+    \item Third party application moet deze dan veilige bewaren (good luck)
+    \item De server met onze third party application moet dan kunnen inloggen in facebook via die credentials (form based login) $\Rightarrow$ not easy
+    \item De third party application application kan direct aan alle informatie van ons profiel
+    \item Willen we de third party application blokkeren $\Rightarrow$ ons paswoord wijzigen
+\end{itemize}
+
+Dit is echt geen veilige manier van werken!
+
+\subsection{OAuth 2.0}
+
+\subsubsection{Waarom OAuth2.0 en OpenId Connect?}
+
+\begin{itemize}
+    \item Meest gebruikte oplossing is OAuth 2.0 protocol \& OpenId Connect
+    \item Dit is de standaard manier geworden voor authenticatie in de Cloud
+    \item Geen eenvoudige materie om te begrijpen !
+    \item Opzetten en gebruiken in een applicatie is reeds stukken eenvoudiger geworden
+    \item Het is wel belangrijk dat je de manier van werken snapt, dit gaan we proberen
+    \item duidelijk te maken in deze les
+    \item Valkuilen zijn vooral terminologie !
+\end{itemize}
+
+\subsubsection{Wat is OAuth 2.0?}
+
+\begin{theorem}
+    OAuth2.0 is een Open standard framework die data tokens kan genereren zodat 
+    third party applications toegang krijgen tot beveiligde resources.
+
+    De resource owner zal expliciet toegang moeten geven zodat de third party 
+    application bepaalde rechten (permissions, scopes) kan gebruiken.
+\end{theorem}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{oauth2.png}
+    \caption{Facebook + OAuth}
+\end{figure}
+
+\subsubsection{Enkele termen}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{oauth2-participants.png}
+\end{figure}
+
+\begin{theorem}[Resource Owner]
+    De eigenaar van de data (meestal een persoon, kan ook een server zijn)
+\end{theorem}
+
+\begin{theorem}[Authorization Server (IDP)]
+    Server die tokens zal genereren en valideren. Zal ook de resource owner authenticeren en authorization bepalen
+\end{theorem}
+
+\begin{theorem}[Client]
+    De applicatie die toegang wil tot de resouce owner zijn data. Moet eerst access token hebben voor we request kunnen stur
+\end{theorem}
+
+\begin{theorem}[Resource Server]
+    Server die beschermde resource bevat, zal de tokens uitlezen en interpreteren. Dit is bvb onze API die we programmeren
+\end{theorem}
+
+\subsubsection{Abstracte high-level flow}
+
+\begin{enumerate}
+    \item Client vraagt authorization aan de resource owner
+    \item Client zal authorization grant ontvangen met daarin de toegangs rechten. Er zijn 4 types grants
+    \item Client zal nu op basis van de authorization grant een token vragen aan de authorization server
+    \item Na validatie van de grant zal er een access token verzonden worden naar de client
+    \item De client zal nu met de access token aanvragen doen naar de protected resources
+    \item De resource server zal de token valideren en al dan niet toegang geven
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{oauth2-flow.png}
+    \caption{Abstract High-Level Flow}
+\end{figure}
+
+\subsubsection{Client types}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{oauth2-clients.png}
+\end{figure}
+
+Er zijn 2 types mogelijk:
+
+\begin{itemize}
+    \item Confidential Clients
+    \begin{itemize}
+        \item Dit zijn clients die credentials kunnen beschermen
+        \item ASP.NET MVC, PHP, Django, \dots
+        \item Alles wat op een server runt
+    \end{itemize}
+    \item Public Client
+    \begin{itemize}
+        \item Deze clients kunnen credentials niet goed beschermen
+        \item Mobile apps op iOS, Android
+        \item Web Apps in React, Angular, Blazor, \dots
+        \item Web Assembly Apps
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Authorization Grants}
+
+Er zijn 4 soorten Authorization Grants die clients in oAuth 2.0 kunnen gebruiken:
+
+\begin{itemize}
+    \item \textbf{Client Credentials}   
+    \item Resource Owner Password Credentials
+    \item Implicit
+    \item \textbf{Authorization Code}
+\end{itemize}
+
+\textcolor{red}{Resource Owner Password Credentials \& Implicit Grant moet je niet kunnen uitleggen,
+je moet gewoon weten dat je ze niet meer mag gebruiken, omdat ze niet zo veilig zijn.}
+
+\subsubsection{Client Credentials}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{oauth2-client-credentials.png}
+\end{figure}
+
+\begin{itemize}
+    \item Meest eenvoudige flow
+    \item Geen resource owner (client is de resource owner)
+    \item Client zal authenticeren via secret met server en token krijgen indien ok
+    \item Vooral gebruikt bij micro services communciatie onderling (API die andere API gaat aanroepen)
+    \item Gaan we in labo opzetten
+\end{itemize}
+
+
+\subsubsection{Resource Owner Password Credentials}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{oauth-resource-owned-password-credentials.png}
+\end{figure}
+
+\begin{itemize}
+    \item Vrij eenvoudige flow
+    \item Resource owner zal login/paswoord intikken in de Client
+    \item Client zal token vragen aan authorization server met de ingevulde credentials van de resource owner
+    \item Na validatie van de authorization server zal er token naar de client verzonden worden
+    \item Enkel te gebruiken voor trusted clients !!
+    \item Gaan we niet doen in labo
+\end{itemize}
+
+\subsubsection{Implicit Grant}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{oauth2-implicitgrant.png}
+\end{figure}
+
+\begin{itemize}
+    \item Client start redirect flow naar authorization endpoint. Request bevat client ID, request scope (permissies), redirect URI
+    \item Server zal user authenticeren. De resource owner zal al dan niet toegang geven aan de scopes via webpage
+    \item Wanneer resource owner toegang verleent zal de server redirecten naar die client via de redirect URI uit de request
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{oauth2-implicitgrant2.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{Authorization Code Grant}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{oauth2-authorization-code-grant.png}
+\end{figure}
+
+
+\begin{itemize}
+    \item Redirection flow, authorization server zit tussen Client en Resource owner
+    \item Eerst redirect naar authorization server waar we inloggen en scopes bepalen en v
+    \item Indien succes keren we een authorization code terug via redirect URI
+    \item Nu moeten we met de authorization code een access code opvragen om toegang te krijgen tot de resources. Dit vragen we terug aan de authorization server
+    \item Na validatie van de authorization code zal er een access token verzonden worden naar de redirect URI. Eventueel zal er een een refresh token aanwezig zijn
+    \item Dit is de meest aangewezen flow (met PKCE Protection) voor SPA apps
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{oauth2-authorization-code-grant2.png}
+    \caption{}
+\end{figure}
+
+\subsubsection{2 soorten tokens}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{oauth2-tokens.png}
+    \caption{Access \& Refresh Token interaction}
+\end{figure}
+
+access\_token
+
+\begin{itemize}
+    \item Toegang tot protected resource
+    \item Validatie door protected resource
+\end{itemize}
+
+refresh\_token
+
+\begin{itemize}
+    \item Token die nodig is om nieuwe
+    \item access\_token te verkrijgen
+    \item Geen toegang tot resources mogelijk
+    \item Enkel bij:
+    \begin{itemize}
+        \item Authorization code flow
+        \item Resource owner password credentials
+    \end{itemize}
+\end{itemize}
+
+
+\subsection{OpenID Connect}
+
+\begin{itemize}
+    \item OAuth2.0: Access tokens die toegang geven tot protected resources $\Rightarrow$ \textbf{Authorization}
+    \item Maar wat met Authentication ? Wie ben ik ?
+    \begin{itemize}
+        \item Niet voorzien in OAuth specificatie
+        \item Hiervoor is er OpenID Connect
+        \begin{itemize}
+            \item Identity laag boven oAuth 2.0
+            \item Zorgt ervoor dat client de identity kunnen controleren van de gebruiker via de authorization
+            \item server (zal dus op dezelfde server draaien)
+            \item Via Claims zullen we profiel info terugkeren naar de client
+            \item Basis voor Single Sign On
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{OpenID Connect terminologie}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{openid-connect-terminologie.png}
+\end{figure}
+
+
+\begin{itemize}
+    \item End-User: persoon die wil inloggen, eigenaar van de beschermde resources (oa zijn eigen identiteit)
+    \item Relying Party: Client applicatie die die toegang wil
+    \item Identity Provider: OAuth 2.0 Authorization Server die end-user zal authenticeren en claims voorzien voor de Relying Party
+    \item Identity Token: JSON Web Token (JWT) met daarin claims
+\end{itemize}
+
+Al deze termen zorgen ook voor verwarring tussen OpenID Connect en OAuth 2.0. 
+Overzicht van termen waar hetzelfde bedoeld is:
+
+\begin{itemize}
+    \item End User (OpenID Connect) – Resource Owner (OAuth 2.0)
+    \item Relying Party (OpenID Connect) – Client (OAuth 2.0)
+    \item OpenID Provider (OpenID Connect) – Authorization Server (OAuth 2.0)
+\end{itemize}
+
+
+\subsubsection{Werking}
+
+\begin{itemize}
+    \item Na de authenticatie krijgen we een JSON Web Token terug
+    \item JSON Web Token is een open standaard om claims voor te stellen (rechten)
+    \item Deze claims kunnen op een veilige manier uitgewisseld worden
+    \item We maken hiervoor gebruik van digital signing, hierdoor kunnen we bij ontvangen
+    \item controleren of ze onderweg niet gemanipuleerd werden
+    \item Het is de Authorization Server/OpenID Provider die tokens zal uitdelen
+\end{itemize}
+
+\subsubsection{JWT Token structuur}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{openid-jwt.png}
+\end{figure}
+
+
+Bestaat uit 3 onderdelen:
+
+\begin{itemize}
+    \item Header: Base64 Url encoded JSON met daarin alg = algoritme van de signature, en typ = type JWT token
+    \item Payload: Base64 Url encoded JSON met daarin de claims over de user
+    \item Signature: combinatie van base64 header en payload met een secret om zeker te zijn dat er geen manipualtie was tijdens transport.
+\end{itemize}
+
+\subsubsection{Claims \& Scopes}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{claims-scopes.png}
+    \caption{}
+\end{figure}
+
+
+\begin{theorem}
+    Claim is een individueel stuk informatie in de vorm van een key/value pair
+\end{theorem}
+
+\begin{theorem}
+    Scope is een groep van claims
+\end{theorem}
+
+\subsection{Endpoints}
+
+Hoe kan een applicatie nu communiceren?
+
+\begin{itemize}
+    \item We maken gebruiken van public endpoints waar we mee communiceren
+    \begin{itemize}
+        \item Authorization Endpoint: client zal dit gebruiken voor authorization, zal zorgen voor authentication van de gebruiker. Dit is het endpoint waar je na klikken op de login butten zal aankomen
+        \item Token Endpoint: endpoint om authorization token in te ruilen voor een access token/id token/refresh token
+        \item UserInfo endpoint: uitbreiding van OpenID Connect, endpoint die user claims zal terugkeren
+        \item Client endpoint: endpoint op de client die aangesproken zal worden door de authorization server om iets terug te sturen
+    \end{itemize}
+\end{itemize}
+
+\subsection{Identity servers (IDP)}
+
+Hoe begin je dit nu op te zetten voor je eigen applicaties? Verschillende manieren:
+
+\subsubsection{IDP zelf implementeren en opzetten en beheren}
+
+\begin{itemize}
+    \item Volledige controle over alles
+    \item Bevat reeds de volledige OAuth 2.0/Open ID Connect Flow
+    \item Ideaal voor migraties scenario’s
+    \item Je blijft wel zelf verantwoordelijk voor het hosten van de servers
+    \item Je moet zelf user beheer doen
+    \item vb: Identity Server 4
+    \begin{itemize}
+        \item \url{https://identityserver4.readthedocs.io/en/latest/}
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Gebruikmaken van bestaande IDP}
+
+\begin{itemize}
+    \item Ideaal voor nieuwe projecten
+    \item Zijn meestal managed services in de cloud, altijd up to date
+    \item Geen eigen beheer van users/paswoord, we besteden dit uit aan de IDP
+    \begin{itemize}
+        \item Minder zorgen
+        \item Complaint
+    \end{itemize}
+    \item Volledige registratie/password reset/\dots flow we moeten dit niet meer zelf maken
+    \item Dit is de meest aangeraden manier om te werken, `relatief' eenvoudig op te zetten
+    \item Enkele voorbeelden:
+    \begin{itemize}
+        \item Okta, \textbf{Auth0, Azure Active Directory (B2C)}, Google Cloud Identity, Amazon Cognito
+    \end{itemize}
+\end{itemize}
+
+\textbf{Nadelen aan Cloud IDP}
+
+\begin{itemize}
+    \item Je bent verbonden aan een Cloud Provider
+    \item Deze dingen kunnen ook down zijn => hopen dat met snel oplost (wat ze ook doen)
+    \item Kostprijs, meestal is er wel een gratis tier
+\end{itemize}
+
+\textbf{Wij gaan gebruik maken van Azure Active Directory (B2C) en Auth0}
+
+\begin{itemize}
+    \item Zit in onze Student Azure Account
+    \item Ondersteuning voor:
+    \begin{itemize}
+        \item Office 365 Account, Twitter, Facebook, Google, custom accounts
+    \end{itemize}
+\end{itemize}
+
+\subsection{Werking in C\#}
+
+We nemen een nieuwe ASP.NET Core Web API applicatie (de weathercontroller)
+
+\subsubsection{Package toevoegen}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{oauth-demo1.png}
+    \caption{Package toevoegen: Microsoft.Identity.Web}
+\end{figure}
+
+\subsubsection{{[}Authorize{]} attribuut toevoegen}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{oauth-demo2.png}
+    \caption{{[}Authorize{]} attribuut toevoegen}
+\end{figure}
+
+\begin{itemize}
+    \item Zal volledige controller beveilligen
+    \item Kan ook per methode => {[}AllowAnonymous{]} laat toe om 1 methode bvb niet te beveiligen
+\end{itemize}
+
+\subsubsection{Startup.cs}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{oauth-demo3.png}
+    \caption{Startup.cs}
+\end{figure}
+
+\subsubsection{Applicatie registreren in Azure AD}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{oauth-demo4.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{oauth-demo5.png}
+    \caption{In de ASP.NET Applicatie moeten we de config info aanpassen met deze uit Azure AD}
+\end{figure}
+
+\subsubsection{Stappen in Postman}
+
+\begin{enumerate}
+    \item Autorization Code opvragen
+    \item Access token aanvragen met behulp van Authorization Code
+    \item API aanspreken met access token
+    \item Nieuwe access token aanvragen met refresh token
+\end{enumerate}
+
+\subsection{Libraries}
+
+Meeste IDP’s voorzien een client side library voor de meest bekende frameworks:
+
+\begin{itemize}
+    \item React
+    \begin{itemize}
+        \item Azure AD: \url{https://www.npmjs.com/package/react-aad-msal}
+        \item Okta: \url{https://developer.okta.com/code/react/okta_react/}
+        \item Amazon: \url{https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-integrate-apps.html}
+    \end{itemize}
+    \item Angular
+    \begin{itemize}
+        \item Azure AD: \url{https://www.npmjs.com/package/@azure/msal-angular}
+        \item \dots
+    \end{itemize}
+\end{itemize}
+
+Gebruike ALTIJD een libary, ga dit NIET zelf gaan programmeren
+
+Extra: zeer goede video: \url{https://www.okta.com/openid-connect/}
+
+\subsection{Wat moet je goed kennen?}
+
+\begin{itemize}
+    \item Verschil tussen Oauth en Open ID Connect
+    \item Credential Flow \& Authorization Code Flow PCKE kunnen uitleggen
+    \item Wat is een IDP en welke zijn er ?
+    \item Wat zijn scopes en claims ?
+    \item Hoe moet je een Web API beveiligen, welke attributen, welke instellingen ?
+\end{itemize}
 
 \end{document}
