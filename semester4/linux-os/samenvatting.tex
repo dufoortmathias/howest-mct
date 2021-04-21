@@ -3092,7 +3092,7 @@ Easier solution:
     \end{itemize}
     \item 2 types of DNS queries:
     \begin{itemize}
-        \item \textbf{Iterative queries:} the DNS server will not go and fetch the complete answer for your query but will give back a referral to other DNS server’s, which might have the answer.
+        \item \textbf{Iterative queries:} the DNS server will not go and fetch the complete answer for your query but will give back a referral to other DNS server's, which might have the answer.
         \item \textbf{Recursive queries:} queries in which the DNS server, who received your query, will do all the job of fetching the answer and giving it back to you.
     \end{itemize}
 \end{itemize}
@@ -3775,6 +3775,337 @@ Conntrack = userspace tool to interact with kernelspace connection tracking modu
 conntrack -L
 \end{minted}
 
+\section{Databases}
+
+\begin{theorem}
+    A database is a structured set of data held in a computer that is accessible in various ways.
+\end{theorem}
+
+\subsection{DBMS}
+
+\begin{theorem}
+    A Database Management System (DMBS) is a computer-software application that interacts with end-users, 
+    other applications, and the database itself to capture and analyze data.
+
+    A general-purpose DBMS allows the definition, creation, querying, update and administration of databases.
+\end{theorem}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dbms-examples.png}
+    \caption{}
+\end{figure}
+
+The 2 most famous Open Soruce SQL DBMSs:
+
+\begin{itemize}
+    \item MySQL
+    \item PostgreSQL
+\end{itemize}
+
+\subsubsection{MySQL - history}
+
+\begin{itemize}
+    \item RDBMS: Relational Database Managament System
+    \item Created by MySQL AB (Swedish company)
+    \item Acquired by Sun Microsystems in 2008
+    \item Oracle acquired Sun Microsystems in 2010
+    \item Future of MySQL very uncertain (because Oracle has OracleDB)
+    \item Fork of source code of mysql by original creator: mariadb
+    \item Mariadb : current open source implementation of mysql, with part of the original team
+\end{itemize}
+
+\textbf{MariaDB:}
+
+\begin{theorem}
+    MariaDB is a fast, stable and true multi-user, multi-threaded SQL database server. 
+    SQL (Structured Query Language) is the most popular database query language in the world. 
+    
+    The main goals of MariaDB are speed, robustness and ease of use.
+
+    \url{https://packages.debian.org/nl/sid/mariadb-common}
+\end{theorem}
+
+\subsubsection{PostgreSQL}
+
+\begin{itemize}
+    \item In short: postgres
+    \item O-RDBMS - Object-Relational Database Management System
+    \item First release July 8th, 1996
+    \item Current release: 11.2 (February 14th, 2019)
+\end{itemize}
+
+\subsubsection{Our choise}
+
+\begin{itemize}
+    \item MariaDB
+    \item LAMP-stack:
+    \begin{itemize}
+        \item Previously: Linux, Apache, \textbf{MySQL}, PHP|Perl|Python
+        \item Now: Linux, Apache, \textbf{MariaDB}, PHP|Perl|Python
+    \end{itemize}
+\end{itemize}
+
+\subsection{MariaDB installation under Debian}
+
+\subsubsection{Packages}
+
+\begin{itemize}
+    \item Meta-package mariadb-common
+    \begin{itemize}
+        \item Mariadb-common \& mysql-common
+    \end{itemize}
+    \item Package mariadb-server:
+    \begin{itemize}
+        \item mariadb-server
+        \item mariadb-client
+    \end{itemize}
+    \item Standard port: 3306/TCP
+\end{itemize}
+
+\subsubsection{Configuration}
+
+Configuration file:
+
+\begin{itemize}
+    \item Under /etc (system wide host specific configuration files, see lesson 2)
+    \item /etc/mysql/mariadb.cnf
+    \item /etc/mysql/conf.d/*.cnf
+    \item /etc/mysql/mariadb.conf.d/*.cnf
+\end{itemize}
+
+Listen on your IP-address (and not only localhost)
+
+\begin{itemize}
+    \item Add the following to mariadb.cnf:
+    \begin{minted}{bash}
+    [mysqld]
+    bind-address = 192.168.20.10
+    \end{minted}
+\end{itemize}
+
+Verify with \mintinline{bash}{ss -tulpn}
+
+\subsubsection{Firewall}
+
+FORWARD chain:
+
+\begin{itemize}
+    \item From both webservers to the databaseserver
+    \item From DMZ interface to LAN interface
+    \item With destination port tcp/3306
+    \item Connection tracking for related and established
+\end{itemize}
+
+Test if firewall allows traffic to pass:
+
+\begin{minted}{bash}
+telnet 192.168.20.20 3306
+\end{minted}
+
+\subsubsection{Install mysql-client on webserver1 (as test)}
+
+\begin{minted}{bash}
+apt install mysql-client
+mysql -h 192.168.20.20
+
+# ERROR 1130 (HY000): Host `192.168.20.20' is not allowed to connect 
+# to this MariaDB server
+\end{minted}
+
+\begin{itemize}
+    \item Good news: firewall rules are correct
+    \item `Bad' news: there are other security measures to configure
+\end{itemize}
+
+\subsection{Databases}
+
+\begin{itemize}
+    \item MariaDB is an RDBMS
+    \item Can contain multiple databases
+    \item Each database can have its own security parameters
+    \item 3 standard databases:
+    \begin{itemize}
+        \item information\_schema
+        \item mysql
+        \item performance\_schema
+    \end{itemize}
+\end{itemize}
+
+\begin{minted}{sql}
+-- Select a specific database to work with
+SHOW DATABASES;
+USE <databasename>;
+\end{minted}
+
+\subsubsection{Tables}
+
+\begin{itemize}
+    \item A database consists of a collection of Tables
+    \item Every Table contains a number of columns
+    \item That might be data which needs to be stored
+    \item That might be references to other fields of other tables
+    \begin{itemize}
+        \item So called foreign keys $\Rightarrow$ hence the name: `Relational' databases
+    \end{itemize}
+\end{itemize}
+
+\begin{minted}{sql}
+-- get a list of tables from a database
+SHOW TABLES;
+
+-- get contents from a table
+SELECT * FROM <table>;
+
+SELECT * FROM mysql.user;
+SELECT User, Host FROM mysql.user;
+-- We get no results here:
+SELECT User, Host FROM mysql.user WHERE Host <> 'localhost';
+-- This is why we cannot connect
+\end{minted}
+
+\subsubsection{Users and rights}
+
+\begin{itemize}
+    \item MariaDB has the notion of users
+    \item A user has certain rights $\Rightarrow$ PRIVILEGES
+    \item Types of PRIVILEGES:
+    \begin{itemize}
+        \item GRANT: a privilege that lets you grant privileges
+        \item READ: privilege that lets you read data, but not write
+        \item SELECT: privilege that lets you use the SELECT statement
+        \item DROP: privilege that lets you use the DROP statement
+        \item CREATE: privilege that lets you use the CREATE statement
+        \item SHOW: privilege that lets you use the SHOW command
+        \item \dots
+    \end{itemize}
+\end{itemize}
+
+\begin{minted}{sql}
+-- Currently not a single user has the right to connect from 192.168.10.20 or .30:
+SELECT User, Host FROM mysql.user WHERE Host <> 'localhost';
+
+-- so we need to create a user and give necessary rights
+-- we can add rights database-wide but that is not very smart
+-- instead, we create a database:
+CREATE DATABASE itop;
+-- we grant privileges to a user (webuser) on a certain machine (192.168.10.20)
+GRANT ALL PRIVILEGES ON itop.* TO 'webuser'@'192.168.10.20' IDENTIFIED BY 'password';
+\end{minted}
+
+\begin{minted}{bash}
+mysql –h 192.168.10.20 –u webuser –p
+# now the connection works!
+\end{minted}
+
+
+\subsection{Backup}
+
+HOSTING = BACKUP + MONITORING
+
+\begin{itemize}
+    \item Backup = for when things go wrong
+    \item Monitoring = so you know when something goes wrong
+\end{itemize}
+
+\subsubsection{Backup a database server}
+
+\begin{itemize}
+    \item Making a backup of a database server just like that, doesn't work
+    \item Database server: open files
+    \item Backup an open file $\Rightarrow$ corrupt $\Rightarrow$ backup not usable
+\end{itemize}
+
+Solution: 
+
+\begin{itemize}
+    \item Use the mysqldump command to `dump' the data
+    \item \url{https://mariadb.com/kb/en/library/mysqldump/}
+\end{itemize}
+
+Result:
+
+\begin{itemize}
+    \item A file with all contents of the database
+    \item File can then be part of regular file backup
+\end{itemize}
+
+\subsection{What did we learn today?}
+
+\begin{itemize}
+    \item There are an awful lot of database servers for Linux
+    \item A lot of them are Open Source
+    \item The most common ones are Postgres and MySQL / MariaDB
+    \item We choose MariaDB
+    \item We can install the RDBMS, create a database, create a user, configure to connect remotely to the database
+    \item We know what a CMDB is, we can install the Open Source ITSM-tool iTop
+\end{itemize}
+
+\subsubsection{No hardcoded IP addresses in your application}
+
+\begin{itemize}
+    \item When writing a webapplication, do not use hardcoded IP addresses of your databaseserver in your application
+    \item Is very difficult to change afterwards
+    \item Use the hostname, if needed by means of /etc/hosts
+\end{itemize}
+
+\subsubsection{Connection pooling}
+
+Connection pooling is a MySQL option to improve performance
+
+\begin{itemize}
+    \item Every visitor to the website results in a connection between webserver and database server
+    \item TCP/3306 $\Rightarrow$ a lot of 3-way opens (overhead!)
+    \item Solution: connection pooling
+    \begin{itemize}
+        \item webserver continuously keeps at least 1 connection to the database server open
+        \item Number of open connections can increase to a configured maximum
+    \end{itemize}
+\end{itemize}
+
+Result: overhead on webserver and on segmentation firewall decreases
+
+\subsubsection{RRD}
+
+= Round Robin Database
+
+\begin{itemize}
+    \item A method to save time series data
+    \item Has a fixed file size
+    \item With adjusted resolution according to the time in the past
+    \begin{itemize}
+        \item Very recent past: high accuracy
+        \item The further in the past, the less accurate
+    \end{itemize} 
+\end{itemize}
+
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{rrdtool.png}
+    \caption{rrdtool = tool for things like graphing network traffic/bandwidth}
+\end{figure}
+
+Other tools:
+
+\begin{itemize}
+    \item Observium
+    \item LibreNMS
+    \item OpenNMS
+    \item Nagios
+    \item \dots
+\end{itemize}
+
+\subsubsection{Postgres}
+
+To manage postgres:
+
+\begin{itemize}
+    \item Log into database server as user postgres
+    \item Use the CLI-tool `psql'
+    \item Leave the CLI-tool: $\backslash$q
+\end{itemize}
 
 
 \end{document}
