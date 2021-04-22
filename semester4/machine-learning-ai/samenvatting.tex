@@ -3404,9 +3404,568 @@ Bij face recogntion noemt men de principle components `Eigenfaces'
 \end{figure}
 
 
+\section{Deep learning}
+
+\subsection{Waarom deep learning}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{deep-learning-performance-vs-data.png}
+    \caption{Performance vs hoeveelheid data}
+\end{figure}
+
+\begin{itemize}
+    \item Hoe meer data je hebt, hoe beter uw model gaat worden
+    \item In de realiteit zal je bij de oudere algoritmes een plateau ondervinden
+    \item Bij deep learning zal dat een veel kleiner probleem zijn
+    \item Neurale netwerken zijn wel veel gevoeliger voor overfitting: ze kunnen heel snel de dataset uit het hoofd leren
+    \item Met kleinere datasets is het meestal beter om voor de traditionele learning algoritmes te gaan.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{deep-learning-approach.png}
+    \caption{De verschillende aanpak tussen traditionele ML en Deep Learning}
+\end{figure}
+
+\begin{itemize}
+    \item Bij traditionele ML moet je eerst manueel de features eruit halen
+    \item Vroeger moest voor gezichtsherkenning eerst manueel aangeduid worden waar de features (ogen, mond, oren, \dots) zijn.
+    \item Deep learning is goed voor problemen met niet-gestructureerde data
+    \begin{itemize}
+        \item Gestructureerde data = rijen van data (zoals een Excel-sheet)
+        \item Niet-gestructureerd = afbeeldingen
+    \end{itemize}
+\end{itemize}
+
+\begin{theorem}
+    End-to-end learning is een deep learning techniek waarbij we gewoon alle ruwe data door een neural netwerk
+    gooien. Het neuraal netwerk zal zelf feature learning gaan doen, om daarna te classificeren.
+\end{theorem}
+
+\subsection{Geschiedenis van deep learning}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{deep-learning-history.png}
+    \caption{\url{https://beamandrew.github.io/deeplearning/2017/02/23/deep_learning_101_part1.html}}
+\end{figure}
 
 
+\subsection{Deep learning architecturen}
+
+\begin{itemize}
+    \item Convolutional Neural Networks (CNN)
+    \item Capsule Network (CapsNet)
+    \item Restricted Boltzmann Machine (RBM)
+    \item Autoencoder (AE)
+    \item Deep Belief Nets (DBN)
+    \item Recurrent Neural (Tensor) Network (RNTN)
+    \item Long Short Term Memory (LSTM)
+    \item Gated Recurrent Unit nets (GRU)
+    \item Generatative Adversarial Nets (GAN)
+\end{itemize}
+
+\subsection{Biologisch model}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{biologisch-neuron.png}
+    \caption{Anatomie van een biologisch neuron}
+\end{figure}
+
+\begin{itemize}
+    \item Neurale netwerken zijn geinspireerd door de werking van hersenen
+    \item Een neuron heeft verschillende verbindingen die signalen kunnen sturen naar andere neurons
+    \item Het neuron kan een zwak of een sterk signaal sturen
+\end{itemize}
+
+\subsection{Het artificieel neuron}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{neuron.png}
+    \caption{Conceptuele werking}
+\end{figure}
+
+\begin{itemize}
+    \item Een neuron kan meerdere inputs ontvangen
+    \item Elke input heeft een bepaald gewicht
+    \item Die inputs worden vermenigvuldigd met de gewichten om dan gebruikt te worden in een transfer function
+    \item De transfer function is een wiskundige formule die als output een getal heeft
+    \item Dat getal wordt als input gebruikt door een activation function, die de finale output van het neuron zal bepalen
+    \item \url{https://en.wikipedia.org/wiki/Activation_function}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{neuron-voorbeeld.png}
+    \caption{Voorbeeld van een neuron, met als activation function een sigmoid function}
+\end{figure}
+
+\subsection{Het neuraal netwerk}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{neuraal-netwerk.png}
+\end{figure}
+
+\begin{itemize}
+    \item De neuronen zitten in verschillende layers:
+    \begin{itemize}
+        \item Input layer
+        \item Hidden layers
+        \item Output layer
+    \end{itemize}
+    \item Elk neuron is verbonden met alle neuronen van de volgende laag
+    \item Elke verbinding heeft een bepaald gewicht
+    \item Men spreekt van deep learning als je meerdere lagen tussen de input en output layers hebt $\Rightarrow$ Deep Neural network
+\end{itemize}
+
+\subsection{Netwerk architectuur}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{neural-net-architecture.png}
+    \caption{Overzicht. Meer info: \url{http://www.asimovinstitute.org/neural-network-zoo/}}
+\end{figure}
+
+\begin{itemize}
+    \item Het is mogelijk om met neuronen verschillende types netwerken te maken
+    \item TODO
+\end{itemize}
+
+\subsection{Feedforward neuraal netwerk}
+
+\begin{theorem}
+    TODO
+\end{theorem}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{feedforward-neural-net.png}
+    \caption{De informatie vloeit unidirectioneel van input naar output.}
+\end{figure}
+
+\subsubsection{Voorbeeld: XOR-functie}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{neural-net-xor.png}
+    \caption{XOR-functie}
+\end{figure}
+
+\begin{itemize}
+    \item Men had lang geleden al door TODO
+\end{itemize}
+
+\subsubsection{Voorbeeld: MNIST}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{mnist-neural.png}
+    \caption{MNIST: dataset met gelabelde handgeschreven nummers}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{mnist-neural2.png}
+    \caption{Vereenvoudigd voorbeeld}
+\end{figure}
+
+\begin{itemize}
+    \item Elke output heeft een bepaalde kans
+    \item Die kans bepaalt hoe zeker het model is dat de input dat getal is
+    \item De kans wordt berekend met behulp van backpropagation (zie verder)
+\end{itemize}
+
+\subsubsection{One-hot encoding}
+
+One-hot encoding is een manier om categorische features/targets te transformeren naar een
+geschikter formaat. Hierbij komt de index van 1 in een kolom vector (met daarnaast alleen
+nullen) overeen met de categorie van de feature/target.
+
+TODO
+
+\begin{minted}{python}
+a = tf.keras.utils.to_categorical([0, 1, 2, 3], num_classes=4)
+a = tf.constant(a, shape=[4, 4])
+print(a)
+
+>> tf.Tensor(
+    [[1. 0. 0. 0.]
+     [0. 1. 0. 0.]
+     [0. 0. 1. 0.]
+     [0. 0. 0. 1.]], shape=(4, 4), dtype=float32)
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{neural-onehot.png}
+    \caption{LabelBinarizer()}
+\end{figure}
 
 
+\subsubsection{Backpropagation}
+
+\begin{theorem}
+    TODO
+\end{theorem}
+
+TODO
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{backpropagation-error.png}
+    \caption{De error functie (=loss) in functie van aantal training epochs}
+\end{figure}
+
+\begin{itemize}
+    \item TODO
+\end{itemize}
+
+\url{https://becominghuman.ai/back-propagation-is-very-simple-who-made-it-complicated-97b794c97e5c}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{backpropagation-learning-rate.png}
+    \caption{}
+\end{figure}
+
+\subsection{Activation function}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{activation-function.png}
+\end{figure}
+
+
+\begin{theorem}
+    TODO
+\end{theorem}
+
+\subsubsection{Step function}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{step-function.png}
+\end{figure}
+
+\begin{itemize}
+    \item Output is 1 wanneer de waarde > 0
+    \item Output is 0 wanneer de waarde < 0
+    \item Nadelen:
+    \begin{itemize}
+        \item Kan alleen ja of nee zeggen (100% of 0%)
+        \item Problemen bij meerdere klasses. Wat als meerdere klasses op 1 staan?
+        \item Backpropagation werkt niet. De afgeleide = 0
+    \end{itemize}
+\end{itemize}
+
+
+\subsubsection{Linear function (Adaline)}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{adaline.png}
+\end{figure}
+
+\begin{itemize}
+    \item Output is proportioneel met de input
+    \item Nadelen:
+    \begin{itemize}
+        \item Hoeveel layers je ook gebruikt, de uiteindelijke activatie blijft lineair
+        \item De afgeleide is constant en heeft geen relatie meer met de ingang
+    \end{itemize}
+    \item Gebruik:
+    \begin{itemize}
+        \item Input layer
+        \item Output layer bij regressie
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Sigmoid function}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{sigmoid.png}
+\end{figure}
+
+\begin{itemize}
+    \item Niet-lineair
+    \item De uitgang ligt altijd tussen 0 en +1
+    \item Nadelen:
+    \begin{itemize}
+        \item Vanishing graident problem: problematisch bij neurale netwerken met veel hidden layers
+    \end{itemize}
+    \item Gebruik:
+    \begin{itemize}
+        \item Niet dikwijls meer gebruikt.
+        \item Soms voor output layer bij classificatie problemen.
+    \end{itemize}
+\end{itemize}
+
+
+\subsubsection{Hyperbolic tangent (tanh)}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{tanh.png}
+\end{figure}
+
+
+\begin{itemize}
+    \item Niet-lineair
+    \item De uitgang ligt altijd tussen -1 en +1
+    \item Gecentreerd rond 0
+    \item Nadelen:
+    \begin{itemize}
+        \item Vanishing gradient problem blijft
+    \end{itemize}
+    \item Gebruik:
+    \begin{itemize}
+        \item Niet dikwijls meer gebruikt
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Rectified Linear Unit (ReLu)}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{relu.png}
+\end{figure}
+
+\begin{itemize}
+    \item Niet-lineair
+    \item Elke functie kan benaderd worden door combinatie van ReLu functies
+    \item Zeer efficiënt naar rekenkracht
+    \item Sparse activation: veel activaties worden 0
+    \item Nadelen:
+    \begin{itemize}
+        \item Dode neuronen kunnen niet meer geactiveerd worden
+    \end{itemize}
+    \item Gebruik:
+    \begin{itemize}
+        \item Voor hidden layers
+    \end{itemize}
+\end{itemize}
+
+
+\subsubsection{Leaky ReLu}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{leaky-relu.png}
+\end{figure}
+
+
+\begin{itemize}
+    \item Variant op ReLu
+    \item Gaat niet dood
+    \item Nadelen:
+    \begin{itemize}
+        \item Meer parameters om te trainen
+    \end{itemize}
+    \item Gebruik:
+    \begin{itemize}
+        \item Voor hidden layers
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Conclusies}
+
+\textbf{Hidden layers}
+
+\begin{itemize}
+    \item Gebruik eerst ReLu
+    \item Probeer leaky ReLu
+    \item Gebruik geen Sigmoid of Tanh
+\end{itemize}
+
+\textbf{Output layer}
+
+\begin{itemize}
+    \item Lineair bij regressie
+    \item Softmax/Sigmoid bij classificatie
+\end{itemize}
+
+Softmax is een generalisatie van de Sigmoid: $\sigma(z)_j = \frac{e^{z_j}{\sum_{k=1}^K e^{z_k}}$
+
+Werkt bij multi-class classificatie
+
+\subsection{Underfitting \& Overfitting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{underfitting-neural.png}
+\end{figure}
+
+\begin{itemize}
+    \item Te groot neuraal netwerk: overfitting
+    \item Te klein neuraal netwerk: underfitting
+\end{itemize}
+
+
+\subsubsection{Dropout}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{dropout.png}
+\end{figure}
+
+
+\begin{itemize}
+    \item Techniek om overfitting te voorkomen.
+    \item Schakel een bepaald percentage van de neuronen in een layer uit.
+    \item Andere neuronen moeten inspringen voor neuronen die af staan.
+\end{itemize}
+
+\section{Aan de slag met Tensorflow en Keras}
+
+\subsection{Wat is keras?}
+
+\url{https://keras.io/}
+
+\begin{itemize}
+    \item Neural Network library geschreven in Python.
+    \item Gebouwd bovenop Tensorflow en Theano (maakt deel uit van Tensorflow 2 ).
+    \item Gemakkelijk in gebruik.
+    \item Modulair en uitbreidbaar.
+    \item Laat toe complexe (deep learning) neurale netwerken te bouwen.
+\end{itemize}
+
+\subsection{Installatie}
+
+Zonder GPU support:
+
+\begin{minted}{bash}
+pip3 install tensorflow
+\end{minted}
+
+Met GPU support:
+
+\begin{itemize}
+    \item NVidia Cuda toolkit
+    \item NVidia Deep Neural Network library CUDNN
+    \item Tensorflow-gpu
+\end{itemize}
+
+\subsection{Het sequential model}
+
+\begin{itemize}
+    \item Laat toe om verschillende lagen van een neuraal netwerk te stapelen
+    \item \url{https://keras.io/#getting-started-30-seconds-to-keras}
+\end{itemize}
+
+\subsubsection{Opbouw van het sequential model}
+
+
+\begin{minted}{python}
+from tensorflow.keras.models import Sequential
+model = Sequential()
+\end{minted}
+
+\begin{minted}{python}
+from tensorflow.keras.layers import Dense , Activation
+model.add(Dense(units=30, input_dim=10))
+model.add(Activation('relu'))
+model.add(Dense(units=5))
+model.add(Activation('softmax'))
+\end{minted}
+
+\begin{itemize}
+    \item 10 inputs
+    \item 30 hidden layer ReLu units
+    \item 5 softmax outputs
+\end{itemize}
+
+\subsubsection{Compileren en trainen van het sequential model + voorspellingen}
+
+\begin{minted}{python}
+model.compile(loss='categorical_crossentropy',
+              optimizer='sgd',
+              metrics=['accuracy'])
+
+model.compile(loss='categorical_crossentropy',
+              optimizer=tensorflow.keras.optimizers.SGD(lr=0.01, momentum=0.9, nesterov=True))
+model.fit(x_train, y_train, epochs=5, batch_size=32)
+classes=np.argmax(model.predict(x_test, batch_size=128),axis=−1)
+\end{minted}
+
+\subsection{Parameters van het sequential model}
+
+\subsubsection{Activation functions}
+
+\url{https://keras.io/activations/}
+
+Beschikbare activatiefuncties:
+
+\begin{itemize}
+    \item softmax
+    \item relu
+    \item sigmoid
+    \item tanh
+    \item linear
+    \item \url{https://keras.io/layers/advanced-activations/}
+\end{itemize}
+
+\subsubsection{Learning rate optimizers}
+
+\url{https://keras.io/optimizers/}
+
+\begin{itemize}
+    \item \textbf{SGD + Nesterov} (Stochastic Gradient Descent)
+    \item RMSProp: meer geschikt bij recurrent networks
+    \item Adagrad
+    \item \textbf{Adam}
+    \item Adamax
+\end{itemize}
+
+\subsubsection{Epochs - batch size - iterations}
+
+\begin{theorem}[Epochs]
+    Het aantal keer dat het neuraal netwerk de volledige training set te zien krijgt.
+\end{theorem}
+
+\begin{theorem}[Iterations]
+    Het aantal keer dat de weights worden bijgesteld. 
+    Is gelijk aan het aantal epochs maal het aantal batches.
+\end{theorem}
+
+\begin{theorem}[Batch size]
+    Het aantal samples dat het neuraal netwerk te zien krijgt vooraleer het de
+    weights gaat updaten. Updaten van de weights gebeurt op basis van de gemiddelde fout van
+    een batch.
+
+    \begin{itemize}
+        \item Batch mode: De batchgrootte is gelijk aan het aantal training samples.
+        \item Mini-batch mode: De batches zijn groter dan 1 en kleiner dan het aantal training samples.
+        \item Stochastic mode: De batchgrootte = 1. Na elke training sample is er een update van de weights.
+    \end{itemize}
+\end{theorem}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{batch-size.png}
+    \caption{}
+\end{figure}
+
+\textbf{Voor- en nadelen van een kleine batch grootte:}
+
+\begin{itemize}
+    \item Kleine batches nemen minder geheugen in beslag.
+    \item Meestal traint het netwerk sneller bij kleine batches.
+    \item Kleinere batches geven sneller feedback.
+    \item Nadeel van kleine batches: minder accurate schatting van de gradient. Netwerk stabiliseert zich op basis van de laatste training samples.
+\end{itemize}
+
+\subsubsection{Overige parameters}
+
+\begin{itemize}
+    \item Loss function: \url{https://keras.io/losses/#available-loss-functions}
+    \item Classification en regression metrics
+    \item validation\_split: fractie van training data die gebruikt wordt voor validatie
+    \item sample\_weight\_mode: bij unbalanced data: sommige klasses komen in de training set frequenter voor dan andere.
+\end{itemize}
 
 \end{document}
