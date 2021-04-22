@@ -3789,7 +3789,7 @@ TODO
     \item Softmax/Sigmoid bij classificatie
 \end{itemize}
 
-Softmax is een generalisatie van de Sigmoid: $\sigma(z)_j = \frac{e^{z_j}{\sum_{k=1}^K e^{z_k}}$
+Softmax is een generalisatie van de Sigmoid: $\sigma(z)_j = \frac{e^{z_j}}{\sum_{k=1}^K e^{z_k}}$
 
 Werkt bij multi-class classificatie
 
@@ -3866,7 +3866,7 @@ model = Sequential()
 \end{minted}
 
 \begin{minted}{python}
-from tensorflow.keras.layers import Dense , Activation
+from tensorflow.keras.layers import Dense, Activation
 model.add(Dense(units=30, input_dim=10))
 model.add(Activation('relu'))
 model.add(Dense(units=5))
@@ -3885,11 +3885,10 @@ model.add(Activation('softmax'))
 model.compile(loss='categorical_crossentropy',
               optimizer='sgd',
               metrics=['accuracy'])
-
 model.compile(loss='categorical_crossentropy',
               optimizer=tensorflow.keras.optimizers.SGD(lr=0.01, momentum=0.9, nesterov=True))
 model.fit(x_train, y_train, epochs=5, batch_size=32)
-classes=np.argmax(model.predict(x_test, batch_size=128),axis=−1)
+classes=np.argmax(model.predict(x_test, batch_size=128),axis=-1)
 \end{minted}
 
 \subsection{Parameters van het sequential model}
