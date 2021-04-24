@@ -2707,7 +2707,7 @@ We start with the lowest latency and lowest durability, and move our way up:
 \subsection{Advantages Message Queue / Broker}
 
 \begin{itemize}
-    \item Producers can crash
+    \item Producers can crash for a short amount of time without it becoming a problem
     \item Producers can change the format of the message (eg.: make it longer)
     \item Producers don't have to wait on consumers
     \begin{itemize}
@@ -2770,7 +2770,7 @@ We start with the lowest latency and lowest durability, and move our way up:
     \item Lower latency (in RAM, writes only on disk if necessary)
     \item Data delivered $\Rightarrow$ data deleted
     \item Scalable
-    \item In order delivery is not guaranteed when using load balancing
+    \item In-order delivery is not guaranteed when using load balancing
 \end{itemize}
 
 \subsubsection{Log Based Message Queue}
@@ -2809,12 +2809,12 @@ We start with the lowest latency and lowest durability, and move our way up:
 
 \subsection{Events \& data architecture}
 
+\subsubsection{Situation:}
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.45\textwidth]{events-data-architecture-1.png}
 \end{figure}
-
-\textbf{Situation:}
 
 \begin{itemize}
     \item You need to process sensor data from a windmill park
@@ -2823,12 +2823,12 @@ We start with the lowest latency and lowest durability, and move our way up:
     \item \textbf{Problem:} if you have a lot of windmills, you would need to make lots of requests to the configuration database
 \end{itemize}
 
+\subsubsection{Better solution:}
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{events-data-architecture-2.png}
 \end{figure}
-
-\textbf{Better solution:}
 
 \begin{itemize}
     \item Sensor data is still sent to the message broker
@@ -3020,7 +3020,7 @@ A full stack data engineer/scientist has to work with many different pipelines, 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{datapipelines-streaming.png}
-    \caption{Top: the data pipeline for streaming data, bottom: examples for every step}
+    \caption{\textbf{Top:} the data pipeline for streaming data,\\ \textbf{Bottom:} examples for every step}
 \end{figure}
 
 \begin{itemize}
@@ -3069,7 +3069,6 @@ $\Rightarrow$ everything is possible with Python!
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{batch-vs-stream-kafka-spark.png}
-    \caption{}
 \end{figure}
 
 \subsubsection{Batch schedule}
@@ -3147,11 +3146,6 @@ RDD.registerTempTable("table name")
 Spark.sql("SQL statement from tablename")
 \end{minted}
 
-
-\begin{itemize}
-    \item 
-\end{itemize}
-
 \subsubsection{Spark to Elastic Search Cluster}
 
 \begin{minted}{python}
@@ -3166,7 +3160,7 @@ RDD.write.format("org.elasticsearch.spark.sql")
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{datapipeline-ai.png}
-    \caption{Top: the data pipeline for AI, bottom: examples for every step}
+    \caption{\textbf{Top:} the data pipeline for streaming data,\\ \textbf{Bottom:} examples for every step}
 \end{figure}
 
 \subsection{Alternatives}
