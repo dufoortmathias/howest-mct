@@ -1,6 +1,6 @@
 \documentclass{article}
 
-\usepackage[dutch]{babel}
+\usepackage[english]{babel}
 \usepackage[margin=3cm]{geometry}
 \usepackage{graphicx}
 \usepackage{float}
@@ -115,7 +115,7 @@ We can use any port, on both sides:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{ssh-tunnel2.png}
-    \caption{Voorbeeld: een tunnel wordt opengemaakt en er wordt ingelogd in user@instance}
+    \caption{Example: a tunnel is opened and we log into user@instance}
 \end{figure}
 
 
@@ -346,7 +346,7 @@ Docker is `nothing more' than an ecosystem about creating \& running containers
 
 (see slides 40-55 in \underline{02\_big\_data\_01\_containers.pdf} for basic commands)
 
-\subsubsection{Layers bekijken}
+\subsubsection{View layers}
 
 With the command `docker history <image | container id>' you'll get an overview of the layers of an image.
 
@@ -564,13 +564,13 @@ How many shards in total? \textbf{2}
 \subsection{Python \& data engineering/science}
 
 \begin{itemize}
-    \item Veel tools, libraries (numpy, pandas)
-    \item Jammer genoeg slecht schaalbaar $\Rightarrow$ parallellisatie
-    \item Threads/processes kan, maar complex en niet ideaal
-    \item Wat als he tniet in memory past?
+    \item Many tools, libraries (numpy, pandas)
+    \item Not very scalable $\Rightarrow$ parallellisation
+    \item Threads/processes possible, but complex and not ideal
+    \item What if it doesn't fit in memory?
     \begin{itemize}
-        \item Naar disk?
-        \item Kan, maar complex! Sommige operaties `vereisen' alles in memory
+        \item To disk?
+        \item Possible, but complex! Some operations require everything in memory
     \end{itemize}
 \end{itemize}
 
@@ -578,36 +578,36 @@ How many shards in total? \textbf{2}
 \subsubsection{Spark}
 
 \begin{itemize}
-    \item Complex, leercurve!
+    \item Complex, learning curve!
     \item Complete `engine', clustering
     \item Streaming engine
-    \item In Java geschreven: gebruikt de Java Virtual Machine (JVM) $\Rightarrow$ minder toegankelijk
+    \item Written in Java: uses the Java Virtual Machine (JVM) $\Rightarrow$ not very accessible
     \item Standalone
 \end{itemize}
 
 \subsubsection{Dask}
 
 \begin{itemize}
-    \item Eenvoudiger (zeker als je Python kent)
-    \item Lightweight, zelfs op 1 node zinnig
-    \item Flexibeler, maar minder performant
-    \item Integratie met andere libraries
-    \item In zekere zin `de Python versie van Spark'
+    \item Simpler (especially if you know Python)
+    \item Lightweight, even useful when only  1 node
+    \item More flexible, but less performance
+    \item Integration with other libraries
+    \item `The Python version of Spark'
 \end{itemize}
 
 \section{TICK Stack}
 
-The Tick stack is an acronym for a platform of open source tools 
+The TICK stack is an acronym for a platform of open source tools 
 built to make collection, storage, graphing, and alerting on 
 time series data incredibly easy.
 
 The tools:
 
 \begin{itemize}
-    \item Telegraf
-    \item InfluxDB
-    \item Chronograf
-    \item Kapacitor
+    \item \underline{T}elegraf
+    \item \underline{I}nfluxDB
+    \item \underline{C}hronograf
+    \item \underline{K}apacitor
 \end{itemize}
 
 
