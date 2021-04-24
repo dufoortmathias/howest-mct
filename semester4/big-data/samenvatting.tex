@@ -17,7 +17,7 @@
 
 \graphicspath{{img/}}
 
-\newtheorem{theorem}{Definitie}[section]
+\newtheorem{theorem}{Definition}[section]
 
 \usepackage{enumitem}
 
@@ -297,8 +297,8 @@ Response time = Network latency + processing
 
 
 \begin{itemize}
-    \item Average = useless
-    \item Long tail latency = 99th percentile
+    \item The average latency doesn't show the whole picture
+    \item Long tail latency = 99th percentile highest latency
     \begin{itemize}
         \item To be experienced by a lot more than 1\% of users!
     \end{itemize}
@@ -324,7 +324,7 @@ Response time = Network latency + processing
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{mips.png}
+    \includegraphics[width=0.75\textwidth]{mips.png}
     \caption{MIPS = Million Instructions Per Second}
 \end{figure}
 
@@ -332,7 +332,7 @@ Response time = Network latency + processing
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{latency-vs-storage-space-pyramid.png}
+    \includegraphics[width=0.75\textwidth]{latency-vs-storage-space-pyramid.png}
     \caption{The higher the performance, the higher the cost per byte of storage}
 \end{figure}
 
@@ -431,19 +431,17 @@ Response time = Network latency + processing
 
 \subsection{RAID}
 
-\subsubsection{Definition}
+\begin{theorem}
+    \textbf{Redundant Array of Inexpensive Disks} (RAID) is a storage technology that combines multiple physical drives into one logical unit.
 
-\textbf{Redundant Array of Inexpensive Disks} is a storage technology that combines multiple physical drives into one logical unit.
+    Purpose:
 
-Purpose:
-
-\begin{itemize}
-    \item Data redundancy
-    \item Performance improvement
-    \item Both
-\end{itemize}
-
-\subsubsection{Hardware <> chip}
+    \begin{itemize}
+        \item Data redundancy
+        \item Performance improvement
+        \item Both
+    \end{itemize}
+\end{theorem}
 
 
 \subsubsection{Raid levels}
@@ -457,7 +455,7 @@ Purpose:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{raid.png}
+    \includegraphics[width=0.85\textwidth]{raid.png}
     \caption{RAID level choices}
 \end{figure}
 
@@ -515,8 +513,7 @@ Purpose:
 \end{figure}
 
 \begin{itemize}
-    \item Common Internet File System (CIFS) for Windows
-    \item $\rightarrow$ SMB protocol
+    \item Common Internet File System (CIFS) for Windows $\Rightarrow$ SMB protocol
     \item Network File System (NFS) for UNIX $\Rightarrow$ mounting via network
     \item SMB also available in Linux
 \end{itemize}
@@ -542,13 +539,13 @@ Purpose:
 \subsubsection{iSCSI terminology}
 
 \begin{itemize}
-    \item iSCSI Target = the iSCSI 'server'
+    \item \textbf{iSCSI Target} = the iSCSI 'server'
     \begin{itemize}
         \item IP + port = Portal
         \item Portal: LUNs / Volumes
         \item Volume = IQN 
     \end{itemize}
-    \item iSCSI Initiator = the iSCSI 'client'
+    \item \textbf{iSCSI Initiator} = the iSCSI 'client'
     \begin{itemize}
         \item Connects targets
         \item Find LUNs/Volumes
@@ -563,21 +560,31 @@ Purpose:
 
 \subsubsection{Object storage}
 
+\begin{theorem}
+    Object storage (or object-based storage) is a data storage architecture that manages data as objects,
+    as opposed to other storage architectures like file systems which manages data as a file hierarchy,
+    and block storage which manages data as blocks within sectors and tracks.
+\end{theorem}
+
+\url{https://en.wikipedia.org/wiki/Object_storage}
+
 \begin{itemize}
-    \item NAS hardware
+    \item Uses NAS hardware
     \begin{itemize}
-        \item Distributed over multiple datacenters
+        \item But much easier to use for web developers: approachable through URL instead of NAS server IP
+        \item The hardware is distributed over multiple datacenters
     \end{itemize}
     \item Object Data
     \begin{itemize}
-        \item Metadata
+        \item For example: images
+        \item Metadata to support additional capabilities, like better indexing, better data management, \dots
     \end{itemize}
-    \item Globally Unique Identifier
+    \item Objects have a Globally Unique Identifier (GUID)
     \begin{itemize}
-        \item URL
-        \item RESTful API
+        \item GUID is in URL
+        \item Uses a RESTful API
     \end{itemize}
-    \item Examples:
+    \item Examples of technologies that offer object-based storage:
     \begin{itemize}
         \item AWS S3
         \item Ceph - Lustre
@@ -601,7 +608,7 @@ Purpose:
         \item Consistency
     \end{itemize}
     \item Block storage best for `raw data' (no metadata involved)
-    \item NAS = `file based' services like sharepoint
+    \item NAS = `file based' services like Sharepoint by Microsoft
     \item Static objects on Object Cloud storage
     \begin{itemize}
         \item good match for OOP \& `unstructured data'
@@ -651,7 +658,7 @@ Data intensive application: needs RAMS!
     \item Applications crash
     \item Client (website) - network - database
     \begin{itemize}
-        \item $\Rightarrow$ network is very unreliable
+        \item $\Rightarrow$ network can be very unreliable
     \end{itemize}
     \item Multi-threaded code: race conditions $\Rightarrow$ who gets access to 1 piece of data
     \item Disks can fail
@@ -718,8 +725,8 @@ COMMIT;
     \end{itemize}
 \end{itemize}
 
-Commit / Rollback does not protect agains threads that overwrite each other!
-It only protects agains crashes from one thread.
+Commit / Rollback does not protect against threads that overwrite each other!
+It only protects against crashes from one thread.
 
 \subsection{Single object entry}
 
