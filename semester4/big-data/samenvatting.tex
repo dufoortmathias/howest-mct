@@ -750,6 +750,22 @@ Situation:
 
 \subsection{Concurrency Control}
 
+\begin{theorem}
+    Concurrency control ensures that correct results for database operations are generated
+    while getting those results as quickly as possible.
+
+    There are many problems that can occur when executing database operations:
+
+    \begin{itemize}
+        \item Dirty Reads
+        \item Dirty Writes
+        \item Read skew
+        \item Lost updates
+        \item Write skew
+        \item \dots
+    \end{itemize}
+\end{theorem}
+
 \subsubsection{Dirty Reads}
 
 \begin{theorem}[Dirty Reads]
@@ -850,7 +866,7 @@ Result: Alice `loses' \$100 in one commit, because another transaction changed d
 \end{itemize}
 
 
-\subsubsection{Lost updates \& Atomic updates}
+\subsubsection{Lost updates}
 
 \begin{figure}[H]
     \centering
@@ -907,7 +923,7 @@ With weak isolation levels:
     \item Writers never block readers (you can read the old value while it is being overwritten)
 \end{itemize}
 
-With 2-phase lock, there are two fases (duh):
+With 2-phase lock, there are two phases (duh):
 
 \begin{enumerate}
     \item Exclusive read-lock on data
@@ -1130,12 +1146,12 @@ Steps a transaction takes to write to disk:
 \subsubsection{Possibilities:}
 
 \begin{itemize}
-    \item Relationeel
+    \item Relational
     \item Column store 
     \item Document store
     \item Graph
     \item Key-value
-    \item Specialisten:
+    \item Special:
     \begin{itemize}
         \item Time series
         \item Text search
@@ -1160,7 +1176,7 @@ Steps a transaction takes to write to disk:
 \begin{itemize}
     \item Imperative: tell the system how to retrieve/handle/mutate the data, in what order
     \begin{itemize}
-        \item C\#, python, \dots
+        \item C\#, Java, python, \dots
     \end{itemize}
     \item Tell the system the structure of the data you're looking for. Don't tell the system how it has to happen. 
     \begin{itemize}
@@ -1326,7 +1342,7 @@ But: Python + Postgres can handle almost any analytics challenge
 
 \begin{itemize}
     \item Key-value DBs are relatively simple databases
-    \item Adding to the end of a file is the fastest way to write
+    \item Adding to the end of a file (=appending) is the fastest way to write
     \item Example: a list of videos with their watch time
     \begin{itemize}
         \item Key =  video ID
@@ -1361,7 +1377,7 @@ But: Python + Postgres can handle almost any analytics challenge
 \begin{itemize}
     \item In the above example: $A = 1$ in segment $1$, but $A = 4$ in segment $2$
     \item Segment $2$ is newer: we ignore the first segment's $A$
-    \item Same for $C$ ($C=1 >> C=2$)
+    \item Same for $C$ ($C=1 \Rightarrow C=2$)
     \item We compact/merge the segments until stored the data is correct
     \item We do this often
 \end{itemize}
@@ -1376,12 +1392,17 @@ But: Python + Postgres can handle almost any analytics challenge
         \item SELECT * FROM A TO ZZZ (=slow)
     \end{itemize}
     \item On crash: no corruption because of wrong update
-    \item Example key-value hash index: Riak Bitcask (\url{https://en.wikipedia.org/wiki/Riak})
+    \item Example key-value hash index: \textbf{Riak Bitcask} (\url{https://en.wikipedia.org/wiki/Riak})
 \end{itemize}
 
 \subsection{LSM: Log Structured Merge Tree}
 
 Apart from the hash index, there is another Log Structured data store: the \textbf{Log Structured Merge Tree} with \textbf{Sorted String tables}
+
+\begin{theorem}
+    A \textbf{sorted-string table} is a file used in LSM trees that contains key-value string pairs, sorted by key. 
+    An index is kept at the end of the file, which is kept in RAM.
+\end{theorem}
 
 \begin{itemize}
     \item Unsorted data now gets sorted first in a memory buffer (RAM)
@@ -1684,6 +1705,7 @@ Which storage engine is the best/worst for the following situations:
     \item Fast reads when index is in RAM
     \item Very fast writes (append)
     \item Slow scans (select *, group by, \dots)
+    \item Example: Riak Bitcask
 \end{itemize}
 
 \textbf{Log Structured Merge Tree}
@@ -1696,6 +1718,7 @@ Which storage engine is the best/worst for the following situations:
         \item Or else data can be lost if the data is still being sorted in the memory buffer (for example due to power failure)
     \end{itemize}
     \item \textbf{Fast scans} because of sorted string tables
+    \item Examples: Google Big Table, LevelDB, MyRocks, Hbase, Cassandra, ElasticSearch
 \end{itemize}
 
 \subsubsection{B-tree vs LSM}
