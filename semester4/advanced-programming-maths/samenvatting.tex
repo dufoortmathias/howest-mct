@@ -4034,7 +4034,6 @@ De dimensie van de resulterende matrix is:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{matrix-vermenigvuldigen.png}
-    \caption{}
 \end{figure}
 
 
@@ -4827,7 +4826,6 @@ uit de verschilende iterables bevat
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{zip.png}
-    \caption{}
 \end{figure}
 
 \begin{minted}{python}
@@ -5215,7 +5213,6 @@ print(zipped_list)
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{collections.png}
-    \caption{}
 \end{figure}
 
 \section{Convoluties}
@@ -5339,7 +5336,6 @@ Formule: $Y' = 0.299\cdot R + 0.587\cdot G + 0.114\cdot B$
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{convolution-grayscaling-python.png}
-    \caption{}
 \end{figure}
 
 \subsubsection{Edge detection}
@@ -5429,7 +5425,6 @@ van elkaar verschillen en hoe uitgesprokener de rand.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{convolution-edgedetection4.png}
-    \caption{}
 \end{figure}
 
 Als we de gradient (afgeleide) nemen, zien we dat het maximum ervan
@@ -5494,6 +5489,408 @@ Extra toelichting (uitbereiding): \url{https://www.youtube.com/watch?v=uihBwtPIB
     \caption{Prewitt: gelijkaardig aan Sobel, maar gebruikt een andere kernel}
 \end{figure}
 
+\section{Reinforcement learning}
+
+\subsection{Doelstelling}
+
+\begin{itemize}
+    \item Begrip reinforcement learning kunnen toelichten
+    \item Voorbeelden hiervan kunnen bespreken
+    \item Markov Decision Process kunnen toelichten
+    \item Q-learning op een voorbeeld kunnen toepassen
+\end{itemize}
+
+
+\subsection{Situering binnen machine learning}
+
+Reinforcement learning is een onderdeel van machine learning dat een
+specifiek leeralgoritme voor ogen heeft:
+
+\begin{itemize}
+    \item We vertrekken niet van een gegeven dataset
+    \item we laten een `agent' een bepaald model verkennen via zelfexploratie
+    waardoor hij meer en meer getraind wordt
+\end{itemize}
+
+\textbf{Voorbeeld} stofzuigrobot dat zelf zijn ruimte gaat verkennen
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{machine-learning-types.png}
+    \caption{Types machine learning}
+\end{figure}
+
+\subsection{Wat is reinforcement learning?}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{reinforcement-learning.png}
+\end{figure}
+
+\begin{itemize}
+    \item Foute acties afstraffen
+    \item Juiste acties belonen
+    \item Update het algoritme
+    \item Deze stappen itereren tot een optimaal algoritme gevonden is
+\end{itemize}
+
+\subsubsection{De betrokken partijen}
+
+\begin{itemize}
+    \item Agent
+    \item Onbekende omgeving voor de Agent
+\end{itemize}
+
+\subsubsection{Verloop}
+
+\begin{itemize}
+    \item Agent voert een bepaalde actie (\textbf{action}) in omgeving uit
+    \item Omgeving geeft feedback: de Agent ontvangt een positieve of negatieve beloning (\textbf{reward})
+    \item Agent komt in een nieuwe toestand (\textbf{`state'}) terecht
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{reinforcement-learning2.png}
+\end{figure}
+
+\subsection{Voorbeelden}
+
+\begin{itemize}
+    \item Atari Breakout: \url{https://www.youtube.com/watch?v=eG1Ed8PTJ18}
+    \item Pacman: \url{https://www.youtube.com/watch?v=4MlZncshy1Q}    
+    \item Learn to walk: \url{https://www.youtube.com/watch?v=gn4nRCC9TwQ}
+    \item Robotics:
+    \begin{itemize}
+        \item \url{https://www.youtube.com/watch?v=W_gxLKSsSIE}
+        \item \url{https://www.youtube.com/watch?v=ZhsEKTo7V04}
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{alphago.png}
+    \caption{AlphaGo}
+\end{figure}
+
+\subsection{Markov Decision Process}
+
+\begin{theorem}
+    Het Markov Decision Process (MDP) is een model dat ons moet helpen om beslissingen
+    te maken binnen een stochastische (willekeurige/toevallig samengestelde) omgeving.
+
+    Doel: strategie (\textbf{policy}) te vinden die ons voor elke toestand de beste 
+    actie oplevert
+\end{theorem}
+
+\subsubsection{Componenten}
+
+De componenten van een MDP zijn:
+
+\begin{itemize}
+    \item \textbf{Agent:} voert de actie uit
+    \item \textbf{Environment:} omgeving waarin agent beweegt
+    \item \textbf{State:} een bepaalde toestand waarin agent zit
+    \item \textbf{Action:} actie zelf
+    \item \textbf{Reward:} positieve of negatieve beloning
+\end{itemize}
+
+\subsubsection{Diagram \& notatie}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{mdp.png}
+\end{figure}
+
+De reward is een functie van de toestand ($S$) en de actie ($A$) die je neemt op een tijdstip $t$:
+
+\begin{equation}
+    f(S_t, A_t) = R_{t + 1}
+\end{equation}
+
+Het afgelegde traject is gegeven door: $S_0; A_0, R_1, S_1; A_1, R_2, S_2; A_2, R_3, \dots$
+
+\subsection{Transitiekansen}
+
+Agent gaat steeds met een bepaalde kans een actie ondernemen.
+
+Bij aanvang zijn alle acties evenwaardig, maar na verloop van tijd wordt
+de kans voor specifieke actie bijgesteld.
+
+Afhankelijk van de voorafgaande state worden met een zekere kans waarden toegekend aan $R_t$
+en kom je in $S_t$ terecht.
+
+\begin{equation}
+    p(s', r | s,a) = Pr\{S_t = s', R_t = r | S_{t-1} = s, A_{t-1} = a\}
+\end{equation}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{transitiekansen.png}
+\end{figure}
+
+\subsection{Doel van de agent}
+
+Binnen een MDP wenst de Agent zijn \textit{verwachte beloning} (\textbf{reward}) zo
+hoog mogelijk.
+
+De Agent kijkt dus niet enkel naar de onmiddellijke reward (na zijn actie),
+maar ook naar de totale reward:
+
+\begin{equation}
+    G_t = R_{t+1} + R_{t+2} + R_{t+3} + \dots + R_{T}
+\end{equation}
+
+\begin{center}
+    met $T$ het laatste tijdstip (=terminal state)
+\end{center}
+
+Bij start kent hij die terminal state nog niet, maar door training leert hij deze kennen.
+
+\subsubsection{Discount factor}
+
+De agent zal bij bepaling van totale reward een afweging maken tussen:
+
+\begin{itemize}
+    \item De onmiddellijke reward
+    \item De toekomstige rewards (`discounted rewards')
+\end{itemize}
+
+Daarom gebruik van \textbf{discount factor} $\gamma$ ($0 \leq \gamma \leq 1$)
+
+\begin{equation}
+    \begin{aligned}
+        G_t &= R_{t+1} + R_{t+2} + R_{t+3} + \dots \\
+        &= R_{t+1} + \gamma \cdot R_{t+2} + \gamma^2 \cdot R_{t+3} + \dots \\
+        &= \sum_{k=0}^{\infty} \gamma^k R_{t+k+1}
+    \end{aligned}
+\end{equation}
+
+Gevolg:
+
+\begin{equation}
+    \begin{aligned}
+        G_t &= R_{t+1} + \gamma \cdot R_{t+2} + \gamma^2 \cdot R_{t+3} + \gamma^3 \cdot R_{t+4} + \dots \\
+        &= R_{t+1} + \gamma \cdot (R_{t+2} + \gamma \cdot R_{t+3} + \gamma^2 \cdot R_{t+4} + \dots) \\
+        &= R_{t+1} + \gamma \cdot G_{t+1}
+    \end{aligned}
+\end{equation}
+
+De discountfactor $\gamma$ drukt het belang van een toekomstige reward uit.
+
+\subsection{Strategie (policy) in MDP}
+
+\begin{theorem}
+    De policy $\pi$ beschrijft welke kans een bepaalde actie in een bepaalde toestand 
+    moet genomen worden. Het is de bedoeling dat de agent de policy volgt.
+\end{theorem}
+
+Als de agent een policy volgt op tijdstip $t$, dan is:
+
+\begin{itemize}
+    \item $\pi(a|s)$ = kans dat agent actie $a$ uitvoert in toestand $s$
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{policy.png}
+    \caption{Stel dat we rechtsonderaan beginnen en rechtsboven moeten eindigen, dan zijn er 2 strategieën}
+\end{figure}
+
+\begin{itemize}
+    \item Als we de korte weg nemen, dan komt het pad dichter bij de $-1$ en hebben we dus meer kans om te falen
+    \item Als we de lange weg nemen, dan komt het pad nooit naast de $-1 \Rightarrow$ langer maar meer kans op succes
+\end{itemize}
+
+\subsubsection{State-value functie}
+
+\begin{theorem}
+    De state-value functie is en functie dat vertelt hoe goed een bepaalde state
+    voor een agent is die een bepaalde policy volgt.
+
+    Met andere woorden: hoe groot is de verwachte reward wanneer we vanuit state $s$
+    of tijdstip $t$ de policy $\pi$ volgen?
+\end{theorem}
+
+$\Rightarrow$ State-Value functie $v_{\pi}$
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{state-value-function.png}
+\end{figure}
+
+\subsubsection{Action-value functie}
+
+\begin{theorem}
+    De action-value functie is een functie dat vertelt hoe goed een bepaalde actie voor een agent is
+    om bij een bepaalde policy $\pi$ vanuit een bepaalde state $s$ deze te nemen.
+
+    Met andere woorden: hoe groot is de verwachte reward wanneer we vanuit een
+    state $s$ een bepaalde actie te nemen om dan policy verder te volgen?
+\end{theorem}
+
+$\Rightarrow$ Action-Value functie $q_{\pi}$
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{action-value-function.png}
+\end{figure}
+
+\subsubsection{Optimale strategie (policy)}
+
+Finale doel van reinforcement learning:
+
+\begin{itemize}
+    \item Zoektocht naar de beste strategie (policy) $\pi$ die de grootste reward zal opleveren wanneer de agent de policy volgt:
+    \begin{itemize}
+        \item Optimal State-Value functie $v*$: grootst mogelijke reward in elke state via strategie $\pi$:
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.3\textwidth]{vmax.png}
+        \end{figure}
+        \item Optimal Action-Value functie $q*$: grootst mogelijke reward na nemen van actie in bepaalde state volgens strategie $\pi$:
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.3\textwidth]{qmax.png}
+        \end{figure}        
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Bellman optimality}
+
+Een belangrijke eigenschap is dat de optimale action-value functie $q*$
+moet voldoen aan de Bellman vergelijking:
+
+\begin{equation}
+    q_* (s,a) = E \Big[ R_{t+1} + \gamma max q* (s', a')
+\end{equation}
+
+\subsection{Q-learning}
+
+Doel: strategie (policy) dat de agent bij elke state zegt wat hij moet doen om zijn
+rewards te maximaliseren. Hoe vinden we deze strategie $\Rightarrow$ via Q-learning
+
+\begin{theorem}
+    Q-learning is de werkwijze waarbij men op iteratieve wijze op zoek gaat naar
+    de action-value functie door state $\rightarrow$ action $\rightarrow$ next state
+    telkens te doorlopen
+\end{theorem}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{q-learning.png}
+    \caption{Formule}
+\end{figure}
+
+\begin{itemize}
+    \item Rood = nieuwe q-waarde bij actie $a$ en toestand $s$
+    \item We vertrekken van een bepaalde situatie (`old value', blauw)
+    \item $\alpha$ = learning rate = hoeveel hou ik rekening met wat ik leer?
+    \item $(1-\alpha)$ = hoeveel hou ik rekening met wat ik al ken?
+    \item Het learned value:
+    \begin{itemize}
+        \item = nieuwe geleerde waarde bij actie $a$ en toestand $s$
+        \item houdt rekening met nieuwe bekende rewards
+        \item = onmiddellijke reward + discount factor $\cdot$ toekomstige reward 
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Voorbeeld}
+
+Doel: de robot moet de uitgang vinden, maar kent het speelveld niet.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{q-table1.png}
+    \caption{Het speelveld}
+\end{figure}
+
+\begin{itemize}
+    \item 1 stap = -10 punten
+    \item Opladen = +10 punten
+    \item Uitgang bereiken = +100 punten \& einde spel
+    \item Landmijn trappen = -100 punten \& einde spel
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{q-table2.png}
+    \caption{Robot kent nog niets: elke actie krijgt evenveel kans (0)\\ X = onmogelijke verplaatsing}
+\end{figure}
+
+We zullen herhaaldelijk de Q-value updaten met $\alpha = 0.7$ en $\gamma = 0.8$
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{q-table3.png}
+    \caption{Stel dat de robot omhoog stapt van state `Start' naar state `Lege cel 3'}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{q-table4.png}
+    \caption{Robot loopt vervolgens naar rechts: van state `Lege cel 3' naar state `Landmijn'}
+\end{figure}
+
+Omdat de robot op de landmijn stapt, is het spel ten einde. Er wordt een nieuwe \textbf{epoch} gestart.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{q-table5.png}
+    \caption{Robot start linksbeneden en stapt omhoog. max heeft nu wel een waarde $\neq 0$}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{q-table6.png}
+    \caption{De robot stapt opnieuw omhoog van state `Lege cel 3' naar state `Opladen'}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{q-table7.png}
+    \caption{De robot stapt naar rechts van state `Opladen' naar state `Lege cel 1'}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{q-table8.png}
+    \caption{De robot stapt naar beneden van state `Lege cel 1' naar state `Landmijn'}
+\end{figure}
+
+Omdat de Robot opnieuw op een landmijn stapt, moet het spel opnieuw beginnen met een nieuwe epoch.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{q-table-epochx.png}
+    \caption{Veronderstel: na meerdere training epochs}
+\end{figure}
+
+\begin{itemize}
+    \item Het algoritme heeft nu gevonden 
+\end{itemize}
+
+\subsubsection{Exploratie vs exploitatie}
+
+\begin{theorem}[Exploitatie]
+    Laat de agent willekeurige acties nemen zodat deze de verschillende states kan verkennen.
+\end{theorem}
+
+\begin{theorem}[Exploitatie:]
+    Laat de agent vooral de states bezoeken die de hoogste (toekomstige) reward opleveren.
+\end{theorem}
+
+Start met een hoge mate van exploratie en ga tijdens de training meer
+en meer over naar exploitatie.
+
+\subsubsection{Toepassing}
+
+Cliff walking:
+
+\url{https://medium.com/init27-labs/understanding-q-learning-the-cliff-walking-problem-80198921abbc}
 
 
 \end{document}
