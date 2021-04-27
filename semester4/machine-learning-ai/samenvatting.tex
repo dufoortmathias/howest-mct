@@ -50,6 +50,8 @@
 
 \pagenumbering{arabic}
 
+(NTK) == Niet te kennen voor het examen
+
 \section{Inleiding}
 
 \subsection{AI in context}
@@ -1992,7 +1994,7 @@ Implementeren van een SVM:
     \item De piek wordt wel gevonden
 \end{itemize}
 
-\subsubsection{Bayes optimization}
+\subsubsection{Bayes optimization (NTK)}
 
 \begin{figure}[H]
     \centering
@@ -2513,7 +2515,7 @@ $\Rightarrow H = - (0.53 \cdot \log_2 (0.53) + 0.47 \cdot \log_2(0.47)) = - (- 0
 \subsubsection{Information Gain}
 
 \begin{theorem}
-    Information Gain = (entropy voor de split) $-$ (entropy na de split)
+    Information Gain = (entropy voor de split) $-$ (entropy na de split). Kies altijd voor de splitsing met de \textbf{hoogste} information gain.
 \end{theorem}
 
 \begin{figure}[H]
@@ -2575,7 +2577,7 @@ Gewogen Gini impurity $= \frac{9}{15} \cdot 0.34 + \frac{6}{15}\cdot 0.28 = 0.32
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{gini-impurity-3.png}
-    \caption{Splits telkens bij de split die je de laagste Gini impurity oplevert}
+    \caption{Splits telkens bij de split die je de \textbf{laagste} Gini impurity oplevert}
 \end{figure}
 
 \subsection{Decision Trees voor regressie}
@@ -3527,36 +3529,58 @@ Bij face recogntion noemt men de principle components `Eigenfaces'
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{neural-net-architecture.png}
-    \caption{Overzicht. Meer info: \url{http://www.asimovinstitute.org/neural-network-zoo/}}
+    \caption{Verschillende types neurale netwerken.\\ Meer info: \url{http://www.asimovinstitute.org/neural-network-zoo/}}
 \end{figure}
 
 \begin{itemize}
-    \item Het is mogelijk om met neuronen verschillende types netwerken te maken
-    \item TODO
+    \item Het is mogelijk om met simpele bouwblokken (neuronen, verbindingen) verschillende types netwerken te maken door ze in een andere volgorde te zetten of door andere verbindingen te leggen:
+    \begin{itemize}
+        \item Feedforward neuraal netwerk 
+        \item Recurrent neuraal netwerk (RNN) 
+        \item \dots
+    \end{itemize}
 \end{itemize}
 
 \subsection{Feedforward neuraal netwerk}
 
 \begin{theorem}
-    TODO
+    Een feedforward neuraal netwerk is een neuraal netwerk waar verbindingen tussen de 
+    neuronen geen cyclus vormen: de data gaat binnen in de input layer en gaat in één richting 
+    door het neuraal netwerk. De data wordt verwerkt in de hidden layers en de predicties
+    komen uit de output layer.
 \end{theorem}
+
+\begin{itemize}
+    \item Er zijn ook recurrent neural networks, die met geheugen en met cyclussen werken.
+\end{itemize}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{feedforward-neural-net.png}
-    \caption{De informatie vloeit unidirectioneel van input naar output.}
+    \caption{De informatie vloeit unidirectioneel van input naar output}
 \end{figure}
 
 \subsubsection{Voorbeeld: XOR-functie}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{neural-net-xor.png}
+    \includegraphics[width=0.3\textwidth]{neural-net-xor.png}
     \caption{XOR-functie}
 \end{figure}
 
 \begin{itemize}
-    \item Men had lang geleden al door TODO
+    \item Men had lang geleden al door dat je met neuronen logische `gates' zoals OR, AND, NOT, \dots, kunt nabouwen
+    \item Bv: AND-gate
+    \begin{itemize}
+        \item 2 inputs, 0 of 1
+        \item Weights van 1
+        \item Threshold: $>1.5 \Rightarrow$ output $=1$, ander $0$ 
+    \end{itemize}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\textwidth]{and-gate.png}
+    \end{figure}
+    \item Bv: OR-gate $\Rightarrow$ zelfde principe, maar met threshold $> 0.5$ 
 \end{itemize}
 
 \subsubsection{Voorbeeld: MNIST}
@@ -3581,11 +3605,18 @@ Bij face recogntion noemt men de principle components `Eigenfaces'
 
 \subsubsection{One-hot encoding}
 
-One-hot encoding is een manier om categorische features/targets te transformeren naar een
-geschikter formaat. Hierbij komt de index van 1 in een kolom vector (met daarnaast alleen
-nullen) overeen met de categorie van de feature/target.
+\begin{theorem}
+    One-hot encoding is een manier om categorische features/targets te transformeren naar een
+    geschikter formaat. Hierbij komt de index van 1 in een kolom vector (met daarnaast alleen
+    nullen) overeen met de categorie van de feature/target.
 
-TODO
+    Bij neurale netwerken wordt dit dus ook gebruikt.
+\end{theorem}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{one-hot.png}
+\end{figure}
 
 \begin{minted}{python}
 a = tf.keras.utils.to_categorical([0, 1, 2, 3], num_classes=4)
@@ -3609,10 +3640,24 @@ print(a)
 \subsubsection{Backpropagation}
 
 \begin{theorem}
-    TODO
+    Backpropagation is de meest gebruikte techniek om neurale netwerken te doen leren. 
+    Het werkt door een fout te berekenen op de predictie, en op basis van die fout de gewichten
+    van de verbindingen te gaan bijstellen. De bedoeling is om de fout zo laag mogelijk te krijgen.
 \end{theorem}
 
-TODO
+Met het voorbeeld van de MNIST dataset: 
+
+\begin{itemize}
+    \item In de output layer geeft het neuraal netwerk aan elk getal een bepaalde kans
+    \item De predictie wordt gemaakt op basis van de hoogste kans
+    \item Stel dat een bepaald getal een te hoge kans gekregen heeft, en het te vinden getal een te lage kans:
+    \begin{itemize}
+        \item Het neural network zal de verschillen berekenen (=error)
+        \item De volgende keer zal het NN proberen die verschillen zo laag mogelijk te houden
+        \item Dit wordt herhaaldelijk gedaan door de weights bij te stellen
+        \item Dat proces gebeurt door alle lagen van achter naar voor $\Rightarrow$ \textbf{backpropagation}
+    \end{itemize}
+\end{itemize}
 
 \begin{figure}[H]
     \centering
@@ -3620,16 +3665,12 @@ TODO
     \caption{De error functie (=loss) in functie van aantal training epochs}
 \end{figure}
 
-\begin{itemize}
-    \item TODO
-\end{itemize}
-
 \url{https://becominghuman.ai/back-propagation-is-very-simple-who-made-it-complicated-97b794c97e5c}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth]{backpropagation-learning-rate.png}
-    \caption{}
+    \caption{Invloed van de learning rate op de loss.\\ Tijdens de training wordt de learning rate adaptief bijgesteld}
 \end{figure}
 
 \subsection{Activation function}
@@ -3641,8 +3682,21 @@ TODO
 
 
 \begin{theorem}
-    TODO
+    De activation function van een neuron definieert de output van die neuron via een wiskundige functie. 
+    De inputs worden vermenigvuldigd met hun gewicht, die dan gesommeerd worden door de transfer function. 
+    De output van die transfer function wordt gebruikt als input door de activation function.
 \end{theorem}
+
+Er zijn verschillende functies die elk een verschillend outputdomein kunnen hebben:
+
+\begin{itemize}
+    \item Step function: 0 of 1
+    \item Linear function: $-\infty$ tot $+\infty$
+    \item Sigmoid function: $0$ tot $1$
+    \item Hyperbolic tangent (tanh): $-1$ tot $1$
+    \item ReLu: $0$ tot $+\infty$
+    \item Leaky ReLu: $-\infty$ tot $+\infty$
+\end{itemize}
 
 \subsubsection{Step function}
 
@@ -3656,7 +3710,7 @@ TODO
     \item Output is 0 wanneer de waarde < 0
     \item Nadelen:
     \begin{itemize}
-        \item Kan alleen ja of nee zeggen (100% of 0%)
+        \item Kan alleen ja of nee zeggen (100\% of 0\%)
         \item Problemen bij meerdere klasses. Wat als meerdere klasses op 1 staan?
         \item Backpropagation werkt niet. De afgeleide = 0
     \end{itemize}
@@ -3820,7 +3874,7 @@ Werkt bij multi-class classificatie
     \item Andere neuronen moeten inspringen voor neuronen die af staan.
 \end{itemize}
 
-\section{Aan de slag met Tensorflow en Keras}
+\section{Aan de slag met Tensorflow en Keras (NTK)}
 
 \subsection{Wat is keras?}
 
@@ -3845,8 +3899,8 @@ pip3 install tensorflow
 Met GPU support:
 
 \begin{itemize}
-    \item NVidia Cuda toolkit
-    \item NVidia Deep Neural Network library CUDNN
+    \item Nvidia Cuda toolkit
+    \item Nvidia Deep Neural Network library CUDNN
     \item Tensorflow-gpu
 \end{itemize}
 
