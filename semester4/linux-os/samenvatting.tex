@@ -2638,6 +2638,13 @@ In this chapter, we will set up a firewall in this environment:
     \begin{itemize}
         \item /proc/sys/net/ip\_forward (temporary, doesn't survive reboot)
         \item /etc/sysctl.conf (persistent)
+        \begin{enumerate}
+            \item On the firewall system, edit the sysctl file and search for ip\_forward
+            \item Remove the comment sign of that line
+            \item Save and quit
+            \item Reload the changes: sudo sysctl -p 
+        \end{enumerate}
+        \item \textcolor{red}{If you do not do this, forwarding will not work!}
     \end{itemize}
     \item Network interface config
     \begin{itemize}
@@ -3624,6 +3631,8 @@ sudo apt install haproxy
 
 # enable haproxy
 sudo vim /etc/default/haproxy
+# add the following line to this file:
+ENABLED=1
 
 # show haproxy version info
 sudo haproxy -v
