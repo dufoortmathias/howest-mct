@@ -3646,15 +3646,23 @@ sudo vim /etc/haproxy/haproxy.cfg
 \end{minted}
 
 \begin{minted}{bash}
+# delete everything in the file and add this:
+# change the ip addresses for both front and backend
 frontend resume_site_front
     bind 192.168.X.10:80
-    stats uri /haproxy?stats
     default_backend resume_site_back
  
- backend resume_site_back
+backend resume_site_back
     balance roundrobin
     server webserver1 192.168.X.20:80 check
     server webserver2 192.168.X.30:80 check
+
+# to enable stats, add the following:
+listen stats
+    bind 192.168.X.10:80
+    mode http
+    stats enable
+    stats uri /haproxy?stats
 \end{minted}
 
 \subsubsection{Start haproxy}
