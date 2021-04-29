@@ -4021,4 +4021,294 @@ Beschikbare activatiefuncties:
     \item sample\_weight\_mode: bij unbalanced data: sommige klasses komen in de training set frequenter voor dan andere.
 \end{itemize}
 
+\section{Anomaly detection}
+
+\subsection{Introductie}
+\subsubsection{Wat zijn anomalies?}
+
+\begin{theorem}
+    Anomalies zijn data patronen die karakteristieken tonen
+    die afwijken van normale patronen.
+\end{theorem}
+
+Er zijn verschillende soorten anomalieën:
+
+\begin{itemize}
+    \item Point anomaly
+    \item Contextual anomaly
+    \item Collective anomaly
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{anomaly-point.png}
+    \caption{Point anomaly}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{anomaly-contextual.png}
+    \caption{Contextual anomaly}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{anomaly-collective.png}
+    \caption{Collective anomaly}
+\end{figure}
+
+\subsubsection{Toepassingen}
+
+\begin{itemize}
+    \item Creditcard fraude
+    \item Opsporen van ongewone patronen in netwerkverkeer
+    \item System health monitoring
+    \item Anomalieën in astonomie-afbeeldingen kan de ontdekking van een nieuwe ster aangeven
+\end{itemize}
+
+\subsubsection{Uitdagingen}
+
+\begin{itemize}
+    \item Anomalieën komen niet frequent voor, maar ze kunnen wel grote gevolgen met zich meebrengen
+    \item `Normaal' gedrag is moeilijk te bepalen en hangt af van de toepassing
+    \item De grens tussen normaal en anomalie is vaag
+    \item Vaak zijn er geen labels of data voor abnormaal gedrag
+\end{itemize}
+
+\subsection{Anomaly detection algoritmes}
+
+\begin{itemize}
+    \item Semi-supervised methods
+    \begin{itemize}
+        \item sklearn: novelty detection
+        \item Uitschieters/anomalieën kunnen een dense cluster vormen
+        \item Geen uitschieters in training data
+    \end{itemize}
+    \item Unsupervised methods:
+    \begin{itemize}
+        \item sklearn: outlier detection
+        \item Uitschieters/anomalieën kunnen \textbf{geen} dense cluster vormen
+        \item Uitschieters kunnen voorkomen in training data
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Isolation forest}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{isolation-forest.png}
+\end{figure}
+
+
+\begin{itemize}
+    \item Isolation methode met decision trees
+    \item Unsupervised
+    \item In plaats van te werken met Gini/Entropy, werken we met random splitsing
+    \item Padlengte van elke sample is een maatstaf voor normaliteit
+    \item Werkt goed met kleine datasets
+    \item Werkt goed met hoge dimensionaliteit 
+\end{itemize}
+
+\subsubsection{Local outlier detection}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{local-outlier-factor.png}
+\end{figure}
+
+\begin{itemize}
+    \item Nearest-neighbour gebaseerd model
+    \item Unsupervised
+    \item Bereken de lokale density van een datapunt en zijn buren
+    \item Als local density point $<$ density van de buren $\Rightarrow$ anomalie
+\end{itemize}
+
+\subsubsection{Cluster based local outlier factor (CBLOF)}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{cblof.png}
+\end{figure}
+
+\begin{itemize}
+    \item Cluster-gebaseerde methode
+    \item Input = dataset + clustermodel gegenereerd door clustering algoritme
+    \item Clusters worden geclassificeerd in kleine en grote clusters
+\end{itemize}
+
+\subsubsection{Gaussian Mixed Models (GMM)}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{gmm.png}
+\end{figure}
+
+
+\begin{itemize}
+    \item Probabilistisch model
+    \item Unsupervised
+    \item Bereken probabiliteit van elk punt, via Gaussiaanse distributie
+    \item Punt met lage probabiliteit $\Rightarrow$ anomalie
+\end{itemize}
+
+\subsection{Model performantie}
+
+Hoe de performance van een model bepalen?
+
+\begin{itemize}
+    \item Accuracy == slecht idee:
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\textwidth]{anomaly-accuracy.png}
+    \end{figure}
+    \item Confusion matrix + ROC
+    \item Soms focus op precisie of recall, op basis van toepassing
+    \item Domein-experten contacteren!
+\end{itemize}
+
+\section{Explainable AI (XAI)}
+
+\subsection{Waarom belangrijk?}
+
+\begin{itemize}
+    \item Uitleggen waarom een model werkt 
+    \item Om mensen te overtuigen
+    \item Om bias op te sporen
+    \item \dots
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{explainable-ai.png}
+    \caption{Methodes XAI}
+\end{figure}
+
+\subsection{Explainability vs Interpretability}
+
+\begin{theorem}
+    Explainability is the extent where the feature values of an instance are related to
+    its model prediction in such a way that humans understand. In basic term, it is
+    the understanding to the question `why is this happening?'.
+\end{theorem}
+
+\begin{theorem}
+    Interpretability is defined as the amount of consistently predicting a model's
+    result without trying to know the reasons behind the scene. It is easier to know
+    the reason behind certain decisions or predictions if the interpretability of
+    a machine learning model is higher.
+\end{theorem}
+
+\subsection{Glass box models vs Black box models}
+
+\subsubsection{Glass box models}
+
+\begin{itemize}
+    \item Linear regression (model coefficients)
+    \item Logistic regression (model coefficients)
+    \item Decision Trees (feature importance)
+\end{itemize}
+
+\subsubsection{Black box models}
+
+\begin{itemize}
+    \item Ensemble methods
+    \item Random Forests
+    \item Neural networks
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{black-box.png}
+\end{figure}
+
+\subsection{LIME (Local Interpretable Model-agnostic Explanation)}
+
+\begin{theorem}
+    LIME is een technologie die de predicties van AI modellen probeert uit te leggen
+    aan de hand van visuele hulpmiddelen.
+
+    \url{https://github.com/marcotcr/lime}
+\end{theorem}
+
+\subsubsection{Local explanation}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{lime-local.png}
+    \caption{Proces local explanation: Je bouwt de dataset rond de ene sample die je wil uitleggen}
+\end{figure}
+
+\subsubsection{Modal agnostic}
+
+\begin{itemize}
+    \item Text data
+    \item Tabular data
+    \item Images
+    \item \dots
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{lime-text.png}
+    \caption{LIME met text data: atheism vs christianity}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{lime-tabular.png}
+    \caption{LIME met tabeldata}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{lime-images.png}
+    \caption{LIME met images: naar welke delen van de image kijkt het model}
+\end{figure}
+
+\url{https://github.com/marcotcr/lime}
+
+\subsection{SHapley Addictive exPlanations (SHAP)}
+
+\begin{theorem}
+    SHAP is a game theoretic approach to explain the output of any machine learning model.
+    It connects optimal credit allocation with local explanations using Shapley values
+    from game theory.
+
+    \url{https://shap.readthedocs.io/en/latest/index.html}
+\end{theorem}
+
+\begin{itemize}
+    \item Gebaseerd op Game theory
+    \item When 4 players are in a game with a common goal, 
+    to find the contribution of player $A$ we need to consider all the
+    interactions of $A$ with the other players and
+    their collective contribution as well.
+    \item Shapley value is the expected marginal contribution
+    \begin{itemize}
+        \item = Average of their marginal contribution across all combinations
+    \end{itemize}
+    \item Features = the players
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{shap.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{shap-output.png}
+    \caption{The output SHAP gives}
+\end{figure}
+
+
+\subsection{Wat moet je kennen}
+
+\begin{itemize}
+    \item Wat is explainable AI?
+    \item Waarom is het nodig? Voordelen?
+    \item Welke technieken heb je? (LIME \& SHAP)
+\end{itemize}
+
+
 \end{document}
