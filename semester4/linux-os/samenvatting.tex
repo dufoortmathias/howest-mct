@@ -599,29 +599,6 @@ ss -tulpn
 \end{itemize} 
 
 
-\subsection{Wooclap Questions}
-
-\begin{itemize}
-    \item Why do we talk about GNU/Linux?
-    \item What is a kernel?
-    \item What is the difference between Open Source and free?
-    \item How is the Administrator user called? What is its uid?
-    \item What is MBR?
-    \item What are the limitations of MBR? (Solution?)
-    \item What is swap? What is swappiness?
-    \item What is a package?
-    \item What is a repository?
-    \item What is a dependency?
-    \item What is a package manager?
-    \item What is the difference between 'apt update' and 'apt upgrade'
-    \item Which protocol makes the link between MAC address \& IP address?
-    \item Which command gives you the current ARP-table?
-    \item What are the 5 layers of the TCP/IP network model?
-    \item How do you find the MAC-address of a network interface?
-    \item Put Linux boot process in correct order (6 levels)
-    \item What is a linux distribution?
-\end{itemize}
-
 \section{File structure}
 
 \begin{itemize}
@@ -923,25 +900,6 @@ CTRL + r:
 # Example: overwrite disk with random data when taking out of service
 ~# dd if=/dev/random of=/dev/sdb bs=1M
 \end{minted}
-
-\subsection{Wooclap Questions}
-
-\begin{itemize}
-    \item How do you ask the shell in which folder you are currently in?
-    \item What is meant with the term 'runlevel' in Linux
-    \item Describe single user mode with 1 word when you think of its primary use
-    \item What is / are the most common runlevel(s) under linux? (So not all of them!)
-    \item Where can you find the devices under Linux?
-    \item What is the home directory of the root user?
-    \item What command do we use to create a filesystem in a partition?
-    \item What file do you need to edit to have a mounted filesystem available even after reboot?
-    \item Where can you put temporary files in a linux system?
-    \item How can you quickly search through your previously used commands?
-    \item How do you quickly search through previously typed commands?
-    \item What is swap?
-    \item What are the limitations of MBR?
-    \item What can you use a bind mount for?
-\end{itemize}
 
 \section{Filesystems}
 
@@ -1407,38 +1365,6 @@ Usage and details for these commands: see labs
     \item uniq: in a sorted output: count double lines or only show unique lines
 \end{itemize}
 
-\subsection{Wooclap}
-
-\begin{itemize}
-    \item What is meant by the term journaling for filesystems?
-    \item Why is journaling used with filesystems?
-    \item Give 2 examples of filesystems under linux that use journaling.
-    \item How can you find out which kernel modules are currently loaded?
-    \item Which command can you use to load a kernel module? 
-    \item And which to 'unload' a kernel module?
-    \item How many disks do you need at least to build a RAID10 system? Why?
-    \item What is meant by a 'Copy On Write' filesystem?
-    \item What are the advantages of a CoW filesystem?
-    \item What are snapshots (in the context of storage systems)?
-    \item What are the disadvantages of a CoW filesystem?
-    \item Why do you still need backup when you have RAID1 and have snapshots?
-    \item How can you find out which 'type' is a file? There are no extensions.
-    \item What is an inode?
-    \item What is the difference between a softlink and a hard link?
-    \item At the output of the command ls -la: Which values can the first character of the line have and what do they mean?
-    \item At the output of the command ls -la: Which possible values can the 3 groups of 3 characters have to describe the rights?
-    \item With what command can you 'change' the 'owner' of a file or directory?
-    \item With which command can you 'change' the rights of a file or directory?
-    \item What does number 5 mean when you use it to determine file system permissions?
-    \item What does number 7 mean when you use that to determine file system rights? Explain why.
-    \item Which command do you use to cut structured input at a specific location?
-    \item Which command do you use to display the first 16 lines of a text file?
-    \item Which command can you use to find out all the modified files from the last 24 hours?
-    \item Which command do you use to display the last 12 lines of a text file?
-    \item How can you find out how long it has been since a linux system was rebooted?
-    \item Which command can you use to get an overview of all daemons that are currently active in your system?
-\end{itemize}
-
 \section{Text editors, Piping, Redirection \& Jobs}
 
 \subsection{Text editors}
@@ -1830,32 +1756,6 @@ netstat -anpt | awk '{print $5}' | sort | uniq -c
 # print the filename of the terminal currently connected to standard input:
 ~$ tty
 \end{minted}
-
-\subsection{Answer these questions to test your knowledge}
-
-\begin{enumerate}
-    \item What does piping mean?
-    \item What is the prerequisite for using the command 'uniq'
-    \item What is the difference between $>$ and $>>$
-    \item Which are the 2 output streams in linux, and what do they contain?
-    \item What is 'exit code'
-    \item Why is the exit code useful
-    \item What different values can the exit code be?
-    \item What is the exit code for success?
-    \item How do you request the exit code?
-    \item How do you turn a command into a job?
-    \item How do you pause a job
-    \item What command shows the list of all running or paused jobs?
-    \item How do you re-activate a paused job?
-    \item What does the command screen do?
-    \item What is meant by the term `signal'?
-    \item How do you send a signal to a process
-    \item How do you specify which process?
-    \item Give 2 examples of signals
-    \item Is a systemload of 23 problematic
-    \item What process has PID 1?
-    \item Where do you know this process from?
-\end{enumerate}
 
 
 \section{Regex, users \& firewall}
@@ -4122,6 +4022,192 @@ To manage postgres:
     \item Log into database server as user postgres
     \item Use the CLI-tool `psql'
     \item Leave the CLI-tool: $\backslash$q
+\end{itemize}
+
+\section{Flashbacks}
+
+\subsection{Lesson 1}
+
+\begin{itemize}
+    \item Why do we talk about GNU/Linux?
+    \item What is a kernel?
+    \item What is the difference between Open Source and free?
+    \item How is the Administrator user called? What is its uid?
+    \item What is MBR?
+    \item What are the limitations of MBR? (Solution?)
+    \item What is swap? What is swappiness?
+    \item What is a package?
+    \item What is a repository?
+    \item What is a dependency?
+    \item What is a package manager?
+    \item What is the difference between 'apt update' and 'apt upgrade'
+    \item Which protocol makes the link between MAC address \& IP address?
+    \item Which command gives you the current ARP-table?
+    \item What are the 5 layers of the TCP/IP network model?
+    \item How do you find the MAC-address of a network interface?
+    \item Put Linux boot process in correct order (6 levels)
+    \item What is a linux distribution?
+\end{itemize}
+
+\subsection{Lesson 2}
+
+\begin{itemize}
+    \item How do you ask the shell in which folder you are currently in?
+    \item What is meant with the term 'runlevel' in Linux?
+    \item Describe single user mode with 1 word when you think of its primary use
+    \item What is / are the most common runlevel(s) under linux? (So not all of them!)
+    \item Where can you find the devices under Linux?
+    \item What is the home directory of the root user?
+    \item What command do we use to create a filesystem in a partition?
+    \item What file do you need to edit to have a mounted filesystem available even after reboot?
+    \item Where can you put temporary files in a linux system?
+    \item How can you quickly search through your previously used commands?
+    \item How do you quickly search through previously typed commands?
+    \item What is swap?
+    \item What are the limitations of MBR?
+    \item What can you use a bind mount for?
+\end{itemize}
+
+\subsection{Lesson 3}
+
+\begin{itemize}
+    \item What is meant by the term journaling for filesystems?
+    \item Why is journaling used with filesystems?
+    \item Give 2 examples of filesystems under linux that use journaling.
+    \item How can you find out which kernel modules are currently loaded?
+    \item Which command can you use to load a kernel module? 
+    \item And which to 'unload' a kernel module?
+    \item How many disks do you need at least to build a RAID10 system? Why?
+    \item What is meant by a 'Copy On Write' filesystem?
+    \item What are the advantages of a CoW filesystem?
+    \item What are snapshots (in the context of storage systems)?
+    \item What are the disadvantages of a CoW filesystem?
+    \item Why do you still need backup when you have RAID1 and have snapshots?
+    \item How can you find out which 'type' is a file? There are no extensions.
+    \item What is an inode?
+    \item What is the difference between a softlink and a hard link?
+    \item At the output of the command ls -la: Which values can the first character of the line have and what do they mean?
+    \item At the output of the command ls -la: Which possible values can the 3 groups of 3 characters have to describe the rights?
+    \item With what command can you 'change' the 'owner' of a file or directory?
+    \item With which command can you 'change' the rights of a file or directory?
+    \item What does number 5 mean when you use it to determine file system permissions?
+    \item What does number 7 mean when you use that to determine file system rights? Explain why.
+    \item Which command do you use to cut structured input at a specific location?
+    \item Which command do you use to display the first 16 lines of a text file?
+    \item Which command can you use to find out all the modified files from the last 24 hours?
+    \item Which command do you use to display the last 12 lines of a text file?
+    \item How can you find out how long it has been since a linux system was rebooted?
+    \item Which command can you use to get an overview of all daemons that are currently active in your system?
+\end{itemize}
+
+\subsection{Lesson 4}
+
+\begin{enumerate}
+    \item What does piping mean?
+    \item What is the prerequisite for using the command 'uniq'
+    \item What is the difference between $>$ and $>>$
+    \item Which are the 2 output streams in linux, and what do they contain?
+    \item What is 'exit code'
+    \item Why is the exit code useful
+    \item What different values can the exit code be?
+    \item What is the exit code for success?
+    \item How do you request the exit code?
+    \item How do you turn a command into a job?
+    \item How do you pause a job
+    \item What command shows the list of all running or paused jobs?
+    \item How do you re-activate a paused job?
+    \item What does the command screen do?
+    \item What is meant by the term `signal'?
+    \item How do you send a signal to a process
+    \item How do you specify which process?
+    \item Give 2 examples of signals
+    \item Is a systemload of 23 problematic
+    \item What process has PID 1?
+    \item Where do you know this process from?
+\end{enumerate}
+
+\subsection{Lesson 5}
+
+\begin{itemize}
+    \item In what file can you find the hashes of passwords?
+    \item What command do you use to remove a user?
+    \item How can you change the password of a different user than your own user?
+    \item How do you add an existing user to an existing group?
+    \item How do you give someone sudo rights?
+    \item Give 2 differences between telnet and ssh.
+    \item There are 2 types of tunnels you can create with SSH? Which are that?
+    \item With which tool can you get information about who owns domain names, IP addresses, ... on the internet?
+    \item With which command do you gain insight into the open files of a process?
+    \item Can you disable and enable CPUs in a multi-processor Linux system on-the-fly (so without a reboot)?
+    \item How can you find out which users are all logged in to your system?
+    \item How do you get information about the CPU (or CPUs) that are in a Linux system?
+    \item With which command can you send a message to all users at the same time on a system?
+    \item Which Linux tool can you use to calculate IP addresses, subnets, ...?
+    \item What are the 5 layers of the network model?
+    \item Can you run multiple services on 1 server?
+    \item How do we identify different instances of layer 2?
+    \item What is a firewall?
+    \item Name 3 categories of firewalls.
+    \item What is known as kernel space?
+    \item What is the opposite of kernel space?
+    \item Explain: conntrack
+    \item On which layer of the network model does routing take place?
+\end{itemize}
+
+\subsection{Lesson 6}
+
+\begin{itemize}
+    \item How do you request the route table?
+    \item With which command do you check how much free disk space there is?
+    \item With which command do you check which filesystems are mounted where?
+    \item With which command can you request the MAC address of a network interface?
+    \item With which command do you request the table that makes the link between IP address and MAC address?
+    \item Wireshark is a tool for capturing network traffic. Which CLI tool can capture network traffic in Linux?
+    \item With which command do you get an overview of all processes and how much CPU, memory, ... these take up?
+    \item What is the systemload?
+    \item How can you request which services listen on which ports?
+    \item What is the most commonly used filesystem under linux?
+    \item What is journalling?
+    \item What does copy-on-write mean?
+    \item What is meant with a multi-homed system?
+    \item How can you verify if a multi-homed system can send traffic from one NIC to another?
+    \item What does the target ‘MASQUERADE’ do in iptables?
+    \item How many tables does iptables have? Also give the name of the 2 most commonly used ones.
+    \item How many chains are there in iptables? Which ones do you find in the FILTER-table?
+    \item How many netfilter-hooks are there in the linux kernel?
+    \item Give 3 ‘states’ of a connection.
+    \item What does ‘DORA’ stand for in the context of DHCP?
+    \item Where on the filesystem can you find the system-wide host-specific configuration files?
+    \item What is meant with ‘split brain’?
+    \item Which port(s) does DNS listen on?
+    \item What is the name of the type of resource record in DNS that links a name to an IP address (forward lookup).
+    \item With which command can you perform DNS queries and get (many) details?
+\end{itemize}
+
+\subsection{Lesson 7}
+
+\begin{itemize}
+    \item Give 3 loadbalancing algorithms.
+    \item What is a potential risk with (W)LC?
+    \item What are things you can configure for a healthcheck?
+    \item What are the 3 ‘building blocks’ of a haproxy config?
+    \item Give 3 levels of loadbalancing with haproxy.
+    \item What does stickiness mean?
+    \item How can you get an overview of the health of your haproxy setup?
+    \item What is the difference between High Availability \& Load Balancing?
+    \item How can you find you what type of file (textfile, binary, \dots) something is?
+    \item What command do you need to change access rights of a file?
+    \item What command do you need to change the owner and/or group of a file?
+    \item What are the 2 output streams in linux?
+    \item How can you interfere with / influence the 2 output streams?
+    \item Give at least 3 ways to get an overview of running processes on your system.
+    \item How can you find out what the parent of a process is?
+    \item What is being passed to the parent of a process?
+    \item What is a signal?
+    \item How can you send a signal to a process?
+    \item How do you arrange for a filesystem which you mounted to become available after reboot?
+    \item What is swap and what is it used for?
+    \item What are the restrictions of MBR? 
 \end{itemize}
 
 
