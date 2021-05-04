@@ -27,7 +27,7 @@
 \begin{document}
 
 \begin{titlepage}
-    \author{Tuur Vanhoutte}
+    \author{Tuur Vanhoutte, Jakob Soens}
     \title{Big Data - Labo}
 \end{titlepage}
 
@@ -852,26 +852,76 @@ V2:
 \section{Mogelijke examenvragen}
 
 \begin{itemize}
-    \item Waarom gebruiken we liever "expose" dan "ports"?
-    \item Wat is een "thing"? 
-    \item Hoe registreer je een "thing" 
-    \item Waarvoor staat TICK en licht toe.
-    \item Leg kort uit hoe je een IOT device kan toevoegen aan amazon AWS 
-    \item Wat is het nut van "AWS lambda"?
-    \item Bij het connecten met de AWS console van wat maak je gebruik? 
-    \item Wat is AWS IoT?
-    \item Wat is het verschil tussen een MQTT-broken en AWS IoT?
-    \item Wat is een lambda function?
-    \item Wat is het verschil tussen AWS IoT Core en een MQTT broker?
-    \item Lambda functies kunnen schrijven met de rules van AWS
-    \item Wat zijn de grote voordelen van AWS Lambda tenopzichte van een EC2 instance?
-    \item Wat is het nut van "virtualenv"?
-    \item Wat is een Lambda-functie precies?
-    \item Hoe kunnen we beter onze ElasticSearch Service beveiligen?
-    \item Kennis over Kibana queries nog eens grondig opvragen.
-    \item Hoe kan je een virtual enviroment aanmaken en waarom? 
-    \item Wat is onderdeel van AWS IoT en kan je gebruiken om actie te ondergaan bij een bepaald event.
-    \item Zelfstandig een amazin IOT device kunnen creeren, en opvragen via Kibana. 
+    \item Wat zijn multi stage builds? Wat is het nut? 
+    \begin{itemize}
+        \item Het opsplitsen van van een dockerfile voor optimalisatie en leesbaarheid
+        \item Verhoogt leesbaarheid en optimaliseert de image (zodat het sneller gaat)
+    \end{itemize}
+    \item Wat is het voordeel van docker-compose? 
+    \begin{itemize}
+        \item Zorgt voor een leesbare file waar alle images samen staan
+        \item Je kan alle images in één keer opstarten
+        \item Goed voor security: alle containers zijn isolated
+    \end{itemize}
+    \item Wat zijn cgroups?
+    \begin{itemize}
+        \item Control groups == een type namespace
+        \item Limits, accounts for \& isolates resource usage
+    \end{itemize}
+    \item Wat is een image?
+    \begin{itemize}
+        \item Een file bestaande uit meerdere layers dat gebruikt worden om code uit te voeren in een container
+        \item Een file met instructie regels over hoe de container moet gebouwd worden
+    \end{itemize}
+    \item Wat is een index uit wat bestaat het?
+    \begin{itemize}
+        \item Index heeft een logische namespace waar in staat welke mapping, shards en replica's het heeft
+        \item gelijkaardig aan een database in RDBMS
+    \end{itemize}
+    \item Wat is het nut van mapping en wat is het?
+    \begin{itemize}
+        \item Mapping geeft structure aan de dataset in Elastic Stack
+        \item We geven datatypes mee en zeggen hoe de verdeling van clusters en shards is
+    \end{itemize}
+    \item Wat is een measurements?
+    \begin{itemize}
+        \item Een string die informatie geeft over de associated fields.
+        \item Data structuur in InfluxDB
+    \end{itemize}
+    \item Wat is een buffer? 
+    \begin{itemize}
+        \item Een buffer houdt data vast voor het verwerkt wordt
+        \item de data kan zo asynchroon worden ingelezen
+    \end{itemize}
+	\item Wat is de tick stack? 
+	\begin{itemize}
+        \item Telegraf: to collect and write data, metrics and events using plugins
+        \item InfluxDB: Time-series database
+        \item Chronograf: real-time visualisation of InfluxDB data
+        \item Kapacitor: monitoring \& alerting based on views of InfluxDB data and anomalies
+    \end{itemize}
+    \item Wat is een lambda functie:
+    \begin{itemize}
+        \item een container die weinig resources gebruikt
+        \item deze kan events ontvangen en kan gaan reageren op een bepaald event
+    \end{itemize}
+    \item Wat is AWS lambda:
+    \begin{itemize}
+        \item Serverless compute service
+        \item Code zonder managing servers
+        \item $\Rightarrow$ scripting service die automatisch je script/container uitvoert en managed 
+    \end{itemize}
+    \item Wat is multi factor auth (MFA) en wat is het nut:
+    \begin{itemize}
+        \item Elektronische authenticatie methode (2FA)
+        \item Een user kan pas binnen als hij 2 fases van authenticatie kan doorstaan
+        \item 2 dingen: iets dat de user heeft en iets dat de user weet ! ENKEL DE USER
+    \end{itemize}
+    \item Wat is het verschil tussen expose \& ports:
+    \begin{itemize}
+        \item expose laat enkel de uitvoerende container op de poort
+        \item ports laat alle connecties toe op die poort
+    \end{itemize}
 \end{itemize}
 
 \end{document}
