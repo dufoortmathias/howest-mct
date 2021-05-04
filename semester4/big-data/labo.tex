@@ -242,31 +242,35 @@ Microservices does \bold{not} necessarily mean containerization!
     \caption{}
 \end{figure}
 
-\subsubsection{How?}
+\subsubsection{Namespaces}
 
-Two important Linux kernel features:
+Docker uses two important Linux kernel features to share the kernel:
 
 \begin{itemize}
     \item \bold{Namespaces} are a feature of the Linux kernel that partitions kernel resources
     \item \bold{cgroups} (control croups) is a Linux kernel feature that limits, accounts for, and isolates resource usage of a collection of processes 
 \end{itemize}
 
-Simpler:
+\textbf{Simpler:}
 
 \begin{itemize}
     \item Namespaces = isolating resources per process (or group of processes)
-    \item cgroups = Limitating resource usage per process (or group of processes)
+    \item cgroups = a type of namespace that limits resource usage per process (or group of processes)
 \end{itemize}
 
-\subsubsection{Namespaces}
+\textbf{7 types of namespaces:}
 
 \begin{itemize}
-    \item 7 types:
-    \begin{itemize}
-        \item mount, UTS, IPC, network, PID, cgroup, user
-    \end{itemize} 
+    \item mount, UTS, IPC, network, PID, cgroup, user
     \item For the process (or group of processes) it looks like there is a completely isolated set of resources
 \end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{cgroups.png}
+    \caption{Control groups (cgroups)}
+\end{figure}
+
 
 \subsubsection{Containers}
 
