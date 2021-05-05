@@ -404,11 +404,11 @@ aan de hand van een trainingset met \textbf{meerdere features}.
 \begin{itemize}
     \item Bloeddruk wordt bepaald a.d.h.v. gewicht en leeftijd
     \item De kwaliteit van wijn wordt voorspeld op basis van: zuurtegraad, suikergehalte, chloriden, dichtheid, sulfaten, hoeveelheid alcohol, \dots
-    \item Het warmeverlies van een huis wordt voorspeld op basis van: het type glas, muurisolatie, oriëntatie van het huis, \dots
+    \item Het warmteverlies van een huis wordt voorspeld op basis van: het type glas, muurisolatie, oriëntatie van het huis, \dots
 \end{itemize}
 
 \begin{equation}
-h_{\theta}(x) = \theta_0 + \theta_1x_1 + \theta_2x_2 + \dots + \theta_nx_n + 
+h_{\theta}(x) = \theta_0 + \theta_1x_1 + \theta_2x_2 + \dots + \theta_nx_n 
 \end{equation}
 
 \begin{figure}[H]
@@ -1009,8 +1009,9 @@ $J_{L2} = \sum_{i=1}^n (\text{target}_i - \text{output}_i) + \lambda_2 \sum_{j=1
 
 \subsubsection{Regularisatie met L1 norm}
 
-Bij L2 regularisatie wordt de regularisatieterm berekend met behulp van de som 
-van de absolute waardes van de $\theta$'s 
+Bij L1 regularisatie wordt de regularisatieterm berekend met behulp van de som 
+van de absolute waardes van de $\theta$'s. L1 kan, in tegenstelling tot L2, de theta's op 0 zetten, 
+waardoor bepaalde features helemaal niets meer zullen bijdragen aan het model. 
 
 \begin{center}
 $J_{L1} = J + \lambda_1 \sum_{j=1}^m |\theta_j|$
@@ -1568,6 +1569,13 @@ Deze formules kunnen we gebruiken om een classifier te evalueren.
     \item = Het aantal juiste positieve voorspellingen op het totaal aantal positieve voorspellingen
 \end{itemize}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{confusion-matrix-metrics.jpg}
+    \caption{Overzicht metrics}
+\end{figure}
+
+
 \subsection{F1 Score}
 
 \begin{equation}
@@ -1838,10 +1846,10 @@ Implementeren van een SVM:
 
 \begin{itemize}
     \item Kan zowel gebruikt worden voor regressie als classificatie (en zelfs clustering).
-    \item Werkt goed op kleine datasets (in tegenstelling tot neurale netwerken en deep learning).
+    \item Werkt goed op \textbf{kleine datasets} (in tegenstelling tot neurale netwerken en deep learning).
     \item Is nog altijd effectief wanneer het aantal features groter is dan het aantal training samples.
-    \item Het werkt goed bij een groot aantal features (high dimensional space).
-    \item Gebruikt niet alle training examples tijdens training $\Rightarrow$ geheugenefficiënt.
+    \item Het werkt goed bij een \textbf{groot aantal features} (high dimensional space).
+    \item Gebruikt niet alle training examples tijdens training $\Rightarrow$ \textbf{geheugenefficiënt}.
     \item Geen lokale minima/optima, maar globaal optimum.
 \end{itemize}
 
@@ -1868,7 +1876,7 @@ Implementeren van een SVM:
 \section{Cross-validatie}
 
 \begin{theorem}
-    Crossvalidatie is een groep modelvalidatietechnieken die het mogelijk maakt om
+    Crossvalidatie is een groep modelvalidatietechnieken die het mogelijk maken om
     herhaaldelijk het model te testen met verschillende subsets van de data.
 
     He gaat ons toelaten om automatisch goede parameters te vinden voor ons model via hyperparameter tuning.
@@ -1877,12 +1885,12 @@ Implementeren van een SVM:
 
 \subsection{Verschillende types cross-validatie}
 
-\begin{itemize}
+\begin{enumerate}
     \item Hold Out cross-validation
     \item K-fold cross-validation (meest gebruikt)
     \item Leave One Out cross-validation
     \item Bootstrap cross-validation
-\end{itemize}
+\end{enumerate}
 
 \subsubsection{Hold out cross-validation}
 
@@ -1893,9 +1901,9 @@ Implementeren van een SVM:
 \end{figure}
 
 \begin{itemize}
-    \item Training data: om model mee te trainen
-    \item Validation data: tuning van hyper parameters en model selection
-    \item Test data: uiteindelijke test van het best gevalideerde model op nog nooit geziene data
+    \item \textbf{Training data:} om model mee te trainen
+    \item \textbf{Validation data:} tuning van hyper parameters en model selection
+    \item \textbf{Test data:} uiteindelijke test van het best gevalideerde model op nog nooit geziene data
 \end{itemize}
 
 \subsubsection{K-fold cross-validation}
@@ -2709,6 +2717,8 @@ Zo'n combinatie van verschillende decision trees (beslissingsbomen) noemen we ee
 
 \begin{itemize}
     \item = Verschillende decision trees combineren tot 1 bos = 1 groot model
+    \item Net zoals bagging, maar Random Forest Trees zullen bij elke split een subset van de features gebruiken
+    \item \url{https://en.wikipedia.org/wiki/Random_forest#From_bagging_to_random_forests}
     \item Dat moet niet noodzakelijk met pure enkel decision trees, je mag dat ook doen met andere classifiers zoals Logistic Regression
     \item ExtraTrees = aangepaste versie van de Random Forest Trees
     \begin{itemize}
