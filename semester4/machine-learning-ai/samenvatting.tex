@@ -320,7 +320,7 @@ Het zoeken van het model / hypothese = \textbf{training / learning}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{lineaire-regressie-hypothese.png}
-    \caption{Lineaire trnedlijn met model $h_{\theta}(x)$}
+    \caption{Lineaire trendlijn met model $h_{\theta}(x)$}
 \end{figure}
 
 $\mathbf{R^2}$\textbf{-waarde:} determinatiecoëfficiënt
@@ -1255,7 +1255,6 @@ Gegeven een rondheid van 5 en een groenheid van 4.5:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth]{logistic-grafische.png}
-    \caption{}
 \end{figure}
 
 \subsubsection{Wat als het model niet lineair is?}
@@ -1294,7 +1293,7 @@ J(\theta) = \left\{
 \end{equation}
 
 \begin{equation}
-J(\theta) = -\frac{1}{m} \cdot \Bigg[ \sum_{i=1}^m y_i ln(h_{\theta}(x_i)) + (1 - y_i) \cdot ln(1 - h_{\theta}(x_i)) \Bigg]
+J(\theta) = -\frac{1}{m} \cdot \Bigg[ \sum_{i=1}^m y_i \cdot ln(h_{\theta}(x_i)) + (1 - y_i) \cdot ln(1 - h_{\theta}(x_i)) \Bigg]
 \end{equation}
 
 \begin{figure}[H]
@@ -1589,10 +1588,11 @@ Deze formules kunnen we gebruiken om een classifier te evalueren.
 
 \subsection{Receiver Operating Characteristic (ROC)}
 
-\begin{itemize}
-    \item Wordt gebruikt bij binaire classifiers (2 klasses)
-    \item Wordt gebruikt om beter modellen te selecteren en minder goede te verwerpen
-\end{itemize}
+\begin{theorem}
+    De ROC-curve is de grafiek van de \textbf{True Positive Rate} (TPR) in functie van de \textbf{False Positive Rate} (FPR)
+    terwijl de threshold verandert. Het wordt gebruikt bij binaire classifiers (2 klasses) om betere modellen
+    te selecteren en minder goede te verwerpen.
+\end{theorem}
 
 \begin{figure}[H]
     \centering
@@ -1722,7 +1722,6 @@ een optimale scheiding maakt tussen twee verschillende klasses.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.35\textwidth]{svm-perfect-onmogelijk.png}
-    \caption{}
 \end{figure}
 
 Antwoord: werken met een regularisatieparameter $C$
@@ -2007,7 +2006,6 @@ Implementeren van een SVM:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{bayes-optimization.png}
-    \caption{}
 \end{figure}
 
 \begin{itemize}
@@ -4024,7 +4022,6 @@ Beschikbare activatiefuncties:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{batch-size.png}
-    \caption{}
 \end{figure}
 
 \textbf{Voor- en nadelen van een kleine batch grootte:}
