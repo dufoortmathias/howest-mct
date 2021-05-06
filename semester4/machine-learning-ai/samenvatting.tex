@@ -3437,7 +3437,7 @@ Bij face recogntion noemt men de principle components `Eigenfaces'
     \item Hoe meer data je hebt, hoe beter uw model gaat worden
     \item In de realiteit zal je bij de oudere algoritmes een plateau ondervinden
     \item Bij deep learning zal dat een veel kleiner probleem zijn
-    \item Neurale netwerken zijn wel veel gevoeliger voor overfitting: ze kunnen heel snel de dataset uit het hoofd leren
+    \item Neurale netwerken zijn wel \textbf{veel gevoeliger voor overfitting}: ze kunnen heel snel de dataset uit het hoofd leren
     \item Met kleinere datasets is het meestal beter om voor de traditionele learning algoritmes te gaan.
 \end{itemize}
 
@@ -3494,7 +3494,7 @@ Bij face recogntion noemt men de principle components `Eigenfaces'
 \end{figure}
 
 \begin{itemize}
-    \item Neurale netwerken zijn geinspireerd door de werking van hersenen
+    \item Neurale netwerken zijn geïnspireerd door de werking van hersenen
     \item Een neuron heeft verschillende verbindingen die signalen kunnen sturen naar andere neurons
     \item Het neuron kan een zwak of een sterk signaal sturen
 \end{itemize}
@@ -3509,7 +3509,7 @@ Bij face recogntion noemt men de principle components `Eigenfaces'
 
 \begin{itemize}
     \item Een neuron kan meerdere inputs ontvangen
-    \item Elke input heeft een bepaald gewicht
+    \item Elke input heeft een bepaald gewicht (=zwak of sterk signaal)
     \item Die inputs worden vermenigvuldigd met de gewichten om dan gebruikt te worden in een transfer function
     \item De transfer function is een wiskundige formule die als output een getal heeft
     \item Dat getal wordt als input gebruikt door een activation function, die de finale output van het neuron zal bepalen
@@ -3591,7 +3591,7 @@ Bij face recogntion noemt men de principle components `Eigenfaces'
     \begin{itemize}
         \item 2 inputs, 0 of 1
         \item Weights van 1
-        \item Threshold: $>1.5 \Rightarrow$ output $=1$, ander $0$ 
+        \item Threshold: $>1.5 \Rightarrow$ output $=1$, anders $0$ 
     \end{itemize}
     \begin{figure}[H]
         \centering
@@ -3704,7 +3704,7 @@ Met het voorbeeld van de MNIST dataset:
     De output van die transfer function wordt gebruikt als input door de activation function.
 \end{theorem}
 
-Er zijn verschillende functies die elk een verschillend outputdomein kunnen hebben:
+Er zijn verschillende functies die elk een bepaald outputbereik (mogelijke y-waardes) kunnen hebben:
 
 \begin{itemize}
     \item Step function: 0 of 1
@@ -3810,10 +3810,10 @@ Er zijn verschillende functies die elk een verschillend outputdomein kunnen hebb
     \item Niet-lineair
     \item Elke functie kan benaderd worden door combinatie van ReLu functies
     \item Zeer efficiënt naar rekenkracht
-    \item Sparse activation: veel activaties worden 0
     \item Nadelen:
     \begin{itemize}
-        \item Dode neuronen kunnen niet meer geactiveerd worden
+        \item Sparse activation: veel activaties worden 0
+        \item $\Rightarrow$ `Dode' neuronen kunnen niet meer geactiveerd worden
     \end{itemize}
     \item Gebruik:
     \begin{itemize}
@@ -3832,7 +3832,7 @@ Er zijn verschillende functies die elk een verschillend outputdomein kunnen hebb
 
 \begin{itemize}
     \item Variant op ReLu
-    \item Gaat niet dood
+    \item Gaat niet dood: er is nog een kleine gradient bij $x < 0$
     \item Nadelen:
     \begin{itemize}
         \item Meer parameters om te trainen
@@ -3864,6 +3864,12 @@ Softmax is een generalisatie van de Sigmoid: $\sigma(z)_j = \frac{e^{z_j}}{\sum_
 
 Werkt bij multi-class classificatie
 
+\subsubsection{Extra}
+
+Interessante playlist over neurale netwerken, door 3blue1brown:
+
+\url{https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi}
+
 \subsection{Underfitting \& Overfitting}
 
 \begin{figure}[H]
@@ -3881,15 +3887,16 @@ Werkt bij multi-class classificatie
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{dropout.png}
+    \includegraphics[width=0.35\textwidth]{dropout.png}
 \end{figure}
 
+\begin{theorem}
+    Dropout (of `Dilution') is een regularisatietechniek om overfitting in neurale netwerken te voorkomen.
+    Dat gebeurt door een bepaald percentage van de neuronen uit te schakelen. Andere neuronen moeten inspringen
+    voor neuronen die zijn uitgeschakeld.
+\end{theorem}
 
-\begin{itemize}
-    \item Techniek om overfitting te voorkomen.
-    \item Schakel een bepaald percentage van de neuronen in een layer uit.
-    \item Andere neuronen moeten inspringen voor neuronen die af staan.
-\end{itemize}
+\url{https://en.wikipedia.org/wiki/Dilution_(neural_networks)}
 
 \section{Aan de slag met Tensorflow en Keras (NTK)}
 
