@@ -1456,8 +1456,8 @@ logreg_poly.fit(Xp, y)
     \item In Scikit Learn linear\_model.LogisticRegression:
     \begin{itemize}
         \item C = inverse regularisatie sterkte
-        \item kleine waarden voor C $\Rightarrow$ sterke regularisatie (overfitting)
-        \item grote waarden voor C $\Rightarrow$ zwakke regularisatie (underfitting)
+        \item kleine waarden voor C $\Rightarrow$ sterke regularisatie (underfitting)
+        \item grote waarden voor C $\Rightarrow$ zwakke regularisatie (overfitting)
     \end{itemize}
 \end{itemize}
 
@@ -3063,18 +3063,18 @@ Via een afstandfunctie:
 \subsubsection{Eigenschappen van K-means clustering}
 
 \begin{itemize}
-    \item Eenvoudig en resultaten gemakkelijk interpreteerbaar
+    \item \textbf{Eenvoudig} en resultaten gemakkelijk \textbf{interpreteerbaar}
     \item K-means vindt niet altijd het globale optimum (=beste oplossing)
-    \item Uiteindelijke resultaat hangtaf van initialisatie van de centoïden
+    \item Uiteindelijke resultaat hangt af van initialisatie van de centoïden
     \begin{itemize}
         \item Probeer verschillende initialisaties
         \item Initiailiseer eerste centoïde op een willekeurig datapunt
-        \item Leg de tweede centoïde op een datapunt dat zover mogelijk van het eerste verwijderd is, de derde zo ver mogelijk van de twee eerste, enzoverder
+        \item Leg de tweede centoïde op een datapunt dat zover mogelijk van het eerste verwijderd is, de derde zo ver mogelijk van de twee eerste, \dots
     \end{itemize}
-    \item Zeer gevoelig aan uitschieters
+    \item Zeer \textbf{gevoelig aan uitschieters}
     \item Problemen bij clusters met hetzelfde gemiddelde of niet-sferische clusters
     \begin{itemize}
-        \item Oplossing: kernel K-means of spectral clustering:
+        \item \textbf{Oplossing:} kernel K-means of spectral clustering:
     \end{itemize}
 \end{itemize}
 
@@ -3172,24 +3172,28 @@ Zeer rekenintensief:
     \item Niet bruikbaar voor grote datasets.
 \end{itemize}
 
-\subsection{Guassian mixture models}
+\subsection{Gaussian mixture models}
 
-Voorgaande modellen wijzen datapunten aan 1 enkele cluster
+\begin{theorem}
+    Gaussian mixture model is een clustertechniek waarbij je probeert multidimensionale 
+    gaussiaanse curves te gaan fitten op de data. 
+\end{theorem}
+
 
 \begin{itemize}
-    \item Je probeert om Gaussisaanse curves te fitten op de data om zo clusters te vinden
-    \item Je regelt de varianties en gemiddelden van die Gaussisaanse functies: je `verplaatst' ze
-    \item Je berekent zo een kans: er is x kans dat een punt tot een bepaalde cluster behoort 
+    \item Voorgaande modellen wijzen datapunten toe aan 1 enkele cluster, terwijl GMM met probabiliteit werkt
+    \item Je regelt de varianties en gemiddelden van die Gaussisaanse functies: je verandert de positie en breedtes van de curves
+    \item Je berekent zo een kans: er is $x$ kans dat een punt tot een bepaalde cluster behoort 
 \end{itemize}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{guassian-mixture-models.png}
+    \includegraphics[width=0.5\textwidth]{gaussian-mixture-models.png}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{guassian-mixture-models2.png}
+    \includegraphics[width=0.5\textwidth]{gaussian-mixture-models2.png}
 \end{figure}
 
 \subsection{Spectral clustering}
@@ -3197,7 +3201,6 @@ Voorgaande modellen wijzen datapunten aan 1 enkele cluster
 Hou rekening met de affiniteit in plaats van de absolute locatie.
 
 \begin{itemize}
-    \item Doet het vooral goed in specifieke gevallen: waar de cluster niet bepaald wordt door de densiteit, maar door de affiniteit
     \item Affiniteit = samenhang
     \item Spectral clustering zal werken met een affiniteitmatrix:
     \begin{itemize}
@@ -3205,6 +3208,7 @@ Hou rekening met de affiniteit in plaats van de absolute locatie.
         \item We kijken hoe dichtbij andere punten liggen
         \item We noteren in een matrix voor elk punt hoe dichtbij elk ander punt ligt
     \end{itemize}
+    \item Doet het vooral goed in specifieke gevallen: waar de cluster niet bepaald wordt door de densiteit, maar door de affiniteit
     \item Handig voor datasets waar je patronen en specifieke lijnen hebt in de data, bijvoorbeeld image recognition
 \end{itemize}
 
@@ -3229,32 +3233,33 @@ Hou rekening met de affiniteit in plaats van de absolute locatie.
 \subsection{Self organizing maps}
 
 \begin{itemize}
-    \item Ook `Kohonen Maps' genoemd (=genoemd naar een Finse professor)
+    \item Ook `Kohonen Maps' genoemd (genoemd naar een Finse professor)
     \item Competitie-gebaseerde clustering
     \item We spannen een net over (meestal) twee-dimensionale data
     \item Voor elk datapunt kijken we welk knooppunt van het net het dichtst bij ligt
     \item We verplaatsen elk datapunt naar dat dichtstbijzijnde knooppunt 
     \item We doen dit herhaaldelijk $\Rightarrow$ clustering
     \item Visualisatie: \\ \url{https://en.wikipedia.org/wiki/Self-organizing_map#/media/File:TrainSOM.gif}
+    \item \url{https://en.wikipedia.org/wiki/Self-organizing_map}
 \end{itemize}
 
-\url{https://en.wikipedia.org/wiki/Self-organizing_map}
+
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.25\textwidth]{self-organizing-maps.png}
     \includegraphics[width=0.3\textwidth]{self-organizing-maps2.png}
     \includegraphics[width=0.25\textwidth]{self-organizing-maps3.png}
-    \caption{}
 \end{figure}
 
 \section{Dimensionality reduction}
 
 \subsection{Wat?}
 
-Binnen de context van machine learning (en statistiek) staat \textbf{dimensionality reduction} voor
-het proces waarbij het aantal variabelen (features in een dataset) gereduceerd wordt naar een
-kleinere set van `principle variables'.
+\begin{theorem}
+    \textbf{Dimensionality reduction} is het proces waarbij het aantal variabelen 
+    (features in een dataset) gereduceerd wordt naar een kleinere set van \textbf{`principle variables'}.
+\end{theorem}
 
 Meest gebruikte algoritmes voor dimensionality reduction:
 
@@ -3279,7 +3284,6 @@ Meest gebruikte algoritmes voor dimensionality reduction:
         \centering
         \includegraphics[width=0.3\textwidth]{dim-reduction-2d-3d.png}
     \end{figure}
-    
     \item Verwijderen van ruis
     \item Datacompressie
 \end{itemize}
@@ -3298,9 +3302,12 @@ Meest gebruikte algoritmes voor dimensionality reduction:
 
 \subsection{Principle Component Analysis (PCA)}
 
-Principal component analysis (PCA) is een wiskundige techniek om het aantal (mogelijks)
-gecorreleerde features te transformeren (te combineren) naar een kleiner aantal niet-gecorreleerde features
-die de principle components worden genoemd.
+\begin{theorem}
+    \textbf{Principal component analysis} (PCA) is een wiskundige techniek om het aantal (mogelijks)
+    gecorreleerde features te transformeren (te combineren) naar een kleiner aantal niet-gecorreleerde features
+    die de principle components worden genoemd.
+\end{theorem}
+
 
 \begin{figure}[H]
     \centering
@@ -3381,7 +3388,7 @@ Stel dat voor een bepaalde afbeelding we volgende PCA-scores berekend hebben:
     \caption{Reconstructie van de digit aan de hand van 10 principle components (in plaats van de originele 784 features)}
 \end{figure}
 
-\subsubsection{Kiezen van het aanal priciple components: verklaarde variantie}
+\subsubsection{Kiezen van het aantal priciple components: verklaarde variantie}
 
 PCA zoekt de componenten die een zo groot mogelijke variantie in de dataset verklaren. 
 We willen zoveel mogelijk informatie overhouden na dimensionality reduction.
