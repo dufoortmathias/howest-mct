@@ -699,21 +699,27 @@ Zelfde redenering:
 
 \subsection{Softmax functie}
 
-Doelstelling:
-
-\begin{itemize}
-    \item Model dat in staat is om data te gaan categoriseren
-    \item Hoe? Met behulp van verschillende inputvariabelen en bijhorende parameters 
-\end{itemize}
+\begin{theorem}
+    De softmax functie is een generalisatie van de logistische functie, die gebruikt kan worden om data
+    te gaan categoriseren in verschillende klasses. Dat gebeurt met behulp van verschillende inputvariabelen en
+    hun bijhorende parameters.
+\end{theorem}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.35\textwidth]{softmax.png}
     \includegraphics[width=0.4\textwidth]{softmax2.png}
-    \caption{Categoriseren met de softmax functie}
+    \caption{2 voorbeelden van categoriseren met de softmax functie}
 \end{figure}
 
+Let op: het is duidelijk dat softmax een probabiliteit zal geven aan elke klasse apart. 
+De percentages tellen dus niet op tot 100\%.
+
 \subsubsection{Kansen}
+
+We berekenen de kansen dus per categorie. Met het bovenstaande voorbeeld van de dierherkenning: 
+stel dat we 2 variabelen $x_1$ en $x_2$ hebben, met $x_1$ de grootte van de oren
+en $x_2$ de grootte van de ogen. Dan kunnen we bijvoorbeeld stellen:
 
 Kans dat de toestand tot groep $A$ behoort:
 
@@ -740,17 +746,17 @@ Kans dat de toestand tot groep $C$ behoort:
 
 Het softmax-model berekent de mate van zekerheid dat een toestand tot een bepaalde categorie behoort.
 
-vb: volgende quotiënt drukt uit hoe zeker hij is dat (z1, z2) tot categorie A behoort:
+Volgende quotiënt drukt uit hoe zeker hij is dat $(x_1, x_2)$ tot categorie A behoort, met $(x_1, x_2)$ onze 2 variabelen:
 
 \begin{align*}
-    \frac{e^{\theta_{A,0} + \theta_{A,1}z_1 + \theta_{A,2}z_2}}{e^{\theta_{A,0} + \theta_{A,1}z_1 + \theta_{A,2}z_2} + e^{\theta_{B,0} + \theta_{B,1}z_1 + \theta_{B,2}z_2} + e^{\theta_{C,0} + \theta_{C,1}z_1 + \theta_{C,2}z_2} }
+    \frac{e^{\theta_{A,0} + \theta_{A,1}x_1 + \theta_{A,2}x_2}}{e^{\theta_{A,0} + \theta_{A,1}x_1 + \theta_{A,2}x_2} + e^{\theta_{B,0} + \theta_{B,1}z_1 + \theta_{B,2}z_2} + e^{\theta_{C,0} + \theta_{C,1}z_1 + \theta_{C,2}z_2} }
 \end{align*}
 
 (analoog voor categorie B en C: pas de teller aan)
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{softmax-voorbeeld.png}
+    \includegraphics[width=0.9\textwidth]{softmax-voorbeeld.png}
     \caption{Betekenis: het model is 29\% zeker dat (0.1, 0.5) tot categorie A behoort. Bereken zelf als oefening voor B en C}
 \end{figure}
 
@@ -794,8 +800,8 @@ waarbij:
 
 \begin{itemize}
     \item Bepalen van de kostenfunctie $J(\theta)$ met als doel deze zo laag mogelijk te brengen
-    \item kost = afwijking tegenover de werkelijke situatie
-    \item werkelijkheid kan 2 situaties zijn:
+    \item Kost = afwijking tegenover de werkelijke situatie
+    \item Werkelijkheid kan 2 situaties zijn:
     \begin{itemize}
         \item Indien de werkelijkheid een groene appel is $\Rightarrow y = 1$ 
         \item Indien de werkelijkheid géén groene appel is $\Rightarrow y = 0$ 
@@ -838,8 +844,7 @@ Kostenfunctie beschouwt alle gevallen:
 
 \begin{itemize}
     \item Telkens kost berekenen
-    \item Som bepalen
-    \item Op einde gemiddelde berekenen
+    \item Som berekenen van alle kosten om de gemiddelde kost te bepalen
 \end{itemize}
 
 \begin{figure}[H]
@@ -1577,6 +1582,7 @@ Bv:
     \item 4 opeenvolgende waarden die vallen in de buitengrenzen $\mu - 3\sigma$ en $\mu + 3\sigma$
     \item Kans voor 1 waarde: $0.3\%$
     \item Kans voor 4 opeenvolgende waardes: $(0.3\%)^4 = (0.003)^4 = 0.000000000081$
+    \item Het is duidelijk dat 4 opeenvolgende waardes heel zelden voorkomen $\Rightarrow$ anomalie
 \end{itemize}
 
 Bv: 
@@ -1585,6 +1591,7 @@ Bv:
     \item 50 opeenvolgende waarden die vallen in de buitengrenzen $\mu - \sigma$ en $\mu + \sigma$
     \item Kans voor 1 waarde: $68\%$
     \item Kans 50 opeenvolgende waardes: $(0.68)^{50} = 4.221 \cdot 10^{-9}$
+    \item Heel lage kans $\Rightarrow$ anomalie
 \end{itemize}
 
 \begin{figure}[H]
@@ -1595,7 +1602,11 @@ Bv:
 
 \subsubsection{Detectiemethode 3}
 
-Volledige verschuiving van de normaalverdeling
+De tweede techniek kan dus een vreemde afwijking van de normaalverdeling detecteren, maar
+het kan geen anomalieën detecteren die van de ene sigma naar de andere gaan op een normale manier.
+
+Om deze soort anomalie te detecteren moeten we kijken naar een `window' van de laatste $n$ elementen.
+Als het gemiddelde en de standaardafwijking te veel variëren in die window, kunnen we vaststellen dat er een anomalie is.
 
 
 \begin{figure}[H]
