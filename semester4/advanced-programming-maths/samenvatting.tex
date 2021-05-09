@@ -5774,7 +5774,7 @@ Een belangrijke eigenschap is dat de optimale action-value functie $q*$
 moet voldoen aan de Bellman vergelijking:
 
 \begin{equation}
-    q_* (s,a) = E \Big[ R_{t+1} + \gamma \cdot \max_{a'} q* (s', a')\Big]
+    q_* (s,a) = E \Big[ R_{t+1} + \gamma \cdot \max_{a'} q_* (s', a')\Big]
 \end{equation}
 
 \subsection{Q-learning}
@@ -5880,9 +5880,7 @@ Omdat de Robot opnieuw op een landmijn stapt, moet het spel opnieuw beginnen met
     \caption{Veronderstel: na meerdere training epochs}
 \end{figure}
 
-\begin{itemize}
-    \item Het algoritme heeft nu gevonden 
-\end{itemize}
+Het algoritme heeft nu het beste pad naar de uitgang gevonden: van start naar `lege cel 5' naar de uitgang.
 
 \subsubsection{Exploratie vs exploitatie}
 
