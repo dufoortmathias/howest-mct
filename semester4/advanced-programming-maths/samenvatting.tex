@@ -5774,7 +5774,7 @@ Een belangrijke eigenschap is dat de optimale action-value functie $q*$
 moet voldoen aan de Bellman vergelijking:
 
 \begin{equation}
-    q_* (s,a) = E \Big[ R_{t+1} + \gamma max q* (s', a')
+    q_* (s,a) = E \Big[ R_{t+1} + \gamma \cdot \max_{a'} q* (s', a')\Big]
 \end{equation}
 
 \subsection{Q-learning}
