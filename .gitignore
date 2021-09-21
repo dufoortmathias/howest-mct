@@ -51,6 +51,10 @@ semester4/backend-development/labo/
 semester4/machine-learning-ai/labo/
 semester4/industry-project/
 semester5/mlops/labo/
+semester5/deep-learning/labo/
+semester5/deep-learning/demos/
+
+
 
 ## PDF compilation is now handled with a Github Action
 #samenvatting.pdf
